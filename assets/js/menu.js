@@ -1,4 +1,3 @@
-// Menú responsive para Yolocal
 class ResponsiveMenu {
     constructor() {
         this.menuToggle = document.getElementById('menuToggle');
@@ -17,20 +16,17 @@ class ResponsiveMenu {
     }
     
     setupEventListeners() {
-        // Toggle del menú hamburguesa
         this.menuToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             this.toggleMenu();
         });
         
-        // Cerrar menú al hacer click fuera
         document.addEventListener('click', (e) => {
             if (this.isMenuOpen && !this.mainMenu.contains(e.target) && !this.menuToggle.contains(e.target)) {
                 this.closeMenu();
             }
         });
         
-        // Manejar submenús en móvil
         this.submenus.forEach(submenu => {
             const link = submenu.querySelector('.enlace');
             link.addEventListener('click', (e) => {
@@ -41,19 +37,16 @@ class ResponsiveMenu {
             });
         });
         
-        // Cerrar menú al cambiar tamaño de pantalla
         window.addEventListener('resize', () => {
             this.handleResize();
         });
         
-        // Cerrar menú con tecla Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.isMenuOpen) {
                 this.closeMenu();
             }
         });
         
-        // Prevenir scroll del body cuando el menú está abierto
         this.mainMenu.addEventListener('touchmove', (e) => {
             e.stopPropagation();
         });
@@ -73,7 +66,6 @@ class ResponsiveMenu {
         this.body.style.overflow = 'hidden';
         this.isMenuOpen = true;
         
-        // Añadir clase para animaciones escalonadas
         setTimeout(() => {
             this.mainMenu.style.visibility = 'visible';
         }, 10);
@@ -85,21 +77,18 @@ class ResponsiveMenu {
         this.body.style.overflow = '';
         this.isMenuOpen = false;
         
-        // Cerrar todos los submenús
         this.submenus.forEach(submenu => {
             submenu.classList.remove('active');
         });
     }
     
     toggleSubmenu(submenu) {
-        // Cerrar otros submenús
         this.submenus.forEach(otherSubmenu => {
             if (otherSubmenu !== submenu) {
                 otherSubmenu.classList.remove('active');
             }
         });
         
-        // Toggle el submenú actual
         submenu.classList.toggle('active');
     }
     
@@ -108,7 +97,6 @@ class ResponsiveMenu {
             this.closeMenu();
             this.body.style.overflow = '';
             
-            // Resetear submenús
             this.submenus.forEach(submenu => {
                 submenu.classList.remove('active');
             });
@@ -116,7 +104,6 @@ class ResponsiveMenu {
     }
     
     setupTooltips() {
-        // Crear tooltips para móvil
         const menuItems = document.querySelectorAll('[data-tooltip]');
         
         menuItems.forEach(item => {
@@ -128,7 +115,6 @@ class ResponsiveMenu {
             item.style.position = 'relative';
             item.appendChild(tooltip);
             
-            // Mostrar tooltip en hover (solo en pantallas táctiles)
             if ('ontouchstart' in window) {
                 let touchTimer;
                 
@@ -153,7 +139,6 @@ class ResponsiveMenu {
     }
 }
 
-// Utilidades adicionales
 class MenuUtils {
     static highlightActiveSection() {
         const sections = document.querySelectorAll('section[id]');
@@ -214,14 +199,11 @@ class MenuUtils {
             const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
             
             if (currentScrollTop > lastScrollTop && currentScrollTop > 100) {
-                // Scrolling down
                 header.style.transform = 'translateY(-100%)';
             } else {
-                // Scrolling up
                 header.style.transform = 'translateY(0)';
             }
             
-            // Añadir sombra cuando hay scroll
             if (currentScrollTop > 10) {
                 header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
             } else {
@@ -231,21 +213,16 @@ class MenuUtils {
             lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
         });
         
-        // Añadir transición
         header.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
     }
 }
 
-// Inicialización cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar menú responsive
     window.menu = new ResponsiveMenu();
     
-    // Inicializar utilidades opcionales
     MenuUtils.smoothScroll();
     MenuUtils.addScrollEffect();
     
-    // Si hay secciones en la página, activar highlight automático
     if (document.querySelectorAll('section[id]').length > 0) {
         MenuUtils.highlightActiveSection();
     }
@@ -253,7 +230,6 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Menú Yolocal inicializado correctamente');
 });
 
-// Funciones globales de utilidad
 window.YolocalMenu = {
     closeMenu: () => window.menu.closeMenu(),
     openMenu: () => window.menu.openMenu(),
