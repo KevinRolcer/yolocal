@@ -51,15 +51,10 @@ svg{
     color: var(--principal);
     z-index: 1001;
 }
-
-.logo::before {
-    content: "Yo";
-    background: linear-gradient(45deg, var(--secunadrio), var(--complementario));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-right: 8px;
+.logo img{
+    width: 44px;
 }
+
 
 /* Menú hamburguesa */
 .menu-toggle {
@@ -267,6 +262,235 @@ svg{
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
     border-bottom: 4px solid #333;
+}
+
+/* Seccion de destacados */
+.destacado{
+    margin-top: 10px;
+}
+.carousel-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.carousel-wrapper {
+    overflow: hidden;
+    position: relative;
+    height: 400px;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.slide-background {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Gradientes de fondo para cada slide */
+.slide-background {
+    background: linear-gradient(135deg, var(--principal) 0%, var(--principal2) 100%);
+}
+
+
+.slide-content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0px 10%;
+    position: relative;
+}
+
+.slide-image {
+    flex: 0 0 300px;
+    margin-right: 60px;
+    position: relative;
+}
+
+.slide-image img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.slide-image:hover img {
+    transform: scale(1.05);
+}
+
+.slide-info {
+    flex: 1;
+    color: white;
+    text-align: left;
+}
+
+.discount-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.slide-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.slide-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    opacity: 0.9;
+    max-width: 500px;
+}
+
+.slide-button {
+    background: var(--complementario);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: .7rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.slide-button:hover {
+    background: var(--blanco);
+    color: var(--principal2);
+    transform: translateY(-2px);
+}
+
+/* Navigation Arrows */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 10;
+}
+
+.carousel-nav:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev {
+    left: 20px;
+}
+
+.next {
+    right: 20px;
+}
+
+/* Dots Indicator */
+.carousel-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--blanco);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: var(--complementario);
+    transform: scale(1.2);
+}
+
+.dot:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .carousel-container {
+        margin: 0 20px;
+    }
+    
+    .slide-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+    }
+    
+    .slide-image {
+        flex: 0 0 auto;
+        margin-right: 0;
+        margin-bottom: 30px;
+        width: 250px;
+    }
+    
+    .slide-image img {
+        height: 200px;
+    }
+    
+    .slide-title {
+        font-size: 2rem;
+    }
+    
+    .slide-description {
+        font-size: 1rem;
+    }
+    
+    .carousel-nav {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .prev {
+        left: 10px;
+    }
+    
+    .next {
+        right: 10px;
+    }
 }
 
 /* Seccion de busqueda */
