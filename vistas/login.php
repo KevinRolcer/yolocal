@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Dragon Gym</title>
-    <link rel="stylesheet" href="assets/css/homel.css">
+    <link rel="stylesheet" href="assets/css/loginl.css">
     <link href="assets/images/logo.jpg" rel="icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a2d9d6b34a.js" crossorigin="anonymous"></script>
     <?php include_once("head.php"); ?>
-    <script type="module" src="assets/js/funciones.js?v=2.5"></script>
+    <script type="module" src="assets/js/funciones.js?v=2.6"></script>
 </head>
 
 <body>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="input-group">
                     <label for="nombre"><i class="fas fa-user"></i> Usuario</label>
-                    <input type="text" id="nombre" name="nombre" minlength="5" maxlength="10" pattern=".{5,10}" required>
+                    <input type="text" id="nombre" name="nombre" minlength="5" maxlength="50" pattern=".{5,50}" required>
                     <div class="invalid-feedback">Usuario inválido</div>
                     <div class="valid-feedback">Correcto</div>
                 </div>

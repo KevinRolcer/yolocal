@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", (event)=>
                     let info = new FormData(login);
                     info.append("ope","LOGIN");
 
-                    fetch('controlador/controladorLogin.php', {
+                    fetch('controladores/controladorLogin.php', {
                         method: 'POST',
                         body: info 
                     })
@@ -36,9 +36,9 @@ document.addEventListener("DOMContentLoaded", (event)=>
                         {
                             localStorage.setItem("tipo_usuario", data.tipo);
                             Swal.fire({
-                                title: "¡Bienvenid@! a DragonGym",
+                                title: "¡Bienvenid@! a Yo local",
                                 text: "La página se actualizará automáticamente, favor de esperar...",
-                                imageUrl: "asset/images/logo.jpg", 
+                                imageUrl: "assets/img/LogoYolocal.png", 
                                 imageWidth: 100,
                                 imageHeight: 100,
                                 allowOutsideClick: false,
