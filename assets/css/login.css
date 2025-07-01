@@ -1,0 +1,162 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Ubuntu", sans-serif;
+}
+
+:root {
+    --red: #8d2e27;
+    --white: #fff;
+    --gray: #f5f5f5;
+    --black1: #222;
+    --black2: #999;
+    --estado: rgb(40, 99, 46);
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f2f2f2;
+}
+
+.container {
+    display: flex;
+    width: 80%;
+    max-width: 1000px;
+    height: 600px;
+    margin: 50px auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.left-section {
+    width: 50%;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.right-section {
+    width: 50%;
+    background-color: #fff;
+    color: #000;
+    padding: 50px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.right-section h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.right-section p {
+    color: #555;
+    margin-bottom: 30px;
+}
+
+form {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form input {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form a {
+    text-align: right;
+    font-size: 0.8em;
+    color: #888;
+    text-decoration: none;
+}
+
+form a:hover,
+.sign-up-btn:hover,
+.join-us-btn:hover {
+    opacity: 0.8;
+}
+
+.login {
+    background-color: var(--red);
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.login span {
+    transition: 0.4s ease-in-out all;
+    position: relative;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    width: 50%;
+}
+
+.content .logo {
+    width: 100%;
+}
+
+/* Inputs para form */
+.input-group {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.input-group label {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #555;
+    padding: 0 5px;
+    pointer-events: none;
+    transition: 0.2s ease;
+    background-color: white;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 10px 5px 15px;
+    border: 1.2px solid black;
+    border-radius: 10px;
+    outline: none;
+    font-size: 16px;
+}
+
+.input-group input:focus ~ label,
+.input-group input:not(:placeholder-shown) ~ label {
+    top: -8px;
+    left: 10px;
+    font-size: 12px;
+    color: #333;
+    padding: 0 5px;
+    transform: none;
+}
