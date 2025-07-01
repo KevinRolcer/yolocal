@@ -14,6 +14,8 @@
   --complementario: rgb(235, 170, 4);
   --blanco: rgb( 255, 255, 255);
   --texto: #555;
+  --texto2: #333;
+  --negro: #000000;
 
 }
 
@@ -267,6 +269,7 @@ svg{
 /* Seccion de destacados */
 .destacado{
     margin-top: 10px;
+    padding: 0px 10px;
 }
 .carousel-container {
     max-width: 1200px;
@@ -300,7 +303,6 @@ svg{
     position: relative;
 }
 
-/* Gradientes de fondo para cada slide */
 .slide-background {
     background: linear-gradient(135deg, var(--principal) 0%, var(--principal2) 100%);
 }
@@ -321,7 +323,7 @@ svg{
 }
 
 .slide-image img {
-    width: 100%;
+    width: 90%;
     height: 300px;
     object-fit: cover;
     border-radius: 15px;
@@ -448,51 +450,6 @@ svg{
     background: rgba(255, 255, 255, 0.8);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .carousel-container {
-        margin: 0 20px;
-    }
-    
-    .slide-content {
-        flex-direction: column;
-        text-align: center;
-        padding: 30px 20px;
-    }
-    
-    .slide-image {
-        flex: 0 0 auto;
-        margin-right: 0;
-        margin-bottom: 30px;
-        width: 250px;
-    }
-    
-    .slide-image img {
-        height: 200px;
-    }
-    
-    .slide-title {
-        font-size: 2rem;
-    }
-    
-    .slide-description {
-        font-size: 1rem;
-    }
-    
-    .carousel-nav {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .prev {
-        left: 10px;
-    }
-    
-    .next {
-        right: 10px;
-    }
-}
-
 /* Seccion de busqueda */
 
 .buscador {
@@ -533,20 +490,53 @@ svg{
 
 
 
-.catalogo{
-    background: var(--principal);
-    width: 15%;
-    color: white;
+.descripcionC{
+    padding: 20px 10px;
+    text-align: center;
+}
+.descripcionC p span{
+    color: var(--principal);
+}
+
+.categoria-seccion {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.categoria {
+  flex: 1 1 200px; 
+  max-width: 300px;
+}
+
+.catalogo, .negocio {
+  background: var(--principal);
+  color: white;
+  margin: 10px auto;
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.negocio{
+    background: var(--blanco);
+    width: 90;
+    color: var(--texto2);
     margin: 10px;
-    padding: 10px;
+    padding: 2rem;
     border-radius: 20px;
     text-align: center;
     position: relative;
-}
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
 
+
+}
 .categoria a{
     text-decoration: none;
 }
+
 
 /* Media Queries */
 
@@ -645,6 +635,52 @@ svg{
         text-align: center;
         padding: 12px 20px;
     }
+
+    .carousel-container {
+        margin: 0 20px;
+    }
+    
+    .slide-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+    }
+    
+    .slide-image {
+        flex: 0 0 auto;
+        margin-right: 0;
+        margin-bottom: 30px;
+        width: 250px;
+    }
+    
+    .slide-image img {
+        height: 200px;
+    }
+    
+    .slide-title {
+        font-size: 1.5rem;
+    }
+    
+    .slide-description {
+        font-size: .8rem;
+        margin-bottom: 20px;
+    }
+    
+    .carousel-nav {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .prev {
+        left: 10px;
+    }
+    
+    .next {
+        right: 10px;
+    }
+     .carousel-wrapper {
+    height: 500px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -680,6 +716,13 @@ svg{
         padding: 8px 12px;
         font-size: 13px;
     }
+    .carousel-wrapper {
+    height: 600px;
+    }
+    .slide-description {
+        font-size: .8rem;
+        margin-bottom: 10px;
+    }
 }
 
 @media (max-width: 360px) {
@@ -696,6 +739,12 @@ svg{
         padding: 6px 10px;
         font-size: 12px;
     }
+
+    .categoria {
+    flex: 1 1 100%;
+    max-width: 100%;
+    }
+    
 }
 
 @keyframes fadeIn {
