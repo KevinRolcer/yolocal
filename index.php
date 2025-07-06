@@ -26,8 +26,8 @@
         elseif($pag == "home" && ($tipoUsuario == "admin"  )) {
             include_once("vistas/home.php");
         }
-        elseif($pag == "inventario" && ($tipoUsuario == "admin"  )) {
-            include_once("vistas/ingresoinventario.php");
+        elseif($pag == "negocios" && ($tipoUsuario == "admin"  )) {
+            include_once("vistas/negocios.php");
         }
         elseif($pag == "reportes" && ($tipoUsuario == "admin"  )) {
             include_once("vistas/reportes.php");

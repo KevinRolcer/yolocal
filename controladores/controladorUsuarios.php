@@ -86,16 +86,14 @@ if (isset($_POST["ope"])) {
         }
     }
     // para agregar  
-    elseif ($ope == "AGREGAR" && isset($_POST["Nombre"], $_POST["ApellidoP"], $_POST["ApellidoM"], $_POST["CorreoUsu"], $_POST["NombreUsu"], $_POST["Contra"], $_POST["Salario"], $_POST["usutip"])) {
+    elseif ($ope == "AGREGAR" && isset($_POST["Nombre"], $_POST["ApellidoP"], $_POST["ApellidoM"], $_POST["NombreUsu"], $_POST["Contra"],$_POST["usutip"])) {
         $datos = array(
             "Nombre" => $_POST["Nombre"],
             "ApellidoP" => $_POST["ApellidoP"],
             "ApellidoM" => $_POST["ApellidoM"],
-            "CorreoUsu" => $_POST["CorreoUsu"],
-            "NombreUsu" => $_POST["NombreUsu"],
-            "Contra" => $_POST["Contra"],
-            "Salario" => $_POST["Salario"],
-            "usutip" => $_POST["usutip"]
+            "Correo" => $_POST["NombreUsu"],
+            "contra" => $_POST["Contra"],
+            "tipo_usuario" => $_POST["usutip"]
         );
 
         $status = $usu->Agregar($datos);
@@ -103,17 +101,17 @@ if (isset($_POST["ope"])) {
         echo json_encode($info);
     }
     // editar  usuario 
-    elseif ($ope == "EDITAR" && isset($_POST["ID_Usuario"], $_POST["NombreEdit"], $_POST["ApellidoPEdit"], $_POST["ApellidoMEdit"], $_POST["CorreoUsuEdit"], $_POST["NombreUsuEdit"], $_POST["SalarioEdit"], $_POST["usutipEdit"])) {
+    elseif ($ope == "EDITAR" && isset($_POST["ID_Usuario"], $_POST["NombreEdit"], $_POST["ApellidoPEdit"], $_POST["ApellidoMEdit"], $_POST["NombreUsuEdit"],  $_POST["usutipEdit"])) {
         $datos = array(
             "ID_Usuario" => $_POST["ID_Usuario"],
             "Nombre" => $_POST["NombreEdit"],
             "ApellidoP" => $_POST["ApellidoPEdit"],
             "ApellidoM" => $_POST["ApellidoMEdit"],
-            "CorreoUsu" => $_POST["CorreoUsuEdit"],
-            "NombreUsu" => $_POST["NombreUsuEdit"],
+           
+            "Correo" => $_POST["NombreUsuEdit"],
             
-            "Salario" => $_POST["SalarioEdit"],
-            "usutip" => $_POST["usutipEdit"]
+           
+            "tipo_usuario" => $_POST["usutipEdit"]
         );
 
       
