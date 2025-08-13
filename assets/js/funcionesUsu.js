@@ -2,7 +2,7 @@
     document.addEventListener("DOMContentLoaded", () => {
         
         NomUsuRep();
-        CorreoUsuRep();
+       
         
         // agregar usuario
         const formUsuario = document.querySelector("#formAgregar");
@@ -14,7 +14,7 @@
                     let nombre = document.querySelector("#Nombre");
                     let ApellidoP = document.querySelector("#ApellidoP");
                     let ApellidoM = document.querySelector("#ApellidoM");
-                    let correo = document.querySelector("#CorreoUsu");
+                    let correo = document.querySelector("#NombreUsu");
                     let clave = document.querySelector("#Contra");
 
                     if(!validaSoloLetras(nombre))
@@ -82,7 +82,7 @@
                 let nombreE = document.querySelector("#NombreEdit");
                 let ApellidoPE = document.querySelector("#ApellidoPEdit");
                 let ApellidoME = document.querySelector("#ApellidoMEdit");
-                let correoE = document.querySelector("#CorreoUsuEdit");
+                let correoE = document.querySelector("#NombreUsuEdit");
                 
                 if(!validaSoloLetras(nombreE))
                     erroresE++;
@@ -369,7 +369,7 @@ document.getElementById("limpiarM").addEventListener("click", function () {
                 Swal.fire("Éxito", "Usuario agregado correctamente", "success");
                 form.reset();
                 document.querySelector("#modalAgregar .btn-close").click(); 
-                listarUsuarios();
+                listarMiembros();
                
             } else {
                 Swal.fire("Error", data.msg, "error");
@@ -413,7 +413,7 @@ document.getElementById("limpiarM").addEventListener("click", function () {
         const datos = new FormData(form);
         datos.append("ope", "EDITAR");
 
-        fetch('controladores/controladorUsuarios.php', {
+        fetch('controladores/controladorNegocios.php', {
             method: 'POST',
             body: datos
         })
@@ -422,7 +422,7 @@ document.getElementById("limpiarM").addEventListener("click", function () {
             if (data.success) {
                 Swal.fire("Éxito", "Usuario actualizado correctamente", "success");
                 document.querySelector("#modalEditar .btn-close").click(); 
-                listarUsuarios();
+                listarMiembros();
             } else {
                 Swal.fire("Error", data.msg, "error");
             }
@@ -481,7 +481,7 @@ document.getElementById("limpiarM").addEventListener("click", function () {
                 .then(data => {
                     if (data.success) {
                         Swal.fire("Eliminado", "Usuario eliminado correctamente", "success");
-                        listarUsuarios();
+                        listarMiembros();
                     } else {
                         Swal.fire("Error", data.msg, "error");
                     }

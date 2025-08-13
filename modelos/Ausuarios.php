@@ -108,22 +108,20 @@ class Usuarios
     {
         $enlace = dbConectar();
 
-        $sql = "INSERT INTO usuarios (Nombre, ApellidoP, ApellidoM, CorreoUsu, NombreUsu, Contra, Salario, usutip) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO usuarios (Nombre, ApellidoP, ApellidoM, Correo, contra, tipo_usuario) VALUES (?, ?, ?, ?, ?, ?)";
         $consulta = $enlace->prepare($sql);
 
 
-        $passwordHash = password_hash($datos["Contra"], PASSWORD_DEFAULT);
+        $passwordHash = password_hash($datos["contra"], PASSWORD_DEFAULT);
 
         $consulta->bind_param(
-            "ssssssis",
+            "ssssss",
             $datos["Nombre"],
             $datos["ApellidoP"],
             $datos["ApellidoM"],
-            $datos["CorreoUsu"],
-            $datos["NombreUsu"],
+            $datos["Correo"],
             $passwordHash,
-            $datos["Salario"],
-            $datos["usutip"]
+            $datos["tipo_usuario"]
         );
 
         return $consulta->execute();
@@ -133,33 +131,29 @@ class Usuarios
         $enlace = dbConectar();
 
         if (isset($datos["Contra"])) {
-            $sql = "UPDATE usuarios SET Nombre=?, ApellidoP=?, ApellidoM=?, CorreoUsu=?, NombreUsu=?,  Salario=?, usutip=? WHERE ID_Usuario=?";
+            $sql = "UPDATE usuarios SET Nombre=?, ApellidoP=?, ApellidoM=?, Correo=?, tipo_usuario=? WHERE ID_Usuario=?";
             $consulta = $enlace->prepare($sql);
 
             $consulta->bind_param(
-                "sssssisi",
+                "sssssi",
                 $datos["Nombre"],
                 $datos["ApellidoP"],
                 $datos["ApellidoM"],
-                $datos["CorreoUsu"],
-                $datos["NombreUsu"],
-
-                $datos["Salario"],
-                $datos["usutip"],
+                $datos["Correo"],
+                $datos["tipo_usuario"],
                 $datos["ID_Usuario"]
             );
         } else {
-            $sql = "UPDATE usuarios SET Nombre=?, ApellidoP=?, ApellidoM=?, CorreoUsu=?, NombreUsu=?, Salario=?, usutip=? WHERE ID_Usuario=?";
+            $sql = "UPDATE usuarios SET Nombre=?, ApellidoP=?, ApellidoM=?, Correo=?, tipo_usuario=? WHERE ID_Usuario=?";
             $consulta = $enlace->prepare($sql);
             $consulta->bind_param(
-                "sssssisi",
+                "sssssi",
                 $datos["Nombre"],
                 $datos["ApellidoP"],
                 $datos["ApellidoM"],
-                $datos["CorreoUsu"],
-                $datos["NombreUsu"],
-                $datos["Salario"],
-                $datos["usutip"],
+                $datos["Correo"],
+                
+                $datos["tipo_usuario"],
                 $datos["ID_Usuario"]
             );
         }
