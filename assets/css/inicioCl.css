@@ -21,7 +21,7 @@
 
 
 svg{
-     width: 20px;
+    width: 20px;
     height: 20px;
     color: var(--complementario);
 }
@@ -570,7 +570,6 @@ svg{
         justify-content: flex-start;
         align-items: stretch;
         padding: 80px 0px 0px;
-        
         box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
         transition: right 0.3s ease;
         gap: 0;
