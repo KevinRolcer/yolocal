@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type="module" src="assets/js/acceso.js?v=1.9.1"></script>
     <script src="js/bodymovin.js" type="text/javascript"></script>
+    <script src="https://kit.fontawesome.com/726544f644.js" crossorigin="anonymous"></script>
   
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
 </head>

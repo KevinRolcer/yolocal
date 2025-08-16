@@ -35,6 +35,9 @@
         elseif($pag == "ventas" && ($tipoUsuario == "admin" || $tipoUsuario == "coach")) {
             include_once("vistas/ventas.php");
         }
+        elseif($pag == "categorias" && ($tipoUsuario == "admin" )) {
+            include_once("vistas/categorias.php");
+        }
         
         else {
             include_once("vistas/acceso_denegado.php");
