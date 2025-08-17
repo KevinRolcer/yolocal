@@ -6,7 +6,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesUsu.js?v=3.7.4"></script>
+    <script type="module" src="assets/js/funcionesUsu.js?v=3.7.5"></script>
     <link rel="stylesheet" href="../assets/css/usuarios.css">
 </head>
 
@@ -23,11 +23,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </div>
-            <div class="subMenu">
-                <?php
-                include_once("submenu.php")
-                ?>
-            </div>
+            
 
             <div class="contenedor">
                 <div class="notificacion" onclick="toggleNotifi()">
@@ -80,7 +76,10 @@
                 </div>
             </div>
         </div>
-
+        <div class="container mt-5">
+            <h1 class="text-start">Usuarios</h1>
+            <h4 class="text-start">Sección para administrar usuarios de YoLocal.</h4>
+        </div>
         <div class="container mt-5">
              <div class="filter-container">
             <!--
@@ -285,7 +284,7 @@
             <h4 class="text-center">Lista de Miembros</h4>
             <div class="row" id="ListaMiembros">
             </div>
-            <div id="paginacion" class="mt-3"></div>
+            <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
         </div>
 
         </div>

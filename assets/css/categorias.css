@@ -44,11 +44,11 @@ body {
   top: -50px;
   width: 50px;
   height: 50px;
-  background-color: transparent;
+  background: var(--white); /* rellena con el fondo */
   border-radius: 50%;
   box-shadow: 35px 35px 0 10px #5e0a9e;
-  pointer-events: none;
 }
+
 .navigation ul li:hover a::after,
 .navigation ul li.hovered a::after {
   content: "";
@@ -57,10 +57,9 @@ body {
   bottom: -50px;
   width: 50px;
   height: 50px;
-  background-color: transparent;
+  background: var(--white); /* igual acá */
   border-radius: 50%;
   box-shadow: 35px -35px 0 10px #5e0a9e;
-  pointer-events: none;
 }
 
 
@@ -522,7 +521,7 @@ color: rgb(49, 133, 229);
 
 }
 #btnE{
-  background-color: rgb(134, 24, 24);
+  background-color: rgb(202, 159, 6);
 }
 
 #ListaGastos {
@@ -542,10 +541,10 @@ color: rgb(49, 133, 229);
 /* ============== Paginacion =================*/
 #paginacion .btn-outline-primary{
   color: var(--black1);
-  border: solid 1px black;
+  border: solid 1px rgb(77, 5, 132);
 }
 #paginacion .btn-outline-primary:hover{
-  background-color: var(--red);
+  background-color: #d8a612;
   color: white;
 }
 .btn-primary{
@@ -554,7 +553,7 @@ color: rgb(49, 133, 229);
   border: solid 1px var(--red);
 }
 .btn-primary:hover{
-  background-color: black;
+  background-color: rgb(142, 9, 179);
   border: solid 1px black;
 }
 /* ===========Boton de editar ===============*/
@@ -565,15 +564,7 @@ color: rgb(49, 133, 229);
   background-color: rgb(77, 76, 76);
   color: white;
 }
-.gasto-card {
-    background: #ffffff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    text-align: center;
-    transition: transform 0.3s;
-}
+
 
 .gasto-card:hover {
     transform: scale(1.05);
@@ -696,17 +687,13 @@ color: rgb(49, 133, 229);
 }
 
 /* ============== Paginacion =================*/
+#paginacion {
+  margin-bottom: 40px;
+}
 #paginacion button{
   margin: 2px;
 }
-#paginacion .btn-outline-primary{
-  color: var(--black1);
-  border: solid 1px black;
-}
-#paginacion .btn-outline-primary:hover{
-  background-color: var(--red);
-  color: white;
-}
+
 .btn-primary{
   background-color: var(--red);
   color: white;
@@ -727,4 +714,29 @@ color: rgb(49, 133, 229);
 .ama{
   width: 50%;
 }
+.categoria-card {
+    background-color: #e4e0e0; /* gris claro */
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.categoria-card h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(100, 1, 100); /* el morado de tu captura */
+    margin: 0;
+}
+
+.card-buttons .btn {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
 

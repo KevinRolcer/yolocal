@@ -33,13 +33,7 @@
                 </svg>
             </div>
 
-            <div class="search">
-                <label>
-
-                    <input type="text" id="searchInput" placeholder="Buscar miembro ">
-
-                </label>
-            </div>
+            
 
 
             <div class="contenedor">
@@ -95,193 +89,55 @@
 
         </div>
 
-        <!-- ======================= Contadores ================== -->
-        <div class="contadores">
-            <div class="card d-flex align-items-center">
-                <div class="row w-100">
-                    <!-- Columna 1 -->
-                    <div class="col d-flex flex-column">
-                        <div class="numbers"></div>
-                        <div class="cardName">Visitas</div>
-                    </div>
-
-                    <!-- Columna 2 -->
-                    <div class="col-auto d-flex align-items-center" id="iconOjo">
-                        <div class="iconBx">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-
-                        </div>
-                    </div>
+        <div class="content">
+        <!-- Header superior -->
+        <div class="header">
+            <div class="header-left">
+                
+                <div class="header-text">
+                    <h1>Bienvenido a<br><span class="purple-text">Yo Local</span></h1>
+                    <p class="subtitle">Si es del barrio, es de todos</p>
                 </div>
             </div>
-
-
-            <div class="card d-flex align-items-center">
-                <div class="row w-100">
-                    <!-- Columna 1 -->
-                    <div class="col d-flex flex-column">
-                        <div class="numbers"></div>
-                        <div class="cardName">Miembros</div>
-                    </div>
-
-                    <!-- Columna 2 -->
-                    <div class="col-auto d-flex align-items-center" id="iconOjo">
-                        <div class="iconBx">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="botonV">
-                <button class="agregarV" id="agregarVisitaBtn2" data-bs-toggle="modal"
-                    data-bs-target="#miModal"><span>Agregar visita</span></button>
-
-            </div>
-
+           
         </div>
 
-
-        <!-- ================ Tabla de usuarios ================= -->
-        <div class="details">
-            <div class="registro">
-                <div class="cardHeader">
-                    <h2>Lista de accesos</h2>
-                    <a href="#" id="DiaAct" class="btn">Gráfica</a>
+        <!-- Tarjetas de estadísticas -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-hand-thumbs-up"></i>
                 </div>
-                <!-- ================ Modal de estadísticas ================= -->
-                <dialog id="modalEstadisticas">
-                    <div class="modal-content">
-                        <!-- si-->
-                        <canvas id="myChart"></canvas>
-                        <div>
-                            <label for="filtro">Filtrar por:</label>
-                            <select id="filtro">
-                                <option value="dia">Hoy</option>
-                                <option value="semana">Semana</option>
-                                <option value="mes">Mes</option>
-                            </select>
-                            <button id="cargarDatos">Cargar Datos</button>
-                        </div>
-                    </div>
-                </dialog>
-
-                <table id="tablaAccesos">
-                    <thead>
-                        <tr>
-                            <td>No_Miembro</td>
-                            <td>Nombre</td>
-                            <td>Hora Entrada</td>
-                            <td>Precio</td>
-                            <td>Tipo</td>
-
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                    </tbody>
-
-                </table>
+                <div class="stat-number">100</div>
+                <div class="stat-label">Negocios Registrados</div>
+                <div class="stat-bar">
+                    <div class="stat-progress" style="width: 100%"></div>
+                </div>
             </div>
 
-            <!-- ================= Miembros ================ -->
-            <div class="miembros">
-                <div class="titulo">
-                    <h2>Miembros</h2>
-                    <div class="huella">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 0 1 2.916.52 6.003 6.003 0 0 1-5.395 4.972m0 0a6.726 6.726 0 0 1-2.749 1.35m0 0a6.772 6.772 0 0 1-3.044 0" />
-                        </svg>
-                    </div>
-
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-gift"></i>
                 </div>
-                <div class="fotoM">
-
+                <div class="stat-number">150</div>
+                <div class="stat-label">Promociones Activas</div>
+                <div class="stat-bar">
+                    <div class="stat-progress" style="width: 100%"></div>
                 </div>
-                <div class="contenidoM">
-                    <p>#ID de miembro</p>
-                    <h3>Nombre</h2>
-                        <p>Número: </p>
-                        <div class="fechas">
-                            <div class="fechaI">
-                                dd/mm/yyyy
-                            </div>
-                            <div class="fechaF">
-                                dd/mm/yyyy
-                            </div>
-                        </div>
-                        <div class="estadoM">
-                            Membresía Activa
-                        </div>
-                </div>
-
             </div>
-        </div>
-    </div>
 
-    <!-- ===== Modal visita ===== -->
-    <div class="modal fade" id="miModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel">Agregar Acceso</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="bi bi-emoji-smile"></i>
                 </div>
-                <div class="modal-body">
-                    <form id="formAgregarAcceso">
-                        <div class="mb-3 d-flex align-items-center">
-                            <div class="me-3 flex-grow-1">
-                                <label for="idMiembro" class="form-label"># Miembro</label>
-                                <input type="number" class="form-control" id="idMiembro" name="ID_Miembro" placeholder="Escriba el número" required>
-                            </div>
-                            <div class="flex-grow-2">
-                                <label for="nombreMiembro" class="form-label">Nombre del Miembro</label>
-                                <input type="text" class="form-control" id="nombreMiembro" placeholder="Nombre" readonly>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="fecha" class="form-label">Fecha</label>
-                            <input type="date" class="form-control" id="fecha" name="Fecha" required readonly>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="precio" class="form-label">Precio</label>
-                            <input type="number" class="form-control" id="precio" name="Precio" placeholder="Ingrese el precio" min="0" max="300" required readonly>
-                            <div class="invalid-feedback">
-                                Password is required
-                            </div>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="ID_Membresia" class="form-label">Tipo de Membresía</label>
-                            <select class="form-control" id="ID_Membresia" name="ID_Membresia" required>
-
-                            </select>
-                        </div>
-                        <input type="hidden" value="Visita" id="Tipo" name="Tipo">
-                    </form>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnCerrar">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardarAcceso">Guardar</button>
-
+                <div class="stat-number">250</div>
+                <div class="stat-label">Clientes satisfechos</div>
+                <div class="stat-bar">
+                    <div class="stat-progress" style="width: 100%"></div>
                 </div>
             </div>
         </div>
     </div>
-
-   
 
     <div id="modalOverlay" class="window-overlay"></div>
 

@@ -9,7 +9,7 @@
     <link href="assets/images/logo.jpg" rel="icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a2d9d6b34a.js" crossorigin="anonymous"></script>
+   
     <?php include_once("head.php"); ?>
     <script type="module" src="assets/js/funciones.js?v=2.6"></script>
 </head>
