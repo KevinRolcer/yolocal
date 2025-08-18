@@ -6,7 +6,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesUsu.js?v=3.7.5"></script>
+    <script type="module" src="assets/js/funcionesUsu.js?v=3.7.6"></script>
     <link rel="stylesheet" href="../assets/css/usuarios.css">
 </head>
 
@@ -94,7 +94,7 @@
                 <span>Apellidos </span> <input type="text" id="apeP" placeholder="Escribe aquí.." class="hidden"> <button class="close">✖</button>
             </div>
             <div class="filter" data-filter="numero">
-                <span>Télefono</span> <input type="text" id="numM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
+                <span>Correo</span> <input type="text" id="numM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
             </div>
             <div class="filter-miembros">
                 <button id="limpiarM" class="btn btn-secondary">Limpiar Filtros</button>

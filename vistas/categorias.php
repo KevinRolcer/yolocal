@@ -11,7 +11,7 @@
     <script type="module" src="assets/js/funcionesCategorias.js?v=1.3"></script>
     <link rel="stylesheet" href="../assets/css/categorias.css">
 </head>
-
+    
 <body class="bg-light">
     <div class="navigation">
         <?php

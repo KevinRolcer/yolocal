@@ -209,17 +209,23 @@ function renderizarMiembros(lista) {
   lista.forEach((miembro) => {
     contenedor.innerHTML += `
             <div class="gasto-card">
-                <p># ${miembro.ID_Usuario}</p>
-                <h3>${miembro.Nombre} ${miembro.ApellidoP} ${miembro.ApellidoM}</h3>
-                <p><strong>Correo:</strong> ${miembro.Correo}</p>
-                
-                <p><strong>Tipo:</strong> ${miembro.tipo_usuario}</p>
-                <div class="card-buttons">
-                    <button class="btn btn-warning btn-editar" data-id="${miembro.ID_Usuario}" data-bs-toggle="modal" data-bs-target="#modalEditar">Editar</button>
-                        <button class="btn btn-danger btn-eliminar" data-id="${miembro.ID_Usuario}">Eliminar</button>
-                        <button class="btn btn-secondary btn-clave" data-id="${miembro.ID_Usuario}" data-bs-toggle="modal" data-bs-target="#modalEditarClave">Cambiar Clave</button>
-                </div>
-            </div>
+    <p># ${miembro.ID_Usuario}</p>
+    <h3>${miembro.Nombre} ${miembro.ApellidoP} ${miembro.ApellidoM}</h3>
+    <p><strong>Correo:</strong> ${miembro.Correo}</p>
+    <p><strong>Tipo:</strong> ${miembro.tipo_usuario}</p>
+
+    <div class="card-buttons">
+        <button class="icon-btn btn-editar" data-id="${miembro.ID_Usuario}" data-bs-toggle="modal" data-bs-target="#modalEditar">
+            <i class="bi bi-pencil"></i>
+        </button>
+        <button class="icon-btn btn-eliminar" data-id="${miembro.ID_Usuario}">
+            <i class="bi bi-trash"></i>
+        </button>
+        <button class="icon-btn btn-clave" data-id="${miembro.ID_Usuario}" data-bs-toggle="modal" data-bs-target="#modalEditarClave">
+            <i class="bi bi-key-fill"></i>
+        </button>
+    </div>
+</div>
         `;
   });
 }

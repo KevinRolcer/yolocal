@@ -27,7 +27,7 @@ class Categoria
     $sql .= " ORDER BY Descripcion DESC LIMIT ?, ?";
     $values[] = $offset;
     $values[] = $registrosPorPagina;
-    $tipos .= "ii"; // offset y limit son enteros
+    $tipos .= "ii"; 
 
     // Preparar y ejecutar
     $consulta = $enlace->prepare($sql);

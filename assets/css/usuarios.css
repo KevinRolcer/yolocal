@@ -136,7 +136,7 @@ color: rgb(12, 189, 80);
 color: rgb(241, 241, 18);
 }
 .adminUsuarios{
-background-color: var(--red);
+background-color: #5e0a9e;
 color: white;
 }
 .reportes{
@@ -159,7 +159,7 @@ color: black;
 .gastos:hover, .reportes:hover,
 .membresias:hover{
 background-color:  rgb(187, 187, 187);
-color: var(--red);
+color: #5e0a9e;
 }
 .adminUsuarios:hover{
 background-color: var(--black1);
@@ -195,12 +195,12 @@ color: rgb(49, 133, 229);
   cursor: pointer;
 }
 .notificacion:hover{
-  color: var(--red);
+  color: #5e0a9e;
 }
 
   /* ======================= Caja de notificaciones ====================== */
 .notifi-box .text{
-  color: var(--red);
+  color: #5e0a9e;
   
 }
 .notifi-box {
@@ -240,7 +240,7 @@ color: rgb(49, 133, 229);
 }
 
 .noti::-webkit-scrollbar-thumb:hover {
-  background: var(--red); 
+  background: #5e0a9e; 
 }
 .noti .imgBx {
   position: relative;
@@ -275,7 +275,7 @@ color: rgb(49, 133, 229);
 }
 
 .noti table tr:hover {
-  background: var(--red);
+  background: #5e0a9e;
   color: var(--white);
 }
 
@@ -357,7 +357,7 @@ color: rgb(49, 133, 229);
 }
 
 .dates li.today {
-  background-color: var(--red);
+  background-color: #5e0a9e;
   color: white;
   border-radius: 50%;
 }
@@ -379,7 +379,7 @@ color: rgb(49, 133, 229);
 }
 .gB button{
     padding: 10px;
-    background-color:var(--red);
+    background-color:#ffcc00;
     color: white;
     font-size: 15px;
     font-weight: 500;
@@ -411,9 +411,9 @@ color: rgb(49, 133, 229);
 }
 
 .filter.active {
-    background-color: var(--red);
+    background-color: #5e0a9e;
     color: white;
-    border-color: var(--red);
+    border-color: #5e0a9e;
 }
 
 .filter .close {
@@ -436,7 +436,7 @@ color: rgb(49, 133, 229);
     margin-left: 5px;
     border: none;
     outline: none;
-    background: var(--red);
+    background: #5e0a9e;
     font-size: 14px;
     display: none; 
 }
@@ -474,6 +474,7 @@ color: rgb(49, 133, 229);
     width: 250px;
     text-align: center;
     transition: transform 0.3s;
+    align-items: center;
 }
 
 .gasto-card:hover {
@@ -490,7 +491,9 @@ color: rgb(49, 133, 229);
 }
 
 .card-buttons {
-    margin-top: 10px;
+     display: flex;
+    gap: 12px;
+    margin-top: 12px;
 }
 
 .card-buttons .btn {
@@ -498,6 +501,38 @@ color: rgb(49, 133, 229);
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
+}
+.icon-btn {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.3s ease;
+    color: #fff;
+}
+
+/* Colores específicos */
+.btn-editar {
+    background-color: #ffc107; /* amarillo */
+}
+
+.btn-eliminar {
+    background-color: var(--red); /* rojo */
+}
+
+.btn-clave {
+    background-color: #6c757d; /* gris */
+}
+
+/* Hover más intenso */
+.icon-btn:hover {
+    transform: scale(1.1);
+    opacity: 0.9;
 }
 
 .btn-warning {
@@ -529,50 +564,46 @@ color: rgb(49, 133, 229);
   max-height: 450px; 
   overflow-y: auto; 
 }
-.btn-eliminar {
-  background-color: var(--red) !important;
-  color: white !important;
-  border-color: var(--red) !important;
-}
 
-.btn-eliminar:hover {
-  background-color: #721f1a !important; 
-  border-color: #721f1a !important;
-}
 /* ============== Paginacion =================*/
 #paginacion .btn-outline-primary{
   color: var(--black1);
-  border: solid 1px black;
+  border: solid 1px rgb(0, 0, 0);
 }
 #paginacion .btn-outline-primary:hover{
-  background-color: var(--red);
+  background-color: #ffcc00;
   color: white;
 }
+#paginacion {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
 .btn-primary{
-  background-color: var(--red);
+  background-color: #5e0a9e;
   color: white;
-  border: solid 1px var(--red);
+  border: solid 1px #5e0a9e;
 }
 .btn-primary:hover{
   background-color: black;
   border: solid 1px black;
 }
-/* ===========Boton de editar ===============*/
-.btn-editar{
-  background-color: black;
-}
+
 .btn-editar:hover{
   background-color: rgb(77, 76, 76);
   color: white;
 }
 .gasto-card {
     background: #ffffff;
+     display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* separa contenido y botones */
+    height: 100%; /* asegura que ocupe toda la altura disponible */
     padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    text-align: center;
-    transition: transform 0.3s;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    position: relative;
 }
 
 .gasto-card:hover {
@@ -588,39 +619,10 @@ color: rgb(49, 133, 229);
     margin: 5px 0;
 }
 
-.card-buttons {
-    margin-top: 10px;
-}
-
-.card-buttons .btn {
-    margin: 5px;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#btnEd{
-  background-color: rgb(185, 186, 188);
-  color: black;
-  border: none;
 
 
-}
-#btnE{
-  background-color: rgb(134, 24, 24);
-}
 
 
-.btn-eliminar {
-  background-color: var(--red) !important;
-  color: white !important;
-  border-color: var(--red) !important;
-}
-
-.btn-eliminar:hover {
-  background-color: #721f1a !important; 
-  border-color: #721f1a !important;
-}
 
 .mt-3{
   padding-left: 10px;
@@ -649,9 +651,9 @@ color: rgb(49, 133, 229);
 }
 
 .filter.active {
-    background-color: var(--red);
+    background-color: #5e0a9e;
     color: white;
-    border-color: var(--red);
+    border-color: #5e0a9e;
 }
 
 .filter .close {
@@ -675,7 +677,7 @@ color: rgb(49, 133, 229);
     margin-left: 5px;
     border: none;
     outline: none;
-    background: var(--red);
+    background: #5e0a9e;
     font-size: 14px;
     display: none; 
 }
@@ -695,25 +697,14 @@ color: rgb(49, 133, 229);
   color: rgb(193, 190, 190);
 }
 
-/* ============== Paginacion =================*/
-#paginacion button{
-  margin: 2px;
-}
-#paginacion .btn-outline-primary{
-  color: var(--black1);
+
+.btn-primary{
+  background-color: #ffcc00;
+  color: white;
   border: solid 1px black;
 }
-#paginacion .btn-outline-primary:hover{
-  background-color: var(--red);
-  color: white;
-}
-.btn-primary{
-  background-color: var(--red);
-  color: white;
-  border: solid 1px var(--red);
-}
 .btn-primary:hover{
-  background-color: black;
+  background-color: #5e0a9e;
   border: solid 1px black;
 }
 

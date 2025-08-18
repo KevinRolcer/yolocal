@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-    <title>Home-DragonGym</title>
+    <title>Home-Yo Local</title>
     
     <link rel="stylesheet" href="../assets/css/principal.css">
     <?php
