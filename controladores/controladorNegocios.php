@@ -92,6 +92,15 @@ if (isset($_POST["ope"])) {
             echo json_encode(["success" => false, "msg" => "ID de miembro no proporcionado."]);
         }
     }
+    elseif ($ope == "OBTENERMEMBRESIAS") {
+         $negocios = $usu->ObtenerNegocios();  // Llamar a la función en el modelo
+    $info = array(
+        "success" => true,
+        "negocios" => $negocios
+    );
+    echo json_encode($info);
+
+    }
     // eliminar 
     elseif ($ope == "ELIMINAR" && isset($_POST["ID_Negocio"])) {
         $status = $usu->Eliminar($_POST["ID_Negocio"]);

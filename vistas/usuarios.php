@@ -6,7 +6,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesUsu.js?v=3.7.6"></script>
+    <script type="module" src="assets/js/funcionesUsu.js?v=3.7.8"></script>
     <link rel="stylesheet" href="../assets/css/usuarios.css">
 </head>
 
@@ -281,7 +281,7 @@
 
             <!-- Tabla de Usuarios -->
             <div class="mt-3">
-            <h4 class="text-center">Lista de Miembros</h4>
+            <h4 class="text-center">Lista de Usuarios</h4>
             <div class="row" id="ListaMiembros">
             </div>
             <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>

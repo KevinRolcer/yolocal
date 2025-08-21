@@ -194,4 +194,19 @@ FROM `negocios`
             return null;
         }
     }
+    public function ObtenerNegocios()
+{
+    $enlace = dbConectar();
+    $sql = "SELECT ID_Negocio, nombre_negocio FROM negocios";  // Tabla correcta
+    $consulta = $enlace->prepare($sql);
+    $consulta->execute();
+    $result = $consulta->get_result();
+
+    $negocios = [];
+    while ($negocio = $result->fetch_assoc()) {
+        $negocios[] = $negocio;
+    }
+
+    return $negocios;
+}
 }

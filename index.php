@@ -23,11 +23,17 @@
         elseif($pag == "usuarios" && ($tipoUsuario == "admin"  )) {
             include_once("vistas/usuarios.php");
         }
+        elseif($pag == "pag" && ($tipoUsuario == "admin"  )) {
+            include_once("vistas/inicioCl.html");
+        }
         elseif($pag == "home" && ($tipoUsuario == "admin"  )) {
             include_once("vistas/home.php");
         }
         elseif($pag == "negocios" && ($tipoUsuario == "admin"  )) {
             include_once("vistas/negocios.php");
+        }
+        elseif($pag == "cupones" && ($tipoUsuario == "admin"  )) {
+            include_once("vistas/cupones.php");
         }
         elseif($pag == "reportes" && ($tipoUsuario == "admin"  )) {
             include_once("vistas/reportes.php");

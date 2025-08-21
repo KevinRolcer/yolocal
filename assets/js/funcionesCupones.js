@@ -6,47 +6,35 @@ import {
   validaContrasena,
 } from "./validaciones.js?v=3.8.1";
 document.addEventListener("DOMContentLoaded", () => {
-  NomUsuRep();
+
 
   // agregar usuario
-  const formUsuario = document.querySelector("#formAgregar");
+  const formUsuario = document.querySelector("#formPromocion");
   if (formUsuario) {
     formUsuario.addEventListener("submit", (event) => {
       event.preventDefault();
       let errores = 0;
 
-      let nombre = document.querySelector("#Nombre");
-      let ApellidoP = document.querySelector("#ApellidoP");
-      let ApellidoM = document.querySelector("#ApellidoM");
-      let correo = document.querySelector("#NombreUsu");
-      let clave = document.querySelector("#Contra");
 
-      if (!validaSoloLetras(nombre)) errores++;
-      if (!validaSoloLetras(ApellidoP)) errores++;
-      if (!validaSoloLetras(ApellidoM)) errores++;
-      if (!validaCorreo(correo)) errores++;
-      if (!validaRango(clave, 5, 16)) errores++;
-      if (!validaContrasena(clave)) errores++;
-
+    
       if (errores == 0) agregarUsuario();
     });
   }
-
   //  editar y eliminar
   const listaUsuarios = document.querySelector("#ListaMiembros");
   if (listaUsuarios) {
     listaUsuarios.addEventListener("click", (event) => {
       event.preventDefault();
-      const target = event.target.closest("button"); // 👈 aquí debe ser "event"
-    if (!target) return;
-      if (target.classList.contains("btn-editar")) {
-        cargarUsuario(target.dataset.id);
-      } else if (target.classList.contains("btn-eliminar")) {
-        eliminarUsuario(target.dataset.id);
-      } else if (event.target.classList.contains("btn-clave")) {
-        let userId = event.target.dataset.id;
-        document.querySelector("#ID_UsuarioClave").value = userId;
-      }
+       const target = event.target.closest("button"); // busca el botón aunque pulses en el <i>
+  if (!target) return;
+
+  if (target.classList.contains("btn-editar")) {
+    cargarUsuario(target.dataset.id);
+  } else if (target.classList.contains("btn-eliminar")) {
+    eliminarUsuario(target.dataset.id);
+  } else if (target.classList.contains("btn-tags")) {
+    verDetalles(target.dataset.id);
+  }
     });
     document
       .querySelector("#formEditarClave")
@@ -83,96 +71,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  listarMiembros();
+  listarPromociones();
 });
-function NomUsuRep() {
-  document.getElementById("NombreUsu").addEventListener("blur", function () {
-    let nombreUsu = this.value.trim();
-    let mensajeError = document.getElementById("errorNombreUsu");
 
-    if (nombreUsu === "") {
-      mensajeError.textContent = ""; // Limpia el mensaje si el campo está vacío
-      return;
-    }
 
-    fetch("controladores/controladorUsuarios.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        ope: "VERIFICAR_NOMBREUSU",
-        nombreUsu: nombreUsu,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          if (data.existe) {
-            mensajeError.textContent =
-              "⚠️ El nombre de usuario ya está en uso.";
-            mensajeError.style.color = "red";
-          } else {
-            mensajeError.textContent = "";
-          }
-        } else {
-          console.error("Error en la validación:", data.msg);
-        }
-      })
-      .catch((error) => console.error("Error en la solicitud:", error));
-  });
-}
-function CorreoUsuRep() {
-  document.getElementById("CorreoUsu").addEventListener("blur", function () {
-    let correoUsu = this.value.trim();
-    let mensajeError = document.getElementById("errorCorreoUsu");
-
-    if (correoUsu === "") {
-      mensajeError.textContent = ""; // Limpia el mensaje si el campo está vacío
-      return;
-    }
-
-    fetch("controladores/controladorUsuarios.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        ope: "VERIFICAR_CORREOUSU",
-        correoUsu: correoUsu,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          if (data.existe) {
-            mensajeError.textContent = "El correo ya está en uso.";
-            mensajeError.style.color = "red";
-          } else {
-            mensajeError.textContent = "";
-          }
-        } else {
-          console.error("Error en la validación:", data.msg);
-        }
-      })
-      .catch((error) => console.error("Error en la solicitud:", error));
-  });
-}
 // Función para listar usuarios
 let paginaActual = 1;
 const registrosPorPagina = 10;
 let filtrosActuales = {};
 
-export function listarMiembros(filtros = filtrosActuales) {
-  filtrosActuales = filtros; 
+export function listarPromociones(filtros = filtrosActuales) {
+  filtrosActuales = filtros;
 
   let params = new URLSearchParams();
-  params.append("ope", "LISTAUSUARIOS");
+  params.append("ope", "LISTARPROMOCIONES");
   params.append("pagina", paginaActual);
   params.append("registrosPorPagina", registrosPorPagina);
 
-  if (filtros.ID_Miembro) params.append("id", filtros.ID_Miembro);
-  if (filtros.Nombre) params.append("nombre", filtros.Nombre);
-  if (filtros.Apellidos) params.append("apellidos", filtros.Apellidos);
-  if (filtros.Telefono) params.append("telefono", filtros.Telefono);
+  // Filtros disponibles
+  if (filtros.titulo) params.append("titulo", filtros.titulo);
+  if (filtros.descripcion) params.append("descripcion", filtros.descripcion);
+  if (filtros.negocio) params.append("negocio", filtros.negocio);
 
-  fetch("controladores/controladorUsuarios.php", {
+
+  fetch("controladores/controladorCupones.php", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: params.toString(),
@@ -180,11 +102,11 @@ export function listarMiembros(filtros = filtrosActuales) {
     .then((response) => response.json())
     .then((data) => {
       if (!data.success) {
-        console.error("Error al cargar miembros:", data.msg);
-        renderizarError("No se pudieron cargar los miembros.");
+        console.error("Error al cargar promociones:", data.msg);
+        renderizarError("No se pudieron cargar las promociones.");
         return;
       }
-      renderizarMiembros(data.lista);
+      renderizarPromociones(data.lista);
       actualizarPaginacion(data.totalPaginas);
     })
     .catch((error) => {
@@ -193,51 +115,61 @@ export function listarMiembros(filtros = filtrosActuales) {
     });
 }
 
-function renderizarMiembros(lista) {
+function renderizarPromociones(lista) {
   const contenedor = document.querySelector("#ListaMiembros");
   contenedor.innerHTML = "";
 
   if (!lista || lista.length === 0) {
     contenedor.innerHTML = `
-            <div class="no-results">
-                <p>No se encuentra ningún miembro con los filtros aplicados.</p>
-            </div>
-        `;
+      <div class="no-results">
+          <p>No se encontró ninguna promoción con los filtros aplicados.</p>
+      </div>
+    `;
     return;
   }
 
-  lista.forEach((miembro) => {
-    contenedor.innerHTML += `
-            <div class="gasto-card">
-    <p># ${miembro.ID_Usuario}</p>
-    <h3>${miembro.Nombre} ${miembro.ApellidoP} ${miembro.ApellidoM}</h3>
-    <p><strong>Correo:</strong> ${miembro.Correo}</p>
-    <p><strong>Tipo:</strong> ${miembro.tipo_usuario}</p>
+  contenedor.innerHTML = ""; // limpiar antes de renderizar
 
-    <div class="card-buttons">
-        <button class="icon-btn btn-editar" data-id="${miembro.ID_Usuario}" data-bs-toggle="modal" data-bs-target="#modalEditar">
-            <i class="bi bi-pencil"></i>
-        </button>
-        <button class="icon-btn btn-eliminar" data-id="${miembro.ID_Usuario}">
-            <i class="bi bi-trash"></i>
-        </button>
-        <button class="icon-btn btn-clave" data-id="${miembro.ID_Usuario}" data-bs-toggle="modal" data-bs-target="#modalEditarClave">
-            <i class="bi bi-key-fill"></i>
-        </button>
+lista.forEach((promo) => {
+  contenedor.innerHTML += `
+    <div class="promo-card">
+      <div class="promo-info">
+        <h3 class="promo-negocio">${promo.nombre_negocio}</h3>
+        <p class="promo-titulo">${promo.titulo}</p>
+        <p class="promo-descripcion">${promo.descripcion ?? "Sin descripción"}</p>
+        <p class="promo-titulo">Cupones Restantes: ${promo.cantidad }</p>
+      </div>
+      <div class="promo-actions">
+        <button class="icon-btn purple btn-tags" data-id="${promo.ID_Promocion}">
+  <i class="bi bi-tags"></i>
+</button>
+
+<button class="icon-btn blue btn-agregar" data-id="${promo.ID_Promocion}">
+  <i class="bi bi-plus"></i>
+</button>
+
+<button class="icon-btn green btn-eliminar" data-id="${promo.ID_Promocion}">
+  <i class="bi bi-power"></i>
+</button>
+<button class="icon-btn yellow btn-editar" data-id="${promo.ID_Promocion}" 
+        data-bs-toggle="modal" data-bs-target="#modalEditar">
+  <i class="bi bi-pencil"></i>
+</button>
+      </div>
     </div>
-</div>
-        `;
-  });
+  `;
+});
 }
 
 function renderizarError(mensaje) {
-  const contenedor = document.querySelector("#ListaMiembros");
+  const contenedor = document.querySelector("#ListaPromociones");
   contenedor.innerHTML = `
-        <div class="error-message">
-            <p>${mensaje}</p>
-        </div>
-    `;
+    <div class="error-message">
+        <p>${mensaje}</p>
+    </div>
+  `;
 }
+
 
 function actualizarPaginacion(totalPaginas) {
   const paginacion = document.querySelector("#paginacion");
@@ -257,7 +189,7 @@ function actualizarPaginacion(totalPaginas) {
   btnAnterior.addEventListener("click", () => {
     if (paginaActual > 1) {
       paginaActual--;
-      listarMiembros(filtrosActuales);
+      listarPromociones(filtrosActuales);
     }
   });
   paginacion.appendChild(btnAnterior);
@@ -282,7 +214,7 @@ function actualizarPaginacion(totalPaginas) {
     boton.textContent = i;
     boton.addEventListener("click", () => {
       paginaActual = i;
-      listarMiembros(filtrosActuales);
+      listarPromociones(filtrosActuales);
     });
     paginacion.appendChild(boton);
   }
@@ -303,14 +235,14 @@ function actualizarPaginacion(totalPaginas) {
 
 function aplicarFiltros() {
   const filtros = {
-    //ID_Miembro: document.getElementById("idM").value.trim(),
-    Nombre: document.getElementById("nombreM").value.trim(),
-    Apellidos: document.getElementById("apeP").value.trim(),
-    Telefono: document.getElementById("numM").value.trim(),
+    titulo: document.getElementById("filtroTitulo").value.trim(),
+    descripcion: document.getElementById("filtroDescripcion").value.trim(),
+    negocio: document.getElementById("filtroNegocio").value.trim(),
+
   };
 
-  paginaActual = 1;
-  listarMiembros(filtros);
+  paginaActual = 1; // Reiniciar a la primera página al aplicar filtros
+  listarPromociones(filtros);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -323,10 +255,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   filtersContainer.addEventListener("input", aplicarFiltros);
 
-  listarMiembros();
+  listarPromociones();
 });
 
-document.getElementById("limpiarM").addEventListener("click", function () {
+document.getElementById("limpiarFiltros").addEventListener("click", function () {
   document.querySelectorAll(".filter input").forEach((input) => {
     input.value = "";
   });
@@ -375,7 +307,7 @@ document.querySelectorAll(".filter .close").forEach((button) => {
   });
 });
 
-document.getElementById("limpiarM").addEventListener("click", function () {
+document.getElementById("limpiarFiltros").addEventListener("click", function () {
   document.querySelectorAll(".filter").forEach((filter) => {
     let input = filter.querySelector("input");
     input.classList.add("hidden");
@@ -385,11 +317,11 @@ document.getElementById("limpiarM").addEventListener("click", function () {
 });
 
 function agregarUsuario() {
-  const form = document.querySelector("#formAgregar");
+  const form = document.querySelector("#formPromocion");
   const datos = new FormData(form);
   datos.append("ope", "AGREGAR");
 
-  fetch("controladores/controladorUsuarios.php", {
+  fetch("controladores/controladorCupones.php", {
     method: "POST",
     body: datos,
   })
@@ -399,8 +331,8 @@ function agregarUsuario() {
       if (data.success) {
         Swal.fire("Éxito", "Usuario agregado correctamente", "success");
         form.reset();
-        document.querySelector("#modalAgregar .btn-close").click();
-        listarMiembros();
+        document.querySelector("#modalPromocion .btn-close").click();
+        listarPromociones();
       } else {
         Swal.fire("Error", data.msg, "error");
       }
@@ -415,21 +347,21 @@ function agregarUsuario() {
 }
 
 function cargarUsuario(id) {
-  fetch("controladores/controladorUsuarios.php", {
+  fetch("controladores/controladorCupones.php", {
     method: "POST",
-    body: new URLSearchParams({ ope: "OBTENER", ID_Usuario: id }),
+    body: new URLSearchParams({ ope: "OBTENER", ID_Promocion: id }),
   })
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        document.querySelector("#ID_Usuario").value = data.usuario.ID_Usuario;
-        document.querySelector("#NombreEdit").value = data.usuario.Nombre;
-        document.querySelector("#ApellidoPEdit").value = data.usuario.ApellidoP;
-        document.querySelector("#ApellidoMEdit").value = data.usuario.ApellidoM;
+        document.querySelector("#ID_Promocion").value = data.usuario.ID_Promocion;
+        document.querySelector("#EditTitulo").value = data.usuario.titulo;
+        document.querySelector("#EditDescripcion").value = data.usuario.descripcion;
+        document.querySelector("#EditFechaFin").value = data.usuario.fecha_fin;
 
-        document.querySelector("#NombreUsuEdit").value = data.usuario.Correo;
+        document.querySelector("#EditCantidad").value = data.usuario.cantidad;
 
-        document.querySelector("#usutipEdit").value = data.usuario.tipo_usuario;
+       
       } else {
         Swal.fire(
           "Error",
@@ -452,7 +384,7 @@ function editarUsuario() {
   const datos = new FormData(form);
   datos.append("ope", "EDITAR");
 
-  fetch("controladores/controladorUsuarios.php", {
+  fetch("controladores/controladorNegocios.php", {
     method: "POST",
     body: datos,
   })
@@ -461,7 +393,7 @@ function editarUsuario() {
       if (data.success) {
         Swal.fire("Éxito", "Usuario actualizado correctamente", "success");
         document.querySelector("#modalEditar .btn-close").click();
-        listarMiembros();
+        listarPromociones();
       } else {
         Swal.fire("Error", data.msg, "error");
       }
@@ -533,7 +465,7 @@ function eliminarUsuario(id) {
               "Usuario eliminado correctamente",
               "success"
             );
-            listarMiembros();
+            listarPromociones();
           } else {
             Swal.fire("Error", data.msg, "error");
           }
@@ -548,3 +480,32 @@ function eliminarUsuario(id) {
     }
   });
 }
+function cargarNegocios() {
+    fetch('controladores/controladorNegocios.php', {
+        method: 'POST',
+        body: new URLSearchParams({ "ope": "OBTENERMEMBRESIAS" })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const selectNegocios = document.getElementById("ID_Negocio");
+                selectNegocios.innerHTML = "<option value=''>Seleccione un negocio</option>";  // Opción por defecto
+
+                data.negocios.forEach(negocio => {
+                    const option = document.createElement("option");
+                    option.value = negocio.ID_Negocio;
+                    option.textContent = negocio.nombre_negocio;
+                    selectNegocios.appendChild(option);
+                });
+            } else {
+                Swal.fire("Error", "No se pudieron cargar los negocios", "error");
+            }
+        })
+        .catch(error => {
+            Swal.fire("Error", "No se pudo cargar la lista de negocios: " + error.message, "error");
+        });
+}
+// Llamar a la función cuando se cargue el formulario
+document.addEventListener('DOMContentLoaded', function () {
+    cargarNegocios();
+});

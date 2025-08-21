@@ -32,7 +32,7 @@
             </li>
 
             <li>
-                <a href="index.php?pag=corte" class="admin-only">
+                <a href="index.php?pag=cupones" class="admin-only">
                     <span class="icon">
                         <i class="bi bi-gift"></i>
                     </span>
