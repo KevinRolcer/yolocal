@@ -680,14 +680,14 @@ color: rgb(49, 133, 229);
   gap: 15px;
 }
 
-/* Estilo de cada tarjeta */
+
 .promo-card {
   display: flex;
-  flex-direction: column;      /* coloca contenido de arriba a abajo */
-  justify-content: space-between; /* separa la info de los botones */
+  flex-direction: column;  
+  justify-content: space-between; 
   
   width: 280px;
-  height: 180px;  /* fijo */
+  
   
   background: white;
   border-radius: 12px;
@@ -750,3 +750,11 @@ color: rgb(49, 133, 229);
 .icon-btn.yellow { background: #f39c12; }
 .icon-btn.green  { background: #27ae60; }
 .icon-btn.blue  { background: #2b8cc7; }
+.btn-green {
+  background: #27ae60;
+  color: white;
+}
+.btn-red {
+  background: rgba(255, 0, 0, 0.801);
+  color: white;
+}

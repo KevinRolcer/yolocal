@@ -6,8 +6,6 @@ import {
   validaContrasena,
 } from "./validaciones.js?v=3.8.1";
 document.addEventListener("DOMContentLoaded", () => {
-
-
   // agregar usuario
   const formUsuario = document.querySelector("#formPromocion");
   if (formUsuario) {
@@ -15,9 +13,14 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
       let errores = 0;
 
-
-    
       if (errores == 0) agregarUsuario();
+    });
+  }
+  const formACupon = document.querySelector("#formAgregarC");
+  if (formACupon) {
+    formACupon.addEventListener("submit", (event) => {
+      event.preventDefault();
+      cargarCupones();
     });
   }
   //  editar y eliminar
@@ -25,31 +28,19 @@ document.addEventListener("DOMContentLoaded", () => {
   if (listaUsuarios) {
     listaUsuarios.addEventListener("click", (event) => {
       event.preventDefault();
-       const target = event.target.closest("button"); // busca el botón aunque pulses en el <i>
-  if (!target) return;
+      const target = event.target.closest("button"); // busca el botón aunque pulses en el <i>
+      if (!target) return;
 
-  if (target.classList.contains("btn-editar")) {
-    cargarUsuario(target.dataset.id);
-  } else if (target.classList.contains("btn-eliminar")) {
-    eliminarUsuario(target.dataset.id);
-  } else if (target.classList.contains("btn-tags")) {
-    verDetalles(target.dataset.id);
-  }
+      if (target.classList.contains("btn-editar")) {
+        cargarUsuario(target.dataset.id);
+      } else if (target.classList.contains("btn-eliminar")) {
+        eliminarUsuario(target.dataset.id);
+      } else if (target.classList.contains("btn-tags")) {
+        restarCupones(target.dataset.id);
+      } else if (target.classList.contains("btn-agregar")) {
+        cargarCupones(target.dataset.id);
+      }
     });
-    document
-      .querySelector("#formEditarClave")
-      .addEventListener("submit", (event) => {
-        event.preventDefault();
-        let erroresC = 0;
-
-        let claveC = document.querySelector("#ClaveNueva");
-        let claveCC = document.querySelector("#ConfirmarClave");
-        if (!validaRango(claveC, 8, 16)) erroresC++;
-        if (!validaRango(claveCC, 8, 16)) erroresC++;
-        if (!validaContrasena(claveC)) erroresC++;
-        if (!validaContrasena(claveCC)) erroresC++;
-        if (erroresC == 0) actualizarClave();
-      });
   }
 
   const formEditarUsuario = document.querySelector("#formEditar");
@@ -57,15 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
     formEditarUsuario.addEventListener("submit", (event) => {
       event.preventDefault();
       let erroresE = 0;
-      let nombreE = document.querySelector("#NombreEdit");
-      let ApellidoPE = document.querySelector("#ApellidoPEdit");
-      let ApellidoME = document.querySelector("#ApellidoMEdit");
-      let correoE = document.querySelector("#NombreUsuEdit");
-
-      if (!validaSoloLetras(nombreE)) erroresE++;
-      if (!validaSoloLetras(ApellidoPE)) erroresE++;
-      if (!validaSoloLetras(ApellidoME)) erroresE++;
-      if (!validaCorreo(correoE)) erroresE++;
 
       if (erroresE == 0) editarUsuario();
     });
@@ -73,7 +55,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   listarPromociones();
 });
+function esFechaExpirada(fechaFin) {
+  const hoy = new Date();
+  const fin = new Date(fechaFin);
 
+  // Convertir ambas a formato YYYY-MM-DD (sin hora)
+  const hoyStr = hoy.toISOString().split("T")[0];
+  const finStr = fin.toISOString().split("T")[0];
+
+  return finStr < hoyStr; // se desactiva solo si fue ANTES de hoy
+}
 
 // Función para listar usuarios
 let paginaActual = 1;
@@ -92,7 +83,6 @@ export function listarPromociones(filtros = filtrosActuales) {
   if (filtros.titulo) params.append("titulo", filtros.titulo);
   if (filtros.descripcion) params.append("descripcion", filtros.descripcion);
   if (filtros.negocio) params.append("negocio", filtros.negocio);
-
 
   fetch("controladores/controladorCupones.php", {
     method: "POST",
@@ -130,35 +120,53 @@ function renderizarPromociones(lista) {
 
   contenedor.innerHTML = ""; // limpiar antes de renderizar
 
-lista.forEach((promo) => {
-  contenedor.innerHTML += `
+  lista.forEach((promo) => {
+    contenedor.innerHTML += `
     <div class="promo-card">
       <div class="promo-info">
         <h3 class="promo-negocio">${promo.nombre_negocio}</h3>
         <p class="promo-titulo">${promo.titulo}</p>
-        <p class="promo-descripcion">${promo.descripcion ?? "Sin descripción"}</p>
-        <p class="promo-titulo">Cupones Restantes: ${promo.cantidad }</p>
+        <p class="promo-descripcion">${
+          promo.descripcion ?? "Sin descripción"
+        }</p>
+        <p class="promo-titulo">Cupones Restantes: ${promo.cantidad}</p>
+        <p class="promo-descripcion">${promo.fecha_fin}</p>
       </div>
       <div class="promo-actions">
-        <button class="icon-btn purple btn-tags" data-id="${promo.ID_Promocion}">
+        <button class="icon-btn purple btn-tags" 
+        data-id="${promo.ID_Promocion}" 
+        data-cantidad="${promo.cantidad}"
+        data-fecha="${promo.fecha_fin}"
+        id="btnCupon_${promo.ID_Promocion}"
+        ${
+          promo.cantidad <= 0 || esFechaExpirada(promo.fecha_fin)
+            ? "disabled"
+            : ""
+        } >
   <i class="bi bi-tags"></i>
 </button>
 
-<button class="icon-btn blue btn-agregar" data-id="${promo.ID_Promocion}">
-  <i class="bi bi-plus"></i>
+<button class="icon-btn blue btn-agregar" data-bs-toggle="modal" data-bs-target="#modalAgregarC" data-id="${
+      promo.ID_Promocion
+    }">
+  <i class="bi bi-plus-circle"></i>
 </button>
 
-<button class="icon-btn green btn-eliminar" data-id="${promo.ID_Promocion}">
+<button 
+  class="icon-btn btn-toggle ${promo.Estatus == 1 ? 'btn-green' : 'btn-red'}" 
+  data-id="${promo.ID_Promocion}" 
+  data-status="${promo.Estatus}">
   <i class="bi bi-power"></i>
 </button>
 <button class="icon-btn yellow btn-editar" data-id="${promo.ID_Promocion}" 
         data-bs-toggle="modal" data-bs-target="#modalEditar">
   <i class="bi bi-pencil"></i>
 </button>
+
       </div>
     </div>
   `;
-});
+  });
 }
 
 function renderizarError(mensaje) {
@@ -169,7 +177,6 @@ function renderizarError(mensaje) {
     </div>
   `;
 }
-
 
 function actualizarPaginacion(totalPaginas) {
   const paginacion = document.querySelector("#paginacion");
@@ -238,7 +245,6 @@ function aplicarFiltros() {
     titulo: document.getElementById("filtroTitulo").value.trim(),
     descripcion: document.getElementById("filtroDescripcion").value.trim(),
     negocio: document.getElementById("filtroNegocio").value.trim(),
-
   };
 
   paginaActual = 1; // Reiniciar a la primera página al aplicar filtros
@@ -258,13 +264,15 @@ document.addEventListener("DOMContentLoaded", () => {
   listarPromociones();
 });
 
-document.getElementById("limpiarFiltros").addEventListener("click", function () {
-  document.querySelectorAll(".filter input").forEach((input) => {
-    input.value = "";
-  });
+document
+  .getElementById("limpiarFiltros")
+  .addEventListener("click", function () {
+    document.querySelectorAll(".filter input").forEach((input) => {
+      input.value = "";
+    });
 
-  aplicarFiltros();
-});
+    aplicarFiltros();
+  });
 
 document.querySelectorAll(".filter").forEach((filter) => {
   filter.addEventListener("click", function (event) {
@@ -307,14 +315,16 @@ document.querySelectorAll(".filter .close").forEach((button) => {
   });
 });
 
-document.getElementById("limpiarFiltros").addEventListener("click", function () {
-  document.querySelectorAll(".filter").forEach((filter) => {
-    let input = filter.querySelector("input");
-    input.classList.add("hidden");
-    input.value = "";
-    filter.classList.remove("active");
+document
+  .getElementById("limpiarFiltros")
+  .addEventListener("click", function () {
+    document.querySelectorAll(".filter").forEach((filter) => {
+      let input = filter.querySelector("input");
+      input.classList.add("hidden");
+      input.value = "";
+      filter.classList.remove("active");
+    });
   });
-});
 
 function agregarUsuario() {
   const form = document.querySelector("#formPromocion");
@@ -354,14 +364,14 @@ function cargarUsuario(id) {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        document.querySelector("#ID_Promocion").value = data.usuario.ID_Promocion;
+        document.querySelector("#ID_Promocion").value =
+          data.usuario.ID_Promocion;
         document.querySelector("#EditTitulo").value = data.usuario.titulo;
-        document.querySelector("#EditDescripcion").value = data.usuario.descripcion;
+        document.querySelector("#EditDescripcion").value =
+          data.usuario.descripcion;
         document.querySelector("#EditFechaFin").value = data.usuario.fecha_fin;
 
         document.querySelector("#EditCantidad").value = data.usuario.cantidad;
-
-       
       } else {
         Swal.fire(
           "Error",
@@ -384,7 +394,7 @@ function editarUsuario() {
   const datos = new FormData(form);
   datos.append("ope", "EDITAR");
 
-  fetch("controladores/controladorNegocios.php", {
+  fetch("controladores/controladorCupones.php", {
     method: "POST",
     body: datos,
   })
@@ -402,42 +412,6 @@ function editarUsuario() {
       Swal.fire(
         "Error",
         "No se pudo actualizar el usuario: " + error.message,
-        "error"
-      );
-    });
-}
-function actualizarClave() {
-  let form = document.querySelector("#formEditarClave");
-  let formData = new FormData(form);
-
-  if (formData.get("ClaveNueva") !== formData.get("ConfirmarClave")) {
-    Swal.fire("Error", "Las contraseñas no coinciden", "error");
-    return;
-  }
-
-  formData.append("ope", "CAMBIAR_CLAVE");
-
-  fetch("controladores/controladorUsuarios.php", {
-    method: "POST",
-    body: formData,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        Swal.fire("Éxito", "Contraseña actualizada correctamente", "success");
-        form.reset();
-        let modal = bootstrap.Modal.getInstance(
-          document.querySelector("#modalEditarClave")
-        );
-        modal.hide();
-      } else {
-        Swal.fire("Error", data.msg, "error");
-      }
-    })
-    .catch((error) => {
-      Swal.fire(
-        "Error",
-        "No se pudo actualizar la contraseña: " + error.message,
         "error"
       );
     });
@@ -480,32 +454,144 @@ function eliminarUsuario(id) {
     }
   });
 }
-function cargarNegocios() {
-    fetch('controladores/controladorNegocios.php', {
-        method: 'POST',
-        body: new URLSearchParams({ "ope": "OBTENERMEMBRESIAS" })
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const selectNegocios = document.getElementById("ID_Negocio");
-                selectNegocios.innerHTML = "<option value=''>Seleccione un negocio</option>";  // Opción por defecto
-
-                data.negocios.forEach(negocio => {
-                    const option = document.createElement("option");
-                    option.value = negocio.ID_Negocio;
-                    option.textContent = negocio.nombre_negocio;
-                    selectNegocios.appendChild(option);
-                });
-            } else {
-                Swal.fire("Error", "No se pudieron cargar los negocios", "error");
-            }
+function restarCupones(id) {
+  Swal.fire({
+    title: "Un cupón será usado",
+    text: "¿Deseas continuar?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, ocupar cupon",
+    cancelButtonText: "Cancelar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch("controladores/controladorCupones.php", {
+        method: "POST",
+        body: new URLSearchParams({ ope: "RESTARCUPON", ID_Promocion: id }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            Swal.fire(
+              "Cupon utilizado",
+              "Usuario eliminado correctamente",
+              "success"
+            );
+            listarPromociones();
+          } else {
+            Swal.fire("Error", data.msg, "error");
+          }
         })
-        .catch(error => {
-            Swal.fire("Error", "No se pudo cargar la lista de negocios: " + error.message, "error");
+        .catch((error) => {
+          Swal.fire(
+            "Error",
+            "No se pudo ocupar el cupon : " + error.message,
+            "error"
+          );
         });
+    }
+  });
+}
+function cargarCupones(id) {
+  document.getElementById("ID_PromocionC").value = id;
+}
+
+// Listener del formulario (se agrega solo una vez)
+const formCupon = document.querySelector("#formAgregarC");
+if (formCupon) {
+  formCupon.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(formCupon);
+    formData.append("ope", "AGREGARCUPON"); // operación para el backend
+
+    fetch("controladores/controladorCupones.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          Swal.fire("Éxito", "Cupón agregado correctamente", "success");
+          formCupon.reset(); // limpiar formulario
+          listarPromociones();
+          document.querySelector("#modalAgregarC .btn-close").click(); // refrescar lista
+        } else {
+          Swal.fire("Error", data.msg, "error");
+        }
+      })
+      .catch((error) => {
+        Swal.fire(
+          "Error",
+          "No se pudo procesar el cupón: " + error.message,
+          "error"
+        );
+      });
+  });
+}
+
+function cargarNegocios() {
+  fetch("controladores/controladorNegocios.php", {
+    method: "POST",
+    body: new URLSearchParams({ ope: "OBTENERMEMBRESIAS" }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        const selects = [
+          document.getElementById("ID_Negocio"),
+          document.getElementById("ID_NegocioEdit"),
+        ];
+
+        selects.forEach((select) => {
+          select.innerHTML = "<option value=''>Seleccione un negocio</option>";
+          data.negocios.forEach((negocio) => {
+            const option = document.createElement("option");
+            option.value = negocio.ID_Negocio;
+            option.textContent = negocio.nombre_negocio;
+            select.appendChild(option);
+          });
+        });
+      } else {
+        Swal.fire("Error", "No se pudieron cargar los negocios", "error");
+      }
+    })
+    .catch((error) => {
+      Swal.fire(
+        "Error",
+        "No se pudo cargar la lista de negocios: " + error.message,
+        "error"
+      );
+    });
 }
 // Llamar a la función cuando se cargue el formulario
-document.addEventListener('DOMContentLoaded', function () {
-    cargarNegocios();
+document.addEventListener("DOMContentLoaded", function () {
+  cargarNegocios();
+});
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".btn-toggle");
+  if (!btn) return;
+
+  const id = btn.dataset.id;
+  const estatus = btn.dataset.status == "1" ? 0 : 1; // si está en 1 lo pasamos a 0, y viceversa
+
+  fetch("controladores/controladorCupones.php", {
+    method: "POST",
+    body: new URLSearchParams({
+      ope: "CAMBIARESTATUS",
+      ID_Promocion: id,
+      estatus: estatus
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        Swal.fire("Éxito", "Estatus actualizado", "success");
+        listarPromociones(); // refrescar la lista
+      } else {
+        Swal.fire("Error", data.msg || "No se pudo cambiar el estatus", "error");
+      }
+    })
+    .catch((error) => {
+      Swal.fire("Error", "Problema con el servidor: " + error.message, "error");
+    });
 });

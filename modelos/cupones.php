@@ -112,56 +112,50 @@ public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = []
     {
         $enlace = dbConectar();
 
-        $sql = "INSERT INTO promociones (titulo, descripcion, cantidad, fecha_fin, ID_Negocio ) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO promociones (titulo, descripcion, cantidad, fecha_fin, ID_Negocio, PromoMiercoles, Estatus ) VALUES (?, ?, ?, ?, ?, ?, 1)";
         $consulta = $enlace->prepare($sql);
 
 
 
         $consulta->bind_param(
-            "ssisi",
+            "ssisii",
             $datos["Titulo"],
             $datos["Descripcion"],
             $datos["Cantidad"],
             $datos["FechaFin"],
-            $datos["ID_Negocio"]
+            $datos["ID_Negocio"],
+            $datos["PromoMiercoles"]
         );
 
         return $consulta->execute();
     }
     public function Editar($datos)
-    {
-        $enlace = dbConectar();
+{
+    $enlace = dbConectar();
 
-        if (isset($datos["Contra"])) {
-            $sql = "UPDATE usuarios SET Nombre=?, ApellidoP=?, ApellidoM=?, Correo=?, tipo_usuario=? WHERE ID_Usuario=?";
-            $consulta = $enlace->prepare($sql);
+    $sql = "UPDATE promociones 
+            SET Titulo = ?, 
+                Descripcion = ?, 
+                Fecha_Fin = ?, 
+                Cantidad = ?, 
+                ID_Negocio = ? 
+            WHERE ID_Promocion = ?";
 
-            $consulta->bind_param(
-                "sssssi",
-                $datos["Nombre"],
-                $datos["ApellidoP"],
-                $datos["ApellidoM"],
-                $datos["Correo"],
-                $datos["tipo_usuario"],
-                $datos["ID_Usuario"]
-            );
-        } else {
-            $sql = "UPDATE usuarios SET Nombre=?, ApellidoP=?, ApellidoM=?, Correo=?, tipo_usuario=? WHERE ID_Usuario=?";
-            $consulta = $enlace->prepare($sql);
-            $consulta->bind_param(
-                "sssssi",
-                $datos["Nombre"],
-                $datos["ApellidoP"],
-                $datos["ApellidoM"],
-                $datos["Correo"],
-                
-                $datos["tipo_usuario"],
-                $datos["ID_Usuario"]
-            );
-        }
+    $consulta = $enlace->prepare($sql);
 
-        return $consulta->execute();
-    }
+    $consulta->bind_param(
+        "sssiii", // Tipos: string, string, string, int, int, int
+        $datos["Titulo"],
+        $datos["Descripcion"],
+        $datos["FechaFin"],
+        $datos["Cantidad"],
+        $datos["ID_Negocio"],
+        $datos["ID_Promocion"]
+    );
+
+    return $consulta->execute();
+}
+
     public function cambiarClave($idUsuario, $claveEncriptada)
     {
         $enlace = dbConectar();
@@ -182,6 +176,25 @@ public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = []
 
         return $consulta->execute();
     }
+     public function RestarCupon($ID_usuario)
+    {
+        $enlace = dbConectar();
+        $sql = "UPDATE promociones SET cantidad = cantidad - 1 WHERE ID_Promocion=?";
+        $consulta = $enlace->prepare($sql);
+        $consulta->bind_param("i", $ID_usuario);
+
+        return $consulta->execute();
+    }
+    public function SumarCupon($ID_Promocion, $cantidad)
+{
+    $enlace = dbConectar();
+
+    $sql = "UPDATE promociones SET cantidad = cantidad + ? WHERE ID_Promocion = ?";
+    $consulta = $enlace->prepare($sql);
+    $consulta->bind_param("ii", $cantidad, $ID_Promocion);
+
+    return $consulta->execute(); // devuelve true si se ejecutó correctamente
+}
     public function ObtenerUsuario($ID_Promocion)
     {
         $enlace = dbConectar();
@@ -197,4 +210,14 @@ public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = []
             return null;
         }
     }
+     public function CambiarEstatus($ID_Promocion, $estatus)
+{
+    $enlace = dbConectar();
+    $sql = "UPDATE promociones SET estatus = ? WHERE ID_Promocion = ?";
+    $consulta = $enlace->prepare($sql);
+    $consulta->bind_param("ii", $estatus, $ID_Promocion);
+
+    return $consulta->execute();
+}
+
 }
