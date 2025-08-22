@@ -10,6 +10,7 @@
 
     <script type="module" src="assets/js/funcionesCategorias.js?v=1.3"></script>
     <link rel="stylesheet" href="../assets/css/categorias.css">
+    <link rel="stylesheet" href="../assets/css/paginacion.css">
 </head>
     
 <body class="bg-light">
@@ -79,8 +80,8 @@
             </div>
         </div>
         <div class="container mt-5">
-            <h1 class="text-start">Categorias</h1>
-            <h4 class="text-start">Aquí puedes administrar las categorías de los negocios.</h4>
+            <h1 class="text-start fw-bold">Categorias</h1>
+            <h4 class="text-start text-secondary">Aquí puedes administrar las categorías de los negocios.</h4>
         </div>
         <div class="container mt-5">
             <div class="filter-container">
@@ -99,7 +100,7 @@
             </div>
 
             <div class="gB d-flex justify-content-end">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregar">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregar">
                     Nueva Categoria
                     
                 </button>

@@ -566,28 +566,8 @@ color: rgb(49, 133, 229);
 }
 
 /* ============== Paginacion =================*/
-#paginacion .btn-outline-primary{
-  color: var(--black1);
-  border: solid 1px rgb(0, 0, 0);
-}
-#paginacion .btn-outline-primary:hover{
-  background-color: #ffcc00;
-  color: white;
-}
-#paginacion {
-  margin-top: 20px;
-  margin-bottom: 30px;
-}
 
-.btn-primary{
-  background-color: #5e0a9e;
-  color: white;
-  border: solid 1px #5e0a9e;
-}
-.btn-primary:hover{
-  background-color: black;
-  border: solid 1px black;
-}
+
 
 .btn-editar:hover{
   background-color: rgb(77, 76, 76);
@@ -698,15 +678,6 @@ color: rgb(49, 133, 229);
 }
 
 
-.btn-primary{
-  background-color: #ffcc00;
-  color: white;
-  border: solid 1px black;
-}
-.btn-primary:hover{
-  background-color: #5e0a9e;
-  border: solid 1px black;
-}
 
 .apellidos{
   display: flex;

@@ -334,23 +334,6 @@ body {
   border-color: #721f1a !important;
 }
 /* ============== Paginacion =================*/
-#paginacion .btn-outline-primary{
-  color: var(--black1);
-  border: solid 1px rgb(77, 5, 132);
-}
-#paginacion .btn-outline-primary:hover{
-  background-color: #ffcc00;
-  color: white;
-}
-.btn-primary{
-  background-color: #ffcc00;
-  color: white;
-  border: solid 1px  #ffcc00;
-}
-.btn-primary:hover{
-  background-color: rgb(142, 9, 179);
-  border: solid 1px black;
-}
 
 .mt-3{
   padding-left: 10px;
@@ -426,12 +409,6 @@ body {
 }
 
 /* ============== Paginacion =================*/
-#paginacion {
-  margin-bottom: 40px;
-}
-#paginacion button{
-  margin: 2px;
-}
 
 .apellidos{
   display: flex;

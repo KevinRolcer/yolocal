@@ -8,6 +8,7 @@
     ?>
     <script type="module" src="assets/js/funcionesCupones.js?v=2.9"></script>
     <link rel="stylesheet" href="../assets/css/cupones.css">
+    <link rel="stylesheet" href="../assets/css/paginacion.css">
 </head>
 
 <body class="bg-light">
@@ -77,8 +78,8 @@
             </div>
         </div>
         <div class="container mt-5">
-            <h1 class="text-start">Cupones</h1>
-            <h4 class="text-start">Sección para administrar cupones de YoLocal.</h4>
+            <h1 class="text-start fw-bold">Cupones</h1>
+            <h4 class="text-start text-secondary">Sección para administrar cupones de YoLocal.</h4>
         </div>
         <div class="container mt-5">
             <div class="filter-container">
@@ -109,7 +110,7 @@
             </div>
 
             <div class="gB">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalPromocion">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPromocion">
                     Nueva Promoción
                 </button>
             </div>

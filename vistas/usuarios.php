@@ -8,6 +8,7 @@
     ?>
     <script type="module" src="assets/js/funcionesUsu.js?v=3.7.8"></script>
     <link rel="stylesheet" href="../assets/css/usuarios.css">
+    <link rel="stylesheet" href="../assets/css/paginacion.css">
 </head>
 
 <body class="bg-light">
@@ -19,16 +20,16 @@
     <div class="main">
         <div class="topbar">
             <div class="toggle">
-                <svg class="svg"xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <svg class="svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </div>
-            
+
 
             <div class="contenedor">
                 <div class="notificacion" onclick="toggleNotifi()">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
                     </svg>
                 </div>
                 <div class="usuario">
@@ -68,8 +69,8 @@
                                         <h4>Sin notificaciones...<br></h4>
                                     </td>
                                 </tr>
-                                
-                                
+
+
                             </table>
                         </div>
                     </div>
@@ -77,32 +78,32 @@
             </div>
         </div>
         <div class="container mt-5">
-            <h1 class="text-start">Usuarios</h1>
-            <h4 class="text-start">Sección para administrar usuarios de YoLocal.</h4>
+            <h1 class="text-start fw-bold">Usuarios</h1>
+            <h4 class="text-start text-secondary">Sección para administrar usuarios de YoLocal.</h4>
         </div>
         <div class="container mt-5">
-             <div class="filter-container">
-            <!--
+            <div class="filter-container">
+                <!--
             <div class="filter" data-filter="id">
                 <span>ID</span><input type="number" id="idM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
             </div>
             -->
-            <div class="filter" data-filter="nombre">
-                <span>Nombre</span> <input type="text" id="nombreM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
+                <div class="filter" data-filter="nombre">
+                    <span>Nombre</span> <input type="text" id="nombreM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
+                </div>
+                <div class="filter" data-filter="apellidos">
+                    <span>Apellidos </span> <input type="text" id="apeP" placeholder="Escribe aquí.." class="hidden"> <button class="close">✖</button>
+                </div>
+                <div class="filter" data-filter="numero">
+                    <span>Correo</span> <input type="text" id="numM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
+                </div>
+                <div class="filter-miembros">
+                    <button id="limpiarM" class="btn btn-secondary">Limpiar Filtros</button>
+                </div>
             </div>
-            <div class="filter" data-filter="apellidos">
-                <span>Apellidos </span> <input type="text" id="apeP" placeholder="Escribe aquí.." class="hidden"> <button class="close">✖</button>
-            </div>
-            <div class="filter" data-filter="numero">
-                <span>Correo</span> <input type="text" id="numM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
-            </div>
-            <div class="filter-miembros">
-                <button id="limpiarM" class="btn btn-secondary">Limpiar Filtros</button>
-            </div>
-        </div>
 
             <div class="gB">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregar">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregar">
                     Agregar Usuario
                 </button>
             </div>
@@ -137,7 +138,7 @@
                                         <div class="invalid-feedback"></div>
                                         <div class="valid-feedback"></div>
                                     </div>
-                                   
+
                                     <div class="col-md-12">
                                         <label for="NombreUsu" class="form-label">Correo</label>
                                         <input type="text" class="form-control" id="NombreUsu" name="NombreUsu" maxlength="50" required>
@@ -151,7 +152,7 @@
                                         <div class="invalid-feedback"></div>
                                         <div class="valid-feedback"></div>
                                     </div>
-                                    
+
                                     <div class="col-md-6">
                                         <label for="usutip" class="form-label">Tipo de Usuario</label>
                                         <select class="form-control" id="usutip" name="usutip">
@@ -211,7 +212,7 @@
                                             Looks good!
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-md-12">
                                         <label for="NombreUsuEdit" class="form-label">Correo</label>
                                         <input type="text" class="form-control" id="NombreUsuEdit" name="NombreUsuEdit" maxlength="50" required>
@@ -222,7 +223,7 @@
                                             Looks good!
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-md-6">
                                         <label for="usutipEdit" class="form-label">Tipo de Usuario</label>
                                         <select class="form-control" id="usutipEdit" name="usutipEdit">
@@ -281,11 +282,11 @@
 
             <!-- Tabla de Usuarios -->
             <div class="mt-3">
-            <h4 class="text-center">Lista de Usuarios</h4>
-            <div class="row" id="ListaMiembros">
+                <h4 class="text-center">Lista de Usuarios</h4>
+                <div class="row" id="ListaMiembros">
+                </div>
+                <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
             </div>
-            <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
-        </div>
 
         </div>
 
