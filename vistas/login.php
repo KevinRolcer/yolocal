@@ -27,7 +27,7 @@
                     <?php echo isset($alert) ? $alert : ""; ?>
                 </div>
                 <div class="input-group">
-                    <label for="nombre"><i class="fas fa-user"></i> Usuariooddeee</label>
+                    <label for="nombre"><i class="fas fa-user"></i> Usuario</label>
                     <input type="text" id="nombre" name="nombre" minlength="5" maxlength="50" pattern=".{5,50}" required>
                     <div class="invalid-feedback">Usuario inválido</div>
                     <div class="valid-feedback">Correcto</div>

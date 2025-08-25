@@ -11,28 +11,39 @@ if (isset($_POST["ope"])) {
 
     // listar 
     if ($ope == "LISTARPROMOCIONES") {
-        header('Content-Type: application/json'); // <-- importante para la respuesta JSON
+    header('Content-Type: application/json');
 
-        $pagina = isset($_POST["pagina"]) ? intval($_POST["pagina"]) : 1;
-        $registrosPorPagina = isset($_POST["registrosPorPagina"]) ? intval($_POST["registrosPorPagina"]) : 10;
+    // Validar sesión
+    
+        $usuarioId = $_POST['usuarioId'] ?? null;
+$usuarioTipo = $_POST['usuarioTipo'] ?? null;
 
-        // Filtros disponibles
-        $filtros = [
-            "titulo"        => $_POST["titulo"] ?? null,
-            "descripcion"   => $_POST["descripcion"] ?? null,
-            "NombreNegocio" => $_POST["negocio"] ?? null
+if (!$usuarioId || !$usuarioTipo) {
+    echo json_encode(["success" => false, "msg" => "Usuario no autenticado."]);
+    exit();
+}
+    $pagina = isset($_POST["pagina"]) ? intval($_POST["pagina"]) : 1;
+    $registrosPorPagina = isset($_POST["registrosPorPagina"]) ? intval($_POST["registrosPorPagina"]) : 10;
 
-        ];
+    // Filtros disponibles
+    $filtros = [
+        "titulo"        => $_POST["titulo"] ?? null,
+        "descripcion"   => $_POST["descripcion"] ?? null,
+        "NombreNegocio" => $_POST["negocio"] ?? null
+    ];
 
-        $lista = $usu->ListarTODOS($pagina, $registrosPorPagina, $filtros);
+   
 
-        echo json_encode([
-            "success"      => true,
-            "lista"        => $lista["promociones"],
-            "totalPaginas" => $lista["totalPaginas"],
-            "paginaActual" => $lista["paginaActual"]
-        ]);
-    }
+    $lista = $usu->ListarTODOS($pagina, $registrosPorPagina, $filtros,  $usuarioId, $usuarioTipo);
+
+    echo json_encode([
+        "success"      => true,
+        "lista"        => $lista["promociones"],
+        "totalPaginas" => $lista["totalPaginas"],
+        "paginaActual" => $lista["paginaActual"]
+    ]);
+}
+
     //  obtener 
     elseif ($ope == "OBTENER") {
         if (isset($_POST["ID_Promocion"])) {

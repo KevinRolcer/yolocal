@@ -6,9 +6,13 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesCupones.js?v=2.9"></script>
+    <script type="module" src="assets/js/funcionesCupones.js?v=3.5"></script>
     <link rel="stylesheet" href="../assets/css/cupones.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
+    <script>
+        const usuarioId = <?= json_encode($_SESSION["ID_Usuario"]) ?>;
+        const usuarioTipo = <?= json_encode($_SESSION["tipo"]) ?>;
+    </script>
 </head>
 
 <body class="bg-light">
@@ -95,12 +99,13 @@
                     <input type="text" id="filtroDescripcion" class="hidden" placeholder="Escribe aquí..">
                     <button class="close">✖</button>
                 </div>
-
+                <?php if ($_SESSION["tipo"] === "admin"): ?>
                 <div class="filter" data-filter="negocio">
                     <span>Negocio</span>
                     <input type="text" id="filtroNegocio" class="hidden" placeholder="Escribe aquí..">
                     <button class="close">✖</button>
                 </div>
+                <?php endif; ?>
 
 
                 <div class="filter-promociones">
@@ -108,12 +113,13 @@
                 </div>
 
             </div>
-
-            <div class="gB">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPromocion">
-                    Nueva Promoción
-                </button>
-            </div>
+            <?php if ($_SESSION["tipo"] === "admin"): ?>
+                <div class="gB">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPromocion">
+                        Nueva Promoción
+                    </button>
+                </div>
+            <?php endif; ?>
 
 
             <!-- Modal AGREGAR -->

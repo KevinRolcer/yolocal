@@ -3,11 +3,11 @@ class Cupones
 {
 
 
-public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = [])
+public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = [], $usuarioId, $usuarioTipo)
 {
     $enlace = dbConectar();
     $offset = ($pagina - 1) * $registrosPorPagina;
-
+ 
     // Consulta con JOIN a negocios
     $sql = "SELECT p.ID_Promocion, p.titulo, p.descripcion, p.cantidad, p.fecha_fin, p.Estatus, 
                    n.nombre_negocio AS nombre_negocio
@@ -32,12 +32,16 @@ public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = []
     }
 
     if (!empty($filtros['NombreNegocio'])) {
-        $sql .= " AND n.Nombre LIKE ?";
+        $sql .= " AND n.nombre_negocio LIKE ?";
         $values[] = "%" . $filtros['NombreNegocio'] . "%";
         $tipos .= "s";
     }
 
-
+    if ($usuarioTipo === "negocio") {
+        $sql .= " AND ID_Usuario = ?";
+        $values[] = $usuarioId;
+        $tipos .= "i";
+    }
     // Orden y paginación
     $sql .= " ORDER BY p.ID_Promocion DESC LIMIT ?, ?";
     $values[] = $offset;

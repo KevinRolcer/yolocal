@@ -84,6 +84,11 @@ export function listarPromociones(filtros = filtrosActuales) {
   if (filtros.descripcion) params.append("descripcion", filtros.descripcion);
   if (filtros.negocio) params.append("negocio", filtros.negocio);
 
+  // Pasar datos de sesión
+  params.append("usuarioId", usuarioId);
+  params.append("usuarioTipo", usuarioTipo);
+  console.log("Usuario ID:", usuarioId);
+  console.log("Usuario Tipo:", usuarioTipo);
   fetch("controladores/controladorCupones.php", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -123,48 +128,45 @@ function renderizarPromociones(lista) {
   lista.forEach((promo) => {
     contenedor.innerHTML += `
     <div class="promo-card">
-      <div class="promo-info">
-        <h3 class="promo-negocio">${promo.nombre_negocio}</h3>
-        <p class="promo-titulo">${promo.titulo}</p>
-        <p class="promo-descripcion">${
-          promo.descripcion ?? "Sin descripción"
-        }</p>
-        <p class="promo-titulo">Cupones Restantes: ${promo.cantidad}</p>
-        <p class="promo-descripcion">${promo.fecha_fin}</p>
-      </div>
-      <div class="promo-actions">
-        <button class="icon-btn purple btn-tags" 
+    <div class="promo-info">
+      <h3 class="promo-negocio">${promo.titulo}</h3>
+      <p class="promo-titulo">${promo.nombre_negocio}</p>
+      <p class="promo-descripcion">${promo.descripcion ?? "Sin descripción"}</p>
+      <p class="promo-titulo">Cupones Restantes: ${promo.cantidad}</p>
+      <p class="promo-descripcion">Caducidad: ${promo.fecha_fin}</p>
+    </div>
+    <div class="promo-actions">
+      <!-- Botón siempre visible -->
+      <button class="icon-btn purple btn-tags" 
         data-id="${promo.ID_Promocion}" 
         data-cantidad="${promo.cantidad}"
         data-fecha="${promo.fecha_fin}"
         id="btnCupon_${promo.ID_Promocion}"
-        ${
-          promo.cantidad <= 0 || esFechaExpirada(promo.fecha_fin)
-            ? "disabled"
-            : ""
-        } >
-  <i class="bi bi-tags"></i>
-</button>
+        ${promo.cantidad <= 0 || esFechaExpirada(promo.fecha_fin) ? "disabled" : ""}>
+        <i class="bi bi-tags"></i>
+      </button>
 
-<button class="icon-btn blue btn-agregar" data-bs-toggle="modal" data-bs-target="#modalAgregarC" data-id="${
-      promo.ID_Promocion
-    }">
-  <i class="bi bi-plus-circle"></i>
-</button>
+      <!-- Botones solo para admin -->
+      ${
+        usuarioTipo === "admin" ? `
+          <button class="icon-btn blue btn-agregar" data-bs-toggle="modal" data-bs-target="#modalAgregarC" data-id="${promo.ID_Promocion}">
+            <i class="bi bi-plus-circle"></i>
+          </button>
 
-<button 
-  class="icon-btn btn-toggle ${promo.Estatus == 1 ? 'btn-green' : 'btn-red'}" 
-  data-id="${promo.ID_Promocion}" 
-  data-status="${promo.Estatus}">
-  <i class="bi bi-power"></i>
-</button>
-<button class="icon-btn yellow btn-editar" data-id="${promo.ID_Promocion}" 
-        data-bs-toggle="modal" data-bs-target="#modalEditar">
-  <i class="bi bi-pencil"></i>
-</button>
+          <button class="icon-btn btn-toggle ${promo.Estatus == 1 ? 'btn-green' : 'btn-red'}" 
+            data-id="${promo.ID_Promocion}" 
+            data-status="${promo.Estatus}">
+            <i class="bi bi-power"></i>
+          </button>
 
-      </div>
+          <button class="icon-btn yellow btn-editar" data-id="${promo.ID_Promocion}" 
+            data-bs-toggle="modal" data-bs-target="#modalEditar">
+            <i class="bi bi-pencil"></i>
+          </button>
+        ` : ''
+      }
     </div>
+  </div>
   `;
   });
 }
@@ -473,7 +475,7 @@ function restarCupones(id) {
           if (data.success) {
             Swal.fire(
               "Cupon utilizado",
-              "Usuario eliminado correctamente",
+              "El cupon ha sido utilizado correctamente",
               "success"
             );
             listarPromociones();
