@@ -1,7 +1,7 @@
 const header = document.querySelector(".calendar h3");
 const dates = document.querySelector(".dates");
 const navs = document.querySelectorAll("#prev, #next");
-
+// comentarios
 const months = [
   "Enero",
   "Febrero",

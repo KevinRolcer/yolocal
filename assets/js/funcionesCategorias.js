@@ -6,8 +6,6 @@ import {
   validaContrasena,
 } from "./validaciones.js?v=3.8.1";
 document.addEventListener("DOMContentLoaded", () => {
-  NomUsuRep();
-
   // agregar usuario
   const formUsuario = document.querySelector("#formAgregar");
   if (formUsuario) {
@@ -16,17 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
       let errores = 0;
 
       let nombre = document.querySelector("#Nombre");
-      let ApellidoP = document.querySelector("#ApellidoP");
-      let ApellidoM = document.querySelector("#ApellidoM");
-      let correo = document.querySelector("#NombreUsu");
-      let clave = document.querySelector("#Contra");
 
       if (!validaSoloLetras(nombre)) errores++;
-      if (!validaSoloLetras(ApellidoP)) errores++;
-      if (!validaSoloLetras(ApellidoM)) errores++;
-      if (!validaCorreo(correo)) errores++;
-      if (!validaRango(clave, 5, 16)) errores++;
-      if (!validaContrasena(clave)) errores++;
 
       if (errores == 0) agregarUsuario();
     });
@@ -37,8 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (listaUsuarios) {
     listaUsuarios.addEventListener("click", (event) => {
       event.preventDefault();
-      const target = event.target.closest("button"); // 👈 aquí debe ser "event"
-    if (!target) return;
+      const target = event.target;
+
       if (target.classList.contains("btn-editar")) {
         cargarUsuario(target.dataset.id);
       } else if (target.classList.contains("btn-eliminar")) {
@@ -48,20 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector("#ID_UsuarioClave").value = userId;
       }
     });
-    document
-      .querySelector("#formEditarClave")
-      .addEventListener("submit", (event) => {
-        event.preventDefault();
-        let erroresC = 0;
-
-        let claveC = document.querySelector("#ClaveNueva");
-        let claveCC = document.querySelector("#ConfirmarClave");
-        if (!validaRango(claveC, 8, 16)) erroresC++;
-        if (!validaRango(claveCC, 8, 16)) erroresC++;
-        if (!validaContrasena(claveC)) erroresC++;
-        if (!validaContrasena(claveCC)) erroresC++;
-        if (erroresC == 0) actualizarClave();
-      });
+    
   }
 
   const formEditarUsuario = document.querySelector("#formEditar");
@@ -70,14 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
       let erroresE = 0;
       let nombreE = document.querySelector("#NombreEdit");
-      let ApellidoPE = document.querySelector("#ApellidoPEdit");
-      let ApellidoME = document.querySelector("#ApellidoMEdit");
-      let correoE = document.querySelector("#NombreUsuEdit");
+     
 
       if (!validaSoloLetras(nombreE)) erroresE++;
-      if (!validaSoloLetras(ApellidoPE)) erroresE++;
-      if (!validaSoloLetras(ApellidoME)) erroresE++;
-      if (!validaCorreo(correoE)) erroresE++;
+      
 
       if (erroresE == 0) editarUsuario();
     });
@@ -85,78 +57,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   listarMiembros();
 });
-function NomUsuRep() {
-  document.getElementById("NombreUsu").addEventListener("blur", function () {
-    let nombreUsu = this.value.trim();
-    let mensajeError = document.getElementById("errorNombreUsu");
 
-    if (nombreUsu === "") {
-      mensajeError.textContent = ""; // Limpia el mensaje si el campo está vacío
-      return;
-    }
-
-    fetch("controladores/controladorUsuarios.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        ope: "VERIFICAR_NOMBREUSU",
-        nombreUsu: nombreUsu,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          if (data.existe) {
-            mensajeError.textContent =
-              "⚠️ El nombre de usuario ya está en uso.";
-            mensajeError.style.color = "red";
-          } else {
-            mensajeError.textContent = "";
-          }
-        } else {
-          console.error("Error en la validación:", data.msg);
-        }
-      })
-      .catch((error) => console.error("Error en la solicitud:", error));
-  });
-}
-function CorreoUsuRep() {
-  document.getElementById("CorreoUsu").addEventListener("blur", function () {
-    let correoUsu = this.value.trim();
-    let mensajeError = document.getElementById("errorCorreoUsu");
-
-    if (correoUsu === "") {
-      mensajeError.textContent = ""; // Limpia el mensaje si el campo está vacío
-      return;
-    }
-
-    fetch("controladores/controladorUsuarios.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        ope: "VERIFICAR_CORREOUSU",
-        correoUsu: correoUsu,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          if (data.existe) {
-            mensajeError.textContent = "El correo ya está en uso.";
-            mensajeError.style.color = "red";
-          } else {
-            mensajeError.textContent = "";
-          }
-        } else {
-          console.error("Error en la validación:", data.msg);
-        }
-      })
-      .catch((error) => console.error("Error en la solicitud:", error));
-  });
-}
 // Función para listar usuarios
 let paginaActual = 1;
-const registrosPorPagina = 10;
+const registrosPorPagina = 5;
 let filtrosActuales = {};
 
 export function listarMiembros(filtros = filtrosActuales) {
@@ -172,7 +76,7 @@ export function listarMiembros(filtros = filtrosActuales) {
   if (filtros.Apellidos) params.append("apellidos", filtros.Apellidos);
   if (filtros.Telefono) params.append("telefono", filtros.Telefono);
 
-  fetch("controladores/controladorUsuarios.php", {
+  fetch("controladores/controladorCategorias.php", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: params.toString(),
@@ -208,25 +112,18 @@ function renderizarMiembros(lista) {
 
   lista.forEach((miembro) => {
     contenedor.innerHTML += `
-            <div class="gasto-card">
-    <p># ${miembro.ID_Usuario}</p>
-    <h3>${miembro.Nombre} ${miembro.ApellidoP} ${miembro.ApellidoM}</h3>
-    <p><strong>Correo:</strong> ${miembro.Correo}</p>
-    <p><strong>Tipo:</strong> ${miembro.tipo_usuario}</p>
-
-    <div class="card-buttons">
-        <button class="icon-btn btn-editar" data-id="${miembro.ID_Usuario}" data-bs-toggle="modal" data-bs-target="#modalEditar">
-            <i class="bi bi-pencil"></i>
-        </button>
-        <button class="icon-btn btn-eliminar" data-id="${miembro.ID_Usuario}">
-            <i class="bi bi-trash"></i>
-        </button>
-        <button class="icon-btn btn-clave" data-id="${miembro.ID_Usuario}" data-bs-toggle="modal" data-bs-target="#modalEditarClave">
-            <i class="bi bi-key-fill"></i>
-        </button>
-    </div>
-</div>
-        `;
+        <div class="categoria-card d-flex justify-content-between align-items-center p-3 mb-3 rounded">
+            <h3 class="mb-0 ">${miembro.Descripcion}</h3>
+            <div class="card-buttons d-flex gap-2">
+                <button class="btn btn-warning btn-editar" data-id="${miembro.ID_Categoria}" data-bs-toggle="modal" data-bs-target="#modalEditar">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-danger btn-eliminar" data-id="${miembro.ID_Categoria}">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+    `;
   });
 }
 
@@ -267,7 +164,6 @@ function actualizarPaginacion(totalPaginas) {
   let inicio = Math.max(1, paginaActual - Math.floor(maxVisible / 2));
   let fin = Math.min(totalPaginas, inicio + maxVisible - 1);
 
-  // Ajuste si estamos cerca del final
   if (fin - inicio + 1 < maxVisible) {
     inicio = Math.max(1, fin - maxVisible + 1);
   }
@@ -305,8 +201,6 @@ function aplicarFiltros() {
   const filtros = {
     //ID_Miembro: document.getElementById("idM").value.trim(),
     Nombre: document.getElementById("nombreM").value.trim(),
-    Apellidos: document.getElementById("apeP").value.trim(),
-    Telefono: document.getElementById("numM").value.trim(),
   };
 
   paginaActual = 1;
@@ -389,7 +283,7 @@ function agregarUsuario() {
   const datos = new FormData(form);
   datos.append("ope", "AGREGAR");
 
-  fetch("controladores/controladorUsuarios.php", {
+  fetch("controladores/controladorCategorias.php", {
     method: "POST",
     body: datos,
   })
@@ -415,21 +309,16 @@ function agregarUsuario() {
 }
 
 function cargarUsuario(id) {
-  fetch("controladores/controladorUsuarios.php", {
+  fetch("controladores/controladorCategorias.php", {
     method: "POST",
     body: new URLSearchParams({ ope: "OBTENER", ID_Usuario: id }),
   })
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        document.querySelector("#ID_Usuario").value = data.usuario.ID_Usuario;
-        document.querySelector("#NombreEdit").value = data.usuario.Nombre;
-        document.querySelector("#ApellidoPEdit").value = data.usuario.ApellidoP;
-        document.querySelector("#ApellidoMEdit").value = data.usuario.ApellidoM;
-
-        document.querySelector("#NombreUsuEdit").value = data.usuario.Correo;
-
-        document.querySelector("#usutipEdit").value = data.usuario.tipo_usuario;
+        document.querySelector("#ID_Usuario").value = data.usuario.ID_Categoria;
+        document.querySelector("#NombreEdit").value = data.usuario.Descripcion;
+     
       } else {
         Swal.fire(
           "Error",
@@ -452,14 +341,14 @@ function editarUsuario() {
   const datos = new FormData(form);
   datos.append("ope", "EDITAR");
 
-  fetch("controladores/controladorUsuarios.php", {
+  fetch("controladores/controladorCategorias.php", {
     method: "POST",
     body: datos,
   })
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        Swal.fire("Éxito", "Usuario actualizado correctamente", "success");
+        Swal.fire("Éxito", "Dato actualizado correctamente", "success");
         document.querySelector("#modalEditar .btn-close").click();
         listarMiembros();
       } else {
@@ -470,42 +359,6 @@ function editarUsuario() {
       Swal.fire(
         "Error",
         "No se pudo actualizar el usuario: " + error.message,
-        "error"
-      );
-    });
-}
-function actualizarClave() {
-  let form = document.querySelector("#formEditarClave");
-  let formData = new FormData(form);
-
-  if (formData.get("ClaveNueva") !== formData.get("ConfirmarClave")) {
-    Swal.fire("Error", "Las contraseñas no coinciden", "error");
-    return;
-  }
-
-  formData.append("ope", "CAMBIAR_CLAVE");
-
-  fetch("controladores/controladorUsuarios.php", {
-    method: "POST",
-    body: formData,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        Swal.fire("Éxito", "Contraseña actualizada correctamente", "success");
-        form.reset();
-        let modal = bootstrap.Modal.getInstance(
-          document.querySelector("#modalEditarClave")
-        );
-        modal.hide();
-      } else {
-        Swal.fire("Error", data.msg, "error");
-      }
-    })
-    .catch((error) => {
-      Swal.fire(
-        "Error",
-        "No se pudo actualizar la contraseña: " + error.message,
         "error"
       );
     });
@@ -521,7 +374,7 @@ function eliminarUsuario(id) {
     cancelButtonText: "Cancelar",
   }).then((result) => {
     if (result.isConfirmed) {
-      fetch("controladores/controladorUsuarios.php", {
+      fetch("controladores/controladorCategorias.php", {
         method: "POST",
         body: new URLSearchParams({ ope: "ELIMINAR", ID_Usuario: id }),
       })

@@ -502,54 +502,8 @@ color: rgb(49, 133, 229);
     border-radius: 5px;
     cursor: pointer;
 }
-.icon-btn {
-    width: 42px;
-    height: 42px;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 18px;
-    transition: 0.3s ease;
-    color: #fff;
-}
 
 /* Colores específicos */
-.btn-editar {
-    background-color: #ffc107; /* amarillo */
-}
-
-.btn-eliminar {
-    background-color: var(--red); /* rojo */
-}
-
-.btn-clave {
-    background-color: #6c757d; /* gris */
-}
-
-/* Hover más intenso */
-.icon-btn:hover {
-    transform: scale(1.1);
-    opacity: 0.9;
-}
-
-.btn-warning {
-    background-color: #f39c12;
-    color: white;
-    border: none;
-}
-
-.btn-danger {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-}
-#limpiarG{
-  background-color: rgb(82, 82, 82);
-  color: white;
-}
 
 #btnEd{
   background-color: rgb(185, 186, 188);
@@ -566,8 +520,6 @@ color: rgb(49, 133, 229);
 }
 
 /* ============== Paginacion =================*/
-
-
 
 .btn-editar:hover{
   background-color: rgb(77, 76, 76);
@@ -679,6 +631,7 @@ color: rgb(49, 133, 229);
 
 
 
+
 .apellidos{
   display: flex;
   gap: 10px;
@@ -690,3 +643,88 @@ color: rgb(49, 133, 229);
   width: 50%;
 }
 
+/* Grid para que se acomoden 2 por fila */
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+
+.promo-card {
+  display: flex;
+  flex-direction: column;  
+  justify-content: space-between; 
+  
+  width: 280px;
+  
+  
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+.promo-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Info del negocio/promo */
+.promo-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.promo-titulo {
+  margin: 0;
+  font-weight: 500;
+  color: #555;
+}
+.promo-descripcion {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #777;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* máximo 2 líneas */
+  -webkit-box-orient: vertical;
+}
+
+/* Botones */
+.promo-actions {
+  display: flex;
+  gap: 10px;        /* espacio entre botones */
+  margin-top: 10px; /* separa del texto */
+}
+
+.icon-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.icon-btn:hover {
+  transform: scale(1.1);
+}
+
+.icon-btn.purple { background: #8e44ad; }
+.icon-btn.yellow { background: #f39c12; }
+.icon-btn.green  { background: #27ae60; }
+.icon-btn.blue  { background: #2b8cc7; }
+.btn-green {
+  background: #27ae60;
+  color: white;
+}
+.btn-red {
+  background: rgba(255, 0, 0, 0.801);
+  color: white;
+}

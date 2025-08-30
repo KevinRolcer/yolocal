@@ -18,7 +18,7 @@ class Usuarios
   
 
         if (password_verify($clave, $usuario["contra"])) {
-            $_SESSION["sistema"] = "DragonGym";
+            $_SESSION["sistema"] = "YoLocal";
             $_SESSION["correo"] = $correo;
             $_SESSION["nombre"] = "{$usuario['Nombre']} {$usuario['ApellidoP']} {$usuario['ApellidoM']}";
             $_SESSION["tipo"] = "{$usuario['tipo_usuario']}";

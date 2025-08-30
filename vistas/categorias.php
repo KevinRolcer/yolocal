@@ -2,15 +2,17 @@
 <html lang="es">
 
 <head>
-    <title>Usuarios-DragonGym</title>
+    <title>Categorias-Yo Local</title>
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesUsu.js?v=3.7.8"></script>
-    <link rel="stylesheet" href="../assets/css/usuarios.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <script type="module" src="assets/js/funcionesCategorias.js?v=1.3"></script>
+    <link rel="stylesheet" href="../assets/css/categorias.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
 </head>
-
+    
 <body class="bg-light">
     <div class="navigation">
         <?php
@@ -78,8 +80,8 @@
             </div>
         </div>
         <div class="container mt-5">
-            <h1 class="text-start fw-bold">Usuarios</h1>
-            <h4 class="text-start text-secondary">Sección para administrar usuarios de YoLocal.</h4>
+            <h1 class="text-start fw-bold">Categorias</h1>
+            <h4 class="text-start text-secondary">Aquí puedes administrar las categorías de los negocios.</h4>
         </div>
         <div class="container mt-5">
             <div class="filter-container">
@@ -89,24 +91,21 @@
             </div>
             -->
                 <div class="filter" data-filter="nombre">
-                    <span>Nombre</span> <input type="text" id="nombreM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
+                    <span>Buscar Categoria</span> <input type="text" id="nombreM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
                 </div>
-                <div class="filter" data-filter="apellidos">
-                    <span>Apellidos </span> <input type="text" id="apeP" placeholder="Escribe aquí.." class="hidden"> <button class="close">✖</button>
-                </div>
-                <div class="filter" data-filter="numero">
-                    <span>Correo</span> <input type="text" id="numM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
-                </div>
+                
                 <div class="filter-miembros">
                     <button id="limpiarM" class="btn btn-secondary">Limpiar Filtros</button>
                 </div>
             </div>
 
-            <div class="gB">
+            <div class="gB d-flex justify-content-end">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregar">
-                    Agregar Usuario
+                    Nueva Categoria
+                    
                 </button>
             </div>
+
 
 
             <!-- Modal AGREGAR -->
@@ -114,52 +113,23 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalAgregarLabel">Agregar Usuario</h5>
+                            <h5 class="modal-title" id="modalAgregarLabel">Nueva Categoria</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
                             <form id="formAgregar">
                                 <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label for="Nombre" class="form-label">Nombre</label>
+                                    <div class="col-md-12">
+                                        <label for="Nombre" class="form-label">Nombre de categoria</label>
                                         <input type="text" class="form-control" id="Nombre" name="Nombre" maxlength="30" required>
                                         <div class="invalid-feedback"></div>
                                         <div class="valid-feedback"></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="ApellidoP" class="form-label">Apellido Paterno</label>
-                                        <input type="text" class="form-control" id="ApellidoP" name="ApellidoP" maxlength="30" required>
-                                        <div class="invalid-feedback"></div>
-                                        <div class="valid-feedback"></div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="ApellidoM" class="form-label">Apellido Materno</label>
-                                        <input type="text" class="form-control" id="ApellidoM" name="ApellidoM" maxlength="30" required>
-                                        <div class="invalid-feedback"></div>
-                                        <div class="valid-feedback"></div>
-                                    </div>
+                                    
+                                    
 
-                                    <div class="col-md-12">
-                                        <label for="NombreUsu" class="form-label">Correo</label>
-                                        <input type="text" class="form-control" id="NombreUsu" name="NombreUsu" maxlength="50" required>
-                                        <span id="errorNombreUsu"></span>
-                                        <div class="invalid-feedback"></div>
-                                        <div class="valid-feedback"></div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="Contra" class="form-label">Contraseña</label>
-                                        <input type="password" class="form-control" id="Contra" name="Contra" maxlength="16" required>
-                                        <div class="invalid-feedback"></div>
-                                        <div class="valid-feedback"></div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="usutip" class="form-label">Tipo de Usuario</label>
-                                        <select class="form-control" id="usutip" name="usutip">
-                                            <option value="admin">Administrador</option>
-                                            <option value="negocio">Negocio</option>
-                                        </select>
-                                    </div>
+                                    
+                                    
                                 </div>
                                 <div class="text-end mt-3">
                                     <button type="submit" class="btn btn-primary">Guardar</button>
@@ -182,7 +152,7 @@
                             <form id="formEditar">
                                 <input type="hidden" id="ID_Usuario" name="ID_Usuario">
                                 <div class="row g-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label for="NombreEdit" class="form-label">Nombre</label>
                                         <input type="text" class="form-control" id="NombreEdit" name="NombreEdit" maxlength="30" required>
                                         <div class="invalid-feedback">
@@ -192,45 +162,7 @@
                                             Looks good!
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="ApellidoPEdit" class="form-label">Apellido Paterno</label>
-                                        <input type="text" class="form-control" id="ApellidoPEdit" name="ApellidoPEdit" maxlength="30" required>
-                                        <div class="invalid-feedback">
-                                            Password is required
-                                        </div>
-                                        <div class="valid-feedback">
-                                            Looks good!
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="ApellidoMEdit" class="form-label">Apellido Materno</label>
-                                        <input type="text" class="form-control" id="ApellidoMEdit" name="ApellidoMEdit" maxlength="30" required>
-                                        <div class="invalid-feedback">
-                                            Password is required
-                                        </div>
-                                        <div class="valid-feedback">
-                                            Looks good!
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <label for="NombreUsuEdit" class="form-label">Correo</label>
-                                        <input type="text" class="form-control" id="NombreUsuEdit" name="NombreUsuEdit" maxlength="50" required>
-                                        <div class="invalid-feedback">
-                                            Password is required
-                                        </div>
-                                        <div class="valid-feedback">
-                                            Looks good!
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="usutipEdit" class="form-label">Tipo de Usuario</label>
-                                        <select class="form-control" id="usutipEdit" name="usutipEdit">
-                                            <option value="admin">Administrador</option>
-                                            <option value="negocio">Negocio</option>
-                                        </select>
-                                    </div>
+                                    
                                 </div>
                                 <div class="text-end mt-3">
                                     <button type="submit" class="btn btn-primary">Actualizar</button>
@@ -281,17 +213,18 @@
             </div>
 
             <!-- Tabla de Usuarios -->
-            <div class="mt-3">
-                <h4 class="text-center">Lista de Usuarios</h4>
-                <div class="row" id="ListaMiembros">
-                </div>
-                <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
+
+            <h4 class="text-center">Listado de Categorias</h4>
+            <div class="row text-center" id="ListaMiembros">
             </div>
+            <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
 
         </div>
 
+    </div>
 
-        <script src="../assets/js/main.js"></script>
+
+    <script src="../assets/js/main.js"></script>
 </body>
 
 </html>

@@ -44,11 +44,11 @@ body {
   top: -50px;
   width: 50px;
   height: 50px;
-  background-color: transparent;
+  background: var(--white); /* rellena con el fondo */
   border-radius: 50%;
   box-shadow: 35px 35px 0 10px #5e0a9e;
-  pointer-events: none;
 }
+
 .navigation ul li:hover a::after,
 .navigation ul li.hovered a::after {
   content: "";
@@ -57,10 +57,9 @@ body {
   bottom: -50px;
   width: 50px;
   height: 50px;
-  background-color: transparent;
+  background: var(--white); /* igual acá */
   border-radius: 50%;
   box-shadow: 35px -35px 0 10px #5e0a9e;
-  pointer-events: none;
 }
 
 
@@ -120,52 +119,8 @@ body {
   justify-content: space-around;
   gap: 15px;
 }
-.gastos, .inventario, 
-.adminUsuarios, .reportes, .membresias{
-padding: 10px 15px;
-border-radius: 30px;
-background-color: var(--black1);
-display: flex;
-gap: 5px;
-transition: .2s ease all;
-}
-.gastos{
-color: rgb(12, 189, 80);
-}
-.inventario{
-color: rgb(241, 241, 18);
-}
-.adminUsuarios{
-background-color: #5e0a9e;
-color: white;
-}
-.reportes{
-color: rgb(248, 144, 32);
-}
-.subMenu .enlace a{
-text-decoration: none;
-color: white;
-}
-.membresias{
-color: #999;
-}
-.inventario:hover .enlace a,
-.gastos:hover .enlace a,
-.reportes:hover .enlace a,
-.membresias:hover .enlace a{
-color: black;
-}
-.inventario:hover, 
-.gastos:hover, .reportes:hover,
-.membresias:hover{
-background-color:  rgb(187, 187, 187);
-color: #5e0a9e;
-}
-.adminUsuarios:hover{
-background-color: var(--black1);
-color: rgb(49, 133, 229);
 
-}
+
 .contenedor{
   display: flex;
   align-items: center;
@@ -195,7 +150,7 @@ color: rgb(49, 133, 229);
   cursor: pointer;
 }
 .notificacion:hover{
-  color: #5e0a9e;
+  color: var(--red);
 }
 
   /* ======================= Caja de notificaciones ====================== */
@@ -239,49 +194,7 @@ color: rgb(49, 133, 229);
   border: 2px solid #f1f1f1; 
 }
 
-.noti::-webkit-scrollbar-thumb:hover {
-  background: #5e0a9e; 
-}
-.noti .imgBx {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  border-radius: 50px;
-  overflow: hidden;
-}
 
-.noti .imgBx img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.noti table tr td {
-  padding: 12px 10px;
-}
-
-.noti table tr td h4 {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.2rem;
-}
-
-.noti table tr td h4 span {
-  font-size: 14px;
-  color: var(--black2);
-}
-
-.noti table tr:hover {
-  background: #5e0a9e;
-  color: var(--white);
-}
-
-.noti table tr:hover td h4 span {
-  color: var(--white);
-}
 /* ====== Calendario =======*/
 
 .calendar {
@@ -357,7 +270,7 @@ color: rgb(49, 133, 229);
 }
 
 .dates li.today {
-  background-color: #5e0a9e;
+  background-color: var(--red);
   color: white;
   border-radius: 50%;
 }
@@ -390,219 +303,37 @@ color: rgb(49, 133, 229);
 .subMenu svg{
   width: 20px;
   height: 20px;
-} 
-/* =============== Filtros para gastos ==============*/
-
-.filter-container {
-    display: flex;
-    gap: 10px;
-    padding: 10px;
 }
-
-.filter {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    cursor: pointer;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.filter.active {
-    background-color: #5e0a9e;
-    color: white;
-    border-color: #5e0a9e;
-}
-
-.filter .close {
-    display: none;
-    font-size: 14px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    color: inherit;
-}
-
-.filter.active .close {
-    display: inline;
-}
-
-.filter-container .filter select, 
-.filter-container .filter input[type="date"],
-.filter-container .filter #btnFiltrar {
-    color: white;
-    margin-left: 5px;
-    border: none;
-    outline: none;
-    background: #5e0a9e;
-    font-size: 14px;
-    display: none; 
-}
-
-.filter-container .filter.active select, 
-.filter-container .filter.active input[type="date"],
-.filter-container .filter.active #btnFiltrar {
-    display: inline-block; 
-}
-
 
 .filter.active select, .filter.active input {
     display: inline-block;
 }
 
 
-#ListaGastos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
-#ListaMiembros {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
 
-.gasto-card {
-    background: #ffffff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    text-align: center;
-    transition: transform 0.3s;
-    align-items: center;
-}
 
-.gasto-card:hover {
-    transform: scale(1.05);
-}
 
-.gasto-card h3 {
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.gasto-card p {
-    margin: 5px 0;
-}
-
-.card-buttons {
-     display: flex;
-    gap: 12px;
-    margin-top: 12px;
-}
-
-.card-buttons .btn {
-    margin: 5px;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.icon-btn {
-    width: 42px;
-    height: 42px;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 18px;
-    transition: 0.3s ease;
-    color: #fff;
-}
-
-/* Colores específicos */
-.btn-editar {
-    background-color: #ffc107; /* amarillo */
-}
-
-.btn-eliminar {
-    background-color: var(--red); /* rojo */
-}
-
-.btn-clave {
-    background-color: #6c757d; /* gris */
-}
-
-/* Hover más intenso */
-.icon-btn:hover {
-    transform: scale(1.1);
-    opacity: 0.9;
-}
-
-.btn-warning {
-    background-color: #f39c12;
-    color: white;
-    border: none;
-}
-
-.btn-danger {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-}
 #limpiarG{
   background-color: rgb(82, 82, 82);
   color: white;
 }
 
-#btnEd{
-  background-color: rgb(185, 186, 188);
-  color: black;
-
-}
-#btnE{
-  background-color: rgb(134, 24, 24);
-}
 
 #ListaGastos {
   max-height: 450px; 
   overflow-y: auto; 
 }
+.btn-eliminar {
+  background-color: var(--red) !important;
+  color: white !important;
+  border-color: var(--red) !important;
+}
 
+.btn-eliminar:hover {
+  background-color: #721f1a !important; 
+  border-color: #721f1a !important;
+}
 /* ============== Paginacion =================*/
-
-
-
-.btn-editar:hover{
-  background-color: rgb(77, 76, 76);
-  color: white;
-}
-.gasto-card {
-    background: #ffffff;
-     display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* separa contenido y botones */
-    height: 100%; /* asegura que ocupe toda la altura disponible */
-    padding: 15px;
-    border-radius: 12px;
-    background: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    position: relative;
-}
-
-.gasto-card:hover {
-    transform: scale(1.05);
-}
-
-.gasto-card h3 {
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.gasto-card p {
-    margin: 5px 0;
-}
-
-
-
-
-
 
 .mt-3{
   padding-left: 10px;
@@ -677,7 +408,7 @@ color: rgb(49, 133, 229);
   color: rgb(193, 190, 190);
 }
 
-
+/* ============== Paginacion =================*/
 
 .apellidos{
   display: flex;
@@ -689,4 +420,29 @@ color: rgb(49, 133, 229);
 .ama{
   width: 50%;
 }
+.categoria-card {
+    background-color: #ebeaeabd; /* gris claro */
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.categoria-card h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(100, 1, 100); /* el morado de tu captura */
+    margin: 0;
+}
+
+.card-buttons .btn {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
 

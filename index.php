@@ -1,64 +1,48 @@
 <?php 
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
+}
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-    // Si la sesión NO está iniciada, ir al login
-    if (!isset($_SESSION["sistema"]) || $_SESSION["sistema"] !== "DragonGym") {
-        include_once("vistas/login.php");
-        exit(); 
-    }
+if (!isset($_SESSION["sistema"]) || $_SESSION["sistema"] !== "YoLocal") {
+    include_once("vistas/login.php");
+    exit(); 
+}
 
-    
-    $tipoUsuario = $_SESSION["tipo"];
-    
+$tipoUsuario = $_SESSION["tipo"] ?? null;
+$pag = $_GET["pag"] ?? null;
 
-    if(isset($_GET["pag"])) {
-        $pag = $_GET["pag"];
+$rutas = [
 
-      
-        if($pag == "admin" && $tipoUsuario == "admin") {
-            include_once("vistas/home.php");
-        }       
-        elseif($pag == "usuarios" && ($tipoUsuario == "admin"  )) {
-            include_once("vistas/usuarios.php");
-        }
-        elseif($pag == "home" && ($tipoUsuario == "admin"  )) {
-            include_once("vistas/home.php");
-        }
-        elseif($pag == "negocios" && ($tipoUsuario == "admin"  )) {
-            include_once("vistas/negocios.php");
-        }
-        elseif($pag == "reportes" && ($tipoUsuario == "admin"  )) {
-            include_once("vistas/reportes.php");
-        }
-        elseif($pag == "ventas" && ($tipoUsuario == "admin" || $tipoUsuario == "coach")) {
-            include_once("vistas/ventas.php");
-        }
+    "admin"     => ["admin"   => "vistas/home.php"],
+    "negocio"   => ["negocio" => "vistas/home.php"],
+
+    // Solo Admin
+    "usuarios"  => ["admin" => "vistas/usuarios.php"],
+
+    "categorias"=> ["admin" => "vistas/categorias.php"],
+
+    // Admin y Negocio
+    "ventas"  => [
+        "admin"   => "vistas/negocios.php",
+        "negocio" => "vistas/negocios.php"
+    ],
+    "cupones"   => [
+        "admin"   => "vistas/cupones.php",
+        "negocio" => "vistas/cupones.php",
+
         
-        else {
-            include_once("vistas/acceso_denegado.php");
-            exit();
-        }
-    } else {
-        
-        if ($tipoUsuario == "admin") {
-            session_unset();
-            session_destroy();
-            include_once("vistas/login.php");
-            exit();
-        } elseif ($tipoUsuario == "gestor") {
-            header("Location: index.php?pag=gestor");
-        } elseif ($tipoUsuario == "general") {
-            header("Location: index.php?pag=user");
-        }
-        elseif ($tipoUsuario == "coach") {
-            header("Location: index.php?pag=coach");
-        } else {
-            session_unset();
-            session_destroy();
-            include_once("vistas/login.php");
-            exit();
-        }
-    }
-?>
+    ],
+    "home"   => [
+        "admin"   => "vistas/home.php",
+        "negocio" => "vistas/home.php"
+    ]
+];
+
+if ($pag && isset($rutas[$pag][$tipoUsuario])) {
+    include_once($rutas[$pag][$tipoUsuario]);
+} else {
+    include_once("vistas/acceso_denegado.php");
+    exit();
+}
