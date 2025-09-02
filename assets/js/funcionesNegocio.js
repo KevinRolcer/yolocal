@@ -463,7 +463,6 @@ function agregarHorario(id) {
       const formHorario = document.querySelector("#formHorario");
       const datos = new FormData(formHorario);
 
-      // Añadimos operación y el ID del negocio como extra seguridad
       datos.append("ope", "AGREGAR_HORARIO");
      
 
@@ -475,7 +474,7 @@ function agregarHorario(id) {
         .then((data) => {
           if (data.success) {
             Swal.fire("Guardado", "Horario creado correctamente", "success");
-            location.reload(); // o refrescar tabla con listarHorarios()
+            cargarMembresias();
           } else {
             Swal.fire("Error", data.message, "error");
           }
