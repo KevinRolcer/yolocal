@@ -6,7 +6,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesNegocio.js?v=1.2.8"></script>
+    <script type="module" src="assets/js/funcionesNegocio.js?v=1.3.4"></script>
     <link rel="stylesheet" href="../assets/css/usuarios.css">
 </head>
 
@@ -183,44 +183,69 @@
                 </div>
             </div>
 
-            <!-- Modal para cambiar contraseña -->
-            <div class="modal fade" id="modalEditarClave" tabindex="-1" aria-labelledby="modalEditarClaveLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalEditarClaveLabel">Cambiar Contraseña</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="formEditarClave">
-                                <input type="hidden" id="ID_UsuarioClave" name="ID_Usuario">
+<!-- Modal CREAR/EDITAR HORARIO -->
+<div class="modal fade" id="modalHorario" tabindex="-1" aria-labelledby="modalHorarioLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalHorarioLabel">Horario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      
+      <!-- Body -->
+      <div class="modal-body">
+        <form id="formHorario">
+          <!-- ID ocultos -->
+          
 
-                                <div class="mb-3">
-                                    <label for="ClaveNueva" class="form-label">Nueva Contraseña</label>
-                                    <input type="password" class="form-control" id="ClaveNueva" name="ClaveNueva" maxlength="16" required>
-                                    <div class="invalid-feedback">
-                                        Password is required
-                                    </div>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="ConfirmarClave" class="form-label">Confirmar Contraseña</label>
-                                    <input type="password" class="form-control" id="ConfirmarClave" name="ConfirmarClave" maxlength="16" required>
-                                    <div class="invalid-feedback">
-                                        Password is required
-                                    </div>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            <input type="hidden" id="ID_NegocioHorario" name="ID_Negocio">
+          <div class="row g-3">
+            
+            <!-- Día de la semana -->
+            <div class="col-md-6">
+              <label for="dia_semana" class="form-label">Día de la Semana</label>
+              <select class="form-select" id="dia_semana" name="dia_semana" required>
+                <option value="">Seleccione...</option>
+                <option value="Lunes">Lunes</option>
+                <option value="Martes">Martes</option>
+                <option value="Miércoles">Miércoles</option>
+                <option value="Jueves">Jueves</option>
+                <option value="Viernes">Viernes</option>
+                <option value="Sábado">Sábado</option>
+                <option value="Domingo">Domingo</option>
+              </select>
+              <div class="invalid-feedback">Seleccione un día válido</div>
             </div>
+
+            <!-- Hora apertura -->
+            <div class="col-md-6">
+              <label for="hora_apertura" class="form-label">Hora de Apertura</label>
+              <input type="time" class="form-control" id="hora_apertura" name="hora_apertura" required>
+              <div class="invalid-feedback">Ingrese una hora válida</div>
+            </div>
+
+            <!-- Hora cierre -->
+            <div class="col-md-6">
+              <label for="hora_cierre" class="form-label">Hora de Cierre</label>
+              <input type="time" class="form-control" id="hora_cierre" name="hora_cierre" required>
+              <div class="invalid-feedback">Ingrese una hora válida</div>
+            </div>
+          </div>
+
+          <!-- Botón -->
+          <div class="text-end mt-3">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 
             <!-- Tabla de Usuarios -->
             <div class="mt-3">
