@@ -736,7 +736,7 @@ svg{
         top: 0;
         right: -100%;
         width: 280px;
-        height: 100vh;
+        height: 200vh;
         background-color: white;
         flex-direction: column;
         justify-content: flex-start;
@@ -853,94 +853,6 @@ svg{
      .carousel-wrapper {
     height: 500px;
     }
-}
-
-@media (max-width: 480px) {
-    .navbar {
-        padding: 12px 16px;
-    }
-    
-    .logo {
-        font-size: 20px;
-    }
-    
-    .menu {
-        right: -100%;
-    }
-    
-    .btn-text-full {
-        display: none;
-    }
-    
-    .btn-text-short {
-        display: inline;
-    }
-    
-    .sesion {
-        flex-direction: row;
-        gap: 8px;
-    }
-    
-    .btn-prueba,
-    .btn-sesion {
-        width: auto;
-        padding: 8px 12px;
-        font-size: 13px;
-    }
-    .carousel-wrapper {
-    height: 600px;
-    }
-    .slide-description {
-        font-size: .8rem;
-        margin-bottom: 10px;
-    }
-}
-
-@media (max-width: 360px) {
-    .navbar {
-        padding: 10px 12px;
-    }
-    
-    .logo {
-        font-size: 18px;
-    }
-    
-    .btn-prueba,
-    .btn-sesion {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
-
-    .categoria {
-    flex: 1 1 100%;
-    max-width: 100%;
-    }
-    
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.menu.active .enlace {
-    animation: fadeIn 0.3s ease forwards;
-}
-
-.menu.active .enlace:nth-child(1) { animation-delay: 0.1s; }
-.menu.active .enlace:nth-child(2) { animation-delay: 0.2s; }
-.menu.active .enlace:nth-child(3) { animation-delay: 0.3s; }
-.menu.active .enlace:nth-child(4) { animation-delay: 0.4s; }
-
-
-
-@media (max-width: 768px) {
     .coupons-grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -970,20 +882,127 @@ svg{
     }
     
     .discount {
-        font-size: 2rem;
+        font-size: 1.3rem;
+    }
+    .brand-name{
+    font-size: 1.2rem;
+    }
+    .offer-description{
+        font-size: 0.85rem;
+    }
+    .validity{
+        font-size: 0.70rem;
     }
 }
 
-@keyframes fadeInUp {
+@media (max-width: 480px) {
+    .navbar {
+        padding: 12px 16px;
+    }
+    
+    .logo {
+        font-size: 20px;
+    }
+    
+    .menu {
+        right: -100%;
+        height: 200vh;
+    }
+    
+    .btn-text-full {
+        display: none;
+    }
+    
+    .btn-text-short {
+        display: inline;
+    }
+    
+    .sesion {
+        flex-direction: row;
+        gap: 8px;
+    }
+    
+    .btn-prueba,
+    .btn-sesion {
+        width: auto;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    .carousel-wrapper {
+    height: 600px;
+    }
+    .slide-description {
+        font-size: .8rem;
+        margin-bottom: 10px;
+    }
+    .coupon-card{
+        width: 350px;
+    }
+    .discount {
+        font-size: 1.1rem;
+    }
+    .brand-name{
+    font-size: 1rem;
+    }
+    .offer-description{
+        font-size: 0.75rem;
+    }
+    .validity{
+        font-size: 0.65rem;
+    }
+    .claim-button{
+        font-size: 0.70rem;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 360px) {
+    .navbar {
+        padding: 10px 12px;
+    }
+    
+    .logo {
+        font-size: 18px;
+    }
+    
+    .btn-prueba,
+    .btn-sesion {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .categoria {
+    flex: 1 1 100%;
+    max-width: 100%;
+    }
+    .coupon-card{
+        width: 330px;
+    }
+
+    .discount {
+        font-size: 1rem;
+    }
+}
+
+@keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(-10px);
     }
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
+
+.menu.active .enlace {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.menu.active .enlace:nth-child(1) { animation-delay: 0.1s; }
+.menu.active .enlace:nth-child(2) { animation-delay: 0.2s; }
+.menu.active .enlace:nth-child(3) { animation-delay: 0.3s; }
+.menu.active .enlace:nth-child(4) { animation-delay: 0.4s; }
 
 .coupon-card {
     animation: fadeInUp 0.6s ease-out;
