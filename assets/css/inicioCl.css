@@ -16,6 +16,7 @@
   --texto: #555;
   --texto2: #333;
   --negro: #000000;
+  --lineas: #b8babe;
 
 }
 
@@ -495,7 +496,20 @@ svg{
     text-align: center;
 }
 .descripcionC p span{
+    color: var(--complementario);
+    font-weight: 800;
+}
+.descripcionC p #span2{
     color: var(--principal);
+    font-weight: 800;
+}
+.descripcionC a{
+    font-weight: 800;
+    color: var(--principal);
+    text-decoration: none;
+}
+.descripcionC a:hover{
+    color: var(--complementario);
 }
 
 .categoria-seccion {
@@ -536,6 +550,166 @@ svg{
 .categoria a{
     text-decoration: none;
 }
+
+/* Sección de cupones */
+
+.coupons-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 1150px; 
+    margin: 0 auto;
+    padding: 0 16px; 
+    margin-bottom: 30px;
+}
+
+.coupon-card 
+{
+    
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.coupon-card:hover 
+{
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+.coupon-card::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: var(--principal);
+    border-radius: 50%;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    z-index: 2;
+}
+
+.coupon-card::after {
+    content: '';
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: var(--complementario);
+    border-radius: 50%;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    z-index: 2;
+}
+
+.perforation-line {
+    position: absolute;
+    right: 40%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(
+        to bottom,
+        var(--lineas) 0px,
+        var(--lineas) 8px,
+        transparent 8px,
+        transparent 16px
+    );
+}
+.coupon-content {
+    display: flex;
+    align-items: center;
+    padding: 24px;
+    position: relative;
+}
+
+.main-content {
+    flex: 1;
+    margin-right: 24px;
+}
+
+
+.brand-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--texto2);
+    margin-bottom: 4px;
+    letter-spacing: -0.025em;
+}
+.offer-description {
+    font-size: 0.95rem;
+    color: var(--texto);
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+.discount-section {
+    margin-bottom: 16px;
+}
+
+.discount {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(25deg, var(--principal), var(--complementario));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+
+.validity {
+    font-size: 0.85rem;
+    color: var(--texto2);
+    font-weight: 500;
+}
+.action-section {
+    flex: 0 0 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 16px;
+}
+
+.claim-button {
+    background: var(--principal2);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: none;
+    letter-spacing: 0.025em;
+    white-space: nowrap;
+}
+.claim-button:hover {
+    transform: translateY(-2px);
+    background:  linear-gradient(135deg, var(--secunadrio), var(--principal));
+}
+.limited-badge {
+    display: inline-block;
+    background: rgba(255, 205, 0, 0.15);
+    color: var(--complementario);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 
 
 /* Media Queries */
@@ -580,7 +754,7 @@ svg{
     }
     
     .enlace {
-        padding: 16px 0;
+        padding: 16px ;
         border-bottom: 1px solid #f0f0f0;
         justify-content: flex-start;
         gap: 12px;

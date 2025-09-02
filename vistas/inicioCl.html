@@ -274,7 +274,7 @@
         <div class="descripcionC">
             <h2>Categorias</h2>
             <p>Descubre la variedad de establecimientos que forman parte de 
-                <span>Yo local</span>
+                <span>Yo <span id="span2">local</span></span>
             </p>
 
         </div>
@@ -320,9 +320,145 @@
                 </a>
             </div>
         </div>
+        <div class="descripcionC">
+            <h2>Cupones</h2>
+            <p>Aprovecha de los cupones de cada establecimiento aliado a
+                <span>Yo <span id="span2">local</span></span>
+            </p>
+        </div>
+
+        <div class="coupons-grid">
+            <!-- McDonald's Coupon -->
+            <div class="coupon-card">
+                <div class="perforation-line"></div>
+                <div class="coupon-content">
+                    <div class="main-content">
+                        <div class="limited-badge">Solo lunes</div>
+                        <div class="brand-name">Café del sol</div>
+                        <div class="offer-description">Cupón de descuento</div>
+                        <div class="discount-section">
+                            <div class="discount">$30</div>
+                            <div class="validity">Válido hasta 31 Agosto 2025</div>
+                        </div>
+                    </div>
+                    <div class="action-section">
+                        <button class="claim-button" onclick="claimCoupon('McDonald\'s', '$10')">
+                            Reclamar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KFC Coupon -->
+            <div class="coupon-card">
+                <div class="perforation-line"></div>
+                <div class="coupon-content">
+                    <div class="main-content">
+                        <div class="limited-badge">Condición</div>
+                        <div class="brand-name">Negocio</div>
+                        <div class="offer-description">Descripción</div>
+                        <div class="discount-section">
+                            <div class="discount">Beneficio</div>
+                            <div class="validity">Fecha límite</div>
+                        </div>
+                    </div>
+                    <div class="action-section">
+                        <button class="claim-button" onclick="claimCoupon('KFC', '25% OFF')">
+                            Reclamar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Starbucks Coupon -->
+            <div class="coupon-card">
+                <div class="perforation-line"></div>
+                <div class="coupon-content">
+                    <div class="main-content">
+                        <div class="limited-badge">Libretas</div>
+                        <div class="brand-name">Papelería</div>
+                        <div class="offer-description">Compra 1, llévate 1 gratis</div>
+                        <div class="discount-section">
+                            <div class="discount">1 Gratis</div>
+                            <div class="validity">Válido hasta 05 Abril 2025</div>
+                        </div>
+                    </div>
+                    <div class="action-section">
+                        <button class="claim-button" onclick="claimCoupon('Starbucks', '1 FREE')">
+                            Reclamar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Domino's Coupon -->
+            <div class="coupon-card">
+                <div class="perforation-line"></div>
+                <div class="coupon-content">
+                    <div class="main-content">
+                        <div class="limited-badge">Condición</div>
+                        <div class="brand-name">Negocio</div>
+                        <div class="offer-description">Descripción</div>
+                        <div class="discount-section">
+                            <div class="discount">Beneficio</div>
+                            <div class="validity">Fecha límite</div>
+                        </div>
+                    </div>
+                    <div class="action-section">
+                        <button class="claim-button" onclick="claimCoupon('Domino\'s', '50% OFF')">
+                            Reclamar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subway Coupon -->
+            <div class="coupon-card">
+                <div class="perforation-line"></div>
+                <div class="coupon-content">
+                    <div class="main-content">
+                        <div class="limited-badge">Condición</div>
+                        <div class="brand-name">Negocio</div>
+                        <div class="offer-description">Descripción</div>
+                        <div class="discount-section">
+                            <div class="discount">Beneficio</div>
+                            <div class="validity">Fecha límite</div>
+                        </div>
+                    </div>
+                    <div class="action-section">
+                        <button class="claim-button" onclick="claimCoupon('Subway', '$15')">
+                            Reclamar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pizza Hut Coupon -->
+            <div class="coupon-card">
+                <div class="perforation-line"></div>
+                <div class="coupon-content">
+                    <div class="main-content">
+                        <div class="limited-badge">Condición</div>
+                        <div class="brand-name">Negocio</div>
+                        <div class="offer-description">Descripción</div>
+                        <div class="discount-section">
+                            <div class="discount">Beneficio</div>
+                            <div class="validity">Fecha límite</div>
+                        </div>
+                    </div>
+                    <div class="action-section">
+                        <button class="claim-button" onclick="claimCoupon('Pizza Hut', '30% OFF')">
+                            Reclamar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
-    
+    <div class="descripcionC">
+            <a href="#">Ver más cupones</a>
+    </div>
 
     <script src="../assets/js/menuCl.js"></script>
     <script src="../assets/js/carruselCl.js"></script>
