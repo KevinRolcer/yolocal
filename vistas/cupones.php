@@ -6,7 +6,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesCupones.js?v=3.5"></script>
+    <script type="module" src="assets/js/funcionesCupones.js?v=3.6"></script>
     <link rel="stylesheet" href="../assets/css/cupones.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <script>

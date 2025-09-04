@@ -236,7 +236,7 @@ function actualizarPaginacion(totalPaginas) {
   btnSiguiente.addEventListener("click", () => {
     if (paginaActual < totalPaginas) {
       paginaActual++;
-      listarMiembros(filtrosActuales);
+      listarPromociones(filtrosActuales);
     }
   });
   paginacion.appendChild(btnSiguiente);

@@ -6,8 +6,9 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesNegocio.js?v=1.3.4"></script>
+    <script type="module" src="assets/js/funcionesNegocio.js?v=1.3.6"></script>
     <link rel="stylesheet" href="../assets/css/usuarios.css">
+     <link rel="stylesheet" href="../assets/css/paginacion.css">
 </head>
 
 <body class="bg-light">
@@ -219,14 +220,12 @@
               <div class="invalid-feedback">Seleccione un día válido</div>
             </div>
 
-            <!-- Hora apertura -->
             <div class="col-md-6">
               <label for="hora_apertura" class="form-label">Hora de Apertura</label>
               <input type="time" class="form-control" id="hora_apertura" name="hora_apertura" required>
               <div class="invalid-feedback">Ingrese una hora válida</div>
             </div>
 
-            <!-- Hora cierre -->
             <div class="col-md-6">
               <label for="hora_cierre" class="form-label">Hora de Cierre</label>
               <input type="time" class="form-control" id="hora_cierre" name="hora_cierre" required>
@@ -234,7 +233,38 @@
             </div>
           </div>
 
-          <!-- Botón -->
+          <div class="text-end mt-3">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal Subir Imágenes -->
+<div class="modal fade" id="modalImagenes" tabindex="-1" aria-labelledby="modalImagenesLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalImagenesLabel">Subir Imágenes del Negocio</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      
+      <div class="modal-body">
+        <form id="formImagenes" enctype="multipart/form-data">
+          <input type="hidden" id="ID_NegocioImagenes" name="ID_NegocioImagenes">
+
+          <div id="dropzone" class="dropzone">
+            <p>Arrastra tus imágenes aquí o haz clic para seleccionarlas (máx. 4)</p>
+            <input type="file" id="fileInput" name="imagenes[]" accept="image/*" multiple hidden>
+          </div>
+
+          <!-- Vista previa -->
+          <div id="previewContainer" class="row mt-3 g-3"></div>
+
           <div class="text-end mt-3">
             <button type="submit" class="btn btn-primary">Guardar</button>
           </div>

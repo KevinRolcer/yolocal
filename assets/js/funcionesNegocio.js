@@ -30,6 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (target.classList.contains("btn-editar")) {
         cargarUsuario(target.dataset.id);
+        let userIdI = event.target.dataset.id;
+        document.querySelector("#ID_NegocioImagenes").value = userIdI;
       } else if (target.classList.contains("btn-eliminar")) {
         eliminarUsuario(target.dataset.id);
       } else if (event.target.classList.contains("btn-crear-horario")) {
@@ -72,8 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
 // Función para listar usuarios
 let paginaActual = 1;
 const registrosPorPagina = 10;
+let filtrosActuales = {};
 
-export function listarMiembros(filtros = {}) {
+export function listarMiembros(filtros = filtrosActuales) {
+   filtrosActuales = filtros;
   let params = new URLSearchParams();
   params.append("ope", "LISTAUSUARIOS");
   params.append("pagina", paginaActual);
@@ -128,6 +132,7 @@ function renderizarMiembros(lista) {
                 <p><strong>Categoria:</strong> ${miembro.Descripcion}</p>
                 <div class="card-buttons">
                     <button class="btn btn-warning btn-editar" data-id="${miembro.ID_Negocio}" data-bs-toggle="modal" data-bs-target="#modalEditar">Editar</button>
+                    <button class="btn btn-warning btn-editar" data-id="${miembro.ID_Negocio}" data-bs-toggle="modal" data-bs-target="#modalImagenes">Subir imagen</button>
                     <button class="btn btn-danger btn-eliminar" data-id="${miembro.ID_Negocio}">Eliminar</button>
                     <button class="btn btn-success btn-crear-horario" 
         data-id="${miembro.ID_Negocio}" 
@@ -161,21 +166,58 @@ function actualizarPaginacion(totalPaginas) {
 
   paginacion.innerHTML = "";
 
-  for (let i = 1; i <= totalPaginas; i++) {
+  // Botón anterior
+  let btnAnterior = document.createElement("button");
+  btnAnterior.classList.add("btn", "btn-outline-primary");
+  btnAnterior.innerHTML = "&laquo;"; // «
+  btnAnterior.disabled = paginaActual === 1;
+  btnAnterior.addEventListener("click", () => {
+    if (paginaActual > 1) {
+      paginaActual--;
+      listarMiembros(filtrosActuales);
+    }
+  });
+  paginacion.appendChild(btnAnterior);
+
+  // Botones de páginas
+  let maxVisible = 5;
+  let inicio = Math.max(1, paginaActual - Math.floor(maxVisible / 2));
+  let fin = Math.min(totalPaginas, inicio + maxVisible - 1);
+
+  // Ajuste si estamos cerca del final
+  if (fin - inicio + 1 < maxVisible) {
+    inicio = Math.max(1, fin - maxVisible + 1);
+  }
+
+  for (let i = inicio; i <= fin; i++) {
     let boton = document.createElement("button");
     boton.classList.add(
       "btn",
-      i === paginaActual ? "btn-primary" : "btn-outline-primary"
+      i === paginaActual ? "btn-primary" : "btn-outline-primary",
+      "mx-1"
     );
     boton.textContent = i;
     boton.addEventListener("click", () => {
       paginaActual = i;
-      listarMiembros();
+      listarMiembros(filtrosActuales);
     });
-
     paginacion.appendChild(boton);
   }
+
+  // Botón siguiente
+  let btnSiguiente = document.createElement("button");
+  btnSiguiente.classList.add("btn", "btn-outline-primary");
+  btnSiguiente.innerHTML = "&raquo;"; // »
+  btnSiguiente.disabled = paginaActual === totalPaginas;
+  btnSiguiente.addEventListener("click", () => {
+    if (paginaActual < totalPaginas) {
+      paginaActual++;
+      listarMiembros(filtrosActuales);
+    }
+  });
+  paginacion.appendChild(btnSiguiente);
 }
+
 
 function aplicarFiltros() {
   const filtros = {
@@ -486,6 +528,112 @@ function agregarHorario(id) {
             "error"
           );
         });
+    }
+  });
+}
+const dropzone = document.getElementById("dropzone");
+const fileInput = document.getElementById("fileInput");
+const previewContainer = document.getElementById("previewContainer");
+
+let files = [];
+
+dropzone.addEventListener("click", () => fileInput.click());
+
+fileInput.addEventListener("change", (e) => {
+  handleFiles(e.target.files);
+});
+
+dropzone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropzone.classList.add("dragover");
+});
+
+dropzone.addEventListener("dragleave", () => {
+  dropzone.classList.remove("dragover");
+});
+
+dropzone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropzone.classList.remove("dragover");
+  handleFiles(e.dataTransfer.files);
+});
+
+function handleFiles(selectedFiles) {
+  if (files.length + selectedFiles.length > 4) {
+    alert("Solo puedes subir un máximo de 4 imágenes.");
+    return;
+  }
+
+  [...selectedFiles].forEach((file) => {
+    files.push(file);
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const col = document.createElement("div");
+      col.classList.add("col-md-3");
+
+      col.innerHTML = `
+        <div class="preview-image">
+          <img src="${e.target.result}" alt="preview">
+          <button type="button" class="remove-btn">&times;</button>
+        </div>
+      `;
+
+      col.querySelector(".remove-btn").addEventListener("click", () => {
+        previewContainer.removeChild(col);
+        files = files.filter((f) => f !== file);
+      });
+
+      previewContainer.appendChild(col);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// Enviar formulario con imágenes
+document.getElementById("formImagenes").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append("ope", "SUBIR_IMAGENES");
+  formData.append("ID_Negocio", document.getElementById("ID_NegocioImagenes").value);
+
+  files.forEach((file, i) => {
+    formData.append(`imagen${i+1}`, file);
+  });
+
+  fetch("controladores/controladorImagenes.php", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert("Imágenes guardadas correctamente");
+      files = [];
+      previewContainer.innerHTML = "";
+      document.querySelector("#modalImagenes .btn-close").click();
+    } else {
+      alert("Error: " + data.msg);
+    }
+  });
+});
+
+// Función para listar imágenes
+function listarImagenes(idNegocio) {
+  const formData = new FormData();
+  formData.append("ope", "LISTAR_IMAGENES");
+  formData.append("ID_Negocio", idNegocio);
+
+  fetch("controladores/imagenes.php", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      console.log("Imágenes del negocio:", data.imagenes);
+      // Aquí puedes mostrarlas en un carrusel o galería
     }
   });
 }

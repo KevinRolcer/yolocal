@@ -55,7 +55,7 @@ FROM `negocios`
         }
 
         // Total de registros para calcular total de páginas (sin filtros opcional)
-        $countSql = "SELECT COUNT(*) as total FROM usuarios WHERE 1=1";
+        $countSql = "SELECT COUNT(*) as total FROM negocios WHERE 1=1";
 
         // Si quieres contar con los mismos filtros, repite los mismos pasos aquí
         $countConsulta = $enlace->prepare($countSql);
