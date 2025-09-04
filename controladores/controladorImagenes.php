@@ -6,7 +6,6 @@ if (isset($_POST["ope"])) {
     include_once("../modelos/imagenes.php");
     $img = new Imagenes();
 
-    // Subir imágenes
     if ($ope == "SUBIR_IMAGENES" && isset($_POST["ID_Negocio"])) {
         $idNegocio = $_POST["ID_Negocio"];
         $status = $img->subirImagenes($idNegocio, $_FILES);
@@ -14,7 +13,6 @@ if (isset($_POST["ope"])) {
         echo json_encode($status);
     }
 
-    // Listar imágenes de un negocio
     else if ($ope == "LISTAR_IMAGENES" && isset($_POST["ID_Negocio"])) {
         $idNegocio = $_POST["ID_Negocio"];
         $imagenes = $img->listarImagenes($idNegocio);

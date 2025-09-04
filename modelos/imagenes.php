@@ -38,7 +38,6 @@ class Imagenes {
                     $ruta = "$carpeta/$nombreArchivo";
 
                     if (move_uploaded_file($files[$campo]['tmp_name'], $ruta)) {
-                        // Guardar en la base de datos
                         $sql = "INSERT INTO negocio_imagenes (ID_Negocio, ruta_imagen) VALUES (?, ?)";
                         $consulta = $enlace->prepare($sql);
                         if (!$consulta) {
