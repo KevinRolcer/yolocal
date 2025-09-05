@@ -2,13 +2,14 @@
 <html lang="es">
 
 <head>
-    <title>Usuarios-DragonGym</title>
+    <title>Usuarios - Yo Local</title>
     <?php
     include_once("head.php");
     ?>
     <script type="module" src="assets/js/funcionesUsu.js?v=3.7.8"></script>
     <link rel="stylesheet" href="../assets/css/usuarios.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
+    <link href="../assets/img/LogoYolocal.png" rel="icon" />
 </head>
 
 <body class="bg-light">

@@ -23,20 +23,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //  editar y eliminar
   const listaUsuarios = document.querySelector("#ListaMiembros");
+
   if (listaUsuarios) {
     listaUsuarios.addEventListener("click", (event) => {
       event.preventDefault();
-      const target = event.target;
 
-      if (target.classList.contains("btn-editar")) {
-        cargarUsuario(target.dataset.id);
-        let userIdI = event.target.dataset.id;
+      // Busca el botón más cercano que tenga alguna de las clases de acción
+      const target = event.target.closest(
+        ".btn-editar-imagen, .btn-eliminar, .btn-crear-horario, .btn-editar"
+      );
+      if (!target) return; // si no hay botón válido, salir
+
+      if (target.classList.contains("btn-editar-imagen")) {
+        let userIdI = target.dataset.id;
         document.querySelector("#ID_NegocioImagenes").value = userIdI;
       } else if (target.classList.contains("btn-eliminar")) {
         eliminarUsuario(target.dataset.id);
-      } else if (event.target.classList.contains("btn-crear-horario")) {
-        let userId = event.target.dataset.id;
+      } else if (target.classList.contains("btn-crear-horario")) {
+        let userId = target.dataset.id;
         document.querySelector("#ID_NegocioHorario").value = userId;
+      } else if (target.classList.contains("btn-editar")) {
+        cargarUsuario(target.dataset.id);
+        let userIde = target.dataset.id;
+        document.querySelector("#ID_Negocio").value = userIde;
       }
     });
   }
@@ -60,9 +69,8 @@ document.addEventListener("DOMContentLoaded", () => {
     formEditarUsuario.addEventListener("submit", (event) => {
       event.preventDefault();
       let erroresE = 0;
-      let nombreE = document.querySelector("#NombreEdit");
+      let nombreE = document.querySelector("#nombre_negocioEdit");
 
-      if (!validaSoloLetras(nombreE)) erroresE++;
 
       if (erroresE == 0) editarUsuario();
     });
@@ -77,7 +85,7 @@ const registrosPorPagina = 10;
 let filtrosActuales = {};
 
 export function listarMiembros(filtros = filtrosActuales) {
-   filtrosActuales = filtros;
+  filtrosActuales = filtros;
   let params = new URLSearchParams();
   params.append("ope", "LISTAUSUARIOS");
   params.append("pagina", paginaActual);
@@ -122,31 +130,100 @@ function renderizarMiembros(lista) {
     return;
   }
 
+  // Primero, agrega esta línea en tu HTML head para incluir Heroicons:
+  // <script src="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.js"></script>
+
   lista.forEach((miembro) => {
     contenedor.innerHTML += `
-            <div class="gasto-card">
-                <p># ${miembro.ID_Negocio}</p>
-                <h3>${miembro.nombre_negocio} </h3>
-                <p><strong>Propietario:</strong> ${miembro.Nombre} ${miembro.ApellidoP} ${miembro.ApellidoM}</p>
-                
-                <p><strong>Categoria:</strong> ${miembro.Descripcion}</p>
-                <div class="card-buttons">
-                    <button class="btn btn-warning btn-editar" data-id="${miembro.ID_Negocio}" data-bs-toggle="modal" data-bs-target="#modalEditar">Editar</button>
-                    <button class="btn btn-warning btn-editar" data-id="${miembro.ID_Negocio}" data-bs-toggle="modal" data-bs-target="#modalImagenes">Subir imagen</button>
-                    <button class="btn btn-danger btn-eliminar" data-id="${miembro.ID_Negocio}">Eliminar</button>
-                    <button class="btn btn-success btn-crear-horario" 
-        data-id="${miembro.ID_Negocio}" 
-        data-bs-toggle="modal" 
-        data-bs-target="#modalHorario">
-  Crear Horario
-</button>
-                        
-                </div>
-            </div>
-        `;
+    <div class="negocio-card shadow-lg rounded-3 p-4 mb-4 bg-white">
+      
+      <!-- Encabezado -->
+      <div class="negocio-header flex items-center justify-between mb-4">
+        <h3 class="text-2xl font-bold text-gray-800">${
+          miembro.nombre_negocio
+        }</h3>
+      </div>
+
+      <!-- Información -->
+      <div class="negocio-info text-sm text-gray-700 space-y-2 mb-4">
+        <p><strong>Propietario:</strong> ${miembro.Nombre} ${
+      miembro.ApellidoP
+    } ${miembro.ApellidoM}</p>
+        <p>${miembro.DescripcionN}</p>
+        <p><strong>Teléfono:</strong> <a href="tel:${
+          miembro.Telefono
+        }" class="text-blue-600 hover:underline">${miembro.Telefono}</a></p>
+        <p><a href="mailto:${
+          miembro.Correo
+        }" class="text-blue-600 hover:underline">${miembro.CorreoN}</a></p>
+        <p><strong>Categoría:</strong> ${miembro.Descripcion}</p>
+      </div>
+
+      <!-- Redes Sociales -->
+      <div class="negocio-social">
+  ${
+    miembro.SitioWeb
+      ? `
+    <a href="${miembro.SitioWeb}" target="_blank" class="social-btn">
+      <i class="bi bi-globe"></i>
+    </a>
+  `
+      : ""
+  }
+  ${
+    miembro.Facebook
+      ? `
+    <a href="${miembro.Facebook}" target="_blank" class="social-btn">
+      <i class="bi bi-facebook"></i>
+    </a>
+  `
+      : ""
+  }
+  ${
+    miembro.Instagram
+      ? `
+    <a href="${miembro.Instagram}" target="_blank" class="social-btn">
+      <i class="bi bi-instagram"></i>
+    </a>
+  `
+      : ""
+  }
+</div>
+
+      <!-- Acciones -->
+      <div class="negocio-actions flex justify-center gap-4">
+        <button class="circle-btn bg-yellow-400 hover:bg-yellow-500 text-white btn-editar" 
+                title="Editar"
+                data-id="${miembro.ID_Negocio}" 
+                data-bs-toggle="modal" 
+                data-bs-target="#modalEditar">
+          <i class="bi bi-pencil"></i>
+        </button>
+        <button class="circle-btn bg-blue-400 hover:bg-blue-500 text-white btn-editar-imagen" 
+                title="Subir Imagen"
+                data-id="${miembro.ID_Negocio}" 
+                data-bs-toggle="modal" 
+                data-bs-target="#modalImagenes">
+          <i class="bi bi-camera"></i>
+        </button>
+        <button class="circle-btn bg-red-500 hover:bg-red-600 text-white btn-eliminar" 
+                title="Eliminar"
+                data-id="${miembro.ID_Negocio}">
+          <i class="bi bi-trash"></i>
+        </button>
+        <button class="circle-btn bg-green-500 hover:bg-green-600 text-white btn-crear-horario" 
+                title="Crear Horario"
+                data-id="${miembro.ID_Negocio}" 
+                data-bs-toggle="modal" 
+                data-bs-target="#modalHorario">
+          <i class="bi bi-clock"></i>
+        </button>
+      </div>
+    </div>
+  `;
   });
 }
-
+lucide.createIcons();
 function renderizarError(mensaje) {
   const contenedor = document.querySelector("#ListaMiembros");
   contenedor.innerHTML = `
@@ -217,7 +294,6 @@ function actualizarPaginacion(totalPaginas) {
   });
   paginacion.appendChild(btnSiguiente);
 }
-
 
 function aplicarFiltros() {
   const filtros = {
@@ -340,9 +416,20 @@ function cargarUsuario(id) {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        document.querySelector("#ID_Usuario").value = data.usuario.ID_Negocio;
-        document.querySelector("#NombreEdit").value =
-          data.usuario.nombre_negocio;
+        // Recorremos todos los campos del formulario de edición
+        const form = document.querySelector("#formEditar");
+
+        for (const key in data.usuario) {
+          // Buscamos el input que tenga el id igual al nombre del campo + "Edit"
+          const input = form.querySelector(`#${key}Edit`);
+          if (input) {
+            input.value = data.usuario[key] ?? ""; // asigna valor o cadena vacía si es null
+          }
+        }
+
+        // Si quieres mantener el campo oculto con el ID separado
+        const hiddenId = form.querySelector("#ID_Negocio");
+        if (hiddenId) hiddenId.value = data.usuario.ID_Negocio;
       } else {
         Swal.fire(
           "Error",
@@ -506,7 +593,6 @@ function agregarHorario(id) {
       const datos = new FormData(formHorario);
 
       datos.append("ope", "AGREGAR_HORARIO");
-     
 
       fetch("controladores/controladorHorarios.php", {
         method: "POST",
@@ -596,27 +682,30 @@ document.getElementById("formImagenes").addEventListener("submit", (e) => {
 
   const formData = new FormData();
   formData.append("ope", "SUBIR_IMAGENES");
-  formData.append("ID_Negocio", document.getElementById("ID_NegocioImagenes").value);
+  formData.append(
+    "ID_Negocio",
+    document.getElementById("ID_NegocioImagenes").value
+  );
 
   files.forEach((file, i) => {
-    formData.append(`imagen${i+1}`, file);
+    formData.append(`imagen${i + 1}`, file);
   });
 
   fetch("controladores/controladorImagenes.php", {
     method: "POST",
-    body: formData
+    body: formData,
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      alert("Imágenes guardadas correctamente");
-      files = [];
-      previewContainer.innerHTML = "";
-      document.querySelector("#modalImagenes .btn-close").click();
-    } else {
-      alert("Error: " + data.msg);
-    }
-  });
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        alert("Imágenes guardadas correctamente");
+        files = [];
+        previewContainer.innerHTML = "";
+        document.querySelector("#modalImagenes .btn-close").click();
+      } else {
+        alert("Error: " + data.msg);
+      }
+    });
 });
 
 // Función para listar imágenes
@@ -627,13 +716,13 @@ function listarImagenes(idNegocio) {
 
   fetch("controladores/imagenes.php", {
     method: "POST",
-    body: formData
+    body: formData,
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      console.log("Imágenes del negocio:", data.imagenes);
-      // Aquí puedes mostrarlas en un carrusel o galería
-    }
-  });
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        console.log("Imágenes del negocio:", data.imagenes);
+        // Aquí puedes mostrarlas en un carrusel o galería
+      }
+    });
 }

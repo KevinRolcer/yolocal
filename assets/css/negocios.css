@@ -453,151 +453,6 @@ color: rgb(49, 133, 229);
 }
 
 
-#ListaGastos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
-#ListaMiembros {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.gasto-card {
-    background: #ffffff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    text-align: center;
-    transition: transform 0.3s;
-    align-items: center;
-}
-
-.gasto-card:hover {
-    transform: scale(1.05);
-}
-
-.gasto-card h3 {
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.gasto-card p {
-    margin: 5px 0;
-}
-
-.card-buttons {
-     display: flex;
-    gap: 12px;
-    margin-top: 12px;
-}
-
-.card-buttons .btn {
-    margin: 5px;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.icon-btn {
-    width: 42px;
-    height: 42px;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 18px;
-    transition: 0.3s ease;
-    color: #fff;
-}
-
-/* Colores específicos */
-.btn-editar {
-    background-color: #ffc107; /* amarillo */
-}
-
-.btn-eliminar {
-    background-color: var(--red); /* rojo */
-}
-
-.btn-clave {
-    background-color: #6c757d; /* gris */
-}
-
-/* Hover más intenso */
-.icon-btn:hover {
-    transform: scale(1.1);
-    opacity: 0.9;
-}
-
-.btn-warning {
-    background-color: #f39c12;
-    color: white;
-    border: none;
-}
-
-.btn-danger {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-}
-#limpiarG{
-  background-color: rgb(82, 82, 82);
-  color: white;
-}
-
-#btnEd{
-  background-color: rgb(185, 186, 188);
-  color: black;
-
-}
-#btnE{
-  background-color: rgb(134, 24, 24);
-}
-
-#ListaGastos {
-  max-height: 450px; 
-  overflow-y: auto; 
-}
-
-/* ============== Paginacion =================*/
-
-
-
-.btn-editar:hover{
-  background-color: rgb(77, 76, 76);
-  color: white;
-}
-.gasto-card {
-    background: #ffffff;
-     display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* separa contenido y botones */
-    height: 100%; /* asegura que ocupe toda la altura disponible */
-    padding: 15px;
-    border-radius: 12px;
-    background: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    position: relative;
-}
-
-.gasto-card:hover {
-    transform: scale(1.05);
-}
-
-.gasto-card h3 {
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.gasto-card p {
-    margin: 5px 0;
-}
 
 
 
@@ -735,7 +590,6 @@ color: rgb(49, 133, 229);
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
-/* Botones circulares */
 .circle-btn {
   width: 50px;
   height: 50px;
@@ -764,8 +618,86 @@ color: rgb(49, 133, 229);
   background: #f1f1f1;
   transition: all 0.2s ease;
   text-decoration: none;
+  flex-wrap: wrap;  
 }
 .social-btn:hover {
   background: #ddd;
   transform: scale(1.1);
+}
+
+.negocio-actions {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  gap: 15px;         
+  flex-wrap: wrap;         
+  margin-top: 15px;
+}
+
+.circle-btn.bg-yellow-400 {
+  background-color: #facc15; 
+  color: #fff;
+}
+.circle-btn.bg-yellow-400:hover {
+  background-color: #eab308;
+}
+
+.circle-btn.bg-blue-400 {
+  background-color: #60a5fa; 
+  color: #fff;
+}
+.circle-btn.bg-blue-400:hover {
+  background-color: #3b82f6;
+}
+
+.circle-btn.bg-red-500 {
+  background-color: #ef4444; 
+  color: #fff;
+}
+.circle-btn.bg-red-500:hover {
+  background-color: #dc2626;
+}
+
+.circle-btn.bg-green-500 {
+  background-color: #22c55e; /* verde */
+  color: #fff;
+}
+.circle-btn.bg-green-500:hover {
+  background-color: #16a34a;
+}
+
+.social-btn {
+  color: #444;
+}
+.social-btn:hover {
+  background: #5e0a9e; /* tu color principal */
+  color: #fff;
+}
+.negocio-actions i,
+.social-btn i {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2; 
+}
+
+.social-btn i {
+  color: #444;
+}
+.social-btn:hover i {
+  color: white;
+}
+.circle-btn i,
+.social-btn i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;  
+  font-size: 20px; 
+}
+
+.negocio-social {
+  display: flex;         
+  
+  gap: 10px;               /* espacio entre botones */
+  margin-bottom: 15px;
 }

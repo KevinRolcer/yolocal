@@ -169,6 +169,7 @@ function renderizarPromociones(lista) {
   </div>
   `;
   });
+  
 }
 
 function renderizarError(mensaje) {

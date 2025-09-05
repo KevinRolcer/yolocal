@@ -2,13 +2,14 @@
 <html lang="es">
 
 <head>
-    <title>Usuarios-DragonGym</title>
+    <title>Cupones - Yo Local</title>
     <?php
     include_once("head.php");
     ?>
     <script type="module" src="assets/js/funcionesCupones.js?v=3.6"></script>
     <link rel="stylesheet" href="../assets/css/cupones.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
+    <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <script>
         const usuarioId = <?= json_encode($_SESSION["ID_Usuario"]) ?>;
         const usuarioTipo = <?= json_encode($_SESSION["tipo"]) ?>;

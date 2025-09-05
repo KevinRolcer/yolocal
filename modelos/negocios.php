@@ -144,21 +144,43 @@ FROM `negocios`
         return $consulta->execute();
     }
     public function Editar($datos)
-    {
-        $enlace = dbConectar();
+{
+    $enlace = dbConectar();
 
-        
-            $sql = "UPDATE negocios SET nombre_negocio=? WHERE ID_Negocio=?";
-            $consulta = $enlace->prepare($sql);
-            $consulta->bind_param(
-                "si",
-                $datos["nombre_negocio"],
-                $datos["ID_Negocio"]
-            );
-        
+    // Preparar SQL dinámico para todos los campos
+    $sql = "UPDATE negocios SET 
+                nombre_negocio = ?, 
+                DescripcionN   = ?, 
+                Direccion      = ?, 
+                Telefono       = ?, 
+                CorreoN        = ?, 
+                SitioWeb       = ?, 
+                Facebook       = ?, 
+                Instagram      = ?
+            WHERE ID_Negocio = ?";
 
-        return $consulta->execute();
+    $consulta = $enlace->prepare($sql);
+    if (!$consulta) {
+        throw new Exception("Error en la preparación de la consulta: " . $enlace->error);
     }
+
+    // Bindeamos los parámetros
+    $consulta->bind_param(
+        "ssssssssi",
+        $datos["nombre_negocio"],
+        $datos["DescripcionN"],
+        $datos["Direccion"],
+        $datos["Telefono"],
+        $datos["CorreoN"],
+        $datos["SitioWeb"],
+        $datos["Facebook"],
+        $datos["Instagram"],
+        $datos["ID_Negocio"]
+    );
+
+    return $consulta->execute();
+}
+
     public function cambiarClave($idUsuario, $claveEncriptada)
     {
         $enlace = dbConectar();
@@ -182,7 +204,7 @@ FROM `negocios`
     public function ObtenerUsuario($ID_usuario)
     {
         $enlace = dbConectar();
-        $sql = "SELECT ID_Negocio, nombre_negocio FROM negocios WHERE ID_Negocio=?";
+        $sql = "SELECT * FROM negocios WHERE ID_Negocio=?";
         $consulta = $enlace->prepare($sql);
         $consulta->bind_param("i", $ID_usuario);
         $consulta->execute();
@@ -197,7 +219,7 @@ FROM `negocios`
     public function ObtenerNegocios()
 {
     $enlace = dbConectar();
-    $sql = "SELECT ID_Negocio, nombre_negocio FROM negocios";  // Tabla correcta
+    $sql = "SELECT * FROM negocios";  // Tabla correcta
     $consulta = $enlace->prepare($sql);
     $consulta->execute();
     $result = $consulta->get_result();

@@ -67,20 +67,30 @@ if (isset($_POST["ope"])) {
         echo json_encode($info);
     }
     // editar  usuario 
-    elseif ($ope == "EDITAR" && isset($_POST["ID_Negocio"], $_POST["NombreEdit"])) {
-        $datos = array(
-            "ID_Negocio" => $_POST["ID_Negocio"],
-            "nombre_negocio" => $_POST["NombreEdit"]
-           
-        );
+    elseif ($ope == "EDITAR" && isset($_POST["ID_Negocio"])) {
 
+    $datos = array(
+        "ID_Negocio" => $_POST["ID_Negocio"],
+        "nombre_negocio" => $_POST["nombre_negocioEdit"] ?? '',
+        "DescripcionN"   => $_POST["DescripcionNEdit"] ?? '',
+        "Direccion"      => $_POST["DireccionEdit"] ?? '',
+        "Telefono"       => $_POST["TelefonoEdit"] ?? '',
+        "CorreoN"        => $_POST["CorreoNEdit"] ?? '',
+        "SitioWeb"       => $_POST["SitioWebEdit"] ?? '',
+        "Facebook"       => $_POST["FacebookEdit"] ?? '',
+        "Instagram"      => $_POST["InstagramEdit"] ?? ''
+    );
 
+    $status = $usu->Editar($datos);
 
+    $info = array(
+        "success" => $status,
+        "usuario" => $datos  // opcional: enviar los datos de vuelta al JS
+    );
 
-        $status = $usu->Editar($datos);
-        $info = array("success" => $status);
-        echo json_encode($info);
-    } elseif ($ope === "BUSCAR_MIEMBRO") {
+    echo json_encode($info);
+}
+ elseif ($ope === "BUSCAR_MIEMBRO") {
         if (isset($_POST["ID_Miembro"])) {
             $miembro = $usu->buscarMiembroPorID($_POST["ID_Miembro"]);
             if ($miembro) {

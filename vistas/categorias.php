@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-    <title>Categorias-Yo Local</title>
+    <title>Categorias -Yo Local</title>
     <?php
     include_once("head.php");
     ?>
@@ -11,6 +11,7 @@
     <script type="module" src="assets/js/funcionesCategorias.js?v=1.3"></script>
     <link rel="stylesheet" href="../assets/css/categorias.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
+    <link href="../assets/img/LogoYolocal.png" rel="icon" />
 </head>
     
 <body class="bg-light">
