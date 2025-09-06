@@ -68,7 +68,11 @@ class Imagenes {
     public function ListarImagenes($idNegocio) {
         $enlace = dbConectar();
 
-        $sql = "SELECT ruta_imagen FROM negocio_imagenes WHERE ID_Negocio = ?";
+        $sql = "SELECT ruta_imagen 
+        FROM negocio_imagenes 
+        WHERE ID_Negocio = ? 
+        ORDER BY id_imagen DESC 
+        LIMIT 4";
         $consulta = $enlace->prepare($sql);
         if (!$consulta) {
             throw new Exception("Error en la preparación de la consulta: " . $enlace->error);

@@ -71,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
       let erroresE = 0;
       let nombreE = document.querySelector("#nombre_negocioEdit");
 
-
       if (erroresE == 0) editarUsuario();
     });
   }
@@ -130,9 +129,6 @@ function renderizarMiembros(lista) {
     return;
   }
 
-  // Primero, agrega esta línea en tu HTML head para incluir Heroicons:
-  // <script src="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.js"></script>
-
   lista.forEach((miembro) => {
     contenedor.innerHTML += `
     <div class="negocio-card shadow-lg rounded-3 p-4 mb-4 bg-white">
@@ -188,8 +184,11 @@ function renderizarMiembros(lista) {
   `
       : ""
   }
-</div>
-
+   </div>
+    <!-- Carrusel de imágenes -->
+      <div class="negocio-imagenes mt-3 text-center" id="imagenes-${miembro.ID_Negocio}">
+        <!-- JS inyectará el carrusel aquí -->
+      </div>
       <!-- Acciones -->
       <div class="negocio-actions flex justify-center gap-4">
         <button class="circle-btn bg-yellow-400 hover:bg-yellow-500 text-white btn-editar" 
@@ -221,9 +220,9 @@ function renderizarMiembros(lista) {
       </div>
     </div>
   `;
+    listarImagenes(miembro.ID_Negocio);
   });
 }
-lucide.createIcons();
 function renderizarError(mensaje) {
   const contenedor = document.querySelector("#ListaMiembros");
   contenedor.innerHTML = `
@@ -714,15 +713,41 @@ function listarImagenes(idNegocio) {
   formData.append("ope", "LISTAR_IMAGENES");
   formData.append("ID_Negocio", idNegocio);
 
-  fetch("controladores/imagenes.php", {
+  fetch("controladores/controladorImagenes.php", {
     method: "POST",
-    body: formData,
+    body: formData
   })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.success) {
-        console.log("Imágenes del negocio:", data.imagenes);
-        // Aquí puedes mostrarlas en un carrusel o galería
-      }
-    });
+  .then(res => res.json())
+  .then(data => {
+    if (data.success && data.imagenes.length > 0) {
+      const contenedor = document.getElementById(`imagenes-${idNegocio}`);
+      contenedor.innerHTML = "";
+
+      const carouselId = `carousel-${idNegocio}`;
+      let carouselHtml = `
+        <div id="${carouselId}" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            ${data.imagenes.map((ruta, index) => `
+              <div class="carousel-item ${index === 0 ? "active" : ""}">
+  <img src="${ruta}" 
+       class="d-block w-100" 
+       style="height:300px; object-fit:contain; background-color:#f0f0f0;" 
+       alt="Imagen negocio">
+</div>
+            `).join("")}
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true" ></span>
+            <span class="visually-hidden">Anterior</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Siguiente</span>
+          </button>
+        </div>
+      `;
+      contenedor.innerHTML = carouselHtml;
+    }
+  });
 }
+

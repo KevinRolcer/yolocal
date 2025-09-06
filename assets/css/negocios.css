@@ -701,3 +701,7 @@ color: rgb(49, 133, 229);
   gap: 10px;               /* espacio entre botones */
   margin-bottom: 15px;
 }
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1); /* pone los íconos en negro */
+}

@@ -6,7 +6,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesNegocio.js?v=1.3.7"></script>
+    <script type="module" src="assets/js/funcionesNegocio.js?v=1.3.9"></script>
     <link rel="stylesheet" href="../assets/css/negocios.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <script src="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.js"></script>
