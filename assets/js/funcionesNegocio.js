@@ -5,6 +5,31 @@ import {
   validaSoloLetras,
   validaContrasena,
 } from "./validaciones.js?v=3.8.1";
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".toggle-horarios");
+  if (!btn) return;
+  
+  const idNegocio = btn.dataset.id;
+  const contenedorHorarios = document.getElementById(`horarios-${idNegocio}`);
+  const icono = btn.querySelector("i");
+  
+  if (!contenedorHorarios) return;
+  
+  // Verificar estado actual ANTES de hacer toggle
+  const estaOculto = contenedorHorarios.classList.contains("oculto"); // Cambiar aquí
+  
+  // Alternar visibilidad
+  contenedorHorarios.classList.toggle("oculto"); // Y aquí
+  
+  // Si ESTABA oculto (ahora se muestra), rotar ícono
+  icono.classList.toggle("rotate-180", estaOculto);
+  
+  // Cargar horarios solo una vez cuando se muestre
+  if (estaOculto && !contenedorHorarios.dataset.loaded) {
+    listarHorarios(idNegocio, contenedorHorarios);
+    contenedorHorarios.dataset.loaded = "true";
+  }
+});
 document.addEventListener("DOMContentLoaded", () => {
   buscarMiembroModal();
 
@@ -26,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (listaUsuarios) {
     listaUsuarios.addEventListener("click", (event) => {
-      event.preventDefault();
+     
 
       // Busca el botón más cercano que tenga alguna de las clases de acción
       const target = event.target.closest(
@@ -128,67 +153,45 @@ function renderizarMiembros(lista) {
         `;
     return;
   }
+  let htmlCompleto = '';
 
-  lista.forEach((miembro) => {
-    contenedor.innerHTML += `
+lista.forEach((miembro) => {
+    htmlCompleto += `
     <div class="negocio-card shadow-lg rounded-3 p-4 mb-4 bg-white">
       
       <!-- Encabezado -->
       <div class="negocio-header flex items-center justify-between mb-4">
-        <h3 class="text-2xl font-bold text-gray-800">${
-          miembro.nombre_negocio
-        }</h3>
+        <h3 class="text-2xl font-bold text-gray-800">${miembro.nombre_negocio}</h3>
       </div>
 
       <!-- Información -->
       <div class="negocio-info text-sm text-gray-700 space-y-2 mb-4">
-        <p><strong>Propietario:</strong> ${miembro.Nombre} ${
-      miembro.ApellidoP
-    } ${miembro.ApellidoM}</p>
+        <p><strong>Propietario:</strong> ${miembro.Nombre} ${miembro.ApellidoP} ${miembro.ApellidoM}</p>
         <p>${miembro.DescripcionN}</p>
-        <p><strong>Teléfono:</strong> <a href="tel:${
-          miembro.Telefono
-        }" class="text-blue-600 hover:underline">${miembro.Telefono}</a></p>
-        <p><a href="mailto:${
-          miembro.Correo
-        }" class="text-blue-600 hover:underline">${miembro.CorreoN}</a></p>
+        <p><strong>Teléfono:</strong> <a href="tel:${miembro.Telefono}" class="text-blue-600 hover:underline">${miembro.Telefono}</a></p>
+        <p><a href="mailto:${miembro.Correo}" class="text-blue-600 hover:underline">${miembro.CorreoN}</a></p>
         <p><strong>Categoría:</strong> ${miembro.Descripcion}</p>
       </div>
 
       <!-- Redes Sociales -->
       <div class="negocio-social">
-  ${
-    miembro.SitioWeb
-      ? `
-    <a href="${miembro.SitioWeb}" target="_blank" class="social-btn">
-      <i class="bi bi-globe"></i>
-    </a>
-  `
-      : ""
-  }
-  ${
-    miembro.Facebook
-      ? `
-    <a href="${miembro.Facebook}" target="_blank" class="social-btn">
-      <i class="bi bi-facebook"></i>
-    </a>
-  `
-      : ""
-  }
-  ${
-    miembro.Instagram
-      ? `
-    <a href="${miembro.Instagram}" target="_blank" class="social-btn">
-      <i class="bi bi-instagram"></i>
-    </a>
-  `
-      : ""
-  }
-   </div>
-    <!-- Carrusel de imágenes -->
-      <div class="negocio-imagenes mt-3 text-center" id="imagenes-${miembro.ID_Negocio}">
-        <!-- JS inyectará el carrusel aquí -->
+        ${miembro.SitioWeb ? `<a href="${miembro.SitioWeb}" target="_blank" class="social-btn"><i class="bi bi-globe"></i></a>` : ""}
+        ${miembro.Facebook ? `<a href="${miembro.Facebook}" target="_blank" class="social-btn"><i class="bi bi-facebook"></i></a>` : ""}
+        ${miembro.Instagram ? `<a href="${miembro.Instagram}" target="_blank" class="social-btn"><i class="bi bi-instagram"></i></a>` : ""}
       </div>
+
+      <!-- Carrusel de imágenes -->
+      <div class="negocio-imagenes mt-3 text-center" id="imagenes-${miembro.ID_Negocio}"></div>
+      
+      <!-- Botón Horarios -->
+      <div class="toggle-horarios" data-id="${miembro.ID_Negocio}">
+          <span> Ver horarios</span>
+          <i class="bi bi-chevron-down"></i>
+      </div>
+
+      <!-- Contenedor de horarios -->
+      <div class="negocio-horarios oculto mt-2" id="horarios-${miembro.ID_Negocio}"></div>
+      
       <!-- Acciones -->
       <div class="negocio-actions flex justify-center gap-4">
         <button class="circle-btn bg-yellow-400 hover:bg-yellow-500 text-white btn-editar" 
@@ -219,9 +222,16 @@ function renderizarMiembros(lista) {
         </button>
       </div>
     </div>
-  `;
+    `;
+});
+
+// Segundo: insertar todo el HTML de una vez
+contenedor.innerHTML = htmlCompleto;
+
+// Tercero: cargar las imágenes para todos los negocios
+lista.forEach((miembro) => {
     listarImagenes(miembro.ID_Negocio);
-  });
+});
 }
 function renderizarError(mensaje) {
   const contenedor = document.querySelector("#ListaMiembros");
@@ -574,9 +584,6 @@ function eliminarUsuario(id) {
     }
   });
 }
-document.addEventListener("DOMContentLoaded", function () {
-  cargarMembresias();
-});
 
 function agregarHorario(id) {
   Swal.fire({
@@ -601,7 +608,9 @@ function agregarHorario(id) {
         .then((data) => {
           if (data.success) {
             Swal.fire("Guardado", "Horario creado correctamente", "success");
-            cargarMembresias();
+            formHorario.reset();
+            document.querySelector("#modalHorario .btn-close").click();
+            listarMiembros();
           } else {
             Swal.fire("Error", data.message, "error");
           }
@@ -715,26 +724,30 @@ function listarImagenes(idNegocio) {
 
   fetch("controladores/controladorImagenes.php", {
     method: "POST",
-    body: formData
+    body: formData,
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success && data.imagenes.length > 0) {
-      const contenedor = document.getElementById(`imagenes-${idNegocio}`);
-      contenedor.innerHTML = "";
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success && data.imagenes.length > 0) {
+        const contenedor = document.getElementById(`imagenes-${idNegocio}`);
+        contenedor.innerHTML = "";
 
-      const carouselId = `carousel-${idNegocio}`;
-      let carouselHtml = `
+        const carouselId = `carousel-${idNegocio}`;
+        let carouselHtml = `
         <div id="${carouselId}" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
-            ${data.imagenes.map((ruta, index) => `
+            ${data.imagenes
+              .map(
+                (ruta, index) => `
               <div class="carousel-item ${index === 0 ? "active" : ""}">
   <img src="${ruta}" 
        class="d-block w-100" 
        style="height:300px; object-fit:contain; background-color:#f0f0f0;" 
        alt="Imagen negocio">
 </div>
-            `).join("")}
+            `
+              )
+              .join("")}
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true" ></span>
@@ -746,8 +759,63 @@ function listarImagenes(idNegocio) {
           </button>
         </div>
       `;
-      contenedor.innerHTML = carouselHtml;
-    }
-  });
+        contenedor.innerHTML = carouselHtml;
+      }
+    });
 }
+function listarHorarios(idNegocio) {
+  const formData = new FormData();
+  formData.append("ope", "LISTAR_HORARIOS");
+  formData.append("ID_Negocio", idNegocio);
 
+  fetch("controladores/controladorHorarios.php", {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success && data.horarios.length > 0) {
+        const contenedor = document.getElementById(`horarios-${idNegocio}`);
+        contenedor.innerHTML = "";
+
+        // 🔥 función para convertir hora 24h → AM/PM
+        const convertirHora = (hora) => {
+          if (!hora) return "";
+          const [h, m] = hora.split(":");
+          let horas = parseInt(h, 10);
+          const minutos = m || "00";
+          const ampm = horas >= 12 ? "PM" : "AM";
+          horas = horas % 12 || 12;
+          return `${horas}:${minutos} ${ampm}`;
+        };
+
+        let horariosHtml = `
+        <table class="table table-sm table-bordered text-center">
+          <thead class="table-light">
+            <tr>
+              <th>Día</th>
+              <th>Apertura</th>
+              <th>Cierre</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.horarios
+              .map(
+                (horario) => `
+              <tr>
+                <td>${horario.dia_semana}</td>
+                <td>${convertirHora(horario.hora_apertura)}</td>
+                <td>${convertirHora(horario.hora_cierre)}</td>
+              </tr>
+            `
+              )
+              .join("")}
+          </tbody>
+        </table>
+      `;
+
+        contenedor.innerHTML = horariosHtml;
+      }
+    })
+    .catch((err) => console.error("Error cargando horarios:", err));
+}

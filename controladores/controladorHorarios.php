@@ -22,7 +22,12 @@ if ($ope == "AGREGAR_HORARIO" && isset($_POST["ID_Negocio"], $_POST["dia_semana"
     $info = array("success" => $status);
     echo json_encode($info);
 }
+else if ($ope == "LISTAR_HORARIOS" && isset($_POST["ID_Negocio"])) {
+    $idNegocio = $_POST["ID_Negocio"];
+    $horarios = $hor->listarHorarios($idNegocio); // 👈 necesitas este método en tu modelo
 
+    echo json_encode(array("success" => true, "horarios" => $horarios));
+}
 
     // listar 
     else {
