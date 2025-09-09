@@ -6,33 +6,29 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 if (!isset($_SESSION["sistema"]) || $_SESSION["sistema"] !== "YoLocal") {
-    include_once("vistas/login.php");
+ 
+    include_once("vistas/inicioCl.html"); 
     exit(); 
 }
 
 $tipoUsuario = $_SESSION["tipo"] ?? null;
-$pag = $_GET["pag"] ?? null;
+$pag = $_GET["pag"] ?? "home"; // por defecto ir a home
 
 $rutas = [
-
     "admin"     => ["admin"   => "vistas/home.php"],
     "negocio"   => ["negocio" => "vistas/home.php"],
 
     // Solo Admin
     "usuarios"  => ["admin" => "vistas/usuarios.php"],
-
     "categorias"=> ["admin" => "vistas/categorias.php"],
 
-    // Admin y Negocio
     "ventas"  => [
         "admin"   => "vistas/negocios.php",
         "negocio" => "vistas/negocios.php"
     ],
     "cupones"   => [
         "admin"   => "vistas/cupones.php",
-        "negocio" => "vistas/cupones.php",
-
-        
+        "negocio" => "vistas/cupones.php"
     ],
     "home"   => [
         "admin"   => "vistas/home.php",
