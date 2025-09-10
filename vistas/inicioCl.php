@@ -85,7 +85,7 @@
                             <div class="slide-background bg-gradient-1">
                                 <div class="slide-content">
                                     <div class="slide-image">
-                                        <img src="../assets/img/Cafeteria.jpg" alt="Cafeteria">
+                                        <img src="assets/img/Cafeteria.jpg" alt="Cafeteria">
                                     </div>
                                     <div class="slide-info">
                                         <span class="discount-badge">Mejor valorado en Cafeterías</span>
