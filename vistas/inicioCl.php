@@ -9,7 +9,7 @@
     <header class="encabezado">
         <nav class="navbar">
             <div class="logo">
-                <img src="<?php echo RUTA; ?>assets/img/LogoYolocal.png" alt="Logo">            
+                <img src="../assets/img/LogoYolocal.png" alt="local">
             </div>
             
             <!-- Menú móvil-->
@@ -378,7 +378,7 @@
     </div>
     
 
-    <script src="<?php echo RUTA; ?>assets/js/menuCl.js"></script>
-    <script src="<?php echo RUTA; ?>assets/js/carruselCl.js"></script>
+    <script src="../assets/js/menuCl.js"></script>
+    <script src="../assets/js/carruselCl.js"></script>
 </body>
 </html>
