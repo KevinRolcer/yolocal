@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 
 if (!isset($_SESSION["sistema"]) || $_SESSION["sistema"] !== "YoLocal") {
  
-    include_once("vistas/inicioCl.html"); 
+    include_once("vistas/inicioCl.php"); 
     exit(); 
 }
 
