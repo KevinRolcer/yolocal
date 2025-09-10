@@ -11,8 +11,7 @@ if (!isset($_SESSION["sistema"]) || $_SESSION["sistema"] !== "YoLocal") {
     include_once("vistas/inicioCl.php"); 
     exit(); 
 }
-include_once("config.php");  
-include_once("vistas/inicioCl.php"); 
+
 
 $tipoUsuario = $_SESSION["tipo"] ?? null;
 $pag = $_GET["pag"] ?? "home"; // por defecto ir a home

@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio Yolocal</title>
-    <link rel="stylesheet" href="<?php echo RUTA; ?>assets/css/inicioCl.css">
+    <link rel="stylesheet" href="../assets/css/inicioCl.css">
 <body>
     <header class="encabezado">
         <nav class="navbar">
             <div class="logo">
-                <img src="<?php echo RUTA; ?>assets/img/LogoYolocal.png" alt="local">
+                <img src="../assets/img/LogoYolocal.png" alt="">
             </div>
             
             <!-- Menú móvil-->
@@ -85,7 +85,7 @@
                             <div class="slide-background bg-gradient-1">
                                 <div class="slide-content">
                                     <div class="slide-image">
-                                        <img src="<?php echo RUTA; ?>assets/img/Cafeteria.jpg" alt="Cafeteria">
+                                        <img src="../assets/img/Cafeteria.jpg" alt="Cafeteria">
                                     </div>
                                     <div class="slide-info">
                                         <span class="discount-badge">Mejor valorado en Cafeterías</span>
@@ -355,7 +355,7 @@
                             Explora mas tipos de negocios que forman parte de Yolocal
                         </div>
                         <div class="card-image">
-                            <img src="<?php echo RUTA; ?>assets/img/LogoYolocal.png" alt="local">
+                            <img src="../assets/img/LogoYolocal.png" alt="">
                         </div>
                     </div>
                     <div class="card-footer">
@@ -378,8 +378,7 @@
     </div>
     
 
-    <script src="<?php echo RUTA; ?>assets/js/menuCl.js"></script>
-    <script src="<?php echo RUTA; ?>assets/js/carruselCl.js"></script>
-
+    <script src="../assets/js/menuCl.js"></script>
+    <script src="../assets/js/carruselCl.js"></script>
 </body>
 </html>
