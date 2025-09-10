@@ -355,7 +355,7 @@
                             Explora mas tipos de negocios que forman parte de Yolocal
                         </div>
                         <div class="card-image">
-                            <img src="../assets/img/LogoYolocal.png" alt="">
+                            <img src="<?php echo RUTA; ?>assets/img/LogoYolocal.png" alt="local">
                         </div>
                     </div>
                     <div class="card-footer">
