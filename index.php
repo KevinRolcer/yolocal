@@ -1,4 +1,8 @@
 <?php 
+
+include_once("config.php");  
+include_once("vistas/inicioCl.php"); 
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
