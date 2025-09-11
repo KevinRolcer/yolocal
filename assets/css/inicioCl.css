@@ -512,6 +512,194 @@ svg{
     color: var(--complementario);
 }
 
+/*Vista de cupones */
+
+#contenedorCupon {
+    position: relative;
+    height: 70vh;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem;
+    overflow: hidden;
+}
+
+#contenedorCupon .title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    position: relative;
+    z-index: 10;
+}
+
+#contenedorCupon .percentage {
+    font-size: 4.5rem;
+    font-weight: 800;
+    color: var(--principal);
+    position: relative;
+    z-index: 10;
+}
+
+#contenedorCupon .button {
+    padding: 0.75rem 2rem;
+    background-color: var(--secunadrio);
+    color: var(--negro);
+    font-weight: 600;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: relative;
+    z-index: 10;
+}
+
+#contenedorCupon .button:hover {
+    background-color: var(--complementario);
+    
+}
+
+#contenedorCupon .logo {
+    position: absolute;
+}
+
+.shadow-pink {
+    filter: drop-shadow(4px 4px 0px #f472b6);
+}
+
+.shadow-yellow {
+    filter: drop-shadow(4px 4px 0px #facc15);
+}
+
+/* Posicionamiento de logos */
+.logo-1 {
+    top: 8rem;
+    left: 33.333333%;
+    width: 4rem;
+}
+
+.logo-2 {
+    top: 8rem;
+    right: 33.333333%;
+    width: 4rem;
+}
+
+.logo-3 {
+    top: 50%;
+    left: 25%;
+    width: 3.5rem;
+}
+
+.logo-4 {
+    top: 50%;
+    right: 25%;
+    width: 3.5rem;
+}
+
+.logo-5 {
+    bottom: 34.333333%;
+    left: 15.333333%;
+    width: 4rem;
+}
+
+.logo-6 {
+    bottom: 33.333333%;
+    right: 33.333333%;
+    width: 4rem;
+}
+
+.logo-7 {
+    top: 2.5rem;
+    left: 50%;
+    width: 3rem;
+}
+
+.logo-8 {
+    top: 25%;
+    left: 2.5rem;
+    width: 3.5rem;
+}
+
+.logo-9 {
+    top: 25%;
+    right: 2.5rem;
+    width: 3.5rem;
+}
+
+.logo-10 {
+    top: 66.666667%;
+    left: 2rem;
+    width: 3.5rem;
+}
+
+.logo-11 {
+    top: 66.666667%;
+    right: 2rem;
+    width: 3.5rem;
+}
+
+.logo-12 {
+    bottom: 3rem;
+    left: 50%;
+    width: 4rem;
+}
+
+.logo-13 {
+    bottom: 5rem;
+    right: 50%;
+    width: 4rem;
+}
+
+.logo-14 {
+    top: 1rem;
+    left: 1rem;
+    width: 5rem;
+}
+
+.logo-15 {
+    top: 2.5rem;
+    right: 1.5rem;
+    width: 5rem;
+}
+
+.logo-16 {
+    bottom: 1.5rem;
+    left: 2.5rem;
+    width: 5rem;
+}
+
+.logo-17 {
+    bottom: 3rem;
+    right: 4rem;
+    width: 5rem;
+}
+
+.logo-18 {
+    top: 33.333333%;
+    left: -3rem;
+    width: 5rem;
+}
+
+.logo-19 {
+    top: 33.333333%;
+    right: -3rem;
+    width: 5rem;
+}
+
+.logo-20 {
+    bottom: 25%;
+    left: -2.5rem;
+    width: 5rem;
+}
+
+.logo-21 {
+    bottom: 25%;
+    right: -2.5rem;
+    width: 5rem;
+}
+
 
 /* Categorias*/
 
@@ -540,10 +728,11 @@ svg{
 .card {
     background: var(--blanco);
     border-radius: 20px;
-    padding: 25px;
+    padding: 15px;
     color: var(--texto2);
     position: relative;
-    min-height: 200px;
+    min-height: 100px;
+    height: 160px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -572,14 +761,11 @@ svg{
     color: var(--blanco);
 }
 
-.card-header {
-    margin-bottom: 15px;
-}
+
 
 .card-title {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 5px;
     line-height: 1.2;
 }
 
@@ -607,26 +793,22 @@ svg{
     justify-content: space-around;
 }
 .card-image {
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
     margin-left: auto;
 }
 .card-image img{
     width: 500px;
     
 }
-
-
 .card-footer {
     display: flex;
     justify-content: flex-start;
-    margin-top: 20px;
 }
 
 .card-button {
@@ -664,311 +846,352 @@ svg{
 /* Media Queries */
 
 @media (max-width: 1024px) {
-    .navbar {
-        padding: 12px 20px;
-    }
-    
-    .menu {
-        gap: 24px;
-    }
-    
-    .enlace {
-        font-size: 15px;
-    }
+.navbar {
+    padding: 12px 20px;
+}
+
+.menu {
+    gap: 24px;
+}
+
+.enlace {
+    font-size: 15px;
+}
+.logo-20,
+.logo-21 {
+display: block;
+}
+}
+@media (max-width: 1023px) {
+.logo-20,
+.logo-21 {
+display: none;
+}
 }
 
 @media (max-width: 768px) {
-    .menu-toggle {
-        display: flex;
-    }
-    
-    .menu {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 280px;
-        height: 200vh;
-        background-color: white;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: stretch;
-        padding: 80px 0px 0px;
-        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-        transition: right 0.3s ease;
-        gap: 0;
-    }
-    
-    .menu.active {
-        right: 0;
-    }
-    
-    .enlace {
-        padding: 16px ;
-        border-bottom: 1px solid #f0f0f0;
-        justify-content: flex-start;
-        gap: 12px;
-    }
-    
-    .enlace.active::after {
-        display: none;
-    }
-    
-    .icono-menu {
-        width: 24px;
-        height: 24px;
-    }
-    
-    .submenu-contenido {
-        position: static;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        box-shadow: none;
-        border: none;
-        margin-top: 0;
-        background: #f8f8f8;
-        border-radius: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-    }
-    
-    .submenu.active .submenu-contenido {
-        max-height: 200px;
-    }
-    
-    .submenu-contenido a {
-        padding: 12px 20px;
-        font-size: 14px;
-    }
-    
-    .dropdown-arrow {
-        margin-left: auto;
-    }
-    
-    .sesion {
-        flex-direction: column;
-        gap: 12px;
-        margin-top: 20px;
-    }
-    
-    .btn-prueba,
-    .btn-sesion {
-        width: 100%;
-        text-align: center;
-        padding: 12px 20px;
+.menu-toggle {
+    display: flex;
+}
+
+.menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 200vh;
+    background-color: white;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: 80px 0px 0px;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    gap: 0;
+}
+
+.menu.active {
+    right: 0;
+}
+
+.enlace {
+    padding: 16px ;
+    border-bottom: 1px solid #f0f0f0;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.enlace.active::after {
+    display: none;
+}
+
+.icono-menu {
+    width: 24px;
+    height: 24px;
+}
+
+.submenu-contenido {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    margin-top: 0;
+    background: #f8f8f8;
+    border-radius: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.submenu.active .submenu-contenido {
+    max-height: 200px;
+}
+
+.submenu-contenido a {
+    padding: 12px 20px;
+    font-size: 14px;
+}
+
+.dropdown-arrow {
+    margin-left: auto;
+}
+
+.sesion {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn-prueba,
+.btn-sesion {
+    width: 100%;
+    text-align: center;
+    padding: 12px 20px;
+}
+
+.carousel-container {
+    margin: 0 20px;
+}
+
+.slide-content {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.slide-image {
+    flex: 0 0 auto;
+    margin-right: 0;
+    margin-bottom: 30px;
+    width: 250px;
+}
+
+.slide-image img {
+    height: 200px;
+}
+
+.slide-title {
+    font-size: 1.5rem;
+}
+
+.slide-description {
+    font-size: .8rem;
+    margin-bottom: 20px;
+}
+
+.carousel-nav {
+    width: 40px;
+    height: 40px;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+.carousel-wrapper {
+height: 500px;
+}
+.coupons-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin: 0 16px;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+.coupon-content {
+    padding: 20px;
+}
+
+.main-content {
+    margin-right: 16px;
+}
+
+.action-section {
+    flex: 0 0 70px;
+    padding-left: 12px;
+}
+
+.claim-button {
+    padding: 12px 16px;
+    font-size: 0.85rem;
+}
+    .row {
+    flex-direction: column;
+}
+
+.card {
+    min-width: unset;
+    margin-bottom: 15px;
+}
+
+.card-title {
+    font-size: 20px;
+}
+
+.card-image {
+    width: 70px;
+    height: 60px;
+}
+.card.yellow .card-content{
+    gap: 110px;
+}
+
+.title{
+font-size: 2.25rem;
+}
+
+.percentage {
+font-size: 4.5rem;
+}
+
+.logo-18,
+.logo-19 {
+display: block;
+}
+}
+
+@media (max-width: 767px) {
+    #contenedorCupon .title{
+    font-size: 1.875rem;
     }
 
-    .carousel-container {
-        margin: 0 20px;
+    #contenedorCupon .percentage {
+    font-size: 3.75rem;
     }
-    
-    .slide-content {
-        flex-direction: column;
-        text-align: center;
-        padding: 30px 20px;
+
+    .logo-18,
+    .logo-19 {
+    display: none;
     }
-    
-    .slide-image {
-        flex: 0 0 auto;
-        margin-right: 0;
-        margin-bottom: 30px;
-        width: 250px;
+
+    .logo-20,
+    .logo-21 {
+    display: none;
     }
-    
-    .slide-image img {
-        height: 200px;
-    }
-    
-    .slide-title {
-        font-size: 1.5rem;
-    }
-    
-    .slide-description {
-        font-size: .8rem;
-        margin-bottom: 20px;
-    }
-    
-    .carousel-nav {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .prev {
-        left: 10px;
-    }
-    
-    .next {
-        right: 10px;
-    }
-    .carousel-wrapper {
-    height: 500px;
-    }
-    .coupons-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        margin: 0 16px;
-    }
-    
-    h1 {
-        font-size: 2rem;
-    }
-    
-    .coupon-content {
-        padding: 20px;
-    }
-    
-    .main-content {
-        margin-right: 16px;
-    }
-    
-    .action-section {
-        flex: 0 0 70px;
-        padding-left: 12px;
-    }
-    
-    .claim-button {
-        padding: 12px 16px;
-        font-size: 0.85rem;
-    }
-     .row {
-        flex-direction: column;
-    }
-    
-    .card {
-        min-width: unset;
-        margin-bottom: 15px;
-    }
-    
-    .card-title {
-        font-size: 20px;
-    }
-    
-    .card-image {
-        width: 70px;
-        height: 60px;
-    }
-    .card.yellow .card-content{
-        gap: 110px;
-    }
-    
-    
 }
 
 @media (max-width: 480px) {
-    .navbar {
-        padding: 12px 16px;
-    }
-    
-    .logo {
-        font-size: 20px;
-    }
-    
-    .menu {
-        right: -100%;
-        height: 200vh;
-    }
-    
-    .btn-text-full {
-        display: none;
-    }
-    
-    .btn-text-short {
-        display: inline;
-    }
-    
-    .sesion {
-        flex-direction: row;
-        gap: 8px;
-    }
-    
-    .btn-prueba,
-    .btn-sesion {
-        width: auto;
-        padding: 8px 12px;
-        font-size: 13px;
-    }
-    .carousel-wrapper {
-    height: 600px;
-    }
-    .slide-description {
-        font-size: .8rem;
-        margin-bottom: 10px;
-    }
-    .coupon-card{
-        width: 350px;
-    }
-    .discount {
-        font-size: 1.1rem;
-    }
-    .brand-name{
-    font-size: 1rem;
-    }
-    .offer-description{
-        font-size: 0.75rem;
-    }
-    .validity{
-        font-size: 0.65rem;
-    }
-    .claim-button{
-        font-size: 0.70rem;
-        padding: 8px 12px;
-    }
+.navbar {
+    padding: 12px 16px;
+}
 
-     .card {
-        padding: 20px;
-    }
-    
-    .card-description {
-        padding-right: 10px;
-    }
-    .container{
-        padding: 10px;
-    }
-    .card-content{
-        width: 340px;
-    }
-    .card-header{
-        width: 320px;
-    }
-    .row.row-2{
-        width: 380px;
-    }
-    .card.yellow .card-content{
-        gap: 90px;
-    }
+.logo {
+    font-size: 20px;
+}
+
+.menu {
+    right: -100%;
+    height: 200vh;
+}
+
+.btn-text-full {
+    display: none;
+}
+
+.btn-text-short {
+    display: inline;
+}
+
+.sesion {
+    flex-direction: row;
+    gap: 8px;
+}
+
+.btn-prueba,
+.btn-sesion {
+    width: auto;
+    padding: 8px 12px;
+    font-size: 13px;
+}
+.carousel-wrapper {
+height: 600px;
+}
+.slide-description {
+    font-size: .8rem;
+    margin-bottom: 10px;
+}
+.coupon-card{
+    width: 350px;
+}
+.discount {
+    font-size: 1.1rem;
+}
+.brand-name{
+font-size: 1rem;
+}
+.offer-description{
+    font-size: 0.75rem;
+}
+.validity{
+    font-size: 0.65rem;
+}
+.claim-button{
+    font-size: 0.70rem;
+    padding: 8px 12px;
+}
+
+.card {
+    padding: 10px;
+}
+
+.card-description {
+    padding-right: 10px;
+}
+.container{
+    padding: 10px;
+}
+.card-content{
+    width: 340px;
+}
+.card-header{
+    width: 320px;
+}
+.row.row-2{
+    width: 380px;
+}
+.card.yellow .card-content{
+    gap: 90px;
+}
 
 }
 
 @media (max-width: 360px) {
-    .navbar {
-        padding: 10px 12px;
-    }
-    
-    .logo {
-        font-size: 18px;
-    }
-    
-    .btn-prueba,
-    .btn-sesion {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
+.navbar {
+    padding: 10px 12px;
+}
 
-    .categoria {
-    flex: 1 1 100%;
-    max-width: 100%;
-    }
-    .coupon-card{
-        width: 330px;
-    }
-    .container{
-        padding: 10px;
-    }
+.logo {
+    font-size: 18px;
+}
 
-    .discount {
-        font-size: 1rem;
-    }
+.btn-prueba,
+.btn-sesion {
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+.categoria {
+flex: 1 1 100%;
+max-width: 100%;
+}
+.coupon-card{
+    width: 330px;
+}
+.container{
+    padding: 10px;
+}
+
+.discount {
+    font-size: 1rem;
+}
 }
 
 @keyframes fadeIn {
