@@ -119,7 +119,8 @@ export function listarMiembros(filtros = filtrosActuales) {
   if (filtros.Nombre) params.append("nombre", filtros.Nombre);
   if (filtros.Apellidos) params.append("apellidos", filtros.Apellidos);
   if (filtros.Telefono) params.append("telefono", filtros.Telefono);
-
+  params.append("usuarioId", usuarioId);
+  params.append("usuarioTipo", usuarioTipo);
   fetch("controladores/controladorNegocios.php", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -208,11 +209,6 @@ lista.forEach((miembro) => {
                 data-bs-target="#modalImagenes">
           <i class="bi bi-camera"></i>
         </button>
-        <button class="circle-btn bg-red-500 hover:bg-red-600 text-white btn-eliminar" 
-                title="Eliminar"
-                data-id="${miembro.ID_Negocio}">
-          <i class="bi bi-trash"></i>
-        </button>
         <button class="circle-btn bg-green-500 hover:bg-green-600 text-white btn-crear-horario" 
                 title="Crear Horario"
                 data-id="${miembro.ID_Negocio}" 
@@ -220,6 +216,16 @@ lista.forEach((miembro) => {
                 data-bs-target="#modalHorario">
           <i class="bi bi-clock"></i>
         </button>
+        ${
+        usuarioTipo === "admin" ? `
+        <button class="circle-btn bg-red-500 hover:bg-red-600 text-white btn-eliminar" 
+                title="Eliminar"
+                data-id="${miembro.ID_Negocio}">
+          <i class="bi bi-trash"></i>
+        </button>
+        ` : ''
+      }
+        
       </div>
     </div>
     `;
@@ -709,6 +715,7 @@ document.getElementById("formImagenes").addEventListener("submit", (e) => {
         alert("Imágenes guardadas correctamente");
         files = [];
         previewContainer.innerHTML = "";
+        listarMiembros();
         document.querySelector("#modalImagenes .btn-close").click();
       } else {
         alert("Error: " + data.msg);

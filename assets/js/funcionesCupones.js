@@ -87,8 +87,7 @@ export function listarPromociones(filtros = filtrosActuales) {
   // Pasar datos de sesión
   params.append("usuarioId", usuarioId);
   params.append("usuarioTipo", usuarioTipo);
-  console.log("Usuario ID:", usuarioId);
-  console.log("Usuario Tipo:", usuarioTipo);
+
   fetch("controladores/controladorCupones.php", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },

@@ -3,7 +3,7 @@ class Negocios
 {
 
 
-    public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = [])
+    public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = [], $usuarioId, $usuarioTipo)
     {
         $enlace = dbConectar();
         $offset = ($pagina - 1) * $registrosPorPagina;
@@ -27,7 +27,11 @@ FROM `negocios`
             $values[] = "%" . $filtros['Nombre'] . "%";
             $tipos .= "s";
         }
-        
+        if ($usuarioTipo === "negocio") {
+        $sql .= " AND usuarios.ID_Usuario = ?";
+        $values[] = $usuarioId;
+        $tipos .= "i";
+    }
 
        
 

@@ -63,20 +63,18 @@ public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = []
         $promociones[] = $row;
     }
 
-    // Total de registros (para paginación)
+    // Total de registros 
     $countSql = "SELECT COUNT(*) as total 
                  FROM promociones p
                  INNER JOIN negocios n ON p.ID_Negocio = n.ID_Negocio
                  WHERE 1=1";
 
-    // Si quieres que el total también respete filtros, replica los mismos filtros
     $countConsulta = $enlace->prepare($countSql);
     $countConsulta->execute();
     $countResult = $countConsulta->get_result();
     $totalRegistros = $countResult->fetch_assoc()["total"];
     $totalPaginas = ceil($totalRegistros / $registrosPorPagina);
 
-    // Cerrar conexiones
     $consulta->close();
     $countConsulta->close();
     $enlace->close();
