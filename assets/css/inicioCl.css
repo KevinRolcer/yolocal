@@ -513,7 +513,6 @@ svg{
 }
 
 /*Vista de cupones */
-
 #contenedorCupon {
     position: relative;
     height: 70vh;
@@ -563,6 +562,7 @@ svg{
 
 #contenedorCupon .logo {
     position: absolute;
+    z-index: 1;
 }
 
 .shadow-pink {
@@ -648,7 +648,7 @@ svg{
 
 .logo-13 {
     bottom: 5rem;
-    right: 50%;
+    right: 60%;
     width: 4rem;
 }
 
