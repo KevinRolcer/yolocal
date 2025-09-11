@@ -321,7 +321,9 @@
                         <div class="card-description">
                             Descripción
                         </div>
-                        <div class="card-image">imagen</div>
+                        <div class="card-image">
+                            <img src="assets/img/Cafeteria.jpg" alt="Cafeteria">
+                        </div>
                     </div>
                     <div class="card-footer">
                         <button class="card-button">Más detalles</button>
