@@ -91,10 +91,6 @@
                                         <span class="discount-badge">Mejor valorado en Cafeterías</span>
                                         <h2 class="slide-title">Cafeteria </h2>
                                         <p class="slide-description">Disfruta de la mejor cafeteria de San Martín. "Frase"</p>
-                                        <div>
-                                            <span class="discount-badge">Ubicación</span>
-
-                                        </div>
                                         <button class="slide-button">Ver negocio</button>
                                     </div>
                                 </div>
