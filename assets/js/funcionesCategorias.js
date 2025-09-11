@@ -67,7 +67,7 @@ export function listarMiembros(filtros = filtrosActuales) {
   filtrosActuales = filtros; 
 
   let params = new URLSearchParams();
-  params.append("ope", "LISTAUSUARIOS");
+  params.append("ope", "LISTAUSUARIOS"); 
   params.append("pagina", paginaActual);
   params.append("registrosPorPagina", registrosPorPagina);
 
