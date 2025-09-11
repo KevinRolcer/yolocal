@@ -836,3 +836,11 @@ body {
   height: 0 !important;
   overflow: hidden !important;
 }
+.btn-green {
+  background: #27ae60;
+  color: white;
+}
+.btn-red {
+  background: rgba(255, 0, 0, 0.801);
+  color: white;
+}

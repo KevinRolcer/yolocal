@@ -160,7 +160,9 @@ FROM `negocios`
                 CorreoN        = ?, 
                 SitioWeb       = ?, 
                 Facebook       = ?, 
-                Instagram      = ?
+                Instagram      = ?,
+                TikTok         = ?,
+                Relevancia     = ?
             WHERE ID_Negocio = ?";
 
     $consulta = $enlace->prepare($sql);
@@ -170,7 +172,7 @@ FROM `negocios`
 
     // Bindeamos los parámetros
     $consulta->bind_param(
-        "ssssssssi",
+        "sssssssssii",
         $datos["nombre_negocio"],
         $datos["DescripcionN"],
         $datos["Direccion"],
@@ -179,6 +181,8 @@ FROM `negocios`
         $datos["SitioWeb"],
         $datos["Facebook"],
         $datos["Instagram"],
+        $datos["TikTok"],
+        $datos["Relevancia"],
         $datos["ID_Negocio"]
     );
 
@@ -234,5 +238,14 @@ FROM `negocios`
     }
 
     return $negocios;
+}
+public function CambiarEstatus($ID_Negocio, $estatus)
+{
+    $enlace = dbConectar();
+    $sql = "UPDATE negocios SET estado = ? WHERE ID_Negocio = ?";
+    $consulta = $enlace->prepare($sql);
+    $consulta->bind_param("ii", $estatus, $ID_Negocio);
+
+    return $consulta->execute();
 }
 }

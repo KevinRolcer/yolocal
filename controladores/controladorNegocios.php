@@ -83,7 +83,9 @@ if (isset($_POST["ope"])) {
             "CorreoN"        => $_POST["CorreoNEdit"] ?? '',
             "SitioWeb"       => $_POST["SitioWebEdit"] ?? '',
             "Facebook"       => $_POST["FacebookEdit"] ?? '',
-            "Instagram"      => $_POST["InstagramEdit"] ?? ''
+            "Instagram"      => $_POST["InstagramEdit"] ?? '',
+            "TikTok"         => $_POST["TikTokEdit"] ?? '',
+            "Relevancia"     => $_POST["RelevanciaEdit"] ?? ''
         );
 
         $status = $usu->Editar($datos);
@@ -118,7 +120,17 @@ if (isset($_POST["ope"])) {
         $status = $usu->Eliminar($_POST["ID_Negocio"]);
         $info = array("success" => $status);
         echo json_encode($info);
-    } else {
+    }
+    elseif ($ope == "CAMBIARESTATUS" && isset($_POST["ID_Negocio"], $_POST["estado"])) {
+    $id = intval($_POST["ID_Negocio"]);
+    $estado = intval($_POST["estado"]);
+
+    $success = $usu->CambiarEstatus($id, $estado);
+
+    echo json_encode([
+        "success" => $success
+    ]);
+} else {
         echo json_encode(array("success" => false, "msg" => "Operación no válida o parámetros insuficientes"));
     }
 } else {

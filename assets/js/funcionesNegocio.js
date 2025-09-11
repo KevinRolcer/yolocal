@@ -8,22 +8,22 @@ import {
 document.addEventListener("click", (e) => {
   const btn = e.target.closest(".toggle-horarios");
   if (!btn) return;
-  
+
   const idNegocio = btn.dataset.id;
   const contenedorHorarios = document.getElementById(`horarios-${idNegocio}`);
   const icono = btn.querySelector("i");
-  
+
   if (!contenedorHorarios) return;
-  
+
   // Verificar estado actual ANTES de hacer toggle
   const estaOculto = contenedorHorarios.classList.contains("oculto"); // Cambiar aquí
-  
+
   // Alternar visibilidad
   contenedorHorarios.classList.toggle("oculto"); // Y aquí
-  
+
   // Si ESTABA oculto (ahora se muestra), rotar ícono
   icono.classList.toggle("rotate-180", estaOculto);
-  
+
   // Cargar horarios solo una vez cuando se muestre
   if (estaOculto && !contenedorHorarios.dataset.loaded) {
     listarHorarios(idNegocio, contenedorHorarios);
@@ -51,8 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (listaUsuarios) {
     listaUsuarios.addEventListener("click", (event) => {
-     
-
       // Busca el botón más cercano que tenga alguna de las clases de acción
       const target = event.target.closest(
         ".btn-editar-imagen, .btn-eliminar, .btn-crear-horario, .btn-editar"
@@ -154,35 +152,49 @@ function renderizarMiembros(lista) {
         `;
     return;
   }
-  let htmlCompleto = '';
+  let htmlCompleto = "";
 
-lista.forEach((miembro) => {
+  lista.forEach((miembro) => {
     htmlCompleto += `
     <div class="negocio-card shadow-lg rounded-3 p-4 mb-4 bg-white">
       
       <!-- Encabezado -->
       <div class="negocio-header flex items-center justify-between mb-4">
-        <h3 class="text-2xl font-bold text-gray-800">${miembro.nombre_negocio}</h3>
+        <h3 class="text-2xl font-bold text-gray-800">${miembro.nombre_negocio
+      }</h3>
       </div>
 
       <!-- Información -->
       <div class="negocio-info text-sm text-gray-700 space-y-2 mb-4">
-        <p><strong>Propietario:</strong> ${miembro.Nombre} ${miembro.ApellidoP} ${miembro.ApellidoM}</p>
+        <p><strong>Propietario:</strong> ${miembro.Nombre} ${miembro.ApellidoP
+      } ${miembro.ApellidoM}</p>
         <p>${miembro.DescripcionN}</p>
-        <p><strong>Teléfono:</strong> <a href="tel:${miembro.Telefono}" class="text-blue-600 hover:underline">${miembro.Telefono}</a></p>
-        <p><a href="mailto:${miembro.Correo}" class="text-blue-600 hover:underline">${miembro.CorreoN}</a></p>
+        <p><strong>Teléfono:</strong> <a href="tel:${miembro.Telefono
+      }" class="text-blue-600 hover:underline">${miembro.Telefono}</a></p>
+        <p><a href="mailto:${miembro.Correo
+      }" class="text-blue-600 hover:underline">${miembro.CorreoN}</a></p>
         <p><strong>Categoría:</strong> ${miembro.Descripcion}</p>
       </div>
 
       <!-- Redes Sociales -->
       <div class="negocio-social">
-        ${miembro.SitioWeb ? `<a href="${miembro.SitioWeb}" target="_blank" class="social-btn"><i class="bi bi-globe"></i></a>` : ""}
-        ${miembro.Facebook ? `<a href="${miembro.Facebook}" target="_blank" class="social-btn"><i class="bi bi-facebook"></i></a>` : ""}
-        ${miembro.Instagram ? `<a href="${miembro.Instagram}" target="_blank" class="social-btn"><i class="bi bi-instagram"></i></a>` : ""}
+        ${miembro.SitioWeb
+        ? `<a href="${miembro.SitioWeb}" target="_blank" class="social-btn"><i class="bi bi-globe"></i></a>`
+        : ""
+      }
+        ${miembro.Facebook
+        ? `<a href="${miembro.Facebook}" target="_blank" class="social-btn"><i class="bi bi-facebook"></i></a>`
+        : ""
+      }
+        ${miembro.Instagram
+        ? `<a href="${miembro.Instagram}" target="_blank" class="social-btn"><i class="bi bi-instagram"></i></a>`
+        : ""
+      }
       </div>
 
       <!-- Carrusel de imágenes -->
-      <div class="negocio-imagenes mt-3 text-center" id="imagenes-${miembro.ID_Negocio}"></div>
+      <div class="negocio-imagenes mt-3 text-center" id="imagenes-${miembro.ID_Negocio
+      }"></div>
       
       <!-- Botón Horarios -->
       <div class="toggle-horarios" data-id="${miembro.ID_Negocio}">
@@ -191,7 +203,8 @@ lista.forEach((miembro) => {
       </div>
 
       <!-- Contenedor de horarios -->
-      <div class="negocio-horarios oculto mt-2" id="horarios-${miembro.ID_Negocio}"></div>
+      <div class="negocio-horarios oculto mt-2" id="horarios-${miembro.ID_Negocio
+      }"></div>
       
       <!-- Acciones -->
       <div class="negocio-actions flex justify-center gap-4">
@@ -209,35 +222,40 @@ lista.forEach((miembro) => {
                 data-bs-target="#modalImagenes">
           <i class="bi bi-camera"></i>
         </button>
-        <button class="circle-btn bg-green-500 hover:bg-green-600 text-white btn-crear-horario" 
-                title="Crear Horario"
-                data-id="${miembro.ID_Negocio}" 
-                data-bs-toggle="modal" 
-                data-bs-target="#modalHorario">
-          <i class="bi bi-clock"></i>
-        </button>
-        ${
-        usuarioTipo === "admin" ? `
-        <button class="circle-btn bg-red-500 hover:bg-red-600 text-white btn-eliminar" 
-                title="Eliminar"
-                data-id="${miembro.ID_Negocio}">
-          <i class="bi bi-trash"></i>
-        </button>
-        ` : ''
+        <button class="circle-btn text-white btn-crear-horario" 
+        style="background-color: #c084fc; border: none;" 
+        title="Crear Horario"
+        data-id="${miembro.ID_Negocio}" 
+        data-bs-toggle="modal" 
+        data-bs-target="#modalHorario">
+  <i class="bi bi-clock"></i>
+</button>
+
+
+        ${usuarioTipo === "admin"
+        ? `
+        <button class="circle-btn btn-toggle ${miembro.estado == 1 ? "btn-green" : "btn-red"
+        }" 
+            data-id="${miembro.ID_Negocio}" 
+            data-status="${miembro.estado}">
+            <i class="bi bi-power"></i>
+          </button>
+        `
+        : ""
       }
         
       </div>
     </div>
     `;
-});
+  });
 
-// Segundo: insertar todo el HTML de una vez
-contenedor.innerHTML = htmlCompleto;
+  // Segundo: insertar todo el HTML de una vez
+  contenedor.innerHTML = htmlCompleto;
 
-// Tercero: cargar las imágenes para todos los negocios
-lista.forEach((miembro) => {
+  // Tercero: cargar las imágenes para todos los negocios
+  lista.forEach((miembro) => {
     listarImagenes(miembro.ID_Negocio);
-});
+  });
 }
 function renderizarError(mensaje) {
   const contenedor = document.querySelector("#ListaMiembros");
@@ -744,8 +762,8 @@ function listarImagenes(idNegocio) {
         <div id="${carouselId}" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
             ${data.imagenes
-              .map(
-                (ruta, index) => `
+            .map(
+              (ruta, index) => `
               <div class="carousel-item ${index === 0 ? "active" : ""}">
   <img src="${ruta}" 
        class="d-block w-100" 
@@ -753,8 +771,8 @@ function listarImagenes(idNegocio) {
        alt="Imagen negocio">
 </div>
             `
-              )
-              .join("")}
+            )
+            .join("")}
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true" ></span>
@@ -807,16 +825,16 @@ function listarHorarios(idNegocio) {
           </thead>
           <tbody>
             ${data.horarios
-              .map(
-                (horario) => `
+            .map(
+              (horario) => `
               <tr>
                 <td>${horario.dia_semana}</td>
                 <td>${convertirHora(horario.hora_apertura)}</td>
                 <td>${convertirHora(horario.hora_cierre)}</td>
               </tr>
             `
-              )
-              .join("")}
+            )
+            .join("")}
           </tbody>
         </table>
       `;
@@ -826,3 +844,35 @@ function listarHorarios(idNegocio) {
     })
     .catch((err) => console.error("Error cargando horarios:", err));
 }
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".btn-toggle");
+  if (!btn) return;
+
+  const id = btn.dataset.id;
+  const estatus = btn.dataset.status == "1" ? 0 : 1; // si está en 1 lo pasamos a 0, y viceversa
+
+  fetch("controladores/controladorNegocios.php", {
+    method: "POST",
+    body: new URLSearchParams({
+      ope: "CAMBIARESTATUS",
+      ID_Negocio: id,
+      estado: estatus,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        Swal.fire("Éxito", "Estatus actualizado", "success");
+        listarMiembros(); // refrescar la lista
+      } else {
+        Swal.fire(
+          "Error",
+          data.msg || "No se pudo cambiar el estatus",
+          "error"
+        );
+      }
+    })
+    .catch((error) => {
+      Swal.fire("Error", "Problema con el servidor: " + error.message, "error");
+    });
+});

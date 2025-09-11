@@ -6,7 +6,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="../assets/js/funcionesNegocio.js?v=1.4.7"></script>
+    <script type="module" src="../assets/js/funcionesNegocio.js?v=1.5.3"></script>
     <link rel="stylesheet" href="../assets/css/negociosAdmin.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <script src="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.js"></script>
@@ -215,14 +215,27 @@
                                         <label for="FacebookEdit" class="form-label">Facebook</label>
                                         <input type="url" class="form-control" id="FacebookEdit" name="FacebookEdit" maxlength="100">
                                     </div>
-
+                                    
                                     <!-- Instagram -->
                                     <div class="col-md-6">
                                         <label for="InstagramEdit" class="form-label">Instagram</label>
                                         <input type="url" class="form-control" id="InstagramEdit" name="InstagramEdit" maxlength="100">
                                     </div>
-
-
+                                    <div class="col-md-6">
+                                        <label for="TikTokEdit" class="form-label">TikTok</label>
+                                        <input type="url" class="form-control" id="TikTokEdit" name="TikTokEdit" maxlength="100">
+                                    </div>
+                                     <?php if ($_SESSION["tipo"] === "admin"): ?>
+                                    <div class="col-12">
+                                        <label for="RelevanciaEdit" class="form-label">Relevancia</label>
+                                        <select name="RelevanciaEdit" id="RelevanciaEdit" class="form-select" required>
+                                            <option value="">Seleccione una categoría...</option>
+                                            <option value="1">Normal</option>
+                                            <option value="2">Destacado</option>
+                                            <option value="3">Super Destacado</option>
+                                        </select>
+                                    </div>
+                                    <?php endif; ?> 
 
                                 </div>
 
