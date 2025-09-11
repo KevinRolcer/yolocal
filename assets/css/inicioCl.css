@@ -802,9 +802,12 @@ svg{
     justify-content: center;
     margin-left: auto;
 }
-.card-image img{
+.card.yellow .card-image img{
     width: 500px;
-    
+}
+.card-image img{
+    width: 100px;
+    border-radius: 10px;
 }
 .card-footer {
     display: flex;

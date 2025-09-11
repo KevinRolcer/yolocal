@@ -389,7 +389,7 @@
                         <div class="card-description">
                             Explora mas tipos de negocios que forman parte de Yolocal
                         </div>
-                        <div class="card-image">
+                        <div id="cardLogo" class="card-image">
                             <img src="assets/img/LogoYolocal.png" alt="">
                         </div>
                     </div>
