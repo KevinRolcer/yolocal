@@ -115,10 +115,13 @@
 
             </div>
             <?php if ($_SESSION["tipo"] === "admin"): ?>
-                <div class="gB">
+                <div class="d-flex justify-content-end gap-2 mb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPromocion">
                         Nueva Promoción
                     </button>
+                    <a href="../controladores/ReporteCupones.php" class="btn btn-success" target="_blank">
+                        Descargar Reporte
+                    </a>
                 </div>
             <?php endif; ?>
 

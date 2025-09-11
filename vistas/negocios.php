@@ -97,21 +97,25 @@
                     <span>Nombre Negocio</span> <input type="text" id="nombreM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
                 </div>
                 <?php if ($_SESSION["tipo"] === "admin"): ?>
-                <div class="filter" data-filter="numero">
-                    <span>Propietario</span> <input type="text" id="numM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
-                </div>
+                    <div class="filter" data-filter="numero">
+                        <span>Propietario</span> <input type="text" id="numM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
+                    </div>
                 <?php endif; ?>
                 <div class="filter-miembros">
                     <button id="limpiarM" class="btn btn-secondary">Limpiar Filtros</button>
                 </div>
             </div>
             <?php if ($_SESSION["tipo"] === "admin"): ?>
-            <div class="gB">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregar">
-                    Nuevo Negocio
-                </button>
-            </div>
+                <div class="d-flex justify-content-end gap-2 mb-3">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregar">
+                        Nuevo Negocio
+                    </button>
+                    <a href="../controladores/ReporteNegocios.php" class="btn btn-success" target="_blank">
+                        Descargar Reporte
+                    </a>
+                </div>
             <?php endif; ?>
+
 
             <!-- Modal AGREGAR -->
             <div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
@@ -156,82 +160,82 @@
                 </div>
             </div>
 
-<!-- Modal EDITAR -->
-<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+            <!-- Modal EDITAR -->
+            <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
 
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalEditarLabel">Editar Negocio</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalEditarLabel">Editar Negocio</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
 
-      <div class="modal-body">
-        <form id="formEditar">
-          <input type="hidden" id="ID_Negocio" name="ID_Negocio">
+                        <div class="modal-body">
+                            <form id="formEditar">
+                                <input type="hidden" id="ID_Negocio" name="ID_Negocio">
 
-          <div class="row g-3">
+                                <div class="row g-3">
 
-            <!-- Nombre -->
-            <div class="col-md-6">
-              <label for="NombreEdit" class="form-label">Nombre</label>
-              <input type="text" class="form-control" id="nombre_negocioEdit" name="nombre_negocioEdit" maxlength="50" required>
+                                    <!-- Nombre -->
+                                    <div class="col-md-6">
+                                        <label for="NombreEdit" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="nombre_negocioEdit" name="nombre_negocioEdit" maxlength="50" required>
+                                    </div>
+
+                                    <!-- Teléfono -->
+                                    <div class="col-md-6">
+                                        <label for="TelefonoEdit" class="form-label">Teléfono</label>
+                                        <input type="tel" class="form-control" id="TelefonoEdit" name="TelefonoEdit" maxlength="15">
+                                    </div>
+                                    <!-- Dirección -->
+                                    <div class="col-12">
+                                        <label for="DireccionEdit" class="form-label">Dirección</label>
+                                        <input type="text" class="form-control" id="DireccionEdit" name="DireccionEdit" maxlength="150">
+                                    </div>
+
+                                    <!-- Descripción (textarea grande) -->
+                                    <div class="col-12">
+                                        <label for="DescripcionNEdit" class="form-label">Descripción</label>
+                                        <textarea class="form-control" id="DescripcionNEdit" name="DescripcionNEdit" rows="4" maxlength="500" placeholder="Ingrese la descripción del negocio"></textarea>
+                                    </div>
+                                    <!-- Correo -->
+                                    <div class="col-md-6">
+                                        <label for="CorreoNEdit" class="form-label">Correo</label>
+                                        <input type="email" class="form-control" id="CorreoNEdit" name="CorreoNEdit" maxlength="50">
+                                    </div>
+
+                                    <!-- Sitio Web -->
+                                    <div class="col-md-6">
+                                        <label for="SitioWebEdit" class="form-label">Sitio Web</label>
+                                        <input type="url" class="form-control" id="SitioWebEdit" name="SitioWebEdit" maxlength="100">
+                                    </div>
+
+                                    <!-- Facebook -->
+                                    <div class="col-md-6">
+                                        <label for="FacebookEdit" class="form-label">Facebook</label>
+                                        <input type="url" class="form-control" id="FacebookEdit" name="FacebookEdit" maxlength="100">
+                                    </div>
+
+                                    <!-- Instagram -->
+                                    <div class="col-md-6">
+                                        <label for="InstagramEdit" class="form-label">Instagram</label>
+                                        <input type="url" class="form-control" id="InstagramEdit" name="InstagramEdit" maxlength="100">
+                                    </div>
+
+
+
+                                </div>
+
+                                <div class="text-end mt-4">
+                                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-
-            <!-- Teléfono -->
-            <div class="col-md-6">
-              <label for="TelefonoEdit" class="form-label">Teléfono</label>
-              <input type="tel" class="form-control" id="TelefonoEdit" name="TelefonoEdit" maxlength="15">
-            </div>
-             <!-- Dirección -->
-            <div class="col-12">
-              <label for="DireccionEdit" class="form-label">Dirección</label>
-              <input type="text" class="form-control" id="DireccionEdit" name="DireccionEdit" maxlength="150">
-            </div>
-
-            <!-- Descripción (textarea grande) -->
-            <div class="col-12">
-              <label for="DescripcionNEdit" class="form-label">Descripción</label>
-              <textarea class="form-control" id="DescripcionNEdit" name="DescripcionNEdit" rows="4" maxlength="500" placeholder="Ingrese la descripción del negocio"></textarea>
-            </div>
-            <!-- Correo -->
-            <div class="col-md-6">
-              <label for="CorreoNEdit" class="form-label">Correo</label>
-              <input type="email" class="form-control" id="CorreoNEdit" name="CorreoNEdit" maxlength="50">
-            </div>
-
-            <!-- Sitio Web -->
-            <div class="col-md-6">
-              <label for="SitioWebEdit" class="form-label">Sitio Web</label>
-              <input type="url" class="form-control" id="SitioWebEdit" name="SitioWebEdit" maxlength="100">
-            </div>
-
-            <!-- Facebook -->
-            <div class="col-md-6">
-              <label for="FacebookEdit" class="form-label">Facebook</label>
-              <input type="url" class="form-control" id="FacebookEdit" name="FacebookEdit" maxlength="100">
-            </div>
-
-            <!-- Instagram -->
-            <div class="col-md-6">
-              <label for="InstagramEdit" class="form-label">Instagram</label>
-              <input type="url" class="form-control" id="InstagramEdit" name="InstagramEdit" maxlength="100">
-            </div>
-
-           
-
-          </div>
-
-          <div class="text-end mt-4">
-            <button type="submit" class="btn btn-primary">Actualizar</button>
-          </div>
-
-        </form>
-      </div>
-
-    </div>
-  </div>
-</div>
 
 
 
@@ -247,7 +251,7 @@
 
                         <div class="modal-body">
                             <form id="formHorario">
-                               
+
 
 
                                 <input type="hidden" id="ID_NegocioHorario" name="ID_Negocio">
@@ -323,7 +327,7 @@
                 </div>
             </div>
 
-           
+
 
             <!-- Tabla de Usuarios -->
             <div class="mt-3">
