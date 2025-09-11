@@ -12,18 +12,24 @@ if (isset($_POST["ope"])) {
     // listar 
     if ($ope == "LISTAUSUARIOS") {
         header('Content-Type: application/json'); // <-- esta línea es clave
+        $usuarioId = $_POST['usuarioId'] ?? null;
+        $usuarioTipo = $_POST['usuarioTipo'] ?? null;
 
+        if (!$usuarioId || !$usuarioTipo) {
+            echo json_encode(["success" => false, "msg" => "Usuario no autenticado."]);
+            exit();
+        }
         $pagina = isset($_POST["pagina"]) ? intval($_POST["pagina"]) : 1;
         $registrosPorPagina = isset($_POST["registrosPorPagina"]) ? intval($_POST["registrosPorPagina"]) : 10;
 
         $filtros = [
             "ID_Usuario" => $_POST["id"] ?? null,
             "Nombre" => $_POST["nombre"] ?? null,
-           
+
             "Correo" => $_POST["telefono"] ?? null
         ];
 
-        $lista = $usu->ListarTODOS($pagina, $registrosPorPagina, $filtros);
+        $lista = $usu->ListarTODOS($pagina, $registrosPorPagina, $filtros, $usuarioId, $usuarioTipo);
 
         echo json_encode([
             "success" => true,
@@ -51,14 +57,13 @@ if (isset($_POST["ope"])) {
             "ID_Usuario" => $_POST["ID_Usuario"],
             "nombre_negocio" => $_POST["Nombre"],
             "ID_Categoria" => $_POST["ID_Categoria"]
-            
+
         );
 
         $status = $usu->Agregar($datos);
         $info = array("success" => $status);
         echo json_encode($info);
-    }
-    elseif ($ope == "OBTENERCLASESDIA") {
+    } elseif ($ope == "OBTENERCLASESDIA") {
         $membresias = $usu->ObtenerClasesDia();  // Llamar a la función en el modelo
         $info = array(
             "success" => true,
@@ -69,28 +74,27 @@ if (isset($_POST["ope"])) {
     // editar  usuario 
     elseif ($ope == "EDITAR" && isset($_POST["ID_Negocio"])) {
 
-    $datos = array(
-        "ID_Negocio" => $_POST["ID_Negocio"],
-        "nombre_negocio" => $_POST["nombre_negocioEdit"] ?? '',
-        "DescripcionN"   => $_POST["DescripcionNEdit"] ?? '',
-        "Direccion"      => $_POST["DireccionEdit"] ?? '',
-        "Telefono"       => $_POST["TelefonoEdit"] ?? '',
-        "CorreoN"        => $_POST["CorreoNEdit"] ?? '',
-        "SitioWeb"       => $_POST["SitioWebEdit"] ?? '',
-        "Facebook"       => $_POST["FacebookEdit"] ?? '',
-        "Instagram"      => $_POST["InstagramEdit"] ?? ''
-    );
+        $datos = array(
+            "ID_Negocio" => $_POST["ID_Negocio"],
+            "nombre_negocio" => $_POST["nombre_negocioEdit"] ?? '',
+            "DescripcionN"   => $_POST["DescripcionNEdit"] ?? '',
+            "Direccion"      => $_POST["DireccionEdit"] ?? '',
+            "Telefono"       => $_POST["TelefonoEdit"] ?? '',
+            "CorreoN"        => $_POST["CorreoNEdit"] ?? '',
+            "SitioWeb"       => $_POST["SitioWebEdit"] ?? '',
+            "Facebook"       => $_POST["FacebookEdit"] ?? '',
+            "Instagram"      => $_POST["InstagramEdit"] ?? ''
+        );
 
-    $status = $usu->Editar($datos);
+        $status = $usu->Editar($datos);
 
-    $info = array(
-        "success" => $status,
-        "usuario" => $datos  // opcional: enviar los datos de vuelta al JS
-    );
+        $info = array(
+            "success" => $status,
+            "usuario" => $datos  // opcional: enviar los datos de vuelta al JS
+        );
 
-    echo json_encode($info);
-}
- elseif ($ope === "BUSCAR_MIEMBRO") {
+        echo json_encode($info);
+    } elseif ($ope === "BUSCAR_MIEMBRO") {
         if (isset($_POST["ID_Miembro"])) {
             $miembro = $usu->buscarMiembroPorID($_POST["ID_Miembro"]);
             if ($miembro) {
@@ -101,15 +105,13 @@ if (isset($_POST["ope"])) {
         } else {
             echo json_encode(["success" => false, "msg" => "ID de miembro no proporcionado."]);
         }
-    }
-    elseif ($ope == "OBTENERMEMBRESIAS") {
-         $negocios = $usu->ObtenerNegocios();  // Llamar a la función en el modelo
-    $info = array(
-        "success" => true,
-        "negocios" => $negocios
-    );
-    echo json_encode($info);
-
+    } elseif ($ope == "OBTENERMEMBRESIAS") {
+        $negocios = $usu->ObtenerNegocios();  // Llamar a la función en el modelo
+        $info = array(
+            "success" => true,
+            "negocios" => $negocios
+        );
+        echo json_encode($info);
     }
     // eliminar 
     elseif ($ope == "ELIMINAR" && isset($_POST["ID_Negocio"])) {

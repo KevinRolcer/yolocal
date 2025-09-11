@@ -16,7 +16,7 @@ if (isset($_POST["ope"])) {
     // Validar sesión
     
         $usuarioId = $_POST['usuarioId'] ?? null;
-$usuarioTipo = $_POST['usuarioTipo'] ?? null;
+        $usuarioTipo = $_POST['usuarioTipo'] ?? null;
 
 if (!$usuarioId || !$usuarioTipo) {
     echo json_encode(["success" => false, "msg" => "Usuario no autenticado."]);

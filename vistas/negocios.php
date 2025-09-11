@@ -6,11 +6,15 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesNegocio.js?v=1.4.5"></script>
-    <link rel="stylesheet" href="../assets/css/negocios.css">
+    <script type="module" src="../assets/js/funcionesNegocio.js?v=1.4.7"></script>
+    <link rel="stylesheet" href="../assets/css/negociosAdmin.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <script src="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.js"></script>
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
+    <script>
+        const usuarioId = <?= json_encode($_SESSION["ID_Usuario"]) ?>;
+        const usuarioTipo = <?= json_encode($_SESSION["tipo"]) ?>;
+    </script>
 </head>
 
 <body class="bg-light">
@@ -92,21 +96,22 @@
                 <div class="filter" data-filter="nombre">
                     <span>Nombre Negocio</span> <input type="text" id="nombreM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
                 </div>
-
+                <?php if ($_SESSION["tipo"] === "admin"): ?>
                 <div class="filter" data-filter="numero">
                     <span>Propietario</span> <input type="text" id="numM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
                 </div>
+                <?php endif; ?>
                 <div class="filter-miembros">
                     <button id="limpiarM" class="btn btn-secondary">Limpiar Filtros</button>
                 </div>
             </div>
-
+            <?php if ($_SESSION["tipo"] === "admin"): ?>
             <div class="gB">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregar">
                     Nuevo Negocio
                 </button>
             </div>
-
+            <?php endif; ?>
 
             <!-- Modal AGREGAR -->
             <div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
