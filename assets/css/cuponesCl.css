@@ -1,0 +1,428 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    font-family: "Poppins", sans-serif;
+    padding: 0;
+    margin: 0;
+
+}
+
+:root {
+  --principal: rgb(76, 6, 130);
+  --principal2: rgb(97, 63, 155);
+  --secunadrio: rgb( 255, 205, 0);
+  --complementario: rgb(235, 170, 4);
+  --blanco: rgb( 255, 255, 255);
+  --texto: #555;
+  --texto2: #333;
+  --negro: #000000;
+  --lineas: #b8babe;
+
+}
+
+
+
+
+svg{
+    width: 20px;
+    height: 20px;
+    color: var(--complementario);
+}
+/* Header */
+.encabezado {
+    background-color: white;
+    border-bottom: 1px solid #e6e6e6;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--principal);
+    z-index: 1001;
+}
+.logo img{
+    width: 44px;
+}
+
+
+/* Menú hamburguesa */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1001;
+}
+
+.hamburger-line {
+    width: 24px;
+    height: 3px;
+    background-color: #191919;
+    margin: 2px 0;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.menu-toggle.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-toggle.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Menú principal */
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding:0px 10px;
+}
+.menu .texto-menu{
+    font-size: 14px;
+}
+
+.enlace {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #191919;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 0;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.enlace:hover {
+    color: var(--principal2);
+}
+
+.enlace.active {
+    color: var(--principal);
+}
+
+.enlace.active::after {
+    content: '';
+    position: absolute;
+    bottom: -13px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--principal);
+}
+
+.icono-menu {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+    flex-shrink: 0;
+}
+
+/* Submenús */
+.submenu {
+    position: relative;
+}
+
+.submenu-contenido {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+    margin-top: 8px;
+}
+
+.submenu:hover .submenu-contenido {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.submenu-contenido a {
+    display: block;
+    padding: 12px 16px;
+    color: #191919;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.submenu-contenido a:hover {
+    background-color: #f8f8f8;
+}
+
+.dropdown-arrow {
+    width: 12px;
+    height: 12px;
+    margin-left: 4px;
+    transition: transform 0.2s ease;
+}
+
+.submenu:hover .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* Botones en el menú*/
+.sesion {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.btn-prueba {
+    background: linear-gradient(135deg, var(--secunadrio), var(--principal));
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-prueba:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px var(--texto);
+}
+
+.btn-sesion {
+    color: var(--principal2);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-sesion:hover {
+    background-color: #dadbdc;
+}
+
+/* Texto corto/largo para botones */
+.btn-text-short {
+    display: none;
+}
+
+.btn-text-full {
+    display: inline;
+}
+
+/* Tooltips para móvil */
+.tooltip {
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.tooltip::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid #333;
+}
+/* Sección de cupones */
+
+.coupons-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 1150px; 
+    margin: 0 auto;
+    padding: 0 16px; 
+    margin-bottom: 30px;
+}
+
+.coupon-card 
+{
+    
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.coupon-card:hover 
+{
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+.coupon-card::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: var(--principal);
+    border-radius: 50%;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    z-index: 2;
+}
+
+.coupon-card::after {
+    content: '';
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: var(--complementario);
+    border-radius: 50%;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    z-index: 2;
+}
+
+.perforation-line {
+    position: absolute;
+    right: 40%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(
+        to bottom,
+        var(--lineas) 0px,
+        var(--lineas) 8px,
+        transparent 8px,
+        transparent 16px
+    );
+}
+.coupon-content {
+    display: flex;
+    align-items: center;
+    padding: 24px;
+    position: relative;
+}
+
+.main-content {
+    flex: 1;
+    margin-right: 24px;
+}
+
+
+.brand-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--texto2);
+    margin-bottom: 4px;
+    letter-spacing: -0.025em;
+}
+.offer-description {
+    font-size: 0.95rem;
+    color: var(--texto);
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+.discount-section {
+    margin-bottom: 16px;
+}
+
+.discount {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(25deg, var(--principal), var(--complementario));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+
+.validity {
+    font-size: 0.85rem;
+    color: var(--texto2);
+    font-weight: 500;
+}
+.action-section {
+    flex: 0 0 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 16px;
+}
+
+.claim-button {
+    background: var(--principal2);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: none;
+    letter-spacing: 0.025em;
+    white-space: nowrap;
+}
+.claim-button:hover {
+    transform: translateY(-2px);
+    background:  linear-gradient(135deg, var(--secunadrio), var(--principal));
+}
+.limited-badge {
+    display: inline-block;
+    background: rgba(255, 205, 0, 0.15);
+    color: var(--complementario);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}

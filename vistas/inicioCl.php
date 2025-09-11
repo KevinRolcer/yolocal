@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio Yolocal</title>
-
-    <link rel="stylesheet" href="../assets/css/inicioCl.css">
-</head>
+    <link rel="stylesheet" href="assets/css/inicioCl.css">
 <body>
     <header class="encabezado">
         <nav class="navbar">
             <div class="logo">
-                <img src="../assets/img/LogoYolocal.png" alt="local">
+                <img src="assets/img/LogoYolocal.png" alt="">
             </div>
             
             <!-- Menú móvil-->
@@ -35,7 +33,7 @@
                     <span class="texto-menu">Negocios</span>
                 </a>
 
-                <a href="#" class="enlace" data-tooltip="Promociones">
+                <a href="vistas/cupones.html" class="enlace" data-tooltip="Promociones">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75v16.5M2.25 12h19.5M6.375 17.25a4.875 4.875 0 0 0 4.875-4.875V12m6.375 5.25a4.875 4.875 0 0 1-4.875-4.875V12m-9 8.25h16.5a1.5 1.5 0 0 0 1.5-1.5V5.25a1.5 1.5 0 0 0-1.5-1.5H3.75a1.5 1.5 0 0 0-1.5 1.5v13.5a1.5 1.5 0 0 0 1.5 1.5Zm12.621-9.44c-1.409 1.41-4.242 1.061-4.242 1.061s-.349-2.833 1.06-4.242a2.25 2.25 0 0 1 3.182 3.182ZM10.773 7.63c1.409 1.409 1.06 4.242 1.06 4.242S9 12.22 7.592 10.811a2.25 2.25 0 1 1 3.182-3.182Z" />
                     </svg>
@@ -87,7 +85,7 @@
                             <div class="slide-background bg-gradient-1">
                                 <div class="slide-content">
                                     <div class="slide-image">
-                                        <img src="../assets/img/Cafeteria.jpg" alt="Cafeteria">
+                                        <img src="assets/img/Cafeteria.jpg" alt="Cafeteria">
                                     </div>
                                     <div class="slide-info">
                                         <span class="discount-badge">Mejor valorado en Cafeterías</span>
@@ -278,48 +276,96 @@
             </p>
 
         </div>
-        <div class="categoria-seccion">
-            <div class="categoria">
-                <a href="">
-                    <div class="catalogo">
-                        <h3>Catalogo de negocios</h3>
-                    </div>
+         <div class="container">
 
-                </a>
+            <div class="row row-3">
+                <div class="card white">
+                    <div class="card-header">
+                        <div class="card-title">Categoria</div>
+                        <div class="card-subtitle">Subtitulo</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            Descripción
+                        </div>
+                        <div class="card-image">imagen</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="card-button">Más detalles</button>
+                    </div>
+                </div>
+
+                <div class="card purple">
+                    <div class="card-header">
+                        <div class="card-title">Categoria</div>
+                        <div class="card-subtitle">Subtitulo</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            Descripción
+                        </div>
+                        <div class="card-image">img</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="card-button">Más detalles</button>
+                    </div>
+                </div>
+
+                <div class="card white">
+                    <div class="card-header">
+                        <div class="card-title">Categoria</div>
+                        <div class="card-subtitle">Subtitulo</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            Descripción
+                        </div>
+                        <div class="card-image">imagen</div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="card-button">Más detalles</button>
+                    </div>
+                </div>
             </div>
-            <div class="categoria">
-                <a href="">
-                    <div class="negocio">
-                        <p>Restaurantes</p>
-                    </div>
 
-                </a>
-            </div>
-            <div class="categoria">
-                <a href="">
-                    <div class="negocio">
-                        <p>Papelerías</p>
+            <div class="row row-2">
+                <div class="card white">
+                    <div class="card-header">
+                        <div class="card-title">Categoria</div>
+                        <div class="card-subtitle">Subtitulo</div>
                     </div>
-
-                </a>
-            </div>
-            <div class="categoria">
-                <a href="">
-                    <div class="negocio">
-                        <p>Tiendas</p>
+                    <div class="card-content">
+                        <div class="card-description">
+                            Descripción
+                        </div>
+                        <div class="card-image">imagen</div>
                     </div>
-
-                </a>
-            </div>
-            <div class="categoria">
-                <a href="">
-                    <div class="negocio">
-                        <p>Ferreterías</p>
+                    <div class="card-footer">
+                        <button class="card-button">Más detalles</button>
                     </div>
+                </div>
 
-                </a>
+                <div class="card yellow">
+                    <div class="card-header">
+                        <div class="card-title">Categorias</div>
+                        <div class="card-subtitle">Negocios</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-description">
+                            Explora mas tipos de negocios que forman parte de Yolocal
+                        </div>
+                        <div class="card-image">
+                            <img src="assets/img/LogoYolocal.png" alt="">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="card-button">Más detalles</button>
+                    </div>
+                </div>
             </div>
         </div>
+
+
         <div class="descripcionC">
             <h2>Cupones</h2>
             <p>Aprovecha de los cupones 
@@ -327,135 +373,12 @@
             </p>
         </div>
 
-        <div class="coupons-grid">
-            <!-- Tarjeta de cupon -->
-            <div class="coupon-card">
-                <div class="perforation-line"></div>
-                <div class="coupon-content">
-                    <div class="main-content">
-                        <div class="limited-badge">Solo lunes</div>
-                        <div class="brand-name">Café del sol</div>
-                        <div class="offer-description">Cupón de descuento</div>
-                        <div class="discount-section">
-                            <div class="discount">$30</div>
-                            <div class="validity">Válido hasta 31 Agosto 2025</div>
-                        </div>
-                    </div>
-                    <div class="action-section">
-                        <button class="claim-button" onclick="claimCoupon('McDonald\'s', '$10')">
-                            Reclamar
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="coupon-card">
-                <div class="perforation-line"></div>
-                <div class="coupon-content">
-                    <div class="main-content">
-                        <div class="limited-badge">Condición</div>
-                        <div class="brand-name">Negocio</div>
-                        <div class="offer-description">Descripción</div>
-                        <div class="discount-section">
-                            <div class="discount">Beneficio</div>
-                            <div class="validity">Fecha límite</div>
-                        </div>
-                    </div>
-                    <div class="action-section">
-                        <button class="claim-button" onclick="claimCoupon('KFC', '25% OFF')">
-                            Reclamar
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="coupon-card">
-                <div class="perforation-line"></div>
-                <div class="coupon-content">
-                    <div class="main-content">
-                        <div class="limited-badge">Libretas</div>
-                        <div class="brand-name">Papelería</div>
-                        <div class="offer-description">Compra 1, llévate 1 gratis</div>
-                        <div class="discount-section">
-                            <div class="discount">1 Gratis</div>
-                            <div class="validity">Válido hasta 05 Abril 2025</div>
-                        </div>
-                    </div>
-                    <div class="action-section">
-                        <button class="claim-button" onclick="claimCoupon('Starbucks', '1 FREE')">
-                            Reclamar
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="coupon-card">
-                <div class="perforation-line"></div>
-                <div class="coupon-content">
-                    <div class="main-content">
-                        <div class="limited-badge">Condición</div>
-                        <div class="brand-name">Negocio</div>
-                        <div class="offer-description">Descripción</div>
-                        <div class="discount-section">
-                            <div class="discount">Beneficio</div>
-                            <div class="validity">Fecha límite</div>
-                        </div>
-                    </div>
-                    <div class="action-section">
-                        <button class="claim-button" onclick="claimCoupon('Domino\'s', '50% OFF')">
-                            Reclamar
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="coupon-card">
-                <div class="perforation-line"></div>
-                <div class="coupon-content">
-                    <div class="main-content">
-                        <div class="limited-badge">Condición</div>
-                        <div class="brand-name">Negocio</div>
-                        <div class="offer-description">Descripción</div>
-                        <div class="discount-section">
-                            <div class="discount">Beneficio</div>
-                            <div class="validity">Fecha límite</div>
-                        </div>
-                    </div>
-                    <div class="action-section">
-                        <button class="claim-button" onclick="claimCoupon('Subway', '$15')">
-                            Reclamar
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="coupon-card">
-                <div class="perforation-line"></div>
-                <div class="coupon-content">
-                    <div class="main-content">
-                        <div class="limited-badge">Condición</div>
-                        <div class="brand-name">Negocio</div>
-                        <div class="offer-description">Descripción</div>
-                        <div class="discount-section">
-                            <div class="discount">Beneficio</div>
-                            <div class="validity">Fecha límite</div>
-                        </div>
-                    </div>
-                    <div class="action-section">
-                        <button class="claim-button" onclick="claimCoupon('Pizza Hut', '30% OFF')">
-                            Reclamar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
 
     </div>
-    <div class="descripcionC">
-            <a href="#">Ver más cupones</a>
-    </div>
+    
 
-    <script src="../assets/js/menuCl.js"></script>
-    <script src="../assets/js/carruselCl.js"></script>
+    <script src="assets/js/menuCl.js"></script>
+    <script src="assets/js/carruselCl.js"></script>
 </body>
 </html>
