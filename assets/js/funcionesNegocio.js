@@ -204,6 +204,11 @@ function renderizarMiembros(lista) {
             ? `<a href="${miembro.Instagram}" target="_blank" class="social-btn"><i class="bi bi-instagram"></i></a>`
             : ""
         }
+        ${
+          miembro.TikTok
+            ? `<a href="${miembro.TikTok}" target="_blank" class="social-btn"><i class="bi bi-tiktok"></i></a>`
+            : ""
+        }
       </div>
 
       <!-- Carrusel de imágenes -->

@@ -8,7 +8,7 @@
 
         if(!isset($connection)) 
         {
-            $config = parse_ini_file('config.ini'); 
+            $config = parse_ini_file('configS.ini'); 
             $conexion = mysqli_connect($config['servidor'],$config['usuario'],$config['pass'],$config['bbdd']);
             $query="set CHARSET 'utf8'";
 			$conexion->query($query);
