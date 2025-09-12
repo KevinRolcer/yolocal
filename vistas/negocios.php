@@ -130,11 +130,11 @@
                                 <div class="row g-3">
                                     <div class="mb-3 d-flex align-items-center">
                                         <div class="me-3 flex-grow-1">
-                                            <label for="ID_Usuario" class="form-label"># Miembro</label>
+                                            <label for="ID_Usuario" class="form-label"># Usuario</label>
                                             <input type="number" class="form-control" id="ID_Usuario" name="ID_Usuario" placeholder="Escriba el número" required>
                                         </div>
                                         <div class="flex-grow-2">
-                                            <label for="nombreMiembro" class="form-label">Nombre del Miembro</label>
+                                            <label for="nombreMiembro" class="form-label">Nombre del Usuario</label>
                                             <input type="text" class="form-control" id="nombreMiembro" placeholder="Nombre" readonly>
                                         </div>
                                     </div>
@@ -145,7 +145,7 @@
                                         <div class="valid-feedback"></div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="ID_Categoria" class="form-label">Tipo de Membresía</label>
+                                        <label for="ID_Categoria" class="form-label">Tipo de Negocio</label>
                                         <select class="form-control" id="ID_Categoria" name="ID_Categoria" required>
 
                                         </select>
