@@ -163,3 +163,309 @@ body {
     font-weight: bold;
     font-size: 18px;
 }
+@media (max-width: 1024px) {
+    .container {
+        max-width: 900px;
+    }
+    
+    .left-section {
+        padding: 30px;
+    }
+    
+    .logo-icon {
+        max-width: 200px;
+    }
+    
+    .right-section {
+        padding: 50px 40px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 968px) {
+    body {
+        padding: 15px;
+    }
+    
+    .container {
+        flex-direction: column;
+        max-width: 500px;
+        min-height: auto;
+    }
+
+    .left-section {
+        min-height: 200px;
+        padding: 30px;
+    }
+
+    .logo-icon {
+        max-width: 150px;
+    }
+
+    .right-section {
+        padding: 40px 30px;
+    }
+
+    .login-form h2 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Tablets pequeñas y móviles grandes */
+@media (max-width: 768px) {
+    .left-section {
+        min-height: 180px;
+        padding: 25px;
+    }
+    
+    .logo-icon {
+        max-width: 130px;
+    }
+    
+    .right-section {
+        padding: 35px 25px;
+    }
+    
+    .login-form h2 {
+        font-size: 1.7rem;
+    }
+}
+
+/* Móviles */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        border-radius: 15px;
+        max-width: 100%;
+    }
+
+    .left-section {
+        min-height: 150px;
+        padding: 20px;
+    }
+
+    .logo-icon {
+        max-width: 120px;
+    }
+
+    .right-section {
+        padding: 30px 25px;
+    }
+
+    .login-form h2 {
+        font-size: 1.6rem;
+    }
+
+    .login-form p {
+        font-size: 14px;
+    }
+
+    .input-group {
+        margin-bottom: 20px;
+    }
+
+    .input-group input {
+        padding: 12px 16px;
+        font-size: 15px;
+    }
+
+    .input-group label {
+        font-size: 13px;
+    }
+
+    .login-btn {
+        padding: 14px;
+        font-size: 15px;
+    }
+
+    .forgot-link {
+        font-size: 13px;
+    }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+    .container {
+        border-radius: 12px;
+    }
+    
+    .left-section {
+        min-height: 130px;
+        padding: 15px;
+    }
+    
+    .logo-icon {
+        max-width: 100px;
+    }
+    
+    .right-section {
+        padding: 25px 20px;
+    }
+
+    .login-form h2 {
+        font-size: 1.5rem;
+        margin-bottom: 6px;
+    }
+
+    .login-form p {
+        font-size: 13px;
+        margin-bottom: 25px;
+    }
+
+    .input-group {
+        margin-bottom: 18px;
+    }
+
+    .input-group input {
+        padding: 11px 14px;
+        font-size: 14px;
+    }
+
+    .input-group label {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .login-btn {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .forgot-link {
+        font-size: 12px;
+        margin-bottom: 20px;
+    }
+
+    .invalid-feedback,
+    .valid-feedback {
+        font-size: 11px;
+    }
+}
+
+/* Móviles muy pequeños */
+@media (max-width: 400px) {
+    body {
+        padding: 8px;
+    }
+    
+    .left-section {
+        min-height: 120px;
+        padding: 12px;
+    }
+    
+    .logo-icon {
+        max-width: 90px;
+    }
+    
+    .right-section {
+        padding: 20px 15px;
+    }
+
+    .login-form h2 {
+        font-size: 1.4rem;
+    }
+
+    .input-group input {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .login-btn {
+        padding: 11px;
+        font-size: 13px;
+    }
+}
+
+/* Orientación horizontal en móviles */
+@media (max-width: 968px) and (orientation: landscape) and (max-height: 600px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        flex-direction: row;
+        min-height: auto;
+        max-height: 90vh;
+    }
+    
+    .left-section {
+        flex: 0.4;
+        min-height: auto;
+        padding: 20px;
+    }
+    
+    .logo-icon {
+        max-width: 100px;
+    }
+    
+    .right-section {
+        flex: 0.6;
+        padding: 20px;
+    }
+    
+    .login-form h2 {
+        font-size: 1.4rem;
+        margin-bottom: 5px;
+    }
+    
+    .login-form p {
+        margin-bottom: 15px;
+        font-size: 13px;
+    }
+    
+    .input-group {
+        margin-bottom: 15px;
+    }
+    
+    .input-group input {
+        padding: 10px 14px;
+    }
+    
+    .login-btn {
+        padding: 10px;
+    }
+    
+    .forgot-link {
+        margin-bottom: 15px;
+    }
+}
+
+/* Animaciones y transiciones mejoradas */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Estados hover para elementos interactivos */
+@media (hover: hover) {
+    .input-group input:hover {
+        border-color: #667eea;
+    }
+    
+    .login-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

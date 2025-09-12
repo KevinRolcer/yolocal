@@ -215,7 +215,7 @@
                                         <label for="FacebookEdit" class="form-label">Facebook</label>
                                         <input type="url" class="form-control" id="FacebookEdit" name="FacebookEdit" maxlength="100">
                                     </div>
-                                    
+
                                     <!-- Instagram -->
                                     <div class="col-md-6">
                                         <label for="InstagramEdit" class="form-label">Instagram</label>
@@ -229,17 +229,17 @@
                                         <label for="IconoNegocioEdit" class="form-label">Logo del Negocio</label>
                                         <input type="file" class="form-control" id="IconoNegocioEdit" name="IconoNegocioEdit" maxlength="100">
                                     </div>
-                                     <?php if ($_SESSION["tipo"] === "admin"): ?>
-                                    <div class="col-12">
-                                        <label for="RelevanciaEdit" class="form-label">Relevancia</label>
-                                        <select name="RelevanciaEdit" id="RelevanciaEdit" class="form-select" required>
-                                            <option value="">Seleccione una categoría...</option>
-                                            <option value="1">Normal</option>
-                                            <option value="2">Destacado</option>
-                                            <option value="3">Super Destacado</option>
-                                        </select>
-                                    </div>
-                                    <?php endif; ?> 
+                                    <?php if ($_SESSION["tipo"] === "admin"): ?>
+                                        <div class="col-12">
+                                            <label for="RelevanciaEdit" class="form-label">Relevancia</label>
+                                            <select name="RelevanciaEdit" id="RelevanciaEdit" class="form-select" required>
+                                                <option value="">Seleccione una categoría...</option>
+                                                <option value="1">Normal</option>
+                                                <option value="2">Destacado</option>
+                                                <option value="3">Super Destacado</option>
+                                            </select>
+                                        </div>
+                                    <?php endif; ?>
 
                                 </div>
 
@@ -360,7 +360,7 @@
 
         </div>
 
-
+        <script src="../assets/js/main.js"></script>
 </body>
 
 </html>
