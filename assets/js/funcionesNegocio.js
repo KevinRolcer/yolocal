@@ -1,10 +1,10 @@
 import {
   validaCorreo,
   validaLargo,
-  validaRango,
+ 
   validaSoloLetras,
   validaContrasena,
-} from "./validaciones.js?v=3.8.1";
+} from "./validaciones.js?v=3.8.2";
 document.addEventListener("click", (e) => {
   const btn = e.target.closest(".toggle-horarios");
   if (!btn) return;

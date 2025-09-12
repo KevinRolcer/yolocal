@@ -1,10 +1,4 @@
-import {
-  validaCorreo,
-  validaLargo,
-  validaRango,
-  validaSoloLetras,
-  validaContrasena,
-} from "./validaciones.js?v=3.8.1";
+
 document.addEventListener("DOMContentLoaded", () => {
   // agregar usuario
   const formUsuario = document.querySelector("#formPromocion");
