@@ -8,7 +8,7 @@
     ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-    <script type="module" src="assets/js/funcionesCategorias.js?v=1.3.4"></script>
+    <script type="module" src="assets/js/funcionesCategorias.js?v=<?php echo time(); ?>"></script>
     <link rel="stylesheet" href="../assets/css/categorias.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <link href="../assets/img/LogoYolocal.png" rel="icon" />

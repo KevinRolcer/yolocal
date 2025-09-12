@@ -9,8 +9,6 @@
     include_once("head.php");
     ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script type="module" src="assets/js/acceso.js?v=1.9.1"></script>
-    <script src="js/bodymovin.js" type="text/javascript"></script>
     <script src="https://kit.fontawesome.com/726544f644.js" crossorigin="anonymous"></script>
   
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
@@ -141,12 +139,6 @@
 
     <div id="modalOverlay" class="window-overlay"></div>
 
-    <script src="../asset/js/scriptIA.js?v=2.3"></script>
-    <!-- Enlace al script de AOS -->
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
 
     <script src="../assets/js/notificaciones.js"></script>
     <script src="../assets/js/main.js"></script>
