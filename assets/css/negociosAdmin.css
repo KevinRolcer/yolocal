@@ -844,3 +844,20 @@ body {
   background: rgba(255, 0, 0, 0.801);
   color: white;
 }
+.negocio-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
+.icon-placeholder {
+  font-size: 16px;
+  color: #9ca3af; /* Tailwind's gray-400 */
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

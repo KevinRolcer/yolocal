@@ -159,41 +159,56 @@ function renderizarMiembros(lista) {
     <div class="negocio-card shadow-lg rounded-3 p-4 mb-4 bg-white">
       
       <!-- Encabezado -->
-      <div class="negocio-header flex items-center justify-between mb-4">
-        <h3 class="text-2xl font-bold text-gray-800">${miembro.nombre_negocio
-      }</h3>
-      </div>
+ 
+  <div class="d-flex align-items-center mb-4">
+  ${
+    miembro.Rutaicono
+      ? `<img src="${miembro.Rutaicono}" alt="icono ${miembro.nombre_negocio}" 
+           class="me-3 rounded-circle" style="width: 60px; height: 60px;" />`
+      : `<i class="bi bi-building fs-2 me-3"></i>`
+  }
+  <h3 class="h4 fw-bold text-dark mb-0">${miembro.nombre_negocio}</h3>
+</div>
+
+
 
       <!-- Información -->
       <div class="negocio-info text-sm text-gray-700 space-y-2 mb-4">
-        <p><strong>Propietario:</strong> ${miembro.Nombre} ${miembro.ApellidoP
-      } ${miembro.ApellidoM}</p>
+        <p><strong>Propietario:</strong> ${miembro.Nombre} ${
+      miembro.ApellidoP
+    } ${miembro.ApellidoM}</p>
         <p>${miembro.DescripcionN}</p>
-        <p><strong>Teléfono:</strong> <a href="tel:${miembro.Telefono
-      }" class="text-blue-600 hover:underline">${miembro.Telefono}</a></p>
-        <p><a href="mailto:${miembro.Correo
-      }" class="text-blue-600 hover:underline">${miembro.CorreoN}</a></p>
+        <p><strong>Teléfono:</strong> <a href="tel:${
+          miembro.Telefono
+        }" class="text-blue-600 hover:underline">${miembro.Telefono}</a></p>
+        <p><a href="mailto:${
+          miembro.Correo
+        }" class="text-blue-600 hover:underline">${miembro.CorreoN}</a></p>
         <p><strong>Categoría:</strong> ${miembro.Descripcion}</p>
       </div>
 
       <!-- Redes Sociales -->
       <div class="negocio-social">
-        ${miembro.SitioWeb
-        ? `<a href="${miembro.SitioWeb}" target="_blank" class="social-btn"><i class="bi bi-globe"></i></a>`
-        : ""
-      }
-        ${miembro.Facebook
-        ? `<a href="${miembro.Facebook}" target="_blank" class="social-btn"><i class="bi bi-facebook"></i></a>`
-        : ""
-      }
-        ${miembro.Instagram
-        ? `<a href="${miembro.Instagram}" target="_blank" class="social-btn"><i class="bi bi-instagram"></i></a>`
-        : ""
-      }
+        ${
+          miembro.SitioWeb
+            ? `<a href="${miembro.SitioWeb}" target="_blank" class="social-btn"><i class="bi bi-globe"></i></a>`
+            : ""
+        }
+        ${
+          miembro.Facebook
+            ? `<a href="${miembro.Facebook}" target="_blank" class="social-btn"><i class="bi bi-facebook"></i></a>`
+            : ""
+        }
+        ${
+          miembro.Instagram
+            ? `<a href="${miembro.Instagram}" target="_blank" class="social-btn"><i class="bi bi-instagram"></i></a>`
+            : ""
+        }
       </div>
 
       <!-- Carrusel de imágenes -->
-      <div class="negocio-imagenes mt-3 text-center" id="imagenes-${miembro.ID_Negocio
+      <div class="negocio-imagenes mt-3 text-center" id="imagenes-${
+        miembro.ID_Negocio
       }"></div>
       
       <!-- Botón Horarios -->
@@ -203,7 +218,8 @@ function renderizarMiembros(lista) {
       </div>
 
       <!-- Contenedor de horarios -->
-      <div class="negocio-horarios oculto mt-2" id="horarios-${miembro.ID_Negocio
+      <div class="negocio-horarios oculto mt-2" id="horarios-${
+        miembro.ID_Negocio
       }"></div>
       
       <!-- Acciones -->
@@ -228,22 +244,22 @@ function renderizarMiembros(lista) {
         data-id="${miembro.ID_Negocio}" 
         data-bs-toggle="modal" 
         data-bs-target="#modalHorario">
-  <i class="bi bi-clock"></i>
-</button>
+          <i class="bi bi-clock"></i>
+        </button>
 
-
-        ${usuarioTipo === "admin"
-        ? `
-        <button class="circle-btn btn-toggle ${miembro.estado == 1 ? "btn-green" : "btn-red"
+        ${
+          usuarioTipo === "admin"
+            ? `
+        <button class="circle-btn btn-toggle ${
+          miembro.estado == 1 ? "btn-green" : "btn-red"
         }" 
             data-id="${miembro.ID_Negocio}" 
             data-status="${miembro.estado}">
             <i class="bi bi-power"></i>
-          </button>
+        </button>
         `
-        : ""
-      }
-        
+            : ""
+        }
       </div>
     </div>
     `;
@@ -762,8 +778,8 @@ function listarImagenes(idNegocio) {
         <div id="${carouselId}" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
             ${data.imagenes
-            .map(
-              (ruta, index) => `
+              .map(
+                (ruta, index) => `
               <div class="carousel-item ${index === 0 ? "active" : ""}">
   <img src="${ruta}" 
        class="d-block w-100" 
@@ -771,8 +787,8 @@ function listarImagenes(idNegocio) {
        alt="Imagen negocio">
 </div>
             `
-            )
-            .join("")}
+              )
+              .join("")}
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true" ></span>
@@ -803,7 +819,6 @@ function listarHorarios(idNegocio) {
         const contenedor = document.getElementById(`horarios-${idNegocio}`);
         contenedor.innerHTML = "";
 
-        // 🔥 función para convertir hora 24h → AM/PM
         const convertirHora = (hora) => {
           if (!hora) return "";
           const [h, m] = hora.split(":");
@@ -825,16 +840,16 @@ function listarHorarios(idNegocio) {
           </thead>
           <tbody>
             ${data.horarios
-            .map(
-              (horario) => `
+              .map(
+                (horario) => `
               <tr>
                 <td>${horario.dia_semana}</td>
                 <td>${convertirHora(horario.hora_apertura)}</td>
                 <td>${convertirHora(horario.hora_cierre)}</td>
               </tr>
             `
-            )
-            .join("")}
+              )
+              .join("")}
           </tbody>
         </table>
       `;

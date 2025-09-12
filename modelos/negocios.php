@@ -147,11 +147,25 @@ FROM `negocios`
 
         return $consulta->execute();
     }
-    public function Editar($datos)
+    public function Editar($datos, $archivoIcono = null)
 {
     $enlace = dbConectar();
+    $rutaIconoFinal = $datos["Icono"]; // valor por defecto, mantiene el anterior
 
-    // Preparar SQL dinámico para todos los campos
+    if ($archivoIcono && $archivoIcono["error"] === UPLOAD_ERR_OK) {
+        $directorio = __DIR__ . "/../assets/uploads/iconos/";
+        if (!is_dir($directorio)) {
+            mkdir($directorio, 0777, true);
+        }
+
+        $nombreArchivo = uniqid("icono_") . "_" . basename($archivoIcono["name"]);
+        $rutaServidor  = $directorio . $nombreArchivo;
+
+        if (move_uploaded_file($archivoIcono["tmp_name"], $rutaServidor)) {
+            $rutaIconoFinal = "../assets/uploads/iconos/" . $nombreArchivo;
+        }
+    }
+
     $sql = "UPDATE negocios SET 
                 nombre_negocio = ?, 
                 DescripcionN   = ?, 
@@ -162,17 +176,14 @@ FROM `negocios`
                 Facebook       = ?, 
                 Instagram      = ?,
                 TikTok         = ?,
-                Relevancia     = ?
+                Relevancia     = ?,
+                Rutaicono      = ?
             WHERE ID_Negocio = ?";
 
     $consulta = $enlace->prepare($sql);
-    if (!$consulta) {
-        throw new Exception("Error en la preparación de la consulta: " . $enlace->error);
-    }
 
-    // Bindeamos los parámetros
     $consulta->bind_param(
-        "sssssssssii",
+        "sssssssssisi",
         $datos["nombre_negocio"],
         $datos["DescripcionN"],
         $datos["Direccion"],
@@ -183,11 +194,14 @@ FROM `negocios`
         $datos["Instagram"],
         $datos["TikTok"],
         $datos["Relevancia"],
+        $rutaIconoFinal,
         $datos["ID_Negocio"]
     );
 
     return $consulta->execute();
 }
+
+
 
     public function cambiarClave($idUsuario, $claveEncriptada)
     {

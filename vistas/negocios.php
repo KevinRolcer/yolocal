@@ -6,7 +6,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="../assets/js/funcionesNegocio.js?v=1.5.3"></script>
+    <script type="module" src="../assets/js/funcionesNegocio.js?v=1.5.5"></script>
     <link rel="stylesheet" href="../assets/css/negociosAdmin.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <script src="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.js"></script>
@@ -224,6 +224,10 @@
                                     <div class="col-md-6">
                                         <label for="TikTokEdit" class="form-label">TikTok</label>
                                         <input type="url" class="form-control" id="TikTokEdit" name="TikTokEdit" maxlength="100">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="IconoNegocioEdit" class="form-label">Logo del Negocio</label>
+                                        <input type="file" class="form-control" id="IconoNegocioEdit" name="IconoNegocioEdit" maxlength="100">
                                     </div>
                                      <?php if ($_SESSION["tipo"] === "admin"): ?>
                                     <div class="col-12">
