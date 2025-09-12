@@ -128,7 +128,7 @@ export function listarMiembros(filtros = filtrosActuales) {
     .then((data) => {
       if (!data.success) {
         console.error("Error al cargar miembros:", data.msg);
-        renderizarError("No se pudieron cargar los miembros.");
+        renderizarError("No se pudieron cargar los negocios.");
         return;
       }
       renderizarMiembros(data.lista);
@@ -147,7 +147,7 @@ function renderizarMiembros(lista) {
   if (!lista || lista.length === 0) {
     contenedor.innerHTML = `
             <div class="no-results">
-                <p>No se encuentra ningún miembro con los filtros aplicados.</p>
+                <p>No se encuentra ningún negocio con los filtros aplicados.</p>
             </div>
         `;
     return;

@@ -1,10 +1,10 @@
 import {
   validaCorreo,
   validaLargo,
-  validaRango,
+  
   validaSoloLetras,
   validaContrasena,
-} from "./validaciones.js?v=3.8.1";
+} from "./validaciones.js?v=3.8.2";
 document.addEventListener("DOMContentLoaded", () => {
   NomUsuRep();
 
@@ -25,8 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!validaSoloLetras(ApellidoP)) errores++;
       if (!validaSoloLetras(ApellidoM)) errores++;
       if (!validaCorreo(correo)) errores++;
-      if (!validaRango(clave, 5, 16)) errores++;
-      if (!validaContrasena(clave)) errores++;
+      
+    
+      if (!validaContrasena(clave, 8, 16)) errores++;
 
       if (errores == 0) agregarUsuario();
     });
@@ -56,8 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let claveC = document.querySelector("#ClaveNueva");
         let claveCC = document.querySelector("#ConfirmarClave");
-        if (!validaRango(claveC, 8, 16)) erroresC++;
-        if (!validaRango(claveCC, 8, 16)) erroresC++;
+        
         if (!validaContrasena(claveC)) erroresC++;
         if (!validaContrasena(claveCC)) erroresC++;
         if (erroresC == 0) actualizarClave();

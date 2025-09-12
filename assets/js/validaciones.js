@@ -79,18 +79,7 @@ export function validaLargo(elemento, largo) {
     }
 }
 
-export function validaRango(elemento, min, max) {
-    if (elemento.value === "") {
-        mostrarMensaje(elemento, "El campo es obligatorio", false);
-        return false;
-    } else if (elemento.value.length < min || elemento.value.length > max) {
-        mostrarMensaje(elemento, `Debe ser de mínimo ${min} caracteres y máximo ${max} caracteres!`, false);
-        return false;
-    } else {
-        mostrarMensaje(elemento, "Correcto!", true);
-        return true;
-    }
-}
+
 export function validaSoloLetras(elemento) {
     let validLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
 
@@ -105,14 +94,25 @@ export function validaSoloLetras(elemento) {
         return true;
     }
 }
-export function validaContrasena(elemento) {
+export function validaContrasena(elemento, min, max) {
     let validContrasena = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/;
 
     if (elemento.value === "") {
         mostrarMensaje(elemento, "El campo es obligatorio", false);
         return false;
+    } else if (elemento.value.length < min || elemento.value.length > max) {
+        mostrarMensaje(
+            elemento,
+            `Debe tener entre ${min} y ${max} caracteres!`,
+            false
+        );
+        return false;
     } else if (!validContrasena.test(elemento.value)) {
-        mostrarMensaje(elemento, "Debe contener al menos un carácter especial!", false);
+        mostrarMensaje(
+            elemento,
+            "Debe contener al menos un carácter especial!",
+            false
+        );
         return false;
     } else {
         mostrarMensaje(elemento, "Correcto!", true);
