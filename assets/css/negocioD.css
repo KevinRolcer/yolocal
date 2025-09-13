@@ -1,0 +1,520 @@
+/* Import de Swiper CSS */
+@import url('https://unpkg.com/swiper/swiper-bundle.min.css');
+
+/* Variables de colores Yolocal */
+:root {
+  --principal: rgb(76, 6, 130);
+  --principal2: rgb(97, 63, 155);
+  --secundario: rgb(255, 205, 0);
+  --complementario: rgb(235, 170, 4);
+  --blanco: rgb(255, 255, 255);
+  --texto: #555;
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    color: var(--texto);
+    line-height: 1.6;
+}
+
+/* Header - manteniendo consistencia con Yolocal */
+.encabezado {
+    background: var(--blanco);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.enlace {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--texto);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.enlace:hover {
+    color: var(--principal);
+    background-color: rgba(76, 6, 130, 0.1);
+}
+
+.enlace.active {
+    color: var(--principal);
+    background-color: rgba(76, 6, 130, 0.15);
+}
+
+.enlace svg {
+    width: 20px;
+    height: 20px;
+}
+
+.submenu {
+    position: relative;
+}
+
+.submenu-contenido {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    background: var(--blanco);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 1rem;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.submenu:hover .submenu-contenido {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.submenu-contenido a {
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: var(--texto);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.submenu-contenido a:hover {
+    background-color: rgba(76, 6, 130, 0.1);
+    color: var(--principal);
+}
+
+.dropdown-arrow {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+}
+
+.submenu:hover .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.sesion {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn-prueba, .btn-sesion {
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.btn-prueba {
+    background: var(--secundario);
+    color: var(--principal);
+}
+
+.btn-prueba:hover {
+    background: var(--complementario);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 205, 0, 0.3);
+}
+
+.btn-sesion {
+    color: var(--principal);
+    border-color: var(--principal);
+    background: transparent;
+}
+
+.btn-sesion:hover {
+    background: var(--principal);
+    color: var(--blanco);
+}
+
+/* Menú móvil */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.hamburger-line {
+    width: 25px;
+    height: 3px;
+    background-color: var(--texto);
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+/* Container principal */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+/* Card principal - diseño limpio y amigable */
+.detalle-card {
+    background: var(--blanco);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+/* Carrusel de imágenes - estilo limpio */
+.swiper-container.mi-carrusel {
+    width: 100%;
+    height: 400px;
+    position: relative;
+}
+
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Ocultar botones de navegación del carrusel */
+.swiper-button-next,
+.swiper-button-prev {
+    display: none;
+}
+
+/* Hacer que el carrusel sea clickeable en los lados */
+.swiper-container {
+    cursor: pointer;
+}
+
+.swiper-slide {
+    user-select: none;
+}
+
+/* Paginación del carrusel */
+.swiper-pagination-bullet {
+    background: rgba(76, 6, 130, 0.3);
+    opacity: 1;
+    width: 10px;
+    height: 10px;
+}
+
+.swiper-pagination-bullet-active {
+    background: var(--principal);
+    transform: scale(1.2);
+}
+
+/* Contenido del negocio */
+.detalle-contenido {
+    padding: 2.5rem;
+}
+
+.categoria-tag {
+    display: inline-block;
+    background: var(--principal);
+    color: var(--blanco);
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+}
+
+.detalle-contenido h1 {
+    font-size: 2.5rem;
+    color: var(--principal);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.detalle-descripcion {
+    font-size: 1.1rem;
+    color: var(--texto);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 4px solid var(--secundario);
+}
+
+/* Iconos sociales - estilo limpio */
+.social-icons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--principal);
+    color: var(--blanco);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+    background: var(--principal2);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(76, 6, 130, 0.3);
+}
+
+.social-icons svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Secciones de información */
+.info-seccion {
+    background: var(--blanco);
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-left: 4px solid var(--secundario);
+    transition: all 0.3s ease;
+}
+
+.info-seccion:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.info-seccion h2 {
+    color: var(--principal);
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.lista-horarios {
+    list-style: none;
+    padding: 0;
+}
+
+.lista-horarios li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lista-horarios li:last-child {
+    border-bottom: none;
+}
+
+.lista-horarios strong {
+    color: var(--principal);
+    font-weight: 600;
+    min-width: 100px;
+}
+
+.info-seccion p {
+    margin-bottom: 0.75rem;
+    color: var(--texto);
+    line-height: 1.6;
+}
+
+.info-seccion p:last-child {
+    margin-bottom: 0;
+}
+
+.info-seccion strong {
+    color: var(--principal);
+    font-weight: 600;
+}
+
+.info-seccion a {
+    color: var(--principal);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.info-seccion a:hover {
+    color: var(--principal2);
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 1.5rem;
+    }
+    
+    .swiper-container.mi-carrusel {
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem;
+    }
+    
+    .menu-toggle {
+        display: flex;
+    }
+    
+    .menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--blanco);
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .menu.active {
+        display: flex;
+    }
+    
+    .sesion {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .btn-text-full {
+        display: none;
+    }
+    
+    .btn-text-short {
+        display: inline;
+    }
+    
+    .container {
+        margin: 1rem auto;
+        padding: 0 1rem;
+    }
+    
+    .swiper-container.mi-carrusel {
+        height: 280px;
+    }
+    
+    .detalle-contenido {
+        padding: 2rem 1.5rem;
+    }
+    
+    .detalle-contenido h1 {
+        font-size: 2rem;
+    }
+    
+    .social-icons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .info-seccion {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .detalle-contenido h1 {
+        font-size: 1.75rem;
+    }
+    
+    .detalle-descripcion {
+        font-size: 1rem;
+        padding: 1rem;
+    }
+    
+    .info-seccion {
+        padding: 1rem;
+    }
+    
+    .lista-horarios li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .social-icons a {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* Animación suave al cargar */
+.detalle-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.enlace:focus,
+.btn-prueba:focus,
+.btn-sesion:focus,
+.social-icons a:focus {
+    outline: 2px solid var(--secundario);
+    outline-offset: 2px;
+}
