@@ -1,10 +1,9 @@
 import {
   validaCorreo,
   validaLargo,
-  validaRango,
   validaSoloLetras,
   validaContrasena,
-} from "./validaciones.js?v=3.8.1";
+} from "./validaciones.js?v=3.8.2";
 document.addEventListener("DOMContentLoaded", () => {
   // agregar usuario
   const formUsuario = document.querySelector("#formAgregar");
@@ -67,7 +66,7 @@ export function listarMiembros(filtros = filtrosActuales) {
   filtrosActuales = filtros; 
 
   let params = new URLSearchParams();
-  params.append("ope", "LISTAUSUARIOS");
+  params.append("ope", "LISTAUSUARIOS"); 
   params.append("pagina", paginaActual);
   params.append("registrosPorPagina", registrosPorPagina);
 

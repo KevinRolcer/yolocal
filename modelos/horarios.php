@@ -4,7 +4,7 @@ class Horarios{
     {
         $enlace = dbConectar();
 
-        $sql = "INSERT INTO Horarios (ID_Negocio, dia_semana, hora_apertura, hora_cierre) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO horarios (ID_Negocio, dia_semana, hora_apertura, hora_cierre) VALUES (?, ?, ?, ?)";
         $consulta = $enlace->prepare($sql);
         if (!$consulta) {
             throw new Exception("Error en la preparación de la consulta: " . $enlace->error);

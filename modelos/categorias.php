@@ -8,7 +8,7 @@ class Categoria
     $enlace = dbConectar();
     $offset = ($pagina - 1) * $registrosPorPagina;
 
-    $sql = "SELECT * FROM Categorias WHERE 1=1";
+    $sql = "SELECT * FROM categorias WHERE 1=1";
     $values = [];
     $tipos = "";
 

@@ -72,29 +72,36 @@ if (isset($_POST["ope"])) {
         echo json_encode($info);
     }
     // editar  usuario 
-    elseif ($ope == "EDITAR" && isset($_POST["ID_Negocio"])) {
+   elseif ($ope == "EDITAR" && isset($_POST["ID_Negocio"])) {
 
-        $datos = array(
-            "ID_Negocio" => $_POST["ID_Negocio"],
-            "nombre_negocio" => $_POST["nombre_negocioEdit"] ?? '',
-            "DescripcionN"   => $_POST["DescripcionNEdit"] ?? '',
-            "Direccion"      => $_POST["DireccionEdit"] ?? '',
-            "Telefono"       => $_POST["TelefonoEdit"] ?? '',
-            "CorreoN"        => $_POST["CorreoNEdit"] ?? '',
-            "SitioWeb"       => $_POST["SitioWebEdit"] ?? '',
-            "Facebook"       => $_POST["FacebookEdit"] ?? '',
-            "Instagram"      => $_POST["InstagramEdit"] ?? ''
-        );
+    $datos = array(
+        "ID_Negocio" => $_POST["ID_Negocio"],
+        "nombre_negocio" => $_POST["nombre_negocioEdit"] ?? '',
+        "DescripcionN"   => $_POST["DescripcionNEdit"] ?? '',
+        "Direccion"      => $_POST["DireccionEdit"] ?? '',
+        "Telefono"       => $_POST["TelefonoEdit"] ?? '',
+        "CorreoN"        => $_POST["CorreoNEdit"] ?? '',
+        "SitioWeb"       => $_POST["SitioWebEdit"] ?? '',
+        "Facebook"       => $_POST["FacebookEdit"] ?? '',
+        "Instagram"      => $_POST["InstagramEdit"] ?? '',
+        "TikTok"         => $_POST["TikTokEdit"] ?? '',
+        "Relevancia"     => $_POST["RelevanciaEdit"] ?? '',
+        "Icono"          => $_POST["IconoActual"] ?? '' // para mantener el anterior si no se sube uno nuevo
+    );
 
-        $status = $usu->Editar($datos);
+    // Aquí pasamos el archivo completo al modelo si existe
+    $archivoIcono = $_FILES["IconoNegocioEdit"] ?? null;
 
-        $info = array(
-            "success" => $status,
-            "usuario" => $datos  // opcional: enviar los datos de vuelta al JS
-        );
+    $status = $usu->Editar($datos, $archivoIcono);
 
-        echo json_encode($info);
-    } elseif ($ope === "BUSCAR_MIEMBRO") {
+    $info = array(
+        "success" => $status,
+        "usuario" => $datos  // opcional: enviar los datos de vuelta al JS
+    );
+
+    echo json_encode($info);
+}
+ elseif ($ope === "BUSCAR_MIEMBRO") {
         if (isset($_POST["ID_Miembro"])) {
             $miembro = $usu->buscarMiembroPorID($_POST["ID_Miembro"]);
             if ($miembro) {
@@ -118,7 +125,17 @@ if (isset($_POST["ope"])) {
         $status = $usu->Eliminar($_POST["ID_Negocio"]);
         $info = array("success" => $status);
         echo json_encode($info);
-    } else {
+    }
+    elseif ($ope == "CAMBIARESTATUS" && isset($_POST["ID_Negocio"], $_POST["estado"])) {
+    $id = intval($_POST["ID_Negocio"]);
+    $estado = intval($_POST["estado"]);
+
+    $success = $usu->CambiarEstatus($id, $estado);
+
+    echo json_encode([
+        "success" => $success
+    ]);
+} else {
         echo json_encode(array("success" => false, "msg" => "Operación no válida o parámetros insuficientes"));
     }
 } else {

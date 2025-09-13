@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
    
     <?php include_once("head.php"); ?>
-    <script type="module" src="../assets/js/funciones.js?v=2.7"></script>
+    <script type="module" src="../assets/js/funciones.js?v=2.8"></script>
 </head>
 
 <body>

@@ -91,10 +91,6 @@
                                         <span class="discount-badge">Mejor valorado en Cafeterías</span>
                                         <h2 class="slide-title">Cafeteria </h2>
                                         <p class="slide-description">Disfruta de la mejor cafeteria de San Martín. "Frase"</p>
-                                        <div>
-                                            <span class="discount-badge">Ubicación</span>
-
-                                        </div>
                                         <button class="slide-button">Ver negocio</button>
                                     </div>
                                 </div>
@@ -269,6 +265,43 @@
             </div>
         </div>
 
+        
+        <div id="contenedorCupon" class="container">
+    
+            <h1 class="title">Cupones</h1>
+            
+            <p class="percentage">30%</p>
+            <button class="button">
+            Ver cuponera
+            </button>
+
+            <img src="assets/img/LogoYolocal.png" class="logo logo-1 shadow-yellow" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-2 shadow-pink" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-3 shadow-yellow" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-4 shadow-pink" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-5 shadow-yellow" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-6 shadow-pink" alt="Logo">
+
+            <img src="assets/img/LogoYolocal.png" class="logo logo-7 shadow-pink" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-8 shadow-yellow" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-9 shadow-yellow" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-10 shadow-pink" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-11 shadow-yellow" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-12 shadow-yellow" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-13 shadow-pink" alt="Logo">
+
+            <img src="assets/img/LogoYolocal.png" class="logo logo-14 shadow-yellow" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-15 shadow-pink" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-16 shadow-yellow" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-17 shadow-pink" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-18 shadow-pink" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-19 shadow-yellow" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-20 shadow-yellow" alt="Logo">
+            <img src="assets/img/LogoYolocal.png" class="logo logo-21 shadow-pink" alt="Logo">
+        </div>
+        
+
+
         <div class="descripcionC">
             <h2>Categorias</h2>
             <p>Descubre la variedad de establecimientos que forman parte de 
@@ -288,7 +321,9 @@
                         <div class="card-description">
                             Descripción
                         </div>
-                        <div class="card-image">imagen</div>
+                        <div class="card-image">
+                            <img src="assets/img/Cafeteria.jpg" alt="Cafeteria">
+                        </div>
                     </div>
                     <div class="card-footer">
                         <button class="card-button">Más detalles</button>
@@ -354,7 +389,7 @@
                         <div class="card-description">
                             Explora mas tipos de negocios que forman parte de Yolocal
                         </div>
-                        <div class="card-image">
+                        <div id="cardLogo" class="card-image">
                             <img src="assets/img/LogoYolocal.png" alt="">
                         </div>
                     </div>
@@ -365,13 +400,6 @@
             </div>
         </div>
 
-
-        <div class="descripcionC">
-            <h2>Cupones</h2>
-            <p>Aprovecha de los cupones 
-                <span id="span2">exclusivos</span>
-            </p>
-        </div>
 
         
 

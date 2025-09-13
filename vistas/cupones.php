@@ -6,7 +6,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesCupones.js?v=3.6"></script>
+    <script type="module" src="assets/js/funcionesCupones.js?v=<?php echo time(); ?>"></script>
     <link rel="stylesheet" href="../assets/css/cupones.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
@@ -115,10 +115,13 @@
 
             </div>
             <?php if ($_SESSION["tipo"] === "admin"): ?>
-                <div class="gB">
+                <div class="d-flex justify-content-end gap-2 mb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPromocion">
                         Nueva Promoción
                     </button>
+                    <a href="../controladores/ReporteCupones.php" class="btn btn-success" target="_blank">
+                        Descargar Reporte
+                    </a>
                 </div>
             <?php endif; ?>
 
@@ -189,7 +192,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalEditarLabel">Editar Usuario</h5>
+                            <h5 class="modal-title" id="modalEditarLabel">Editar promoción</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
@@ -234,7 +237,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalEditarClaveLabel">Cambiar Contraseña</h5>
+                            <h5 class="modal-title" id="modalEditarClaveLabel">Agregar mas cupones</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
