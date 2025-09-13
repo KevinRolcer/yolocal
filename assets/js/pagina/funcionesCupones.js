@@ -87,8 +87,11 @@ function renderizarPromociones(lista) {
           <!-- Botón siempre visible -->
           <button class="claim-button btn-tags" 
             data-id="${promo.ID_Promocion}" 
-            data-cantidad="${promo.cantidad}"
+            data-titulo="${promo.titulo}"
+            data-nombre="${promo.nombre_negocio}"
+            data-descripcion="${promo.descripcion ?? "Sin descripción"}"
             data-fecha="${promo.fecha_fin}"
+            data-direccion="${promo.direccion_negocio}"
             id="btnCupon_${promo.ID_Promocion}"
             ${promo.cantidad <= 0 || esFechaExpirada(promo.fecha_fin) ? "disabled" : ""}>
             Reclamar
@@ -240,6 +243,99 @@ document.querySelectorAll(".filter .close").forEach((button) => {
     });
   });
 });
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Escuchamos clics en todo el documento
+  document.addEventListener('click', function(event) {
+    
+    // Verificamos si el elemento clickeado es un botón de reclamar
+    if (event.target.matches('.claim-button')) {
+      
+      // Prevenimos cualquier comportamiento por defecto del botón (si lo tuviera)
+      event.preventDefault(); 
+      
+      // Obtenemos el botón específico que fue presionado
+      const boton = event.target;
+      
+      // Extraemos los datos del botón usando el `dataset`
+      const idPromocion = boton.dataset.id;
+      const titulo = boton.dataset.titulo;
+      const fechaFin = boton.dataset.fecha;
+      const descripcion = boton.dataset.descripcion;
+      const nombreNegocio = boton.dataset.nombre;
+      const direccionNegocio = boton.dataset.direccion;
+
+      // Llamamos a la función que genera y descarga el PDF
+      generarPDFPromocion(idPromocion, titulo, fechaFin, descripcion, nombreNegocio, direccionNegocio);
+    }
+  });
+});
+
+/**
+ * Función que genera un PDF con los datos de la promoción y lo descarga.
+ * @param {string} id - El ID de la promoción.
+ * @param {string} titulo - El título de la promoción.
+ * @param {string} fecha - La fecha de finalización.
+ * @param {string} descripcion - La descripción de la promoción.
+ * @param {string} nombreNegocio - El nombre del negocio.
+ * @param {string} direccionNegocio - La dirección del negocio.
+ */
+function generarPDFPromocion(id, titulo, fecha, descripcion, nombreNegocio, direccionNegocio, categoria = "CAFETERIA") {
+  const { jsPDF } = window.jspdf;
+
+  // 📏 PDF tamaño boleto (90mm x 45mm)
+  const doc = new jsPDF("l", "mm", [90, 45]);
+
+  // 🎨 Colores
+  const morado = "#6C4CCF";
+  const textoNegro = "#333333";
+  const gris = "#777777";
+
+  // --- Contorno del cupón ---
+  doc.setDrawColor(200);
+  doc.setLineDash([2, 2]); 
+  doc.roundedRect(5, 5, 80, 35, 3, 3); // borde ajustado al boleto
+
+  // --- Categoría ---
+  doc.setFillColor(255, 216, 77);
+  doc.roundedRect(7, 7, 20, 6, 2, 2, "F"); 
+  doc.setTextColor(textoNegro);
+  doc.setFontSize(8);
+  doc.text(categoria, 9, 11);
+
+  // --- Nombre negocio ---
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "bold");
+  doc.text(nombreNegocio, 7, 18);
+
+  // --- Descripción ---
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(gris);
+  doc.text(descripcion, 7, 24);
+
+  // --- Título promoción ---
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor("#B45F06");
+  doc.text(titulo, 7, 30);
+
+  // --- Fecha ---
+  doc.setFontSize(8);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(gris);
+  doc.text(`Válido hasta: ${fecha}`, 7, 36);
+
+  // --- Botón Reclamar ---
+  doc.setFillColor(morado);
+  doc.roundedRect(65, 25, 18, 8, 3, 3, "F");
+  doc.setTextColor("#FFFFFF");
+  doc.setFontSize(8);
+  doc.text("Reclamar", 74, 30, { align: "center" });
+
+  // Guardar
+  doc.save(`promocion_${id}.pdf`);
+}
 
 
 

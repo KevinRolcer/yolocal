@@ -17,6 +17,7 @@ public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = []
     p.fecha_fin,
     p.Estatus,
     n.nombre_negocio AS nombre_negocio,
+    n.Direccion AS direccion_negocio,
     c.Descripcion AS categoria
 FROM promociones p
 INNER JOIN negocios n 
