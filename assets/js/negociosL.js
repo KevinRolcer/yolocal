@@ -21,17 +21,16 @@ function filtrarPorCategoria() {
     const urlBase = '../controladores/NegocioLControlador.php';
 
     if (idCategoria) {
-        // Si se seleccionó una categoría, redirigimos con el parámetro
+       
         window.location.href = `${urlBase}?categoria=${idCategoria}`;
     } else {
-        // Si se seleccionó "Ver Todas", redirigimos sin parámetro
         window.location.href = urlBase;
     }
 }
 
 
 function buscarEnTiempoReal() {
-    // Limpia el temporizador anterior para reiniciar la cuenta atrás.
+ 
     clearTimeout(debounceTimer);
 
    
