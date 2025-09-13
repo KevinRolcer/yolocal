@@ -18,10 +18,7 @@ if (isset($_POST["ope"])) {
         $usuarioId = $_POST['usuarioId'] ?? null;
         $usuarioTipo = $_POST['usuarioTipo'] ?? null;
 
-if (!$usuarioId || !$usuarioTipo) {
-    echo json_encode(["success" => false, "msg" => "Usuario no autenticado."]);
-    exit();
-}
+
     $pagina = isset($_POST["pagina"]) ? intval($_POST["pagina"]) : 1;
     $registrosPorPagina = isset($_POST["registrosPorPagina"]) ? intval($_POST["registrosPorPagina"]) : 10;
 
