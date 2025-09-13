@@ -497,3 +497,127 @@ svg{
   color: rgb(193, 190, 190);
 }
 
+.principal {
+  padding: 20px;
+}
+
+.filter-container {
+  display: flex;
+  justify-content: center;       /* Centra horizontal */
+  align-items: center;
+  flex-wrap: wrap;              /* Permite que se acomoden si no caben */
+  gap: 15px;                    /* Espacio entre filtros */
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f9f9ff;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.filter:hover {
+  border-color: #a855f7;          /* Morado */
+  box-shadow: 0 0 6px rgba(168, 85, 247, 0.4);
+}
+
+.filter span {
+  font-weight: 500;
+  color: #333;
+}
+
+.filter input {
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 4px 6px;
+  border-bottom: 1px solid #ccc;
+  transition: border-color 0.3s;
+}
+
+.filter input:focus {
+  border-color: #a855f7;
+}
+
+.filter button.close {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.3s;
+}
+
+.filter button.close:hover {
+  color: #e11d48;  /* rojo bonito */
+}
+
+.filter-promociones {
+  display: flex;
+  align-items: center;
+}
+
+.filter-promociones .btn {
+  background: #9333ea;
+  border: none;
+  color: white;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.filter-promociones .btn:hover {
+  background: #7e22ce;
+}
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #f3f3f9;
+  border-radius: 50px;
+  padding: 6px 10px;
+  width: 100%;
+  max-width: 400px;  /* ajusta el tamaño */
+  margin: auto;      /* centra el buscador */
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  font-size: 14px;
+  padding: 8px 12px;
+  color: #444;
+}
+
+.search-bar input::placeholder {
+  color: #aaa;
+}
+
+.search-bar button {
+  background: #4b0082;  /* morado */
+  border: none;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.search-bar button:hover {
+  background: #360062;
+}

@@ -8,8 +8,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-     <script type="module" src="../assets/js/pagina/funcionesCupones.js?<?php echo time(); ?>"></script>
+    <script type="module" src="../assets/js/pagina/funcionesCupones.js?<?php echo time(); ?>"></script>
     <link rel="stylesheet" href="../assets/css/cuponesCl.css">
+    <link rel="stylesheet" href="../assets/css/paginacion.css">
 </head>
 
 <body>
@@ -83,154 +84,23 @@
 
 
     <div class="principal">
+
         <div class="filter-container">
+            
 
-            <div class="filter" data-filter="titulo">
-                <span>Título</span>
-                <input type="text" id="filtroTitulo" class="hidden" placeholder="Escribe aquí..">
-                <button class="close">✖</button>
-            </div>
 
-            <div class="filter" data-filter="descripcion">
-                <span>Descripción</span>
-                <input type="text" id="filtroDescripcion" class="hidden" placeholder="Escribe aquí..">
-                <button class="close">✖</button>
-            </div>
-
-            <div class="filter" data-filter="negocio">
-                <span>Negocio</span>
-                <input type="text" id="filtroNegocio" class="hidden" placeholder="Escribe aquí..">
-                <button class="close">✖</button>
+             <div class="search-bar " data-filter="descripcion">
+                <input type="text" id="filtroDescripcion" placeholder="Buscar descripción" />
+                <button type="button">
+                    <i class="bi bi-search"></i>
+                </button>
             </div>
 
 
-
-            <div class="filter-promociones">
-                <button id="limpiarFiltros" class="btn btn-secondary">Limpiar Filtros</button>
-            </div>
 
         </div>
         <div class="coupons-grid">
-            <!-- Tarjeta de cupon -->
-            <div class="coupon-card">
-                <div class="perforation-line"></div>
-                <div class="coupon-content">
-                    <div class="main-content">
-                        <div class="limited-badge">Solo lunes</div>
-                        <div class="brand-name">Café del sol</div>
-                        <div class="offer-description">Cupón de descuento</div>
-                        <div class="discount-section">
-                            <div class="discount">$30</div>
-                            <div class="validity">Válido hasta 31 Agosto 2025</div>
-                        </div>
-                    </div>
-                    <div class="action-section">
-                        <button class="claim-button" onclick="claimCoupon('McDonald\'s', '$10')">
-                            Reclamar
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            <div class="coupon-card">
-                <div class="perforation-line"></div>
-                <div class="coupon-content">
-                    <div class="main-content">
-                        <div class="limited-badge">Condición</div>
-                        <div class="brand-name">Negocio</div>
-                        <div class="offer-description">Descripción</div>
-                        <div class="discount-section">
-                            <div class="discount">Beneficio</div>
-                            <div class="validity">Fecha límite</div>
-                        </div>
-                    </div>
-                    <div class="action-section">
-                        <button class="claim-button" onclick="claimCoupon('KFC', '25% OFF')">
-                            Reclamar
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="coupon-card">
-                <div class="perforation-line"></div>
-                <div class="coupon-content">
-                    <div class="main-content">
-                        <div class="limited-badge">Libretas</div>
-                        <div class="brand-name">Papelería</div>
-                        <div class="offer-description">Compra 1, llévate 1 gratis</div>
-                        <div class="discount-section">
-                            <div class="discount">1 Gratis</div>
-                            <div class="validity">Válido hasta 05 Abril 2025</div>
-                        </div>
-                    </div>
-                    <div class="action-section">
-                        <button class="claim-button" onclick="claimCoupon('Starbucks', '1 FREE')">
-                            Reclamar
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="coupon-card">
-                <div class="perforation-line"></div>
-                <div class="coupon-content">
-                    <div class="main-content">
-                        <div class="limited-badge">Condición</div>
-                        <div class="brand-name">Negocio</div>
-                        <div class="offer-description">Descripción</div>
-                        <div class="discount-section">
-                            <div class="discount">Beneficio</div>
-                            <div class="validity">Fecha límite</div>
-                        </div>
-                    </div>
-                    <div class="action-section">
-                        <button class="claim-button" onclick="claimCoupon('Domino\'s', '50% OFF')">
-                            Reclamar
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="coupon-card">
-                <div class="perforation-line"></div>
-                <div class="coupon-content">
-                    <div class="main-content">
-                        <div class="limited-badge">Condición</div>
-                        <div class="brand-name">Negocio</div>
-                        <div class="offer-description">Descripción</div>
-                        <div class="discount-section">
-                            <div class="discount">Beneficio</div>
-                            <div class="validity">Fecha límite</div>
-                        </div>
-                    </div>
-                    <div class="action-section">
-                        <button class="claim-button" onclick="claimCoupon('Subway', '$15')">
-                            Reclamar
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="coupon-card">
-                <div class="perforation-line"></div>
-                <div class="coupon-content">
-                    <div class="main-content">
-                        <div class="limited-badge">Condición</div>
-                        <div class="brand-name">Negocio</div>
-                        <div class="offer-description">Descripción</div>
-                        <div class="discount-section">
-                            <div class="discount">Beneficio</div>
-                            <div class="validity">Fecha límite</div>
-                        </div>
-                    </div>
-                    <div class="action-section">
-                        <button class="claim-button" onclick="claimCoupon('Pizza Hut', '30% OFF')">
-                            Reclamar
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>

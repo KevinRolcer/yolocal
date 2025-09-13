@@ -75,7 +75,7 @@ function renderizarPromociones(lista) {
       <div class="perforation-line"></div>
       <div class="coupon-content">
         <div class="main-content">
-          <div class="limited-badge">${promo.titulo}</div>
+          <div class="limited-badge">${promo.categoria}</div>
           <div class="brand-name">${promo.nombre_negocio}</div>
           <div class="offer-description">${promo.descripcion ?? "Sin descripción"}</div>
           <div class="discount-section">
@@ -177,9 +177,9 @@ function actualizarPaginacion(totalPaginas) {
 
 function aplicarFiltros() {
   const filtros = {
-    titulo: document.getElementById("filtroTitulo").value.trim(),
+  
     descripcion: document.getElementById("filtroDescripcion").value.trim(),
-    negocio: document.getElementById("filtroNegocio").value.trim(),
+   
   };
 
   paginaActual = 1; // Reiniciar a la primera página al aplicar filtros
@@ -199,15 +199,6 @@ document.addEventListener("DOMContentLoaded", () => {
   listarPromociones();
 });
 
-document
-  .getElementById("limpiarFiltros")
-  .addEventListener("click", function () {
-    document.querySelectorAll(".filter input").forEach((input) => {
-      input.value = "";
-    });
-
-    aplicarFiltros();
-  });
 
 document.querySelectorAll(".filter").forEach((filter) => {
   filter.addEventListener("click", function (event) {
@@ -250,15 +241,6 @@ document.querySelectorAll(".filter .close").forEach((button) => {
   });
 });
 
-document
-  .getElementById("limpiarFiltros")
-  .addEventListener("click", function () {
-    document.querySelectorAll(".filter").forEach((filter) => {
-      let input = filter.querySelector("input");
-      input.classList.add("hidden");
-      input.value = "";
-      filter.classList.remove("active");
-    });
-  });
+
 
 
