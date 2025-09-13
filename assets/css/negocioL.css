@@ -380,9 +380,9 @@
 /* VARIABLES CSS (Agregar al inicio del archivo) */
 /* ============================================= */
 :root {
-    --principal: #8b5cf6;
-    --principal2: #7c3aed;
-    --complementario: #f59e0b;
+    --principal: rgb(76, 6, 130);
+    --principal2: rgb(97, 63, 155);
+    --complementario: rgb(235, 170, 4);
     --principal-rgb: 139, 92, 246;
 }
 
