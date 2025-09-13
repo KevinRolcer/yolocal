@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <?php
+    include_once("head.php");
+    ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+     <script type="module" src="../assets/js/pagina/funcionesCupones.js?<?php echo time(); ?>"></script>
     <link rel="stylesheet" href="../assets/css/cuponesCl.css">
 </head>
+
 <body>
 
     <header class="encabezado">
@@ -13,14 +19,14 @@
             <div class="logo">
                 <img src="../assets/img/LogoYolocal.png" alt="local">
             </div>
-            
+
             <!-- Menú móvil-->
             <button class="menu-toggle" id="menuToggle">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
             </button>
-            
+
             <div class="menu" id="mainMenu">
                 <a href="../index.php" class="enlace " data-tooltip="Inicio">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -77,6 +83,33 @@
 
 
     <div class="principal">
+        <div class="filter-container">
+
+            <div class="filter" data-filter="titulo">
+                <span>Título</span>
+                <input type="text" id="filtroTitulo" class="hidden" placeholder="Escribe aquí..">
+                <button class="close">✖</button>
+            </div>
+
+            <div class="filter" data-filter="descripcion">
+                <span>Descripción</span>
+                <input type="text" id="filtroDescripcion" class="hidden" placeholder="Escribe aquí..">
+                <button class="close">✖</button>
+            </div>
+
+            <div class="filter" data-filter="negocio">
+                <span>Negocio</span>
+                <input type="text" id="filtroNegocio" class="hidden" placeholder="Escribe aquí..">
+                <button class="close">✖</button>
+            </div>
+
+
+
+            <div class="filter-promociones">
+                <button id="limpiarFiltros" class="btn btn-secondary">Limpiar Filtros</button>
+            </div>
+
+        </div>
         <div class="coupons-grid">
             <!-- Tarjeta de cupon -->
             <div class="coupon-card">
@@ -200,12 +233,13 @@
             </div>
         </div>
 
-
+        <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
         <div class="descripcionC">
             <a href="#">Ver más cupones</a>
         </div>
 
     </div>
-    
+
 </body>
+
 </html>
