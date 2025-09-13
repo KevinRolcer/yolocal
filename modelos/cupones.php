@@ -9,11 +9,21 @@ public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = []
     $offset = ($pagina - 1) * $registrosPorPagina;
  
     // Consulta con JOIN a negocios
-    $sql = "SELECT p.ID_Promocion, p.titulo, p.descripcion, p.cantidad, p.fecha_fin, p.Estatus, 
-                   n.nombre_negocio AS nombre_negocio
-            FROM promociones p
-            INNER JOIN negocios n ON p.ID_Negocio = n.ID_Negocio
-            WHERE 1=1";
+    $sql = "SELECT 
+    p.ID_Promocion,
+    p.titulo,
+    p.descripcion,
+    p.cantidad,
+    p.fecha_fin,
+    p.Estatus,
+    n.nombre_negocio AS nombre_negocio,
+    c.Descripcion AS categoria
+FROM promociones p
+INNER JOIN negocios n 
+    ON p.ID_Negocio = n.ID_Negocio
+INNER JOIN categorias c 
+    ON n.ID_Categoria = c.ID_Categoria
+WHERE 1=1";
     
     $values = [];
     $tipos = "";
