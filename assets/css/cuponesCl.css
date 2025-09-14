@@ -124,6 +124,26 @@ svg{
 .enlace.active {
     color: var(--principal);
 }
+.descripcionC{
+    padding: 20px 10px;
+    text-align: center;
+}
+.descripcionC p span{
+    color: var(--complementario);
+    font-weight: 800;
+}
+.descripcionC p #span2{
+    color: var(--principal);
+    font-weight: 800;
+}
+.descripcionC a{
+    font-weight: 800;
+    color: var(--principal);
+    text-decoration: none;
+}
+.descripcionC a:hover{
+    color: var(--complementario);
+}
 
 .enlace.active::after {
     content: '';
