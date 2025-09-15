@@ -284,41 +284,6 @@ body {
     border-left: 4px solid var(--secundario);
 }
 
-/* Iconos sociales - estilo limpio */
-.social-icons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    padding: 1.5rem;
-    background: #f8f9fa;
-    border-radius: 12px;
-    margin-bottom: 2rem;
-}
-
-.social-icons a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: var(--principal);
-    color: var(--blanco);
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.social-icons a:hover {
-    background: var(--principal2);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(76, 6, 130, 0.3);
-}
-
-.social-icons svg {
-    width: 22px;
-    height: 22px;
-}
-
 /* Secciones de información */
 .info-seccion {
     background: var(--blanco);
@@ -341,6 +306,52 @@ body {
     margin-bottom: 1.5rem;
     font-weight: 600;
 }
+
+/* SECCIÓN DE REDES SOCIALES - CORREGIDA */
+.info-seccion.social-icons {
+    text-align: center;
+}
+
+.info-seccion.social-icons h2 {
+    color: var(--principal);
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.icon-container a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--principal);
+    color: var(--blanco);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.icon-container a:hover {
+    background: var(--principal2);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(76, 6, 130, 0.3);
+}
+
+.icon-container svg {
+    width: 22px;
+    height: 22px;
+}
+/* FIN SECCIÓN REDES SOCIALES */
 
 .lista-horarios {
     list-style: none;
@@ -458,9 +469,18 @@ body {
         font-size: 2rem;
     }
     
-    .social-icons {
-        flex-wrap: wrap;
-        justify-content: center;
+    .icon-container {
+        gap: 12px;
+    }
+    
+    .icon-container a {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .icon-container svg {
+        width: 20px;
+        height: 20px;
     }
     
     .info-seccion {
@@ -488,9 +508,18 @@ body {
         gap: 0.25rem;
     }
     
-    .social-icons a {
-        width: 45px;
-        height: 45px;
+    .icon-container {
+        gap: 10px;
+    }
+    
+    .icon-container a {
+        width: 42px;
+        height: 42px;
+    }
+    
+    .icon-container svg {
+        width: 18px;
+        height: 18px;
     }
 }
 
@@ -510,11 +539,10 @@ body {
     }
 }
 
-
 .enlace:focus,
 .btn-prueba:focus,
 .btn-sesion:focus,
-.social-icons a:focus {
+.icon-container a:focus {
     outline: 2px solid var(--secundario);
     outline-offset: 2px;
 }

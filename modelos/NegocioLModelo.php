@@ -20,7 +20,7 @@ class NegocioLModelo {
                     LEFT JOIN 
                         categorias c ON n.ID_Categoria = c.ID_Categoria
                     ORDER BY 
-                        n.nombre_negocio ASC";
+                    n.Relevancia DESC, n.nombre_negocio ASC";
 
             $stmt = $conexion->prepare($sql);
             $stmt->execute();
@@ -57,9 +57,9 @@ class NegocioLModelo {
                     LEFT JOIN 
                         categorias c ON n.ID_Categoria = c.ID_Categoria
                     WHERE 
-                        n.ID_Categoria = ?  -- El '?' filtra de forma segura
+                        n.ID_Categoria = ? 
                     ORDER BY 
-                        n.nombre_negocio ASC";
+                        n.nombre_negocio DESC";
 
             $stmt = $conexion->prepare($sql);
      
@@ -108,12 +108,21 @@ class NegocioLModelo {
     }
 
  
-   public static function obtenerHorariosPorIdNegocio($conexion, $id_negocio) {
+ 
+
+public static function obtenerHorariosPorIdNegocio($conexion, $id_negocio) {
     try {
-       
-        $sql = "SELECT dia_semana, hora_apertura, hora_cierre 
-                FROM horarios
-                WHERE ID_Negocio = ?";
+      
+        $sql = "SELECT h.*
+                FROM horarios h
+                INNER JOIN (
+                   SELECT dia_semana, MAX(ID_Horario) AS max_id
+                   FROM horarios
+                   WHERE ID_Negocio = ?
+                   GROUP BY dia_semana
+                ) AS latest
+                ON h.ID_Horario = latest.max_id
+                ORDER BY FIELD(h.dia_semana, 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo')";
 
         $stmt = $conexion->prepare($sql);
 
@@ -184,6 +193,7 @@ class NegocioLModelo {
             die("Error al buscar los negocios: " . $e->getMessage());
         }
     }
+    
 }
 
 
