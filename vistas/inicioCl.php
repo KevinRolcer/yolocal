@@ -6,6 +6,7 @@
     <title>Inicio Yolocal</title>
     <link rel="stylesheet" href="assets/css/inicioCl.css">
 <body>
+    
     <header class="encabezado">
         <nav class="navbar">
             <div class="logo">
