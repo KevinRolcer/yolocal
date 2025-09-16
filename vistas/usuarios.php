@@ -6,7 +6,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesUsu.js?v=3.7.8"></script>
+    <script type="module" src="assets/js/funcionesUsu.js?v=<?php echo time(); ?>"></script>
     <link rel="stylesheet" href="../assets/css/usuarios.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <link href="../assets/img/LogoYolocal.png" rel="icon" />

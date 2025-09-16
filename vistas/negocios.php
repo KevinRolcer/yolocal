@@ -6,7 +6,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="../assets/js/funcionesNegocio.js?v=1.5.3"></script>
+    <script type="module" src="../assets/js/funcionesNegocio.js?v=<?php echo time(); ?>"></script>
     <link rel="stylesheet" href="../assets/css/negociosAdmin.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <script src="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.js"></script>
@@ -122,7 +122,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalAgregarLabel">Agregar Usuario</h5>
+                            <h5 class="modal-title" id="modalAgregarLabel">Agregar Negocio</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
@@ -130,11 +130,11 @@
                                 <div class="row g-3">
                                     <div class="mb-3 d-flex align-items-center">
                                         <div class="me-3 flex-grow-1">
-                                            <label for="ID_Usuario" class="form-label"># Miembro</label>
+                                            <label for="ID_Usuario" class="form-label"># Usuario</label>
                                             <input type="number" class="form-control" id="ID_Usuario" name="ID_Usuario" placeholder="Escriba el número" required>
                                         </div>
                                         <div class="flex-grow-2">
-                                            <label for="nombreMiembro" class="form-label">Nombre del Miembro</label>
+                                            <label for="nombreMiembro" class="form-label">Nombre del Usuario</label>
                                             <input type="text" class="form-control" id="nombreMiembro" placeholder="Nombre" readonly>
                                         </div>
                                     </div>
@@ -145,7 +145,7 @@
                                         <div class="valid-feedback"></div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="ID_Categoria" class="form-label">Tipo de Membresía</label>
+                                        <label for="ID_Categoria" class="form-label">Tipo de Negocio</label>
                                         <select class="form-control" id="ID_Categoria" name="ID_Categoria" required>
 
                                         </select>
@@ -215,7 +215,7 @@
                                         <label for="FacebookEdit" class="form-label">Facebook</label>
                                         <input type="url" class="form-control" id="FacebookEdit" name="FacebookEdit" maxlength="100">
                                     </div>
-                                    
+
                                     <!-- Instagram -->
                                     <div class="col-md-6">
                                         <label for="InstagramEdit" class="form-label">Instagram</label>
@@ -225,17 +225,21 @@
                                         <label for="TikTokEdit" class="form-label">TikTok</label>
                                         <input type="url" class="form-control" id="TikTokEdit" name="TikTokEdit" maxlength="100">
                                     </div>
-                                     <?php if ($_SESSION["tipo"] === "admin"): ?>
-                                    <div class="col-12">
-                                        <label for="RelevanciaEdit" class="form-label">Relevancia</label>
-                                        <select name="RelevanciaEdit" id="RelevanciaEdit" class="form-select" required>
-                                            <option value="">Seleccione una categoría...</option>
-                                            <option value="1">Normal</option>
-                                            <option value="2">Destacado</option>
-                                            <option value="3">Super Destacado</option>
-                                        </select>
+                                    <div class="col-md-6">
+                                        <label for="IconoNegocioEdit" class="form-label">Logo del Negocio</label>
+                                        <input type="file" class="form-control" id="IconoNegocioEdit" name="IconoNegocioEdit" maxlength="100">
                                     </div>
-                                    <?php endif; ?> 
+                                    <?php if ($_SESSION["tipo"] === "admin"): ?>
+                                        <div class="col-12">
+                                            <label for="RelevanciaEdit" class="form-label">Relevancia</label>
+                                            <select name="RelevanciaEdit" id="RelevanciaEdit" class="form-select" required>
+                                                <option value="">Seleccione una categoría...</option>
+                                                <option value="1">Normal</option>
+                                                <option value="2">Destacado</option>
+                                                <option value="3">Super Destacado</option>
+                                            </select>
+                                        </div>
+                                    <?php endif; ?>
 
                                 </div>
 
@@ -356,7 +360,7 @@
 
         </div>
 
-
+        <script src="../assets/js/main.js"></script>
 </body>
 
 </html>

@@ -1,10 +1,4 @@
-import {
-  validaCorreo,
-  validaLargo,
-  validaRango,
-  validaSoloLetras,
-  validaContrasena,
-} from "./validaciones.js?v=3.8.1";
+
 document.addEventListener("DOMContentLoaded", () => {
   // agregar usuario
   const formUsuario = document.querySelector("#formPromocion");
@@ -133,6 +127,13 @@ function renderizarPromociones(lista) {
       <p class="promo-descripcion">${promo.descripcion ?? "Sin descripción"}</p>
       <p class="promo-titulo">Cupones Restantes: ${promo.cantidad}</p>
       <p class="promo-descripcion">Caducidad: ${promo.fecha_fin}</p>
+       ${
+        usuarioTipo === "admin" ? `
+      <p class="promo-descripcion">Canjeados: ${promo.Canjeados}</p>
+      <p class="promo-descripcion">Descargados: ${promo.Descargados}</p>
+      ` : ''
+      }
+      
     </div>
     <div class="promo-actions">
       <!-- Botón siempre visible -->

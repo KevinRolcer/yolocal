@@ -1,4 +1,4 @@
-import { validaCorreo, validaLargo, validaRango } from "./validaciones.js";
+import { validaCorreo, validaLargo, validaContrasena } from "./validaciones.js?v=3.8.3";
 document.addEventListener("DOMContentLoaded", (event)=>
     {
         //Formulario de Login
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", (event)=>
                 let correo = document.querySelector("#nombre");
                 let clave = document.querySelector("#contra");
                
-                if(!validaRango(clave,8,20))
+                if(!validaContrasena(clave,8,16))
                     errores++;
                
                 if(errores==0)
