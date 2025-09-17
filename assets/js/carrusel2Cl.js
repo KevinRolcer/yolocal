@@ -1,197 +1,271 @@
-// carousel.js (versión mejorada: botones + drag con mouse y touch, sin cambiar tamaños)
 class Carousel {
-  constructor(selector = '#carousel', prevId = 'prevBtn', nextId = 'nextBtn') {
-    this.track = document.querySelector(selector);
-    if (!this.track) return console.warn('Carousel: #carousel no encontrado');
+    constructor(selector = '#carousel', prevId = 'prevBtn', nextId = 'nextBtn') {
+        this.track = document.querySelector(selector);
+        if (!this.track) {
+            console.warn('Carousel: #carousel no encontrado');
+            return;
+        }
 
-    this.slides = Array.from(this.track.querySelectorAll('.tarjetaC'));
-    this.totalSlides = this.slides.length || 1;
-    this.prevBtn = document.getElementById(prevId);
-    this.nextBtn = document.getElementById(nextId);
+        this.slides = Array.from(this.track.querySelectorAll('.tarjetaC'));
+        this.totalSlides = this.slides.length || 1;
+        this.prevBtn = document.getElementById(prevId);
+        this.nextBtn = document.getElementById(nextId);
+        this.indicadoresContainer = document.getElementById('indicadores');
 
-    this.currentSlide = 0;
-    this.isAnimating = false;
+        this.currentSlide = 0;
+        this.isAnimating = false;
+        this.slidesPerView = this.calculateSlidesPerView();
 
-    // estado del drag
-    this._drag = {
-      active: false,
-      startX: 0,
-      startY: 0,
-      lastX: 0,
-      startTranslate: 0
-    };
+        this._drag = {
+            active: false,
+            startX: 0,
+            startY: 0,
+            lastX: 0,
+            startTranslate: 0
+        };
 
-    // valores que se calculan en runtime
-    this.slideWidth = 0;
-    this.threshold = 50; // se reajusta en updateSizes
+        this.slideWidth = 0;
+        this.threshold = 50;
 
-    this._init();
-  }
-
-  _init() {
-    // estilo mínimo necesario (no modifica anchos de las slides)
-    this.track.style.willChange = 'transform';
-    this.track.style.touchAction = 'pan-y'; // permite scroll vertical, bloquea horizontal nativo
-    // transición por defecto
-    this.track.style.transition = 'transform 400ms ease';
-
-    this._calcSizes();
-    this._bind();
-    // opcional: autoplay (si quieres, lo activas)
-    // this._startAuto();
-  }
-
-  _calcSizes() {
-    // no forzamos tamaños; solo medimos la anchura real de la primera slide
-    const first = this.slides[0];
-    this.slideWidth = first ? Math.round(first.getBoundingClientRect().width) : 0;
-    // umbral para considerar swipe: 15% del ancho o 50px mínimo
-    this.threshold = Math.max(50, Math.round(this.slideWidth * 0.15));
-    // forzamos el snap al slide actual por si hubo resize
-    this._applyTranslate(-this.currentSlide * this.slideWidth, true);
-  }
-
-  _bind() {
-    // botones
-    if (this.prevBtn) {
-      this.prevBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.goToPrevious();
-      });
-    }
-    if (this.nextBtn) {
-      this.nextBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.goToNext();
-      });
+        this._init();
     }
 
-    // teclado
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') this.goToPrevious();
-      if (e.key === 'ArrowRight') this.goToNext();
-    });
-
-    // pointer events (funciona touch + mouse)
-    this.track.addEventListener('pointerdown', (ev) => this._onPointerDown(ev));
-    window.addEventListener('pointermove', (ev) => this._onPointerMove(ev));
-    window.addEventListener('pointerup', (ev) => this._onPointerUp(ev));
-    window.addEventListener('pointercancel', (ev) => this._onPointerUp(ev));
-
-    // hover pause/resume si usas autoplay
-    this.track.addEventListener('mouseenter', () => this._stopAuto && this._stopAuto());
-    this.track.addEventListener('mouseleave', () => this._startAuto && this._startAuto());
-
-    // recalcular tamaños al hacer resize
-    let t;
-    window.addEventListener('resize', () => {
-      clearTimeout(t);
-      t = setTimeout(() => this._calcSizes(), 120);
-    });
-  }
-
-  _onPointerDown(ev) {
-    // solo botón principal del mouse o touch
-    if (ev.pointerType === 'mouse' && ev.button !== 0) return;
-    this._drag.active = true;
-    this._drag.startX = ev.clientX;
-    this._drag.startY = ev.clientY;
-    this._drag.lastX = ev.clientX;
-    this._drag.startTranslate = -this.currentSlide * this.slideWidth;
-    // desactivar transición para seguir movimiento
-    this.track.style.transition = 'none';
-    // evitar selección de texto mientras arrastra
-    document.body.style.userSelect = 'none';
-    // capture pointer si es posible para seguir el movimiento incluso fuera del elemento
-    try { ev.target.setPointerCapture(ev.pointerId); } catch (e) {}
-  }
-
-  _onPointerMove(ev) {
-    if (!this._drag.active) return;
-    const dx = ev.clientX - this._drag.startX;
-    const dy = ev.clientY - this._drag.startY;
-
-    // si el gesto es claramente vertical, abortamos el drag para permitir scroll natural
-    if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 10) {
-      this._drag.active = false;
-      this.track.style.transition = 'transform 400ms ease';
-      this._applyTranslate(-this.currentSlide * this.slideWidth); // snap back
-      document.body.style.userSelect = '';
-      return;
+    calculateSlidesPerView() {
+        const containerWidth = this.track.parentElement.offsetWidth;
+        const slideWidth = 300 + 24; // 300px + 1.5rem margin
+        return Math.floor(containerWidth / slideWidth) || 1;
     }
 
-    // prevenir comportamiento por defecto cuando arrastre horizontal
-    ev.preventDefault();
-    this._drag.lastX = ev.clientX;
-    const pos = this._drag.startTranslate + dx;
-    // aplicar la transform directamente (px) usando translate3d para GPU
-    this.track.style.transform = `translate3d(${pos}px,0,0)`;
-  }
+    _init() {
+        this.track.style.willChange = 'transform';
+        this.track.style.touchAction = 'pan-y';
+        this.track.style.transition = 'transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 
-  _onPointerUp(ev) {
-    if (!this._drag.active) return;
-    this._drag.active = false;
-    // restaurar transición
-    this.track.style.transition = 'transform 400ms ease';
-    document.body.style.userSelect = '';
-
-    const dx = ev.clientX - this._drag.startX;
-    // si el movimiento supera el umbral, navegar; sino "snap" al slide actual
-    if (Math.abs(dx) > this.threshold) {
-      if (dx < 0) this.goToNext();
-      else this.goToPrevious();
-    } else {
-      // snap de regreso
-      this._applyTranslate(-this.currentSlide * this.slideWidth);
+        this._calcSizes();
+        this._bind();
+        this._createIndicators();
+        this._updateIndicators();
+        this._updateButtons();
     }
 
-    // release pointer capture si se obtuvo
-    try { ev.target.releasePointerCapture && ev.target.releasePointerCapture(ev.pointerId); } catch (e) {}
-  }
-
-  _applyTranslate(px, immediate = false) {
-    if (immediate) {
-      const prev = this.track.style.transition;
-      this.track.style.transition = 'none';
-      this.track.style.transform = `translate3d(${px}px,0,0)`;
-      // forzar reflow
-      void this.track.offsetWidth;
-      this.track.style.transition = prev || 'transform 400ms ease';
-    } else {
-      this.track.style.transform = `translate3d(${px}px,0,0)`;
+    _calcSizes() {
+        const first = this.slides[0];
+        if (first) {
+            const rect = first.getBoundingClientRect();
+            const style = window.getComputedStyle(first);
+            const marginRight = parseFloat(style.marginRight) || 24;
+            this.slideWidth = Math.round(rect.width + marginRight);
+            this.threshold = Math.max(50, Math.round(this.slideWidth * 0.15));
+        }
+        this.slidesPerView = this.calculateSlidesPerView();
+        this._applyTranslate(-this.currentSlide * this.slideWidth, true);
     }
-  }
 
-  goToSlide(index) {
-    if (this.isAnimating) return;
-    // wrap circular
-    this.currentSlide = ((index % this.totalSlides) + this.totalSlides) % this.totalSlides;
-    const px = -this.currentSlide * this.slideWidth;
-    this.isAnimating = true;
-    this._applyTranslate(px, false);
-    // bloqueo de animación durante la transición
-    setTimeout(() => { this.isAnimating = false; }, 420);
-  }
+    _createIndicators() {
+        if (!this.indicadoresContainer) return;
+        
+        this.indicadoresContainer.innerHTML = '';
+        const maxSlides = Math.max(0, this.totalSlides - this.slidesPerView + 1);
+        
+        for (let i = 0; i < maxSlides; i++) {
+            const indicador = document.createElement('div');
+            indicador.className = 'indicador';
+            indicador.addEventListener('click', () => this.goToSlide(i));
+            this.indicadoresContainer.appendChild(indicador);
+        }
+    }
 
-  goToNext() {
-    this.goToSlide(this.currentSlide + 1);
-  }
+    _updateIndicators() {
+        if (!this.indicadoresContainer) return;
+        
+        const indicadores = this.indicadoresContainer.querySelectorAll('.indicador');
+        indicadores.forEach((ind, index) => {
+            ind.classList.toggle('activo', index === this.currentSlide);
+        });
+    }
 
-  goToPrevious() {
-    this.goToSlide(this.currentSlide - 1);
-  }
+    _updateButtons() {
+        if (this.prevBtn) {
+            this.prevBtn.disabled = this.currentSlide === 0;
+            this.prevBtn.style.opacity = this.currentSlide === 0 ? '0.5' : '1';
+        }
+        
+        if (this.nextBtn) {
+            const maxSlide = Math.max(0, this.totalSlides - this.slidesPerView);
+            this.nextBtn.disabled = this.currentSlide >= maxSlide;
+            this.nextBtn.style.opacity = this.currentSlide >= maxSlide ? '0.5' : '1';
+        }
+    }
 
-  // Si en algún momento quieres autoplay, puedes descomentar/usar esto:
-  _startAuto() {
-    this._stopAuto();
-    this._auto = setInterval(() => this.goToNext(), 4000);
-  }
-  _stopAuto() {
-    if (this._auto) { clearInterval(this._auto); this._auto = null; }
-  }
+    _bind() {
+        if (this.prevBtn) {
+            this.prevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.goToPrevious();
+            });
+        }
+        
+        if (this.nextBtn) {
+            this.nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.goToNext();
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') this.goToPrevious();
+            if (e.key === 'ArrowRight') this.goToNext();
+        });
+
+        this.track.addEventListener('pointerdown', (ev) => this._onPointerDown(ev));
+        document.addEventListener('pointermove', (ev) => this._onPointerMove(ev));
+        document.addEventListener('pointerup', (ev) => this._onPointerUp(ev));
+        document.addEventListener('pointercancel', (ev) => this._onPointerUp(ev));
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this._calcSizes();
+                this._createIndicators();
+                this._updateIndicators();
+                this._updateButtons();
+            }, 120);
+        });
+    }
+
+    _onPointerDown(ev) {
+        if (ev.pointerType === 'mouse' && ev.button !== 0) return;
+        
+        this._drag.active = true;
+        this._drag.startX = ev.clientX;
+        this._drag.startY = ev.clientY;
+        this._drag.lastX = ev.clientX;
+        this._drag.startTranslate = -this.currentSlide * this.slideWidth;
+        
+        this.track.style.transition = 'none';
+        document.body.style.userSelect = 'none';
+        
+        try { 
+            ev.target.setPointerCapture(ev.pointerId); 
+        } catch (e) {}
+    }
+
+    _onPointerMove(ev) {
+        if (!this._drag.active) return;
+        
+        const dx = ev.clientX - this._drag.startX;
+        const dy = ev.clientY - this._drag.startY;
+
+        if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 10) {
+            this._drag.active = false;
+            this.track.style.transition = 'transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            this._applyTranslate(-this.currentSlide * this.slideWidth);
+            document.body.style.userSelect = '';
+            return;
+        }
+
+        ev.preventDefault();
+        this._drag.lastX = ev.clientX;
+        const pos = this._drag.startTranslate + dx;
+        this.track.style.transform = `translate3d(${pos}px,0,0)`;
+    }
+
+    _onPointerUp(ev) {
+        if (!this._drag.active) return;
+        
+        this._drag.active = false;
+        this.track.style.transition = 'transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        document.body.style.userSelect = '';
+
+        const dx = ev.clientX - this._drag.startX;
+        if (Math.abs(dx) > this.threshold) {
+            if (dx < 0) this.goToNext();
+            else this.goToPrevious();
+        } else {
+            this._applyTranslate(-this.currentSlide * this.slideWidth);
+        }
+
+        try { 
+            ev.target.releasePointerCapture && ev.target.releasePointerCapture(ev.pointerId); 
+        } catch (e) {}
+    }
+
+    _applyTranslate(px, immediate = false) {
+        if (immediate) {
+            const prevTransition = this.track.style.transition;
+            this.track.style.transition = 'none';
+            this.track.style.transform = `translate3d(${px}px,0,0)`;
+            void this.track.offsetWidth;
+            this.track.style.transition = prevTransition || 'transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        } else {
+            this.track.style.transform = `translate3d(${px}px,0,0)`;
+        }
+    }
+
+    goToSlide(index) {
+        if (this.isAnimating) return;
+        
+        const maxSlide = Math.max(0, this.totalSlides - this.slidesPerView);
+        this.currentSlide = Math.max(0, Math.min(index, maxSlide));
+        
+        const px = -this.currentSlide * this.slideWidth;
+        this.isAnimating = true;
+        
+        this._applyTranslate(px, false);
+        this._updateIndicators();
+        this._updateButtons();
+        
+        setTimeout(() => { 
+            this.isAnimating = false; 
+        }, 420);
+    }
+
+    goToNext() {
+        const maxSlide = Math.max(0, this.totalSlides - this.slidesPerView);
+        if (this.currentSlide < maxSlide) {
+            this.goToSlide(this.currentSlide + 1);
+        }
+    }
+
+    goToPrevious() {
+        if (this.currentSlide > 0) {
+            this.goToSlide(this.currentSlide - 1);
+        }
+    }
+
+    _startAuto() {
+        this._stopAuto();
+        this._auto = setInterval(() => {
+            if (this.currentSlide >= Math.max(0, this.totalSlides - this.slidesPerView)) {
+                this.goToSlide(0); // Volver al inicio
+            } else {
+                this.goToNext();
+            }
+        }, 4000);
+    }
+
+    _stopAuto() {
+        if (this._auto) { 
+            clearInterval(this._auto); 
+            this._auto = null; 
+        }
+    }
+
+    enableAutoplay() {
+        this._startAuto();
+        
+        this.track.addEventListener('mouseenter', () => this._stopAuto());
+        this.track.addEventListener('mouseleave', () => this._startAuto());
+    }
+
+    disableAutoplay() {
+        this._stopAuto();
+    }
 }
 
-// Inicializar al cargar DOM
 document.addEventListener('DOMContentLoaded', () => {
-  window.carousel = new Carousel('#carousel', 'prevBtn', 'nextBtn');
+    window.carousel = new Carousel('#carousel', 'prevBtn', 'nextBtn');
+
 });
+
