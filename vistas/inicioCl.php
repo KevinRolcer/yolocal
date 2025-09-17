@@ -308,18 +308,13 @@
         </div>
 
 
-        <div class="descripcionC">
-            <h2>Aliados</h2>
-            <p>Descubre a los negocios que forman parte de
-                <span>Yo <span id="span2">local</span></span>
-            </p>
-
-        </div>
         <div class="contenedorC">
             <div class="encabezadoC">
                 <div>
-                    <h2>Popular Destination</h2>
-                    <p>Unleash Your Wanderlust With SkyWings</p>
+                    <h2>Aliados</h2>
+                    <p>Descubre a los negocios que forman parte de
+                        <span>Yo <span id="span2">local</span></span>
+                    </p>
                 </div>
                 <div class="botonesNavC">
                     <button class="botonNavC" id="prevBtn">‹</button>
@@ -355,7 +350,14 @@
         </div>
 
 
+    
+        <div class="descripcionC">
+            <h2>Aliados</h2>
+            <p>Descubre a los negocios que forman parte de
+                <span>Yo <span id="span2">local</span></span>
+            </p>
 
+        </div>
         <div class="carousel-container2">
             <div class="carousel-inner2">
                 <div class="carousel-track2">
