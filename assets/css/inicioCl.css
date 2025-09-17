@@ -504,6 +504,11 @@ svg {
     text-align: center;
 }
 
+.contenedorC p span {
+    color: var(--complementario);
+    font-weight: 800;
+}
+
 .descripcionC p span {
     color: var(--complementario);
     font-weight: 800;
