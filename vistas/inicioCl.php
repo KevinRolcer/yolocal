@@ -278,7 +278,7 @@
             <h1 class="title">Cupones</h1>
 
             <p class="percentage">30%</p>
-            <button class="button">
+            <button onclick="location.href="vistas/cuponesPagina.php" class="button">
                 Ver cuponera
             </button>
 
