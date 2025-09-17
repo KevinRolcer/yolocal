@@ -1,230 +1,197 @@
-// carousel.js
+// carousel.js (versión mejorada: botones + drag con mouse y touch, sin cambiar tamaños)
 class Carousel {
-  constructor({
-    trackSelector = '#carousel',
-    prevSelector = '#prevBtn',
-    nextSelector = '#nextBtn',
-    autoplay = true,
-    interval = 4000,
-    swipeThreshold = 50 // px mínimo para considerar swipe
-  } = {}) {
-    this.track = document.querySelector(trackSelector);
-    if (!this.track) {
-      console.warn('Carousel: track no encontrado con selector', trackSelector);
-      return;
-    }
+  constructor(selector = '#carousel', prevId = 'prevBtn', nextId = 'nextBtn') {
+    this.track = document.querySelector(selector);
+    if (!this.track) return console.warn('Carousel: #carousel no encontrado');
 
-    this.container = this.track.parentElement; // .contenedorCarruselC
     this.slides = Array.from(this.track.querySelectorAll('.tarjetaC'));
-    this.totalSlides = this.slides.length;
-    this.prevBtn = document.querySelector(prevSelector);
-    this.nextBtn = document.querySelector(nextSelector);
+    this.totalSlides = this.slides.length || 1;
+    this.prevBtn = document.getElementById(prevId);
+    this.nextBtn = document.getElementById(nextId);
 
     this.currentSlide = 0;
     this.isAnimating = false;
-    this.autoPlayInterval = null;
 
-    this.options = { autoplay, interval, swipeThreshold };
+    // estado del drag
+    this._drag = {
+      active: false,
+      startX: 0,
+      startY: 0,
+      lastX: 0,
+      startTranslate: 0
+    };
 
-    this._pointer = { active: false, startX: 0, startY: 0, startTranslate: 0 };
+    // valores que se calculan en runtime
+    this.slideWidth = 0;
+    this.threshold = 50; // se reajusta en updateSizes
 
-    this.init();
+    this._init();
   }
 
-  init() {
-    this.setupStyles();
-    this.updateSizes(); // set widths and position
-    this.bindEvents();
-    if (this.options.autoplay) this.startAutoPlay();
-  }
-
-  setupStyles() {
-    // Aseguramos overflow y transición básica si el CSS no lo contiene
-    this.container.style.overflow = 'hidden';
-    this.track.style.display = 'flex';
-    this.track.style.transition = 'transform 500ms ease';
+  _init() {
+    // estilo mínimo necesario (no modifica anchos de las slides)
     this.track.style.willChange = 'transform';
-    // slides: asegurar que no colapsen
-    this.slides.forEach(s => s.style.boxSizing = 'border-box');
+    this.track.style.touchAction = 'pan-y'; // permite scroll vertical, bloquea horizontal nativo
+    // transición por defecto
+    this.track.style.transition = 'transform 400ms ease';
+
+    this._calcSizes();
+    this._bind();
+    // opcional: autoplay (si quieres, lo activas)
+    // this._startAuto();
   }
 
-  updateSizes() {
-    // Recomputa el ancho de slide según el ancho del contenedor (responsive)
-    this.slideWidth = this.container.clientWidth || this.track.clientWidth || 300;
-    this.slides.forEach(slide => {
-      slide.style.minWidth = `${this.slideWidth}px`;
-      slide.style.flex = '0 0 auto';
-    });
-    // Colocar al slide actual (sin animación)
+  _calcSizes() {
+    // no forzamos tamaños; solo medimos la anchura real de la primera slide
+    const first = this.slides[0];
+    this.slideWidth = first ? Math.round(first.getBoundingClientRect().width) : 0;
+    // umbral para considerar swipe: 15% del ancho o 50px mínimo
+    this.threshold = Math.max(50, Math.round(this.slideWidth * 0.15));
+    // forzamos el snap al slide actual por si hubo resize
     this._applyTranslate(-this.currentSlide * this.slideWidth, true);
   }
 
-  bindEvents() {
-    // Botones
+  _bind() {
+    // botones
     if (this.prevBtn) {
       this.prevBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        this.stopAutoPlay();
         this.goToPrevious();
-        this.startAutoPlay();
       });
-    } else console.warn('Carousel: prevBtn no encontrado');
-
+    }
     if (this.nextBtn) {
       this.nextBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        this.stopAutoPlay();
         this.goToNext();
-        this.startAutoPlay();
       });
-    } else console.warn('Carousel: nextBtn no encontrado');
+    }
 
-    // Teclas
+    // teclado
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        this.stopAutoPlay();
-        this.goToPrevious();
-        this.startAutoPlay();
-      }
-      if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        this.stopAutoPlay();
-        this.goToNext();
-        this.startAutoPlay();
-      }
+      if (e.key === 'ArrowLeft') this.goToPrevious();
+      if (e.key === 'ArrowRight') this.goToNext();
     });
 
-    // Pointer events unificados (mouse + touch)
+    // pointer events (funciona touch + mouse)
     this.track.addEventListener('pointerdown', (ev) => this._onPointerDown(ev));
     window.addEventListener('pointermove', (ev) => this._onPointerMove(ev));
     window.addEventListener('pointerup', (ev) => this._onPointerUp(ev));
     window.addEventListener('pointercancel', (ev) => this._onPointerUp(ev));
 
-    // Pausar autoplay al hover (solo si hay autoplay)
-    this.track.addEventListener('mouseenter', () => this.stopAutoPlay());
-    this.track.addEventListener('mouseleave', () => this.startAutoPlay());
+    // hover pause/resume si usas autoplay
+    this.track.addEventListener('mouseenter', () => this._stopAuto && this._stopAuto());
+    this.track.addEventListener('mouseleave', () => this._startAuto && this._startAuto());
 
-    // Recalcular al redimensionar
-    let resizeTimeout = null;
+    // recalcular tamaños al hacer resize
+    let t;
     window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => this.updateSizes(), 100);
+      clearTimeout(t);
+      t = setTimeout(() => this._calcSizes(), 120);
     });
   }
 
   _onPointerDown(ev) {
-    // solo botón izquierdo o touch
+    // solo botón principal del mouse o touch
     if (ev.pointerType === 'mouse' && ev.button !== 0) return;
-
-    this._pointer.active = true;
-    this._pointer.startX = ev.clientX;
-    this._pointer.startY = ev.clientY;
-    this._pointer.startTranslate = -this.currentSlide * this.slideWidth;
-    // quitar transición para seguir el dedo
+    this._drag.active = true;
+    this._drag.startX = ev.clientX;
+    this._drag.startY = ev.clientY;
+    this._drag.lastX = ev.clientX;
+    this._drag.startTranslate = -this.currentSlide * this.slideWidth;
+    // desactivar transición para seguir movimiento
     this.track.style.transition = 'none';
-    // capturar pointer (si está disponible)
-    try { ev.target.setPointerCapture(ev.pointerId); } catch (err) {}
-    this.stopAutoPlay();
+    // evitar selección de texto mientras arrastra
+    document.body.style.userSelect = 'none';
+    // capture pointer si es posible para seguir el movimiento incluso fuera del elemento
+    try { ev.target.setPointerCapture(ev.pointerId); } catch (e) {}
   }
 
   _onPointerMove(ev) {
-    if (!this._pointer.active) return;
+    if (!this._drag.active) return;
+    const dx = ev.clientX - this._drag.startX;
+    const dy = ev.clientY - this._drag.startY;
 
-    const dx = ev.clientX - this._pointer.startX;
-    const dy = ev.clientY - this._pointer.startY;
-
-    // Si el movimiento vertical es mayor y notorio, cancelamos arrastre para permitir scroll
+    // si el gesto es claramente vertical, abortamos el drag para permitir scroll natural
     if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 10) {
-      // cancelar arrastre y permitir scroll
-      this._pointer.active = false;
-      this.track.style.transition = 'transform 500ms ease';
-      this._applyTranslate(this._pointer.startTranslate, true); // regresa al inicio del slide
-      this.startAutoPlay();
+      this._drag.active = false;
+      this.track.style.transition = 'transform 400ms ease';
+      this._applyTranslate(-this.currentSlide * this.slideWidth); // snap back
+      document.body.style.userSelect = '';
       return;
     }
 
-    // prevenir comportamiento por defecto cuando detectamos arrastre horizontal
+    // prevenir comportamiento por defecto cuando arrastre horizontal
     ev.preventDefault();
-    const pos = this._pointer.startTranslate + dx;
-    this.track.style.transform = `translateX(${pos}px)`;
+    this._drag.lastX = ev.clientX;
+    const pos = this._drag.startTranslate + dx;
+    // aplicar la transform directamente (px) usando translate3d para GPU
+    this.track.style.transform = `translate3d(${pos}px,0,0)`;
   }
 
   _onPointerUp(ev) {
-    if (!this._pointer.active) return;
-    this._pointer.active = false;
+    if (!this._drag.active) return;
+    this._drag.active = false;
     // restaurar transición
-    this.track.style.transition = 'transform 500ms ease';
+    this.track.style.transition = 'transform 400ms ease';
+    document.body.style.userSelect = '';
 
-    const dx = ev.clientX - this._pointer.startX;
-    // swipe mínimo
-    if (Math.abs(dx) > this.options.swipeThreshold) {
+    const dx = ev.clientX - this._drag.startX;
+    // si el movimiento supera el umbral, navegar; sino "snap" al slide actual
+    if (Math.abs(dx) > this.threshold) {
       if (dx < 0) this.goToNext();
       else this.goToPrevious();
     } else {
-      // snap al slide actual (regresa)
+      // snap de regreso
       this._applyTranslate(-this.currentSlide * this.slideWidth);
     }
 
-    this.startAutoPlay();
-    // release capture
-    try { ev.target.releasePointerCapture && ev.target.releasePointerCapture(ev.pointerId); } catch (err) {}
+    // release pointer capture si se obtuvo
+    try { ev.target.releasePointerCapture && ev.target.releasePointerCapture(ev.pointerId); } catch (e) {}
   }
 
   _applyTranslate(px, immediate = false) {
     if (immediate) {
-      // sin transición: apagar, aplicar, forzar reflow y restaurar transición
-      const prevTrans = this.track.style.transition;
+      const prev = this.track.style.transition;
       this.track.style.transition = 'none';
-      this.track.style.transform = `translateX(${px}px)`;
-      // force reflow
+      this.track.style.transform = `translate3d(${px}px,0,0)`;
+      // forzar reflow
       void this.track.offsetWidth;
-      this.track.style.transition = prevTrans || 'transform 500ms ease';
+      this.track.style.transition = prev || 'transform 400ms ease';
     } else {
-      this.track.style.transform = `translateX(${px}px)`;
+      this.track.style.transform = `translate3d(${px}px,0,0)`;
     }
   }
 
   goToSlide(index) {
-    if (!this.track) return;
-    // navegación circular
+    if (this.isAnimating) return;
+    // wrap circular
     this.currentSlide = ((index % this.totalSlides) + this.totalSlides) % this.totalSlides;
     const px = -this.currentSlide * this.slideWidth;
-    this._applyTranslate(px);
+    this.isAnimating = true;
+    this._applyTranslate(px, false);
+    // bloqueo de animación durante la transición
+    setTimeout(() => { this.isAnimating = false; }, 420);
   }
 
   goToNext() {
-    if (!this.track) return;
     this.goToSlide(this.currentSlide + 1);
   }
 
   goToPrevious() {
-    if (!this.track) return;
     this.goToSlide(this.currentSlide - 1);
   }
 
-  startAutoPlay() {
-    if (!this.options.autoplay || this.autoPlayInterval) return;
-    this.autoPlayInterval = setInterval(() => this.goToNext(), this.options.interval);
+  // Si en algún momento quieres autoplay, puedes descomentar/usar esto:
+  _startAuto() {
+    this._stopAuto();
+    this._auto = setInterval(() => this.goToNext(), 4000);
   }
-
-  stopAutoPlay() {
-    if (this.autoPlayInterval) {
-      clearInterval(this.autoPlayInterval);
-      this.autoPlayInterval = null;
-    }
+  _stopAuto() {
+    if (this._auto) { clearInterval(this._auto); this._auto = null; }
   }
 }
 
-// Inicializar cuando DOM esté listo
+// Inicializar al cargar DOM
 document.addEventListener('DOMContentLoaded', () => {
-  // si quieres opciones, pásalas aquí
-  window.carousel = new Carousel({
-    trackSelector: '#carousel',
-    prevSelector: '#prevBtn',
-    nextSelector: '#nextBtn',
-    autoplay: true,
-    interval: 4000,
-    swipeThreshold: 50
-  });
+  window.carousel = new Carousel('#carousel', 'prevBtn', 'nextBtn');
 });
