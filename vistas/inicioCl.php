@@ -7,6 +7,8 @@
     <title>Inicio Yolocal</title>
     <link rel="stylesheet" href="assets/css/inicioCl.css">
     <script type="module" src="assets/js/pagina/funcionesHome.js?<?php echo time(); ?>"></script>
+    <script defer src="assets/js/menuCl.js"></script>
+    <script defer src="assets/js/carruselCl.js"></script>
 </head>
 
 <body>
@@ -425,8 +427,7 @@
     </div>
 
 
-    <script src="assets/js/menuCl.js"></script>
-    <script src="assets/js/carruselCl.js"></script>
+    
 </body>
 
 </html>
