@@ -1,5 +1,5 @@
 class Carousel {
-    constructor(selector = '#carousel', prevId = 'prevBtn', nextId = 'nextBtn') {
+    constructor(selector = '#carousel2', prevId = 'prevBtn2', nextId = 'nextBtn2') {
         this.track = document.querySelector(selector);
         if (!this.track) {
             console.warn('Carousel: #carousel no encontrado');
