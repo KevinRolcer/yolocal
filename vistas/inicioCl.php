@@ -318,13 +318,13 @@
                     </p>
                 </div>
                 <div class="botonesNavC">
-                    <button class="botonNavC" id="prevBtn2">‹</button>
-                    <button class="botonNavC" id="nextBtn2">›</button>
+                    <button class="botonNavC" id="prevBtn">‹</button>
+                    <button class="botonNavC" id="nextBtn">›</button>
                 </div>
             </div>
 
             <div class="contenedorCarruselC">
-                <div class="carruselC" id="carousel2">
+                <div class="carruselC" id="carousel">
                     <!-- Tarjeta 1 -->
                     <div class="tarjetaC">
                         <div class="imagenTarjetaC" style="background-image: ..."></div>
@@ -547,6 +547,9 @@
             </div>
         </div>
         
+
+
+
 
     </div>
 
