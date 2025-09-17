@@ -514,6 +514,10 @@ svg {
     font-weight: 800;
 }
 
+.contenedorC p #span2 {
+    color: var(--principal);
+    font-weight: 800;
+}
 .descripcionC p #span2 {
     color: var(--principal);
     font-weight: 800;
