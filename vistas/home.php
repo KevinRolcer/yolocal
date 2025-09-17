@@ -4,7 +4,7 @@
 <head>
     <title>Home - Yo Local</title>
     
-    <link rel="stylesheet" href="../assets/css/principal.css">
+    
     <?php
     include_once("head.php");
     ?>
@@ -12,6 +12,7 @@
     <script src="https://kit.fontawesome.com/726544f644.js" crossorigin="anonymous"></script>
   
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
+    <link rel="stylesheet" href="../assets/css/principal.css">
 </head>
 
 <body>

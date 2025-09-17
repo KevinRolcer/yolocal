@@ -37,6 +37,20 @@ if (isset($_POST["ope"])) {
             "totalPaginas" => $lista["totalPaginas"],
             "paginaActual" => $lista["paginaActual"]
         ]);
+    }elseif ($ope == "LISTAICONOS") {
+        header('Content-Type: application/json'); // <-- esta línea es clave
+      
+
+
+        
+
+        $lista = $usu->ListarIconos();
+
+        echo json_encode([
+            "success" => true,
+            "lista" => $lista["miembros"]
+           
+        ]);
     }
     //  obtener 
     elseif ($ope == "OBTENER") {

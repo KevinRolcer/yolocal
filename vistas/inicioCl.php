@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio Yolocal</title>
     <link rel="stylesheet" href="assets/css/inicioCl.css">
+    <script type="module" src="assets/js/pagina/funcionesHome.js?<?php echo time(); ?>"></script>
+</head>
+
 <body>
-    
+
     <header class="encabezado">
         <nav class="navbar">
             <div class="logo">
                 <img src="assets/img/LogoYolocal.png" alt="">
             </div>
-            
+
             <!-- Menú móvil-->
             <button class="menu-toggle" id="menuToggle">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
             </button>
-            
+
             <div class="menu" id="mainMenu">
                 <a href="#" class="enlace active" data-tooltip="Inicio">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -80,7 +84,7 @@
             <div class="carousel-container">
                 <div class="carousel-wrapper">
                     <div class="carousel-track" id="carouselTrack">
-                
+
                         <!-- Slide  -->
                         <div class="carousel-slide">
                             <div class="slide-background bg-gradient-1">
@@ -149,7 +153,7 @@
                             </div>
                         </div>
 
-                         <!-- Slide -->
+                        <!-- Slide -->
                         <div class="carousel-slide">
                             <div class="slide-background bg-gradient-5">
                                 <div class="slide-content">
@@ -165,8 +169,8 @@
                                 </div>
                             </div>
                         </div>
-                        
-                         <!-- Slide -->
+
+                        <!-- Slide -->
                         <div class="carousel-slide">
                             <div class="slide-background bg-gradient-6">
                                 <div class="slide-content">
@@ -183,7 +187,7 @@
                             </div>
                         </div>
 
-                         <!-- Slide -->
+                        <!-- Slide -->
                         <div class="carousel-slide">
                             <div class="slide-background bg-gradient-7">
                                 <div class="slide-content">
@@ -199,7 +203,7 @@
                                 </div>
                             </div>
                         </div>
-                         <!-- Slide -->
+                        <!-- Slide -->
                         <div class="carousel-slide">
                             <div class="slide-background bg-gradient-8">
                                 <div class="slide-content">
@@ -215,7 +219,7 @@
                                 </div>
                             </div>
                         </div>
-                         <!-- Slide -->
+                        <!-- Slide -->
                         <div class="carousel-slide">
                             <div class="slide-background bg-gradient-9">
                                 <div class="slide-content">
@@ -231,7 +235,7 @@
                                 </div>
                             </div>
                         </div>
-                         <!-- Slide -->
+                        <!-- Slide -->
                         <div class="carousel-slide">
                             <div class="slide-background bg-gradient-10">
                                 <div class="slide-content">
@@ -253,12 +257,12 @@
 
                 <button class="carousel-nav prev" id="prevBtn">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </button>
                 <button class="carousel-nav next" id="nextBtn">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </button>
 
@@ -266,14 +270,14 @@
             </div>
         </div>
 
-        
+
         <div id="contenedorCupon" class="container">
-    
+
             <h1 class="title">Cupones</h1>
-            
+
             <p class="percentage">30%</p>
             <button class="button">
-            Ver cuponera
+                Ver cuponera
             </button>
 
             <img src="assets/img/LogoYolocal.png" class="logo logo-1 shadow-yellow" alt="Logo">
@@ -300,17 +304,30 @@
             <img src="assets/img/LogoYolocal.png" class="logo logo-20 shadow-yellow" alt="Logo">
             <img src="assets/img/LogoYolocal.png" class="logo logo-21 shadow-pink" alt="Logo">
         </div>
-        
 
 
         <div class="descripcionC">
-            <h2>Categorias</h2>
-            <p>Descubre la variedad de establecimientos que forman parte de 
+            <h2>Aliados</h2>
+            <p>Descubre a los negocios que forman parte de
                 <span>Yo <span id="span2">local</span></span>
             </p>
 
         </div>
-         <div class="container">
+        <div class="carousel-container2">
+            <div class="carousel-inner2">
+                <div class="carousel-track2">
+                </div>
+            </div>
+        </div>
+        
+        <div class="descripcionC">
+            <h2>Categorias</h2>
+            <p>Descubre la variedad de establecimientos que forman parte de
+                <span>Yo <span id="span2">local</span></span>
+            </p>
+
+        </div>
+        <div class="container">
 
             <div class="row row-3">
                 <div class="card white">
@@ -400,14 +417,16 @@
                 </div>
             </div>
         </div>
-
-
         
 
+
+
+
     </div>
-    
+
 
     <script src="assets/js/menuCl.js"></script>
     <script src="assets/js/carruselCl.js"></script>
 </body>
+
 </html>

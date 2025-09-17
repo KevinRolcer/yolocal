@@ -79,6 +79,37 @@ FROM `negocios`
             "paginaActual" => $pagina,
         ];
     }
+    public function ListarIconos()
+    {
+        $enlace = dbConectar();
+       
+
+        $sql = "SELECT nombre_negocio, Rutaicono FROM negocios WHERE 1=1";
+        
+
+        // Filtros dinámicos
+        
+        $consulta = $enlace->prepare($sql);
+        
+
+        $consulta->execute();
+        $result = $consulta->get_result();
+
+        $miembros = [];
+        while ($row = $result->fetch_assoc()) {
+            $miembros[] = $row;
+        }
+
+        // Cerrar conexiones
+        $consulta->close();
+        
+        $enlace->close();
+
+        return [
+            "miembros" => $miembros
+            
+        ];
+    }
     public function buscarMiembroPorID($ID_Miembro)
     {
         $enlace = dbConectar();
