@@ -9,6 +9,7 @@
     <script type="module" src="assets/js/pagina/funcionesHome.js?<?php echo time(); ?>"></script>
     <script defer src="assets/js/menuCl.js"></script>
     <script defer src="assets/js/carruselCl.js"></script>
+    <script defer src="assets/js/carrusel2Cl.js"></script>
 </head>
 
 <body>
@@ -427,7 +428,7 @@
                         </div>
                     </div>
 
-                    
+
                 </div>
             </div>
         </div>
