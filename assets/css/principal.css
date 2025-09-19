@@ -351,9 +351,9 @@ svg{
 /* Contenido principal */
         .content {
             margin-left: 0px;
-            padding-left: 10px;
+            padding-left: 30px;
             padding-top: 15px;
-            min-height: 100vh;
+            min-height: 90vh;
         }
 
         /* Header superior */
