@@ -92,7 +92,7 @@ svg{
   cursor: pointer;
 }
 .notificacion:hover{
-  color: var(--red);
+  color: var(--principal);
 }
 .usuario {
   position: relative;
@@ -114,7 +114,7 @@ svg{
 }
 /* ======================= Caja de notificaciones ====================== */
 .notifi-box .text{
-  color: var(--red);
+  color: var(--principal);
   
 }
 .notifi-box {
@@ -154,7 +154,7 @@ svg{
 }
 
 .noti::-webkit-scrollbar-thumb:hover {
-  background: var(--red); 
+  background: var(--principal); 
 }
 .noti .imgBx {
   position: relative;
@@ -189,7 +189,7 @@ svg{
 }
 
 .noti table tr:hover {
-  background: var(--red);
+  background: var(--principal);
   color: var(--white);
 }
 
@@ -271,7 +271,7 @@ svg{
 }
 
 .dates li.today {
-  background-color: var(--red);
+  background-color: var(--principal2);
   color: white;
   border-radius: 50%;
 }
@@ -353,7 +353,7 @@ svg{
             margin-left: 0px;
             padding-left: 30px;
             padding-top: 15px;
-            min-height: 90vh;
+            min-height: 80vh;
         }
 
         /* Header superior */
