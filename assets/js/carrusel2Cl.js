@@ -13,6 +13,7 @@ class InfiniteCarousel {
         this.isAnimating = false;
         this.isPaused = false;
         this.autoPlayInterval = null;
+        this.resumeTimeout = null; 
 
         this._drag = {
             active: false,
@@ -24,7 +25,7 @@ class InfiniteCarousel {
 
         this.cardWidth = 0;
         this.speed = 50; 
-        this.autoPlaySpeed = 3000;
+        this.autoPlaySpeed = 3000; 
 
         this._init();
     }
@@ -98,6 +99,7 @@ class InfiniteCarousel {
 
     _onDragStart(e) {
         this._pauseAutoPlay();
+        this._clearResumeTimeout(); 
         
         this._drag.active = true;
         this._drag.startX = this._getEventX(e);
@@ -163,7 +165,9 @@ class InfiniteCarousel {
         this.carousel.style.cursor = 'grab';
         document.body.style.userSelect = '';
         this._setPosition(this.currentPosition);
-        this._resumeAutoPlay();
+        
+        // Reanudar después de 3 segundos incluso si se cancela el drag
+        this._scheduleResume(3000);
     }
 
     _getEventX(e) {
@@ -180,7 +184,7 @@ class InfiniteCarousel {
         if (immediate) {
             this.carousel.style.transition = 'none';
             this.carousel.style.transform = `translateX(${translateX}px)`;
-            void this.carousel.offsetWidth; 
+            void this.carousel.offsetWidth; // Forzar repaint
             this.carousel.style.transition = 'transform 0.3s ease';
         } else {
             this.carousel.style.transform = `translateX(${translateX}px)`;
@@ -247,6 +251,21 @@ class InfiniteCarousel {
 
     stop() {
         this._stopAutoPlay();
+        this._clearResumeTimeout(); 
+    }
+
+    _scheduleResume(delay) {
+        this._clearResumeTimeout();
+        this.resumeTimeout = setTimeout(() => {
+            this._resumeAutoPlay();
+        }, delay);
+    }
+
+    _clearResumeTimeout() {
+        if (this.resumeTimeout) {
+            clearTimeout(this.resumeTimeout);
+            this.resumeTimeout = null;
+        }
     }
 
     setSpeed(speed) {
