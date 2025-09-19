@@ -1,271 +1,261 @@
-class Carousel {
-    constructor(selector = '#carousel', prevId = 'prevBtn', nextId = 'nextBtn') {
-        this.track = document.querySelector(selector);
-        if (!this.track) {
-            console.warn('Carousel: #carousel no encontrado');
+class InfiniteCarousel {
+    constructor() {
+        this.carousel = document.getElementById('carousel');
+        
+        if (!this.carousel) {
+            console.warn('Carousel no encontrado');
             return;
         }
 
-        this.slides = Array.from(this.track.querySelectorAll('.tarjetaC'));
-        this.totalSlides = this.slides.length || 1;
-        this.prevBtn = document.getElementById(prevId);
-        this.nextBtn = document.getElementById(nextId);
-        this.indicadoresContainer = document.getElementById('indicadores');
-
-        this.currentSlide = 0;
+        this.originalCards = Array.from(this.carousel.querySelectorAll('.tarjetaC'));
+        this.totalCards = this.originalCards.length;
+        this.currentPosition = 0;
         this.isAnimating = false;
-        this.slidesPerView = this.calculateSlidesPerView();
+        this.isPaused = false;
+        this.autoPlayInterval = null;
 
         this._drag = {
             active: false,
             startX: 0,
             startY: 0,
-            lastX: 0,
+            currentX: 0,
             startTranslate: 0
         };
 
-        this.slideWidth = 0;
-        this.threshold = 50;
+        this.cardWidth = 0;
+        this.speed = 50; 
+        this.autoPlaySpeed = 3000;
 
         this._init();
     }
 
-    calculateSlidesPerView() {
-        const containerWidth = this.track.parentElement.offsetWidth;
-        const slideWidth = 300 + 24; // 300px + 1.5rem margin
-        return Math.floor(containerWidth / slideWidth) || 1;
-    }
-
     _init() {
-        this.track.style.willChange = 'transform';
-        this.track.style.touchAction = 'pan-y';
-        this.track.style.transition = 'transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-
-        this._calcSizes();
-        this._bind();
-        this._createIndicators();
-        this._updateIndicators();
-        this._updateButtons();
+        this.carousel.style.display = 'flex';
+        this.carousel.style.cursor = 'grab';
+        
+        this._duplicateCards();
+        this._calculateSizes();
+        this._bindEvents();
+        this._startAutoPlay();
     }
 
-    _calcSizes() {
-        const first = this.slides[0];
-        if (first) {
-            const rect = first.getBoundingClientRect();
-            const style = window.getComputedStyle(first);
-            const marginRight = parseFloat(style.marginRight) || 24;
-            this.slideWidth = Math.round(rect.width + marginRight);
-            this.threshold = Math.max(50, Math.round(this.slideWidth * 0.15));
-        }
-        this.slidesPerView = this.calculateSlidesPerView();
-        this._applyTranslate(-this.currentSlide * this.slideWidth, true);
-    }
-
-    _createIndicators() {
-        if (!this.indicadoresContainer) return;
+    _duplicateCards() {
+        const fragment = document.createDocumentFragment();
         
-        this.indicadoresContainer.innerHTML = '';
-        const maxSlides = Math.max(0, this.totalSlides - this.slidesPerView + 1);
-        
-        for (let i = 0; i < maxSlides; i++) {
-            const indicador = document.createElement('div');
-            indicador.className = 'indicador';
-            indicador.addEventListener('click', () => this.goToSlide(i));
-            this.indicadoresContainer.appendChild(indicador);
-        }
-    }
-
-    _updateIndicators() {
-        if (!this.indicadoresContainer) return;
-        
-        const indicadores = this.indicadoresContainer.querySelectorAll('.indicador');
-        indicadores.forEach((ind, index) => {
-            ind.classList.toggle('activo', index === this.currentSlide);
+        this.originalCards.forEach(card => {
+            const clone = card.cloneNode(true);
+            clone.classList.add('cloned');
+            fragment.appendChild(clone);
         });
-    }
-
-    _updateButtons() {
-        if (this.prevBtn) {
-            this.prevBtn.disabled = this.currentSlide === 0;
-            this.prevBtn.style.opacity = this.currentSlide === 0 ? '0.5' : '1';
-        }
         
-        if (this.nextBtn) {
-            const maxSlide = Math.max(0, this.totalSlides - this.slidesPerView);
-            this.nextBtn.disabled = this.currentSlide >= maxSlide;
-            this.nextBtn.style.opacity = this.currentSlide >= maxSlide ? '0.5' : '1';
-        }
-    }
-
-    _bind() {
-        if (this.prevBtn) {
-            this.prevBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.goToPrevious();
-            });
-        }
-        
-        if (this.nextBtn) {
-            this.nextBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.goToNext();
-            });
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') this.goToPrevious();
-            if (e.key === 'ArrowRight') this.goToNext();
+        this.originalCards.slice().reverse().forEach(card => {
+            const clone = card.cloneNode(true);
+            clone.classList.add('cloned');
+            this.carousel.insertBefore(clone, this.carousel.firstChild);
         });
+        
+        this.carousel.appendChild(fragment);
+        
+        this.allCards = Array.from(this.carousel.querySelectorAll('.tarjetaC'));
+        this.startIndex = this.totalCards; 
+        this.currentPosition = this.startIndex;
+    }
 
-        this.track.addEventListener('pointerdown', (ev) => this._onPointerDown(ev));
-        document.addEventListener('pointermove', (ev) => this._onPointerMove(ev));
-        document.addEventListener('pointerup', (ev) => this._onPointerUp(ev));
-        document.addEventListener('pointercancel', (ev) => this._onPointerUp(ev));
+    _calculateSizes() {
+        if (this.allCards.length === 0) return;
+
+        const firstCard = this.allCards[0];
+        const cardStyle = window.getComputedStyle(firstCard);
+        
+        this.cardWidth = firstCard.offsetWidth + parseInt(cardStyle.marginRight || '0');
+        
+        this._setPosition(this.currentPosition, true);
+    }
+
+    _bindEvents() {
+        this.carousel.addEventListener('mousedown', (e) => this._onDragStart(e));
+        this.carousel.addEventListener('touchstart', (e) => this._onDragStart(e), { passive: true });
+        
+        document.addEventListener('mousemove', (e) => this._onDragMove(e));
+        document.addEventListener('touchmove', (e) => this._onDragMove(e), { passive: false });
+        
+        document.addEventListener('mouseup', (e) => this._onDragEnd(e));
+        document.addEventListener('touchend', (e) => this._onDragEnd(e));
+
+        this.carousel.addEventListener('mouseenter', () => this._pauseAutoPlay());
+        this.carousel.addEventListener('mouseleave', () => this._resumeAutoPlay());
+
+        this.carousel.addEventListener('selectstart', (e) => e.preventDefault());
 
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(() => {
-                this._calcSizes();
-                this._createIndicators();
-                this._updateIndicators();
-                this._updateButtons();
-            }, 120);
+                this._calculateSizes();
+            }, 150);
         });
     }
 
-    _onPointerDown(ev) {
-        if (ev.pointerType === 'mouse' && ev.button !== 0) return;
+    _onDragStart(e) {
+        this._pauseAutoPlay();
         
         this._drag.active = true;
-        this._drag.startX = ev.clientX;
-        this._drag.startY = ev.clientY;
-        this._drag.lastX = ev.clientX;
-        this._drag.startTranslate = -this.currentSlide * this.slideWidth;
+        this._drag.startX = this._getEventX(e);
+        this._drag.startY = this._getEventY(e);
+        this._drag.currentX = this._drag.startX;
+        this._drag.startTranslate = -this.currentPosition * this.cardWidth;
         
-        this.track.style.transition = 'none';
+        this.carousel.style.transition = 'none';
+        this.carousel.style.cursor = 'grabbing';
+        
         document.body.style.userSelect = 'none';
-        
-        try { 
-            ev.target.setPointerCapture(ev.pointerId); 
-        } catch (e) {}
     }
 
-    _onPointerMove(ev) {
+    _onDragMove(e) {
         if (!this._drag.active) return;
         
-        const dx = ev.clientX - this._drag.startX;
-        const dy = ev.clientY - this._drag.startY;
-
-        if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 10) {
-            this._drag.active = false;
-            this.track.style.transition = 'transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-            this._applyTranslate(-this.currentSlide * this.slideWidth);
-            document.body.style.userSelect = '';
+        this._drag.currentX = this._getEventX(e);
+        const deltaX = this._drag.currentX - this._drag.startX;
+        const deltaY = this._getEventY(e) - this._drag.startY;
+        
+        if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 10) {
+            this._cancelDrag();
             return;
         }
-
-        ev.preventDefault();
-        this._drag.lastX = ev.clientX;
-        const pos = this._drag.startTranslate + dx;
-        this.track.style.transform = `translate3d(${pos}px,0,0)`;
+        
+        if (Math.abs(deltaX) > 10) {
+            e.preventDefault();
+        }
+        
+        const newTranslate = this._drag.startTranslate + deltaX;
+        this.carousel.style.transform = `translateX(${newTranslate}px)`;
     }
 
-    _onPointerUp(ev) {
+    _onDragEnd(e) {
         if (!this._drag.active) return;
         
         this._drag.active = false;
-        this.track.style.transition = 'transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        this.carousel.style.transition = 'transform 0.3s ease';
+        this.carousel.style.cursor = 'grab';
         document.body.style.userSelect = '';
-
-        const dx = ev.clientX - this._drag.startX;
-        if (Math.abs(dx) > this.threshold) {
-            if (dx < 0) this.goToNext();
-            else this.goToPrevious();
-        } else {
-            this._applyTranslate(-this.currentSlide * this.slideWidth);
-        }
-
-        try { 
-            ev.target.releasePointerCapture && ev.target.releasePointerCapture(ev.pointerId); 
-        } catch (e) {}
-    }
-
-    _applyTranslate(px, immediate = false) {
-        if (immediate) {
-            const prevTransition = this.track.style.transition;
-            this.track.style.transition = 'none';
-            this.track.style.transform = `translate3d(${px}px,0,0)`;
-            void this.track.offsetWidth;
-            this.track.style.transition = prevTransition || 'transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-        } else {
-            this.track.style.transform = `translate3d(${px}px,0,0)`;
-        }
-    }
-
-    goToSlide(index) {
-        if (this.isAnimating) return;
         
-        const maxSlide = Math.max(0, this.totalSlides - this.slidesPerView);
-        this.currentSlide = Math.max(0, Math.min(index, maxSlide));
+        const deltaX = this._drag.currentX - this._drag.startX;
+        const threshold = this.cardWidth * 0.2;
         
-        const px = -this.currentSlide * this.slideWidth;
-        this.isAnimating = true;
-        
-        this._applyTranslate(px, false);
-        this._updateIndicators();
-        this._updateButtons();
-        
-        setTimeout(() => { 
-            this.isAnimating = false; 
-        }, 420);
-    }
-
-    goToNext() {
-        const maxSlide = Math.max(0, this.totalSlides - this.slidesPerView);
-        if (this.currentSlide < maxSlide) {
-            this.goToSlide(this.currentSlide + 1);
-        }
-    }
-
-    goToPrevious() {
-        if (this.currentSlide > 0) {
-            this.goToSlide(this.currentSlide - 1);
-        }
-    }
-
-    _startAuto() {
-        this._stopAuto();
-        this._auto = setInterval(() => {
-            if (this.currentSlide >= Math.max(0, this.totalSlides - this.slidesPerView)) {
-                this.goToSlide(0); // Volver al inicio
+        if (Math.abs(deltaX) > threshold) {
+            if (deltaX < 0) {
+                this._moveToNext();
             } else {
-                this.goToNext();
+                this._moveToPrevious();
             }
-        }, 4000);
+        } else {
+            this._setPosition(this.currentPosition);
+        }
+        
+        setTimeout(() => {
+            this._resumeAutoPlay();
+        }, 1000);
     }
 
-    _stopAuto() {
-        if (this._auto) { 
-            clearInterval(this._auto); 
-            this._auto = null; 
+    _cancelDrag() {
+        this._drag.active = false;
+        this.carousel.style.transition = 'transform 0.3s ease';
+        this.carousel.style.cursor = 'grab';
+        document.body.style.userSelect = '';
+        this._setPosition(this.currentPosition);
+        this._resumeAutoPlay();
+    }
+
+    _getEventX(e) {
+        return e.type.includes('touch') ? e.touches[0]?.clientX || e.changedTouches[0]?.clientX : e.clientX;
+    }
+
+    _getEventY(e) {
+        return e.type.includes('touch') ? e.touches[0]?.clientY || e.changedTouches[0]?.clientY : e.clientY;
+    }
+
+    _setPosition(position, immediate = false) {
+        const translateX = -position * this.cardWidth;
+        
+        if (immediate) {
+            this.carousel.style.transition = 'none';
+            this.carousel.style.transform = `translateX(${translateX}px)`;
+            void this.carousel.offsetWidth; 
+            this.carousel.style.transition = 'transform 0.3s ease';
+        } else {
+            this.carousel.style.transform = `translateX(${translateX}px)`;
         }
     }
 
-    enableAutoplay() {
-        this._startAuto();
-        
-        this.track.addEventListener('mouseenter', () => this._stopAuto());
-        this.track.addEventListener('mouseleave', () => this._startAuto());
+    _moveToNext() {
+        this.currentPosition++;
+        this._setPosition(this.currentPosition);
+        this._checkInfiniteLoop();
     }
 
-    disableAutoplay() {
-        this._stopAuto();
+    _moveToPrevious() {
+        this.currentPosition--;
+        this._setPosition(this.currentPosition);
+        this._checkInfiniteLoop();
+    }
+
+    _checkInfiniteLoop() {
+        if (this.currentPosition >= this.totalCards * 2) {
+            setTimeout(() => {
+                this.currentPosition = this.totalCards;
+                this._setPosition(this.currentPosition, true);
+            }, 300);
+        }
+        else if (this.currentPosition <= 0) {
+            setTimeout(() => {
+                this.currentPosition = this.totalCards;
+                this._setPosition(this.currentPosition, true);
+            }, 300);
+        }
+    }
+
+    _startAutoPlay() {
+        this.autoPlayInterval = setInterval(() => {
+            if (!this.isPaused && !this._drag.active) {
+                this._moveToNext();
+            }
+        }, this.autoPlaySpeed);
+    }
+
+    _pauseAutoPlay() {
+        this.isPaused = true;
+    }
+
+    _resumeAutoPlay() {
+        this.isPaused = false;
+    }
+
+    _stopAutoPlay() {
+        if (this.autoPlayInterval) {
+            clearInterval(this.autoPlayInterval);
+            this.autoPlayInterval = null;
+        }
+    }
+
+    pause() {
+        this._pauseAutoPlay();
+    }
+
+    resume() {
+        this._resumeAutoPlay();
+    }
+
+    stop() {
+        this._stopAutoPlay();
+    }
+
+    setSpeed(speed) {
+        this.autoPlaySpeed = speed;
+        this._stopAutoPlay();
+        this._startAutoPlay();
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    window.carousel = new Carousel('#carousel', 'prevBtn', 'nextBtn');
-
+    window.infiniteCarousel = new InfiniteCarousel();
 });
-

@@ -536,7 +536,7 @@ svg {
 /* Carrusel 2 de negocios   */
 .contenedorC {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 10px auto;
     padding: 0 20px;
 }
 
@@ -591,6 +591,7 @@ svg {
 .contenedorCarruselC {
     overflow: hidden;
     position: relative;
+    padding: 10px 0;
 }
 
 .carruselC {
