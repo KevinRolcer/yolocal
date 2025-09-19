@@ -92,7 +92,6 @@
         <!-- Header superior -->
         <div class="header">
             <div class="header-left">
-                
                 <div class="header-text">
                     <h1>Bienvenido a<br><span class="purple-text">Yo Local</span></h1>
                     <p class="subtitle">Si es del barrio, es de todos</p>
