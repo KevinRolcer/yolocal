@@ -10,22 +10,32 @@ class InfiniteCarousel {
         this.originalCards = Array.from(this.carousel.querySelectorAll('.tarjetaC'));
         this.totalCards = this.originalCards.length;
         this.currentPosition = 0;
+        this.targetPosition = 0; 
         this.isAnimating = false;
         this.isPaused = false;
         this.autoPlayInterval = null;
-        this.resumeTimeout = null; 
+        this.resumeTimeout = null;
+        this.animationFrame = null; 
 
         this._drag = {
             active: false,
             startX: 0,
             startY: 0,
             currentX: 0,
-            startTranslate: 0
+            startTranslate: 0,
+            isDragging: false,
+            velocity: 0,
+            lastX: 0,
+            lastTime: 0,
+            momentum: 0
         };
 
         this.cardWidth = 0;
-        this.speed = 50; 
-        this.autoPlaySpeed = 3000; 
+        this.containerWidth = 0;
+        this.visibleCards = 1;
+        this.speed = 50;
+        this.autoPlaySpeed = 3000;
+        this.smoothness = 0.08; 
 
         this._init();
     }
@@ -33,11 +43,13 @@ class InfiniteCarousel {
     _init() {
         this.carousel.style.display = 'flex';
         this.carousel.style.cursor = 'grab';
+        this.carousel.style.willChange = 'transform';
         
         this._duplicateCards();
         this._calculateSizes();
         this._bindEvents();
         this._startAutoPlay();
+        this._startSmoothAnimation();
     }
 
     _duplicateCards() {
@@ -58,8 +70,9 @@ class InfiniteCarousel {
         this.carousel.appendChild(fragment);
         
         this.allCards = Array.from(this.carousel.querySelectorAll('.tarjetaC'));
-        this.startIndex = this.totalCards; 
+        this.startIndex = this.totalCards;
         this.currentPosition = this.startIndex;
+        this.targetPosition = this.startIndex;
     }
 
     _calculateSizes() {
@@ -67,10 +80,13 @@ class InfiniteCarousel {
 
         const firstCard = this.allCards[0];
         const cardStyle = window.getComputedStyle(firstCard);
+        const containerStyle = window.getComputedStyle(this.carousel.parentElement);
         
         this.cardWidth = firstCard.offsetWidth + parseInt(cardStyle.marginRight || '0');
+        this.containerWidth = this.carousel.parentElement.offsetWidth;
+        this.visibleCards = Math.floor(this.containerWidth / this.cardWidth);
         
-        this._setPosition(this.currentPosition, true);
+        this._setPositionImmediate(this.currentPosition);
     }
 
     _bindEvents() {
@@ -83,10 +99,19 @@ class InfiniteCarousel {
         document.addEventListener('mouseup', (e) => this._onDragEnd(e));
         document.addEventListener('touchend', (e) => this._onDragEnd(e));
 
-        this.carousel.addEventListener('mouseenter', () => this._pauseAutoPlay());
-        this.carousel.addEventListener('mouseleave', () => this._resumeAutoPlay());
+        this.carousel.addEventListener('mouseenter', () => {
+            this._pauseAutoPlay();
+            this._clearResumeTimeout();
+        });
+        
+        this.carousel.addEventListener('mouseleave', () => {
+            if (!this._drag.active) {
+                this._scheduleResume(2000);
+            }
+        });
 
         this.carousel.addEventListener('selectstart', (e) => e.preventDefault());
+        this.carousel.addEventListener('dragstart', (e) => e.preventDefault());
 
         let resizeTimeout;
         window.addEventListener('resize', () => {
@@ -99,75 +124,120 @@ class InfiniteCarousel {
 
     _onDragStart(e) {
         this._pauseAutoPlay();
-        this._clearResumeTimeout(); 
+        this._clearResumeTimeout();
+        
+        const eventX = this._getEventX(e);
+        const eventY = this._getEventY(e);
         
         this._drag.active = true;
-        this._drag.startX = this._getEventX(e);
-        this._drag.startY = this._getEventY(e);
-        this._drag.currentX = this._drag.startX;
+        this._drag.isDragging = false;
+        this._drag.startX = eventX;
+        this._drag.startY = eventY;
+        this._drag.currentX = eventX;
+        this._drag.lastX = eventX;
+        this._drag.lastTime = Date.now();
+        this._drag.velocity = 0;
         this._drag.startTranslate = -this.currentPosition * this.cardWidth;
         
-        this.carousel.style.transition = 'none';
         this.carousel.style.cursor = 'grabbing';
-        
         document.body.style.userSelect = 'none';
+        
+        this.targetPosition = this.currentPosition;
     }
 
     _onDragMove(e) {
         if (!this._drag.active) return;
         
-        this._drag.currentX = this._getEventX(e);
-        const deltaX = this._drag.currentX - this._drag.startX;
-        const deltaY = this._getEventY(e) - this._drag.startY;
+        const eventX = this._getEventX(e);
+        const eventY = this._getEventY(e);
+        const deltaX = eventX - this._drag.startX;
+        const deltaY = eventY - this._drag.startY;
         
-        if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 10) {
+        if (!this._drag.isDragging && Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 15) {
             this._cancelDrag();
             return;
         }
         
-        if (Math.abs(deltaX) > 10) {
-            e.preventDefault();
+        if (!this._drag.isDragging && Math.abs(deltaX) > 10) {
+            this._drag.isDragging = true;
+            e.preventDefault?.();
         }
         
-        const newTranslate = this._drag.startTranslate + deltaX;
-        this.carousel.style.transform = `translateX(${newTranslate}px)`;
+        if (this._drag.isDragging) {
+            e.preventDefault?.();
+            
+            const now = Date.now();
+            const timeDelta = now - this._drag.lastTime;
+            if (timeDelta > 0) {
+                this._drag.velocity = (eventX - this._drag.lastX) / timeDelta;
+            }
+            this._drag.lastX = eventX;
+            this._drag.lastTime = now;
+            
+            let resistance = 1;
+            const position = this._drag.startTranslate + deltaX;
+            const maxTranslate = 0;
+            const minTranslate = -(this.allCards.length - 1) * this.cardWidth;
+            
+            if (position > maxTranslate) {
+                resistance = Math.max(0.1, 1 - ((position - maxTranslate) / (this.cardWidth * 0.5)));
+            } else if (position < minTranslate) {
+                resistance = Math.max(0.1, 1 - ((minTranslate - position) / (this.cardWidth * 0.5)));
+            }
+            
+            const newTranslate = this._drag.startTranslate + (deltaX * resistance);
+            this.currentPosition = -newTranslate / this.cardWidth;
+            
+            this._updateTransform(newTranslate);
+        }
+        
+        this._drag.currentX = eventX;
     }
 
     _onDragEnd(e) {
         if (!this._drag.active) return;
         
         this._drag.active = false;
-        this.carousel.style.transition = 'transform 0.3s ease';
         this.carousel.style.cursor = 'grab';
         document.body.style.userSelect = '';
         
-        const deltaX = this._drag.currentX - this._drag.startX;
-        const threshold = this.cardWidth * 0.2;
-        
-        if (Math.abs(deltaX) > threshold) {
-            if (deltaX < 0) {
-                this._moveToNext();
-            } else {
-                this._moveToPrevious();
-            }
-        } else {
-            this._setPosition(this.currentPosition);
+        if (!this._drag.isDragging) {
+            this._scheduleResume(2000);
+            return;
         }
         
-        setTimeout(() => {
-            this._resumeAutoPlay();
-        }, 1000);
+        const deltaX = this._drag.currentX - this._drag.startX;
+        const velocity = this._drag.velocity * 1000;
+        
+        let momentum = velocity * 0.3;
+        momentum = Math.max(-this.cardWidth * 2, Math.min(this.cardWidth * 2, momentum));
+        
+        const currentFloatPosition = this.currentPosition;
+        let targetPosition;
+        
+        if (Math.abs(velocity) > 0.5 || Math.abs(deltaX) > this.cardWidth * 0.3) {
+            if (deltaX + momentum < 0) {
+                targetPosition = Math.ceil(currentFloatPosition);
+            } else {
+                targetPosition = Math.floor(currentFloatPosition);
+            }
+        } else {
+            targetPosition = Math.round(currentFloatPosition);
+        }
+        
+        targetPosition = Math.max(0, Math.min(this.allCards.length - 1, targetPosition));
+        
+        this.targetPosition = targetPosition;
+        this._scheduleResume(3000);
     }
 
     _cancelDrag() {
         this._drag.active = false;
-        this.carousel.style.transition = 'transform 0.3s ease';
+        this._drag.isDragging = false;
         this.carousel.style.cursor = 'grab';
         document.body.style.userSelect = '';
-        this._setPosition(this.currentPosition);
-        
-        // Reanudar después de 3 segundos incluso si se cancela el drag
-        this._scheduleResume(3000);
+        this.targetPosition = this.currentPosition;
+        this._scheduleResume(2000);
     }
 
     _getEventX(e) {
@@ -178,43 +248,57 @@ class InfiniteCarousel {
         return e.type.includes('touch') ? e.touches[0]?.clientY || e.changedTouches[0]?.clientY : e.clientY;
     }
 
-    _setPosition(position, immediate = false) {
-        const translateX = -position * this.cardWidth;
+    _startSmoothAnimation() {
+        const animate = () => {
+            if (Math.abs(this.currentPosition - this.targetPosition) > 0.01) {
+                this.currentPosition += (this.targetPosition - this.currentPosition) * this.smoothness;
+                const translateX = -this.currentPosition * this.cardWidth;
+                this._updateTransform(translateX);
+            } else if (this.currentPosition !== this.targetPosition) {
+                this.currentPosition = this.targetPosition;
+                const translateX = -this.currentPosition * this.cardWidth;
+                this._updateTransform(translateX);
+            }
+            
+            this._checkInfiniteLoop();
+            this.animationFrame = requestAnimationFrame(animate);
+        };
         
-        if (immediate) {
-            this.carousel.style.transition = 'none';
-            this.carousel.style.transform = `translateX(${translateX}px)`;
-            void this.carousel.offsetWidth; // Forzar repaint
-            this.carousel.style.transition = 'transform 0.3s ease';
-        } else {
-            this.carousel.style.transform = `translateX(${translateX}px)`;
-        }
+        animate();
+    }
+
+    _updateTransform(translateX) {
+        this.carousel.style.transform = `translateX(${translateX}px)`;
+    }
+
+    _setPositionImmediate(position) {
+        this.currentPosition = position;
+        this.targetPosition = position;
+        const translateX = -position * this.cardWidth;
+        this._updateTransform(translateX);
     }
 
     _moveToNext() {
-        this.currentPosition++;
-        this._setPosition(this.currentPosition);
-        this._checkInfiniteLoop();
+        if (Math.abs(this.currentPosition - this.targetPosition) < 0.1) {
+            this.targetPosition = Math.round(this.targetPosition) + 1;
+        }
     }
 
     _moveToPrevious() {
-        this.currentPosition--;
-        this._setPosition(this.currentPosition);
-        this._checkInfiniteLoop();
+        if (Math.abs(this.currentPosition - this.targetPosition) < 0.1) {
+            this.targetPosition = Math.round(this.targetPosition) - 1;
+        }
     }
 
     _checkInfiniteLoop() {
-        if (this.currentPosition >= this.totalCards * 2) {
-            setTimeout(() => {
-                this.currentPosition = this.totalCards;
-                this._setPosition(this.currentPosition, true);
-            }, 300);
-        }
-        else if (this.currentPosition <= 0) {
-            setTimeout(() => {
-                this.currentPosition = this.totalCards;
-                this._setPosition(this.currentPosition, true);
-            }, 300);
+        const roundedPosition = Math.round(this.currentPosition);
+        
+        if (roundedPosition >= this.totalCards * 2) {
+            const offset = roundedPosition - this.totalCards * 2;
+            this._setPositionImmediate(this.totalCards + offset);
+        } else if (roundedPosition < this.totalCards) {
+            const offset = this.totalCards - roundedPosition;
+            this._setPositionImmediate(this.totalCards * 2 - offset);
         }
     }
 
@@ -241,19 +325,6 @@ class InfiniteCarousel {
         }
     }
 
-    pause() {
-        this._pauseAutoPlay();
-    }
-
-    resume() {
-        this._resumeAutoPlay();
-    }
-
-    stop() {
-        this._stopAutoPlay();
-        this._clearResumeTimeout(); 
-    }
-
     _scheduleResume(delay) {
         this._clearResumeTimeout();
         this.resumeTimeout = setTimeout(() => {
@@ -268,10 +339,31 @@ class InfiniteCarousel {
         }
     }
 
+    pause() {
+        this._pauseAutoPlay();
+    }
+
+    resume() {
+        this._resumeAutoPlay();
+    }
+
+    stop() {
+        this._stopAutoPlay();
+        this._clearResumeTimeout();
+        if (this.animationFrame) {
+            cancelAnimationFrame(this.animationFrame);
+        }
+    }
+
     setSpeed(speed) {
         this.autoPlaySpeed = speed;
         this._stopAutoPlay();
         this._startAutoPlay();
+    }
+
+    goToSlide(index) {
+        const targetIndex = this.totalCards + (index % this.totalCards);
+        this.targetPosition = targetIndex;
     }
 }
 
