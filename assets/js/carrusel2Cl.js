@@ -16,7 +16,6 @@ class InfiniteCarousel {
         this.autoPlayInterval = null;
         this.resumeTimeout = null;
         this.animationFrame = null; 
-
         this._drag = {
             active: false,
             startX: 0,
@@ -35,7 +34,7 @@ class InfiniteCarousel {
         this.visibleCards = 1;
         this.speed = 50;
         this.autoPlaySpeed = 3000;
-        this.smoothness = 0.08; 
+        this.smoothness = 0.08;
 
         this._init();
     }
@@ -44,6 +43,14 @@ class InfiniteCarousel {
         this.carousel.style.display = 'flex';
         this.carousel.style.cursor = 'grab';
         this.carousel.style.willChange = 'transform';
+        
+        const container = this.carousel.parentElement;
+        if (container) {
+            container.style.overflowX = 'hidden';
+            container.style.position = 'relative';
+        }
+        
+        document.body.style.overflowX = 'hidden';
         
         this._duplicateCards();
         this._calculateSizes();
@@ -207,7 +214,7 @@ class InfiniteCarousel {
         }
         
         const deltaX = this._drag.currentX - this._drag.startX;
-        const velocity = this._drag.velocity * 1000;
+        const velocity = this._drag.velocity * 1000; // Convertir a px/s
         
         let momentum = velocity * 0.3;
         momentum = Math.max(-this.cardWidth * 2, Math.min(this.cardWidth * 2, momentum));
@@ -235,7 +242,11 @@ class InfiniteCarousel {
         this._drag.active = false;
         this._drag.isDragging = false;
         this.carousel.style.cursor = 'grab';
+        
         document.body.style.userSelect = '';
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        
         this.targetPosition = this.currentPosition;
         this._scheduleResume(2000);
     }
@@ -251,10 +262,12 @@ class InfiniteCarousel {
     _startSmoothAnimation() {
         const animate = () => {
             if (Math.abs(this.currentPosition - this.targetPosition) > 0.01) {
+                // Interpolación suave hacia la posición objetivo
                 this.currentPosition += (this.targetPosition - this.currentPosition) * this.smoothness;
                 const translateX = -this.currentPosition * this.cardWidth;
                 this._updateTransform(translateX);
             } else if (this.currentPosition !== this.targetPosition) {
+                // Snap final a la posición exacta
                 this.currentPosition = this.targetPosition;
                 const translateX = -this.currentPosition * this.cardWidth;
                 this._updateTransform(translateX);
@@ -295,10 +308,13 @@ class InfiniteCarousel {
         
         if (roundedPosition >= this.totalCards * 2) {
             const offset = roundedPosition - this.totalCards * 2;
-            this._setPositionImmediate(this.totalCards + offset);
+            const newPosition = this.totalCards + offset;
+            this._setPositionImmediate(newPosition);
         } else if (roundedPosition < this.totalCards) {
             const offset = this.totalCards - roundedPosition;
-            this._setPositionImmediate(this.totalCards * 2 - offset);
+            const newPosition = this.totalCards * 2 - offset;
+            // Asegurar que no exceda el límite superior
+            this._setPositionImmediate(Math.min(newPosition, this.totalCards * 2 - 1));
         }
     }
 
