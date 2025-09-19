@@ -86,20 +86,15 @@ function renderizarError(mensaje) {
 }
 
 function inicializarCarrusel() {
-    // Pequeño delay para asegurar que el DOM esté actualizado
     setTimeout(() => {
-        // Verificar si ya existe una instancia del carrusel
         if (window.infiniteCarousel) {
-            // Si existe, detenerla y crear una nueva
             window.infiniteCarousel.stop();
         }
         
-        // Crear nueva instancia del carrusel infinito
         window.infiniteCarousel = new InfiniteCarousel();
     }, 100);
 }
 
-// Clase del carrusel infinito (la misma que ya tienes)
 class InfiniteCarousel {
     constructor() {
         this.carousel = document.getElementById('carousel');
@@ -112,7 +107,6 @@ class InfiniteCarousel {
         this.originalCards = Array.from(this.carousel.querySelectorAll('.tarjetaC'));
         this.totalCards = this.originalCards.length;
         
-        // Solo inicializar si hay tarjetas
         if (this.totalCards === 0) {
             console.warn('No hay tarjetas para mostrar en el carrusel');
             return;
@@ -122,6 +116,7 @@ class InfiniteCarousel {
         this.isAnimating = false;
         this.isPaused = false;
         this.autoPlayInterval = null;
+        this.resumeTimeout = null; 
 
         this._drag = {
             active: false,
@@ -151,14 +146,12 @@ class InfiniteCarousel {
     _duplicateCards() {
         const fragment = document.createDocumentFragment();
         
-        // Agregar copias al final
         this.originalCards.forEach(card => {
             const clone = card.cloneNode(true);
             clone.classList.add('cloned');
             fragment.appendChild(clone);
         });
         
-        // Agregar copias al principio
         this.originalCards.slice().reverse().forEach(card => {
             const clone = card.cloneNode(true);
             clone.classList.add('cloned');
@@ -192,8 +185,13 @@ class InfiniteCarousel {
         document.addEventListener('mouseup', (e) => this._onDragEnd(e));
         document.addEventListener('touchend', (e) => this._onDragEnd(e));
 
-        this.carousel.addEventListener('mouseenter', () => this._pauseAutoPlay());
-        this.carousel.addEventListener('mouseleave', () => this._resumeAutoPlay());
+        this.carousel.addEventListener('mouseenter', () => {
+            this._pauseAutoPlay();
+            this._clearResumeTimeout();
+        });
+        this.carousel.addEventListener('mouseleave', () => {
+            this._scheduleResume(3000);
+        });
 
         this.carousel.addEventListener('selectstart', (e) => e.preventDefault());
 
@@ -208,6 +206,7 @@ class InfiniteCarousel {
 
     _onDragStart(e) {
         this._pauseAutoPlay();
+        this._clearResumeTimeout();
         
         this._drag.active = true;
         this._drag.startX = this._getEventX(e);
@@ -238,6 +237,7 @@ class InfiniteCarousel {
         }
         
         const newTranslate = this._drag.startTranslate + deltaX;
+        
         this.carousel.style.transform = `translateX(${newTranslate}px)`;
     }
 
@@ -250,21 +250,15 @@ class InfiniteCarousel {
         document.body.style.userSelect = '';
         
         const deltaX = this._drag.currentX - this._drag.startX;
-        const threshold = this.cardWidth * 0.2;
+        const threshold = this.cardWidth * 0.15; 
         
-        if (Math.abs(deltaX) > threshold) {
-            if (deltaX < 0) {
-                this._moveToNext();
-            } else {
-                this._moveToPrevious();
-            }
+        if (deltaX < -threshold) {
+            this._moveToNext(); 
         } else {
-            this._setPosition(this.currentPosition);
+            this._setPosition(this.currentPosition); 
         }
         
-        setTimeout(() => {
-            this._resumeAutoPlay();
-        }, 1000);
+        this._scheduleResume(3000);
     }
 
     _cancelDrag() {
@@ -273,7 +267,8 @@ class InfiniteCarousel {
         this.carousel.style.cursor = 'grab';
         document.body.style.userSelect = '';
         this._setPosition(this.currentPosition);
-        this._resumeAutoPlay();
+        
+        this._scheduleResume(3000);
     }
 
     _getEventX(e) {
@@ -311,10 +306,13 @@ class InfiniteCarousel {
 
     _checkInfiniteLoop() {
         if (this.currentPosition >= this.totalCards * 2) {
+            this.carousel.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            this._setPosition(this.totalCards); 
+            
             setTimeout(() => {
                 this.currentPosition = this.totalCards;
-                this._setPosition(this.currentPosition, true);
-            }, 300);
+                this.carousel.style.transition = 'transform 0.3s ease';
+            }, 800);
         }
         else if (this.currentPosition <= 0) {
             setTimeout(() => {
@@ -345,6 +343,7 @@ class InfiniteCarousel {
             clearInterval(this.autoPlayInterval);
             this.autoPlayInterval = null;
         }
+        this._clearResumeTimeout(); 
     }
 
     pause() {
@@ -359,5 +358,19 @@ class InfiniteCarousel {
         this.autoPlaySpeed = speed;
         this.stop();
         this._startAutoPlay();
+    }
+
+    _scheduleResume(delay) {
+        this._clearResumeTimeout();
+        this.resumeTimeout = setTimeout(() => {
+            this._resumeAutoPlay();
+        }, delay);
+    }
+
+    _clearResumeTimeout() {
+        if (this.resumeTimeout) {
+            clearTimeout(this.resumeTimeout);
+            this.resumeTimeout = null;
+        }
     }
 }
