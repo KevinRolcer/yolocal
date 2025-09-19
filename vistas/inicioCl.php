@@ -349,19 +349,7 @@
 
 
     
-        <div class="descripcionC">
-            <h2>Aliados</h2>
-            <p>Descubre a los negocios que forman parte de
-                <span>Yo <span id="span2">local</span></span>
-            </p>
 
-        </div>
-        <div class="carousel-container2">
-            <div class="carousel-inner2">
-                <div class="carousel-track2">
-                </div>
-            </div>
-        </div>
         
         <div class="descripcionC">
             <h2>Categorias</h2>
