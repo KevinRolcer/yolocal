@@ -16,6 +16,7 @@ class InfiniteCarousel {
         this.autoPlayInterval = null;
         this.resumeTimeout = null;
         this.animationFrame = null; 
+
         this._drag = {
             active: false,
             startX: 0,
@@ -33,8 +34,8 @@ class InfiniteCarousel {
         this.containerWidth = 0;
         this.visibleCards = 1;
         this.speed = 50;
-        this.autoPlaySpeed = 3000;
-        this.smoothness = 0.08;
+        this.autoPlaySpeed = 3000; 
+        this.smoothness = 0.08; 
 
         this._init();
     }
@@ -48,9 +49,21 @@ class InfiniteCarousel {
         if (container) {
             container.style.overflowX = 'hidden';
             container.style.position = 'relative';
+            container.style.width = '100%';
         }
         
         document.body.style.overflowX = 'hidden';
+        document.documentElement.style.overflowX = 'hidden';
+        
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) {
+            viewport.setAttribute('content', viewport.getAttribute('content') + ', user-scalable=no');
+        } else {
+            const newViewport = document.createElement('meta');
+            newViewport.name = 'viewport';
+            newViewport.content = 'width=device-width, initial-scale=1, user-scalable=no';
+            document.head.appendChild(newViewport);
+        }
         
         this._duplicateCards();
         this._calculateSizes();
@@ -214,7 +227,7 @@ class InfiniteCarousel {
         }
         
         const deltaX = this._drag.currentX - this._drag.startX;
-        const velocity = this._drag.velocity * 1000; // Convertir a px/s
+        const velocity = this._drag.velocity * 1000; 
         
         let momentum = velocity * 0.3;
         momentum = Math.max(-this.cardWidth * 2, Math.min(this.cardWidth * 2, momentum));
@@ -245,6 +258,9 @@ class InfiniteCarousel {
         
         document.body.style.userSelect = '';
         document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
+        document.body.style.height = '';
         document.documentElement.style.overflow = '';
         
         this.targetPosition = this.currentPosition;
@@ -262,12 +278,10 @@ class InfiniteCarousel {
     _startSmoothAnimation() {
         const animate = () => {
             if (Math.abs(this.currentPosition - this.targetPosition) > 0.01) {
-                // Interpolación suave hacia la posición objetivo
                 this.currentPosition += (this.targetPosition - this.currentPosition) * this.smoothness;
                 const translateX = -this.currentPosition * this.cardWidth;
                 this._updateTransform(translateX);
             } else if (this.currentPosition !== this.targetPosition) {
-                // Snap final a la posición exacta
                 this.currentPosition = this.targetPosition;
                 const translateX = -this.currentPosition * this.cardWidth;
                 this._updateTransform(translateX);
@@ -313,7 +327,6 @@ class InfiniteCarousel {
         } else if (roundedPosition < this.totalCards) {
             const offset = this.totalCards - roundedPosition;
             const newPosition = this.totalCards * 2 - offset;
-            // Asegurar que no exceda el límite superior
             this._setPositionImmediate(Math.min(newPosition, this.totalCards * 2 - 1));
         }
     }
