@@ -5,19 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - YoLocal</title>
-    <link rel="stylesheet" href="../assets/css/loginl.css">
-    <link href="../assets/images/logo.jpg" rel="icon" />
+    <link rel="stylesheet" href="../../assets/css/loginl.css">
+    <link href="../../assets/images/logo.jpg" rel="icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
    
     <?php include_once("head.php"); ?>
-    <script type="module" src="../assets/js/funciones.js?v=2.8"></script>
+    <script type="module" src="../../assets/js/funciones.js?v=2.9"></script>
 </head>
 
 <body>
     <div class="container">
         <div class="left-section">
-            <img src="../assets/img/LogoYolocal.png" alt="Ilustración" class="logo-icon">
+            <img src="../../assets/img/LogoYolocal.png" alt="Ilustración" class="logo-icon">
         </div>
         <div class="right-section">
             <form method="POST" id="login" class="login-form">

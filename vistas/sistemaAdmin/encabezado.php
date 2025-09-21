@@ -29,7 +29,14 @@ $menus = [
         "icono"  => "bi-grid",
         "link"   => "index.php?pag=categorias",
         "roles"  => ["admin"] // solo admin
+    ],
+    [
+        "titulo" => "Bolsa de Trabajo",
+        "icono"  => "bi-briefcase",
+        "link"   => "index.php?pag=bolsa_trabajo",
+        "roles"  => ["admin"] // solo admin
     ]
+    
 ];
 ?>
 
