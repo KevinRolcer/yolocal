@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($negocio['nombre_negocio']); ?> - Yolocal</title>
     <link rel="stylesheet" href="../assets/css/negociosCl.css">
-<link rel="stylesheet" href="../assets/css/negocioD.css">
+    <link rel="stylesheet" href="../assets/css/negocioD.css">
 </head>
-<header class="encabezado">
+<body>
+    <header class="encabezado">
         <nav class="navbar">
             <div class="logo">
                 <img src="../assets/img/LogoYolocal.png" alt="">
             </div>
             
-          
             <button class="menu-toggle" id="menuToggle">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
@@ -38,7 +38,6 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75v16.5M2.25 12h19.5M6.375 17.25a4.875 4.875 0 0 0 4.875-4.875V12m6.375 5.25a4.875 4.875 0 0 1-4.875-4.875V12m-9 8.25h16.5a1.5 1.5 0 0 0 1.5-1.5V5.25a1.5 1.5 0 0 0-1.5-1.5H3.75a1.5 1.5 0 0 0-1.5 1.5v13.5a1.5 1.5 0 0 0 1.5 1.5Zm12.621-9.44c-1.409 1.41-4.242 1.061-4.242 1.061s-.349-2.833 1.06-4.242a2.25 2.25 0 0 1 3.182 3.182ZM10.773 7.63c1.409 1.409 1.06 4.242 1.06 4.242S9 12.22 7.592 10.811a2.25 2.25 0 1 1 3.182-3.182Z" />
                     </svg>
-
                     <span class="texto-menu">Cupones</span>
                 </a>
 
@@ -58,7 +57,6 @@
                         <a href="#">Forma parte de Yolocal</a>
                     </div>
                 </div>
-
             </div>
 
             <div class="sesion">
@@ -73,41 +71,35 @@
             </div>
         </nav>
     </header>
-<body>
-   
 
     <main class="container">
         <div class="detalle-card">
             
-            <div class="swiper-container mi-carrusel">
-                <div class="swiper-wrapper">
-                    <?php if (!empty($imagenes)): ?>
-                        <?php foreach ($imagenes as $imagen): ?>
-                            <div class="swiper-slide">
-                                <img src="<?php echo htmlspecialchars($imagen['ruta_imagen']); ?>" alt="Imagen de <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>">
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <div class="swiper-slide">
-                            <img src="<?php echo htmlspecialchars($negocio['Rutaicono']); ?>" alt="Icono de <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>">
-                        </div>
-                    <?php endif; ?>
-                </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-pagination"></div>
+            <div class="banner-distribuidor">
+                <img src="../assets/img/banner-yolocal.png" alt="Yolocal - Tu directorio local">
             </div>
+
+      
             <div class="detalle-contenido">
                 <span class="categoria-tag"><?php echo htmlspecialchars($negocio['nombre_categoria']); ?></span>
                 <h1><?php echo htmlspecialchars($negocio['nombre_negocio']); ?></h1>
                 <p class="detalle-descripcion"><?php echo htmlspecialchars($negocio['DescripcionN']); ?></p>
 
+               
+                <div class="imagen-limpia">
+                    <?php if (!empty($imagenes)): ?>
+                        <img src="<?php echo htmlspecialchars($imagenes[0]['ruta_imagen']); ?>" alt="Imagen de <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>">
+                    <?php else: ?>
+                        <img src="<?php echo htmlspecialchars($negocio['Rutaicono']); ?>" alt="Icono de <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>">
+                    <?php endif; ?>
+                </div>
+
+              
                 <div class="info-seccion social-icons">
                     <?php 
-                
                     if (!empty($negocio['SitioWeb']) || !empty($negocio['Facebook']) || !empty($negocio['Instagram']) || !empty($negocio['TikTok'])) {
                     ?>
-                        <h2>Redes Sociales: </h2>
+                        <h2>Redes Sociales</h2>
                         <div class="icon-container">
                             <?php if (!empty($negocio['SitioWeb'])): ?>
                                 <a href="<?php echo htmlspecialchars($negocio['SitioWeb']); ?>" target="_blank" title="Sitio Web">
@@ -123,26 +115,26 @@
                             
                             <?php if (!empty($negocio['Instagram'])): ?>
                                 <a href="<?php echo htmlspecialchars($negocio['Instagram']); ?>" target="_blank" title="Instagram">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                                 </a>
                             <?php endif; ?>
                             
                             <?php if (!empty($negocio['TikTok'])): ?>                         
-                            <a href="<?php echo htmlspecialchars($negocio['TikTok']); ?>" target="_blank" title="TikTok">                            
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
-                                </svg>                         
-                            </a>                     
-                        <?php endif; ?>
+                                <a href="<?php echo htmlspecialchars($negocio['TikTok']); ?>" target="_blank" title="TikTok">                            
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                                    </svg>                         
+                                </a>                     
+                            <?php endif; ?>
                         </div>
                     <?php 
                     } else {
                         echo '<h2>Este negocio no cuenta con redes sociales disponibles.</h2>';
                     } 
                     ?>
-                </div>               
-             </div>
+                </div>
 
+                <!-- HORARIOS -->
                 <div class="info-seccion">
                     <h2>Horarios</h2>
                     <ul class="lista-horarios">
@@ -156,6 +148,7 @@
                     </ul>
                 </div>
 
+                <!-- CONTACTO Y UBICACIÓN -->
                 <div class="info-seccion">
                     <h2>Contacto y Ubicación</h2>
                     <p><strong>Dirección:</strong> <?php echo htmlspecialchars($negocio['Direccion']); ?></p>
@@ -166,29 +159,5 @@
     </main>
 
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
-   <script>
-    const swiper = new Swiper('.mi-carrusel', {
-        loop: true, 
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-   
-        on: {
-            click: function(swiper, event) {
-                const rect = swiper.el.getBoundingClientRect();
-                const clickX = event.clientX - rect.left;
-                const centerX = rect.width / 2;
-                
-                if (clickX < centerX) {
-                    swiper.slidePrev(); 
-                } else {
-                    swiper.slideNext(); 
-                }
-            }
-        }
-    });
-</script>
 </body>
 </html>

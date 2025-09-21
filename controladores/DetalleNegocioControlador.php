@@ -26,4 +26,6 @@ if (!$negocio) {
 
 require_once '../vistas/detalle_negocio_vista.php';
 
+
+
 ?>
