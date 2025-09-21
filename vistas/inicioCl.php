@@ -7,6 +7,7 @@
     <title>Inicio Yolocal</title>
     <link rel="stylesheet" href="assets/css/inicioCl.css">
     <script type="module" src="assets/js/pagina/funcionesHome.js?<?php echo time(); ?>"></script>
+    <script type="module" src="assets/js/pagina/funcionesHome1.js?<?php echo time(); ?>"></script>
     <script defer src="assets/js/menuCl.js"></script>
     <script defer src="assets/js/carruselCl.js"></script>
     <script defer src="assets/js/carrusel2Cl.js"></script>
@@ -347,7 +348,19 @@
             </div>
         </div>
 
+        <div class="descripcionC">
+            <h2>Aliados</h2>
+            <p>Descubre a los negocios que forman parte de
+                <span>Yo <span id="span2">local</span></span>
+            </p>
 
+        </div>
+        <div class="carousel-container2">
+            <div class="carousel-inner2">
+                <div class="carousel-track2">
+                </div>
+            </div>
+        </div>
     
 
         
