@@ -1,4 +1,4 @@
-
+//si
 document.addEventListener("DOMContentLoaded", () => {
   // agregar usuario
   const formUsuario = document.querySelector("#formPromocion");
