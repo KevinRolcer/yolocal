@@ -1,7 +1,7 @@
 <?php
 class NegocioLModelo {
     
-    // TUS FUNCIONES EXISTENTES (SIN CAMBIOS)
+  
  
     public static function obtenerTodos($conexion) {
         if ($conexion->connect_error) {
@@ -180,9 +180,7 @@ class NegocioLModelo {
         }
     }
     
-    // ===============================================================
-    // ========= FUNCIONES NUEVAS PARA LA PAGINACIÓN =========
-    // ===============================================================
+
 
     /**
      * Obtiene una lista de negocios con paginación y filtros opcionales.
