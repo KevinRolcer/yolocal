@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masterclass de Bouquets</title>
+    <title>Nosotros Yolocal</title>
     <link rel="stylesheet" href="../assets/css/nosotros.css">
     <script defer src="../assets/js/nosotrosCl.js"></script>
 
@@ -135,7 +135,7 @@
                     <div class="central-image">
                         <div class="image-container">
                             <div class="decorative-circle"></div>
-                            <img src="../assets/img/LogoYolocal.png" alt="Logo Yolocal" class="main-flower">
+                            <img src="../assets/img/LogoYolocal.png" alt="Logo Yolocal" class="main-tarjeta">
                             <div class="floating-particles">
                                 <div class="particle particle-1"></div>
                                 <div class="particle particle-2"></div>
