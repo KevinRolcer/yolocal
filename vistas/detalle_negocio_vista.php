@@ -86,15 +86,23 @@
                 <p class="detalle-descripcion"><?php echo htmlspecialchars($negocio['DescripcionN']); ?></p>
 
                
-                <div class="imagen-limpia">
-                    <?php if (!empty($imagenes)): ?>
-                        <img src="<?php echo htmlspecialchars($imagenes[0]['ruta_imagen']); ?>" alt="Imagen de <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>">
-                    <?php else: ?>
+           <?php if (!empty($imagenes)): ?>
+                    <div class="swiper miCarrusel">
+                        <div class="swiper-wrapper">
+                            <?php foreach ($imagenes as $imagen): ?>
+                                <div class="swiper-slide">
+                                    <img src="<?php echo htmlspecialchars($imagen['ruta_imagen']); ?>" alt="Imagen de <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>">
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        
+                    </div>
+                <?php else: ?>
+                    <div class="imagen-limpia">
                         <img src="<?php echo htmlspecialchars($negocio['Rutaicono']); ?>" alt="Icono de <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>">
-                    <?php endif; ?>
-                </div>
+                    </div>
+                <?php endif; ?>
 
-              
                 <div class="info-seccion social-icons">
                     <?php 
                     if (!empty($negocio['SitioWeb']) || !empty($negocio['Facebook']) || !empty($negocio['Instagram']) || !empty($negocio['TikTok'])) {
@@ -134,7 +142,7 @@
                     ?>
                 </div>
 
-                <!-- HORARIOS -->
+           
                 <div class="info-seccion">
                     <h2>Horarios</h2>
                     <ul class="lista-horarios">
@@ -148,7 +156,7 @@
                     </ul>
                 </div>
 
-                <!-- CONTACTO Y UBICACIÓN -->
+          
                 <div class="info-seccion">
                     <h2>Contacto y Ubicación</h2>
                     <p><strong>Dirección:</strong> <?php echo htmlspecialchars($negocio['Direccion']); ?></p>
@@ -159,5 +167,9 @@
     </main>
 
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="../assets/js/pagina/negociosCl.js"></script>
+
+
+   
 </body>
 </html>
