@@ -50,7 +50,7 @@
                     <span class="btn-text-full">Unete a Yo local</span>
                     <span class="btn-text-short">Unirse</span>
                 </a>
-                <a href="../vistas/sistemaAdmin/login.php" class="btn-sesion">
+                <a href="../vistas/SistemaAdmin/login.php" class="btn-sesion">
                     <span class="btn-text-full">Iniciar sesión</span>
                     <span class="btn-text-short">Entrar</span>
                 </a>
