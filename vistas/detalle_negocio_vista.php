@@ -76,7 +76,7 @@
         <div class="detalle-card">
             
             <div class="banner-distribuidor">
-                <img src="../assets/img/banner-yolocal.png" alt="Yolocal - Tu directorio local">
+                <img src="../assets/img/banner-yolocal2.png" alt="Yolocal - Tu directorio local">
             </div>
 
       
