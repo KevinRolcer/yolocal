@@ -30,9 +30,9 @@
                     foreach ($categorias as $cat):
                         $selected = ($cat['ID_Categoria'] == $idCategoriaActual) ? 'selected' : '';
                 ?>
-                    <option value="<?php echo $cat['ID_Categoria']; ?>" <?php echo $selected; ?>>
-                        <?php echo htmlspecialchars($cat['Descripcion']); ?>
-                    </option>
+                        <option value="<?php echo $cat['ID_Categoria']; ?>" <?php echo $selected; ?>>
+                            <?php echo htmlspecialchars($cat['Descripcion']); ?>
+                        </option>
                 <?php 
                     endforeach;
                 endif; 
@@ -87,6 +87,33 @@
         <?php endif; ?>
     </div>
 
-  <script src="../assets/js/negociosL.js"></script>
+    <?php if (!empty($negocios) && isset($total_paginas) && $total_paginas > 1): ?>
+    <div class="paginacion">
+        <?php
+           
+            $parametros_url = [];
+            if (!empty($_GET['categoria'])) {
+                $parametros_url['categoria'] = $_GET['categoria'];
+            }
+        ?>
+        <?php if ($pagina_actual > 1): ?>
+            <?php $parametros_url['pagina'] = $pagina_actual - 1; ?>
+            <a href="?<?php echo http_build_query($parametros_url); ?>">&laquo; Anterior</a>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+            <?php $parametros_url['pagina'] = $i; ?>
+            <a href="?<?php echo http_build_query($parametros_url); ?>" class="<?php echo ($pagina_actual == $i) ? 'active' : ''; ?>">
+                <?php echo $i; ?>
+            </a>
+        <?php endfor; ?>
+
+        <?php if ($pagina_actual < $total_paginas): ?>
+            <?php $parametros_url['pagina'] = $pagina_actual + 1; ?>
+            <a href="?<?php echo http_build_query($parametros_url); ?>">Siguiente &raquo;</a>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
+    <script src="../assets/js/negociosL.js"></script>
 </body>
 </html>
