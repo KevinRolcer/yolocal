@@ -51,10 +51,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
 
 } else {  
 
-   
     $negocios_por_pagina = 21;
 
-   
     $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
     if ($pagina_actual < 1) {
         $pagina_actual = 1;
