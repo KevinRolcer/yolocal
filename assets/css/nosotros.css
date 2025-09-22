@@ -585,7 +585,7 @@ svg{
     transition: all 0.4s ease;
 }
 
-.main-tarjera {
+.main-tarjeta {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -608,7 +608,7 @@ svg{
     animation: rotate 10s linear infinite, glow 2s ease-in-out infinite alternate;
 }
 
-.central-image.highlight .main-tarjera {
+.central-image.highlight .main-tarjeta {
     transform: translate(-50%, -50%) scale(1.1);
     filter: drop-shadow(0 20px 45px rgba(139, 124, 248, 0.3));
 }
@@ -960,7 +960,7 @@ svg{
         height: 230px;
     }
     
-    .main-tarjera {
+    .main-tarjeta {
         width: 170px;
     }
 }
@@ -1020,7 +1020,7 @@ svg{
         height: 180px;
     }
     
-    .main-tarjera {
+    .main-tarjeta {
         width: 140px;
     }
 }
@@ -1056,7 +1056,7 @@ svg{
         height: 160px;
     }
     
-    .main-tarjera {
+    .main-tarjeta {
         width: 120px;
     }
 }
