@@ -17,31 +17,31 @@ $tipoUsuario = $_SESSION["tipo"] ?? null;
 $pag = $_GET["pag"] ?? "home"; // por defecto ir a home
 
 $rutas = [
-    "admin"     => ["admin"   => "vistas/SistemaAdmin/home.php"],
-    "negocio"   => ["negocio" => "vistas/SistemaAdmin/home.php"],
+    "admin"     => ["admin"   => "vistas/sistemaAdmin/home.php"],
+    "negocio"   => ["negocio" => "vistas/sistemaAdmin/home.php"],
 
     // Solo Admin
-    "usuarios"  => ["admin" => "vistas/SistemaAdmin/usuarios.php"],
-    "categorias"=> ["admin" => "vistas/SistemaAdmin/categorias.php"],
-    "bolsa_trabajo"=> ["admin" => "vistas/SistemaAdmin/bolsa_trabajo.php"],
+    "usuarios"  => ["admin" => "vistas/sistemaAdmin/usuarios.php"],
+    "categorias"=> ["admin" => "vistas/sistemaAdmin/categorias.php"],
+    "bolsa_trabajo"=> ["admin" => "vistas/sistemaAdmin/bolsa_trabajo.php"],
 
     "ventas"  => [
-        "admin"   => "vistas/SistemaAdmin/negocios.php",
-        "negocio" => "vistas/SistemaAdmin/negocios.php"
+        "admin"   => "vistas/sistemaAdmin/negocios.php",
+        "negocio" => "vistas/sistemaAdmin/negocios.php"
     ],
     "cupones"   => [
-        "admin"   => "vistas/SistemaAdmin/cupones.php",
-        "negocio" => "vistas/SistemaAdmin/cupones.php"
+        "admin"   => "vistas/sistemaAdmin/cupones.php",
+        "negocio" => "vistas/sistemaAdmin/cupones.php"
     ],
     "home"   => [
-        "admin"   => "vistas/SistemaAdmin/home.php",
-        "negocio" => "vistas/SistemaAdmin/home.php"
+        "admin"   => "vistas/sistemaAdmin/home.php",
+        "negocio" => "vistas/sistemaAdmin/home.php"
     ]
 ];
 
 if ($pag && isset($rutas[$pag][$tipoUsuario])) {
     include_once($rutas[$pag][$tipoUsuario]);
 } else {
-    include_once("vistas/SistemaAdmin/acceso_denegado.php");
+    include_once("vistas/sistemaAdmin/acceso_denegado.php");
     exit();
 }
