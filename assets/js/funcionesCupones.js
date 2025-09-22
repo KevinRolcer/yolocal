@@ -375,6 +375,8 @@ function cargarUsuario(id) {
         document.querySelector("#EditFechaFin").value = data.usuario.fecha_fin;
 
         document.querySelector("#EditCantidad").value = data.usuario.cantidad;
+        document.querySelector("#ID_NegocioEdit").value =
+          data.usuario.ID_Negocio;
       } else {
         Swal.fire(
           "Error",

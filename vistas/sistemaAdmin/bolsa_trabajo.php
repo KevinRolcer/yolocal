@@ -117,7 +117,7 @@
             <?php if ($_SESSION["tipo"] === "admin"): ?>
                 <div class="d-flex justify-content-end gap-2 mb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPromocion">
-                        Nueva Promoción
+                        Cargar trabajo
                     </button>
                     
                 </div>
@@ -129,7 +129,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalPromocionLabel">Agregar Promoción</h5>
+                            <h5 class="modal-title" id="modalPromocionLabel">Cargar Trabajo</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
@@ -172,7 +172,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalEditarLabel">Editar promoción</h5>
+                            <h5 class="modal-title" id="modalEditarLabel">Editar informacion</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">

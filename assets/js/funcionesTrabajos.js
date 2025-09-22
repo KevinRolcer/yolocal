@@ -106,7 +106,7 @@ function renderizarPromociones(lista) {
   if (!lista || lista.length === 0) {
     contenedor.innerHTML = `
       <div class="no-results">
-          <p>No se encontró ninguna promoción con los filtros aplicados.</p>
+          <p>No se encontró ningun trabajo con los filtros aplicados.</p>
       </div>
     `;
     return;
@@ -379,7 +379,7 @@ function editarUsuario() {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        Swal.fire("Éxito", "Usuario actualizado correctamente", "success");
+        Swal.fire("Éxito", "Información actualizada correctamente", "success");
         document.querySelector("#modalEditar .btn-close").click();
         listarPromociones();
       } else {
