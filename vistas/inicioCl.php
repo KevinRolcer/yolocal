@@ -311,16 +311,29 @@
 
 
         <div class="contenedorC">
+
+            <div class="descripcionC">
+                <h2>Aliados</h2>
+                <p>Descubre a los negocios que forman parte de
+                    <span>Yo <span id="span2">local</span></span>
+                </p>
+
+            </div>
+            <div class="carousel-container2">
+                <div class="carousel-inner2">
+                    <div class="carousel-track2">
+                    </div>
+                </div>
+            </div>
             <div class="encabezadoC">
                 <div>
-                    <h2>Aliados</h2>
-                    <p>Descubre a los negocios que forman parte de
-                        <span>Yo <span id="span2">local</span></span>
+                    <h2>Destacado</h2>
+                    <p>Conoce a los negocios que mejor valorados de
+                        <span>Texme<span id="span2">lucan</span></span>
                     </p>
                 </div>
-                
-            </div>
 
+            </div>
             <div class="contenedorCarruselC">
                 <div class="carruselC" id="carousel">
                     <!-- Tarjeta -->
@@ -330,14 +343,14 @@
                             <h3 class="tituloTarjetaC">Título de negocio</h3>
                             <div class="ubicacionTarjetaC">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                 </svg>
                                 <span>Ubicación</span>
                             </div>
                             <div class="calificacionTarjetaC">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
                                 </svg>
                                 <span>Ver más</span>
                             </div>
@@ -348,25 +361,15 @@
             </div>
         </div>
 
-        <div class="descripcionC">
-            <h2>Aliados</h2>
-            <p>Descubre a los negocios que forman parte de
-                <span>Yo <span id="span2">local</span></span>
-            </p>
 
-        </div>
-        <div class="carousel-container2">
-            <div class="carousel-inner2">
-                <div class="carousel-track2">
-                </div>
-            </div>
-        </div>
-    
 
-        
+
+
         <div class="descripcionC">
-            <h2>Categorias</h2>
-            <p>Descubre la variedad de establecimientos que forman parte de
+            <h2>Yo local Conecta
+
+            </h2>
+            <p>Encuentra todo lo que necesitas en
                 <span>Yo <span id="span2">local</span></span>
             </p>
 
@@ -376,7 +379,7 @@
             <div class="row row-3">
                 <div class="card white">
                     <div class="card-header">
-                        <div class="card-title">Categoria</div>
+                        <div class="card-title">Eventos</div>
                         <div class="card-subtitle">Subtitulo</div>
                     </div>
                     <div class="card-content">
@@ -394,7 +397,7 @@
 
                 <div class="card purple">
                     <div class="card-header">
-                        <div class="card-title">Categoria</div>
+                        <div class="card-title">Bolsa de trabajo</div>
                         <div class="card-subtitle">Subtitulo</div>
                     </div>
                     <div class="card-content">
@@ -410,7 +413,7 @@
 
                 <div class="card white">
                     <div class="card-header">
-                        <div class="card-title">Categoria</div>
+                        <div class="card-title">Noticias</div>
                         <div class="card-subtitle">Subtitulo</div>
                     </div>
                     <div class="card-content">
@@ -461,7 +464,7 @@
                 </div>
             </div>
         </div>
-        
+
 
 
 
@@ -469,7 +472,7 @@
     </div>
 
 
-    
+
 </body>
 
 </html>

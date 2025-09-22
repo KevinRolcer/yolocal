@@ -14,6 +14,7 @@ class NegocioLModelo {
                         n.nombre_negocio,
                         n.DescripcionN,
                         n.Direccion,
+                        n.GoogleMaps,
                         n.Rutaicono,
                         c.Descripcion AS nombre_categoria 
                     FROM 
@@ -48,6 +49,7 @@ class NegocioLModelo {
                         n.nombre_negocio,
                         n.DescripcionN,
                         n.Direccion,
+                        n.GoogleMaps,
                         n.Rutaicono,
                         c.Descripcion AS nombre_categoria 
                     FROM 
@@ -156,6 +158,7 @@ class NegocioLModelo {
                         n.DescripcionN,
                         n.Direccion,
                         n.Rutaicono,
+                        n.GoogleMaps,
                         c.Descripcion AS nombre_categoria 
                     FROM 
                         negocios n
@@ -187,7 +190,7 @@ class NegocioLModelo {
      */
     public static function obtenerTodosPaginados($conexion, $inicio, $cantidad, $id_categoria = null, $termino = null) {
         $sql = "SELECT 
-                    n.ID_Negocio, n.nombre_negocio, n.DescripcionN, n.Direccion, n.Rutaicono,
+                    n.ID_Negocio, n.nombre_negocio, n.DescripcionN, n.Direccion, n.Rutaicono, n.GoogleMaps,
                     c.Descripcion AS nombre_categoria 
                 FROM negocios n
                 LEFT JOIN categorias c ON n.ID_Categoria = c.ID_Categoria";

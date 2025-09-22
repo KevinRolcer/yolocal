@@ -51,7 +51,19 @@ if (isset($_POST["ope"])) {
             "lista" => $lista["miembros"]
            
         ]);
+    }elseif ($ope == "LISTAICONOS2") {
+        header('Content-Type: application/json'); // <-- esta línea es clave
+      
+
+        $lista = $usu->ListarIconos2();
+
+        echo json_encode([
+            "success" => true,
+            "lista" => $lista["miembros"]
+           
+        ]);
     }
+    
     //  obtener 
     elseif ($ope == "OBTENER") {
         if (isset($_POST["ID_Negocio"])) {
@@ -98,6 +110,7 @@ if (isset($_POST["ope"])) {
         "SitioWeb"       => $_POST["SitioWebEdit"] ?? '',
         "Facebook"       => $_POST["FacebookEdit"] ?? '',
         "Instagram"      => $_POST["InstagramEdit"] ?? '',
+        "GoogleMaps"     => $_POST["GoogleMapsEdit"] ?? '',
         "TikTok"         => $_POST["TikTokEdit"] ?? '',
         "Relevancia"     => $_POST["RelevanciaEdit"] ?? '',
         "Icono"          => $_POST["IconoActual"] ?? '' // para mantener el anterior si no se sube uno nuevo

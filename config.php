@@ -1,5 +1,5 @@
 <?php
-    define("RUTA","");
+    define("RUTA","/yolocal/");
     date_default_timezone_set('America/Mexico_City');
 
     function dbConectar()
@@ -8,7 +8,7 @@
 
         if(!isset($connection)) 
         {
-            $config = parse_ini_file('configS.ini'); 
+            $config = parse_ini_file('config.ini'); 
             $conexion = mysqli_connect($config['servidor'],$config['usuario'],$config['pass'],$config['bbdd']);
             $query="set CHARSET 'utf8'";
 			$conexion->query($query);

@@ -110,6 +110,37 @@ FROM `negocios`
             
         ];
     }
+    public function ListarIconos2()
+    {
+        $enlace = dbConectar();
+       
+
+        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, Direccion FROM negocios WHERE 1=1 AND Relevancia = 3";
+        
+
+        // Filtros dinámicos
+        
+        $consulta = $enlace->prepare($sql);
+        
+
+        $consulta->execute();
+        $result = $consulta->get_result();
+
+        $miembros = [];
+        while ($row = $result->fetch_assoc()) {
+            $miembros[] = $row;
+        }
+
+        // Cerrar conexiones
+        $consulta->close();
+        
+        $enlace->close();
+
+        return [
+            "miembros" => $miembros
+            
+        ];
+    }
     public function buscarMiembroPorID($ID_Miembro)
     {
         $enlace = dbConectar();
@@ -207,6 +238,7 @@ FROM `negocios`
                 Facebook       = ?, 
                 Instagram      = ?,
                 TikTok         = ?,
+                GoogleMaps     = ?,
                 Relevancia     = ?,
                 Rutaicono      = ?
             WHERE ID_Negocio = ?";
@@ -214,7 +246,7 @@ FROM `negocios`
     $consulta = $enlace->prepare($sql);
 
     $consulta->bind_param(
-        "sssssssssisi",
+        "ssssssssssisi",
         $datos["nombre_negocio"],
         $datos["DescripcionN"],
         $datos["Direccion"],
@@ -224,6 +256,7 @@ FROM `negocios`
         $datos["Facebook"],
         $datos["Instagram"],
         $datos["TikTok"],
+        $datos["GoogleMaps"],
         $datos["Relevancia"],
         $rutaIconoFinal,
         $datos["ID_Negocio"]
