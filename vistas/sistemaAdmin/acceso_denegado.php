@@ -14,5 +14,6 @@
         <img src="asset/images/pgym.jpg" alt="Logo">
         <a href="index.php">Volver al inicio</a>
     </div>
+    <!--$_COOKIE['PHPSESSID']-->
 </body>
 </html>
