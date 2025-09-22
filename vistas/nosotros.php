@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masterclass de Bouquets</title>
     <link rel="stylesheet" href="../assets/css/nosotros.css">
+    <script defer src="../assets/js/nosotrosCl.js"></script>
+
 </head>
 <body>
     <header class="encabezado">
@@ -13,7 +15,6 @@
                 <img src="../assets/img/LogoYolocal.png" alt="">
             </div>
             
-            <!-- Menú móvil-->
             <button class="menu-toggle" id="menuToggle">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
@@ -100,11 +101,72 @@
                 <div class="right-content">
                     <div class="image-container">
                         <div class="decorative-bg"></div>
-                        <img src="../assets/img/LogoYolocal.png" alt="Flor principal" class="main-flower">
+                        <img src="../assets/img/LogoYolocal.png"  class="main-contenedor">
                     </div>
                 </div>
             </div>
         </div>
+
+        <section class="interactive-section">
+            <div class="container">
+                <h2 class="section-title">Nosotros<br>Misión y visión</h2>
+                
+                <div class="interactive-content">
+                    <div class="text-left">
+                        <div class="info-point top-left" data-position="top-left">
+                            <h3>Titulo</h3>
+                            <p>Descrioción</p>
+                            <div class="point-indicator"></div>
+                        </div>
+                        
+                        <div class="info-point middle-left" data-position="middle-left">
+                            <h3>Titulo</h3>
+                            <p> Descripción</p>
+                            <div class="point-indicator"></div>
+                        </div>
+                        
+                        <div class="info-point bottom-left" data-position="bottom-left">
+                            <h3>Titulo</h3>
+                            <p>Descripción</p>
+                            <div class="point-indicator"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="central-image">
+                        <div class="image-container">
+                            <div class="decorative-circle"></div>
+                            <img src="../assets/img/LogoYolocal.png" alt="Logo Yolocal" class="main-flower">
+                            <div class="floating-particles">
+                                <div class="particle particle-1"></div>
+                                <div class="particle particle-2"></div>
+                                <div class="particle particle-3"></div>
+                                <div class="particle particle-4"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-right">
+                        <div class="info-point top-right" data-position="top-right">
+                            <h3>Titulo</h3>
+                            <p>Descripción</p>
+                            <div class="point-indicator"></div>
+                        </div>
+                        
+                        <div class="info-point middle-right" data-position="middle-right">
+                            <h3>Titulo</h3>
+                            <p>Descripción</p>
+                            <div class="point-indicator"></div>
+                        </div>
+                        
+                        <div class="info-point bottom-right" data-position="bottom-right">
+                            <h3>Titulo</h3>
+                            <p>Descripción</p>
+                            <div class="point-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     </div>
     
