@@ -133,7 +133,7 @@
                     </div>
                     
                     <div class="central-image">
-                        <div class="image-container">
+                        <div class="image-containerCl">
                             <div class="decorative-circle"></div>
                             <img src="../assets/img/LogoYolocal.png" alt="Logo Yolocal" class="main-tarjeta">
                             <div class="floating-particles">

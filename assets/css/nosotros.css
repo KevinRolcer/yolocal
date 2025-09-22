@@ -274,7 +274,7 @@ svg{
 
 .container {
     margin: 0 auto;
-    padding: 10px 20px;
+    padding: 30px 20px;
 }
 
 .content {
@@ -561,7 +561,7 @@ svg{
     opacity: 1;
 }
 
-.image-container {
+.image-containerCl {
     position: relative;
     width: 300px;
     height: 300px;
@@ -950,7 +950,7 @@ svg{
         gap: 40px;
     }
     
-    .image-container {
+    .image-containerCl {
         width: 250px;
         height: 250px;
     }
@@ -1046,7 +1046,7 @@ svg{
         font-size: 0.9rem;
     }
     
-    .image-container {
+    .image-containerCl {
         width: 180px;
         height: 180px;
     }
