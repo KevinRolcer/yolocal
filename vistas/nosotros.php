@@ -108,7 +108,7 @@
         </div>
 
         <section class="interactive-section">
-            <div class="container">
+            <div class="containerCl">
                 <h2 class="section-title">Nosotros<br>Misión y visión</h2>
                 
                 <div class="interactive-content">
