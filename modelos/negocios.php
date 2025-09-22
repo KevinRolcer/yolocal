@@ -84,7 +84,7 @@ FROM `negocios`
         $enlace = dbConectar();
        
 
-        $sql = "SELECT nombre_negocio, Rutaicono, Direccion FROM negocios WHERE 1=1";
+        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, Direccion FROM negocios WHERE 1=1";
         
 
         // Filtros dinámicos

@@ -50,7 +50,9 @@ function renderizarMiembros(lista) {
 
   lista.forEach((miembro) => {
     htmlItems += `
-      <div class="carousel-item">
+    <a class="carousel-item" href="controladores/DetalleNegocioControlador.php?id=${miembro.ID_Negocio}" >
+      
+      
         <div class="icon-container">
           ${
             miembro.Rutaicono
@@ -59,7 +61,9 @@ function renderizarMiembros(lista) {
           }
         </div>
         <div class="business-name">${miembro.nombre_negocio}</div>
-      </div>
+         </a>
+      
+   
     `;
   });
 
