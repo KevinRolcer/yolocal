@@ -431,7 +431,7 @@
             <div class="row row-2">
                 <div class="card white">
                     <div class="card-header">
-                        <div class="card-title">Categoria</div>
+                        <div class="card-title">Contacto</div>
                         <div class="card-subtitle">Subtitulo</div>
                     </div>
                     <div class="card-content">
@@ -447,7 +447,7 @@
 
                 <div class="card yellow">
                     <div class="card-header">
-                        <div class="card-title">Categorias</div>
+                        <div class="card-title">Patrocinadores</div>
                         <div class="card-subtitle">Negocios</div>
                     </div>
                     <div class="card-content">
