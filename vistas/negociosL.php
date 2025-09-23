@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Negocios Yolocal</title>
+    <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="../assets/css/negociosCl.css">
     <link rel="stylesheet" href="../assets/css/negocioL.css">
 </head>

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio Yolocal</title>
+    <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="assets/css/inicioCl.css">
     <script type="module" src="assets/js/pagina/funcionesHome.js?<?php echo time(); ?>"></script>
     <script type="module" src="assets/js/pagina/funcionesHome1.js?<?php echo time(); ?>"></script>
