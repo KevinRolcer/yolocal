@@ -1586,7 +1586,7 @@ svg {
     }
 
     100% {
-        transform: translateX(calc(-300px * 8));
+        transform: translateX(calc(-300px * 50));
     }
 }
 
@@ -1630,7 +1630,7 @@ svg {
     }
 
     .carousel-track2 {
-        width: calc(250px * 16);
+        width: calc(250px * 100);
     }
 
     @keyframes scroll {
@@ -1639,7 +1639,7 @@ svg {
         }
 
         100% {
-            transform: translateX(calc(-250px * 8));
+            transform: translateX(calc(-250px * 50));
         }
     }
 }
