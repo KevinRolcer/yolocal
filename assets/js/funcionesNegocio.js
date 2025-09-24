@@ -506,6 +506,15 @@ function editarUsuario() {
   const datos = new FormData(form);
   datos.append("ope", "EDITAR");
 
+  const fileInput = form.querySelector("#IconoNegocioEdit");
+  if (fileInput && fileInput.files.length === 0) {
+    datos.delete("IconoNegocioEdit");
+    const logoActual = document.querySelector("#RutaiconoEdit");
+    if (logoActual && logoActual.value) {
+      datos.append("Rutaicono", logoActual.value);
+    }
+  }
+
   fetch("controladores/controladorNegocios.php", {
     method: "POST",
     body: datos,
@@ -528,6 +537,7 @@ function editarUsuario() {
       );
     });
 }
+
 function buscarMiembroModal() {
   const idMiembroInput = document.querySelector("#ID_Usuario");
   const nombreMiembroInput = document.querySelector("#nombreMiembro");

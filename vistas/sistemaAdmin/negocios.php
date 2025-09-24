@@ -229,6 +229,7 @@
                                         <label for="IconoNegocioEdit" class="form-label">Logo del Negocio</label>
                                         <input type="file" class="form-control" id="IconoNegocioEdit" name="IconoNegocioEdit" maxlength="100">
                                     </div>
+                                    <input type="hidden" id="RutaiconoEdit" name="RutaiconoEdit">
                                     <div class="col-md-12">
                                         <label for="GoogleMapsEdit" class="form-label">Link de Google Maps</label>
                                         <input type="url" class="form-control" id="GoogleMapsEdit" name="GoogleMapsEdit" maxlength="100">

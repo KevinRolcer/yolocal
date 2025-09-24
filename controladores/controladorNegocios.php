@@ -113,10 +113,9 @@ if (isset($_POST["ope"])) {
         "GoogleMaps"     => $_POST["GoogleMapsEdit"] ?? '',
         "TikTok"         => $_POST["TikTokEdit"] ?? '',
         "Relevancia"     => $_POST["RelevanciaEdit"] ?? '',
-        "Icono"          => $_POST["IconoActual"] ?? '' // para mantener el anterior si no se sube uno nuevo
+        "Icono"          => $_POST["RutaiconoEdit"] ?? '' // para mantener el anterior si no se sube uno nuevo
     );
 
-    // Aquí pasamos el archivo completo al modelo si existe
     $archivoIcono = $_FILES["IconoNegocioEdit"] ?? null;
 
     $status = $usu->Editar($datos, $archivoIcono);
