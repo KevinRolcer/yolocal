@@ -422,7 +422,7 @@
                             Descripción
                         </div>
                         <div class="card-image">
-                            <img src="assets/img/noticias.png" alt="Cafeteria">
+                            <img id="noticiasCl"src="assets/img/noticias.png" alt="Cafeteria">
 
                         </div>
                     </div>
@@ -442,7 +442,7 @@
                         <div class="card-description">
                             Descripción
                         </div>
-                        <div id="noticiasCl" class="card-image">imagen</div>
+                        <div class="card-image">imagen</div>
                     </div>
                     <div class="card-footer">
                         <button class="card-button">Más detalles</button>
