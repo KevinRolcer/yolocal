@@ -967,6 +967,10 @@ svg {
     border-radius: 10px;
 }
 
+#noticiasCl{
+    width: 200px;
+    min-width: 420px;
+}
 .card-footer {
     display: flex;
     justify-content: flex-start;

@@ -442,7 +442,7 @@
                         <div class="card-description">
                             Descripción
                         </div>
-                        <div class="card-image">imagen</div>
+                        <div id="noticiasCl" class="card-image">imagen</div>
                     </div>
                     <div class="card-footer">
                         <button class="card-button">Más detalles</button>
