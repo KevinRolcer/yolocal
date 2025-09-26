@@ -1,3 +1,13 @@
+<?php
+require_once __DIR__ . '/../modelos/Carrucel.php';
+
+$negocio = null;
+if (isset($_GET['id'])) {
+    $idNegocio = intval($_GET['id']);
+    $carrucel = new Carrucel();
+    $negocio = $carrucel->obtenerNegocioPorId($idNegocio);
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
