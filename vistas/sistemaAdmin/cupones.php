@@ -38,7 +38,7 @@
                     </svg>
                 </div>
                 <div class="usuario">
-                    <img src="https://i.pinimg.com/originals/a0/14/7a/a0147adf0a983ab87e86626f774785cf.gif" alt="">
+                  <img src="../assets/img/descarga.gif"   alt="">
                 </div>
                 <div class="notifi-box" id="box">
                     <p class="calendario"></p>

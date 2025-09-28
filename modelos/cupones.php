@@ -50,18 +50,20 @@ WHERE 1=1";
         $tipos .= "s";
     }
 
+    // Si el tipo de usuario es "negocio", filtrar por ID_Usuario
     if ($usuarioTipo === "negocio") {
-        $sql .= " AND ID_Usuario = ?";
-        $values[] = $usuarioId;
+        $sql .= " AND n.ID_Usuario = ?";
+        $values[] = $usuarioId;  // Filtrar por negocio específico
         $tipos .= "i";
     }
+
     // Orden y paginación
     $sql .= " ORDER BY p.ID_Promocion DESC LIMIT ?, ?";
     $values[] = $offset;
     $values[] = $registrosPorPagina;
     $tipos .= "ii";
 
-    // Preparar y ejecutar
+    // Preparar y ejecutar la consulta
     $consulta = $enlace->prepare($sql);
     if (!$consulta) {
         throw new Exception("Error en la preparación de la consulta: " . $enlace->error);
@@ -82,7 +84,15 @@ WHERE 1=1";
                  INNER JOIN negocios n ON p.ID_Negocio = n.ID_Negocio
                  WHERE 1=1";
 
+    // Si el tipo de usuario es "negocio", aplicar el filtro
+    if ($usuarioTipo === "negocio") {
+        $countSql .= " AND n.ID_Usuario = ?";
+    }
+
     $countConsulta = $enlace->prepare($countSql);
+    if ($usuarioTipo === "negocio") {
+        $countConsulta->bind_param("i", $usuarioId);
+    }
     $countConsulta->execute();
     $countResult = $countConsulta->get_result();
     $totalRegistros = $countResult->fetch_assoc()["total"];
@@ -98,6 +108,7 @@ WHERE 1=1";
         "paginaActual" => $pagina,
     ];
 }
+
 public function ListarTODOSP($pagina = 1, $registrosPorPagina = 10, $filtros = [], $usuarioId, $usuarioTipo)
 {
     $enlace = dbConectar();
