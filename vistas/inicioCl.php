@@ -1,5 +1,5 @@
 <?php 
-require_once __DIR__ . '/../controladores/ControladorInicio.php';
+require_once __DIR__. '/../controladores/ControladorInicio.php';
 
 ?>
 <!DOCTYPE html>
@@ -10,6 +10,7 @@ require_once __DIR__ . '/../controladores/ControladorInicio.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio Yolocal</title>
     <link rel="stylesheet" href="assets/css/inicioCl.css">
+</head>
 <body>
     
     <header class="encabezado">
@@ -81,57 +82,54 @@ require_once __DIR__ . '/../controladores/ControladorInicio.php';
 
     <div class="principal">
 
-     
         <div class="carrusel">  
-        <div class="destacado">
-            <div class="carousel-container">
-                <div class="carousel-wrapper">
-                    <div class="carousel-track" id="carouselTrack">
-                        
-                        <?php if (!empty($cafeteriasDestacadas)): ?>
-                            <?php foreach ($cafeteriasDestacadas as $negocio): ?>
-                                <div class="carousel-slide">
-                                    <div class="slide-background bg-gradient-1">
-                                        <div class="slide-content">
-                                            <div class="slide-image">
-                                                <img src="<?php echo htmlspecialchars($negocio['Rutaicono']); ?>" alt="Icono de <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>">
-                                            </div>
-                                            <div class="slide-info">
-                                                <span class="discount-badge">Mejor valorado en Cafeterías</span>
-                                                <h2 class="slide-title"><?php echo htmlspecialchars($negocio['nombre_negocio']); ?></h2>
-                                                <p class="slide-description"><?php echo htmlspecialchars($negocio['DescripcionN']); ?></p>
-                                                <a href="/yolocal/vistas/detalle_negocio_vista.php?id=<?php echo $negocio['ID_Negocio']; ?>" class="btn-conocer-mas btn-amarillo">Ver negocio</a>
+            <div class="destacado">
+                <div class="carousel-container">
+                    <div class="carousel-wrapper">
+                        <div class="carousel-track" id="carouselTrack">
+                            
+                            <?php if (!empty($cafeteriasDestacadas)): ?>
+                                <?php foreach ($cafeteriasDestacadas as $negocio): ?>
+                                    <div class="carousel-slide">
+                                        <div class="slide-background bg-gradient-1">
+                                            <div class="slide-content">
+                                                <div class="slide-image">
+                                                    <img src="<?php echo htmlspecialchars($negocio['Rutaicono']); ?>" alt="Icono de <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>">
+                                                </div>
+                                                <div class="slide-info">
+                                                    <span class="discount-badge">Mejor valorado en Cafeterías</span>
+                                                    <h2 class="slide-title"><?php echo htmlspecialchars($negocio['nombre_negocio']); ?></h2>
+                                                    <p class="slide-description"><?php echo htmlspecialchars($negocio['DescripcionN']); ?></p>
+                                                    <a href="/yolocal/vistas/detalle_negocio_vista.php?id=<?php echo $negocio['ID_Negocio']; ?>" class="btn-conocer-mas btn-amarillo">Ver negocio</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="carousel-slide">
+                                   <p>No hay cafeterías destacadas por el momento.</p>
                                 </div>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <div class="carousel-slide">
-                               <p>No hay cafeterías destacadas por el momento.</p>
-                            </div>
-                        <?php endif; ?>
-                        
+                            <?php endif; ?>
+                            
+                        </div>
                     </div>
-                </div>
-                </div>
-        </div>
-        
-        </div>
 
-      
-                <button class="carousel-nav prev" id="prevBtn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <button class="carousel-nav next" id="nextBtn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
+                    <!-- Botones de navegación DENTRO del carousel-container -->
+                    <button class="carousel-nav prev" id="prevBtn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="carousel-nav next" id="nextBtn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
 
-                <div class="carousel-dots" id="carouselDots"></div>
+                    
+                    <div class="carousel-dots" id="carouselDots"></div>
+                </div>
             </div>
         </div>
 
@@ -170,7 +168,6 @@ require_once __DIR__ . '/../controladores/ControladorInicio.php';
             <img src="assets/img/LogoYolocal.png" class="logo logo-21 shadow-pink" alt="Logo">
         </div>
         
-
 
         <div class="descripcionC">
             <h2>Categorias</h2>
@@ -270,11 +267,7 @@ require_once __DIR__ . '/../controladores/ControladorInicio.php';
             </div>
         </div>
 
-
-        
-
     </div>
-    
 
     <script src="assets/js/menuCl.js"></script>
     <script src="assets/js/carruselCl.js"></script>
