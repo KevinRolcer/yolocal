@@ -342,7 +342,7 @@
         
     </div>
 
-    <script src="../assets/js/bolsaTrabajo.js"></script>
+    <script src="../assets/js/bolsaTrabajoCl.js"></script>
     <script src="../assets/js/menuCl.js"></script>
 
 
