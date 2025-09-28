@@ -6,7 +6,7 @@
     {
         static $conexion;
 
-        if(!isset($conexion)) 
+        if(!isset($connection)) 
         {
             $config = parse_ini_file('config.ini'); 
             $conexion = mysqli_connect($config['servidor'],$config['usuario'],$config['pass'],$config['bbdd']);
