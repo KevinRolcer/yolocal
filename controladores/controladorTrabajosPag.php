@@ -1,14 +1,14 @@
 <?php
 include_once("../config.php");
 
+header('Content-Type: application/json');
+
 if (isset($_POST["ope"])) {
     $ope = $_POST["ope"];
     include_once("../modelos/trabajosPag.php");
     $trab = new Trabajos();
 
     if ($ope == "LISTAR_TRABAJOS") {
-        header('Content-Type: application/json');
-
         $lista = $trab->ListarTrabajos();
 
         echo json_encode([
@@ -19,14 +19,16 @@ if (isset($_POST["ope"])) {
     else {
         echo json_encode([
             "success" => false,
-            "msg" => "Operación no válida o parámetros insuficientes"
+            "msg" => "Operación '$ope' no válida"
         ]);
     }
 } 
 else {
     echo json_encode([
         "success" => false,
-        "msg" => "Sin operación válida"
+        "msg" => "Sin operación válida",
+        "debug_post" => $_POST,
+        "debug_request" => $_REQUEST
     ]);
 }
 ?>
