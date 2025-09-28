@@ -38,7 +38,7 @@
                     <div class="invalid-feedback">La contraseña es obligatoria</div>
                     <div class="valid-feedback">Correcto</div>
                 </div>
-                <a href="vistas/recuperacion.php" class="forgot-link">¿Olvidó la contraseña?</a>
+                <a href="recuperacion.php" class="forgot-link">¿Olvidó la contraseña?</a>
                 <button type="submit" class="login-btn">
                     <span>Ingresar</span>
                 </button>

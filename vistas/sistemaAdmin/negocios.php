@@ -242,6 +242,7 @@
                                                 <option value="1">Normal</option>
                                                 <option value="2">Destacado</option>
                                                 <option value="3">Super Destacado</option>
+                                                <option value="4">Patrocinadores</option>
                                             </select>
                                         </div>
                                     <?php endif; ?>

@@ -1,0 +1,210 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "Ubuntu", sans-serif;
+}
+:root {
+    --red: #8d2e27;
+    --white: #fff;
+    --gray: #f5f5f5;
+    --black1: #222;
+    --black2: #999;
+    --estado: rgb(40, 99, 46);
+  }
+.encabezado{
+    width: 100%;
+    background-color: black;
+    
+}
+.encabezado .imagen{
+    width: 100px;
+    margin: auto;
+}
+.encabezado img{
+    width: 200px;
+}
+
+/*  Titulo del contenido   */
+.titulo{
+    font-weight: 500;
+    font-size: 30px;
+    width: 100%;
+    color: var(--red);
+    text-align: center;
+    margin: 3y0px 10px;
+}
+
+/* Formulario */
+.formulario{
+    width: 40%;
+    margin: auto;
+    margin-top: 50px;
+    padding: 50px 10px;
+    background: var(--white);
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.formulario form{
+  width: 90%;
+}
+/*  Contenido de input   */
+.contenidoIn {
+    width: 100%;
+    display: flex;
+    margin: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+.input-group{
+    position: relative;
+    margin: 20px;
+}
+.input-group label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: black;
+  padding: 0 5px;
+  pointer-events: none;
+  transition: .2s;
+}
+.custom-btn-danger {
+  background-color: #000000; /* Cambiar color de fondo */
+  border-color: #000000;     /* Cambiar color de borde */
+  color: white;              /* Cambiar color del texto */
+  font-weight: bold;         /* Hacer el texto en negrita */
+  border-radius: 10px;       /* Hacer los bordes más redondeados */
+  padding: 10px 20px;        /* Ajustar el padding */
+  transition: background-color 0.3s ease; /* Añadir una transición suave */
+}
+
+.custom-btn-danger:hover {
+  background-color: #000000; /* Cambiar color de fondo al hacer hover */
+  border-color: #000000;     /* Cambiar color de borde al hacer hover */
+}
+.input-group input {
+  width: 220px;
+  height: 40px;
+  font-size: 16px;
+  color: var(--red);
+  padding: 0 10px;
+  background: transparent;
+  border: 1.2px solid black;
+  border-radius: 10px;
+  outline: none;
+}
+  .input-group input:focus ~ label,
+.input-group input:valid ~ label {
+  top: 0;
+  font-size: 12px;
+  background-color: white;
+}
+.boton{
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.pushable {
+  position: relative;
+  background: transparent;
+  padding: 0px;
+  border: none;
+  cursor: pointer;
+  outline-offset: 4px;
+  transition: filter 250ms;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: hsl(226, 25%, 69%);
+  border-radius: 8px;
+  filter: blur(2px);
+  will-change: transform;
+  transform: translateY(2px);
+  transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+.edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  background: linear-gradient(
+    to right,
+    #cb4137 0%,
+    #aa342b 8%,
+    #762b26 92%,
+    #932921 100%
+  );
+}
+
+
+.front {
+  display: block;
+  position: relative;
+  border-radius: 8px;
+  background: var(--red);
+  padding: 16px 32px;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 1rem;
+  transform: translateY(-4px);
+  transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+.pushable:hover {
+  filter: brightness(130%);
+}
+
+.pushable:hover .front {
+  transform: translateY(-6px);
+  transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+
+.pushable:active .front {
+  transform: translateY(-2px);
+  transition: transform 34ms;
+}
+
+.pushable:hover .shadow {
+  transform: translateY(4px);
+  transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+
+.pushable:active .shadow {
+  transform: translateY(1px);
+  transition: transform 34ms;
+}
+
+.pushable:focus:not(:focus-visible) {
+  outline: none;
+}
+.regresar{
+  margin: 0px 15px;
+  margin-top: 30px;
+}
+.regresar a{
+  color: black;
+  font-size: 17px;
+  text-decoration: none;
+  padding: 5px;
+}
+.regresar a:hover{
+  font-size: 18px;
+  color: var(--red);
+}
