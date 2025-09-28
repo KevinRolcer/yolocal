@@ -27,6 +27,7 @@ class Trabajos
             $trabajos[] = $row;
         }
 
+        $consulta->close();
         $enlace->close();
         return $trabajos;
     }

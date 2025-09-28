@@ -15,7 +15,6 @@ if (isset($_POST["ope"])) {
             "success" => true,
             "trabajos" => $lista
         ]);
-        exit();
     }
     else {
         echo json_encode([
