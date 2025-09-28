@@ -13,7 +13,7 @@ class JobPlatform {
 
     async fetchJobs() {
         try {
-            const response = await fetch("../../controladores/trabajosController.php", {
+            const response = await fetch("../../controladores/controladorTrabajosPag.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: new URLSearchParams({ ope: "LISTAR_TRABAJOS" })
