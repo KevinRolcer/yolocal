@@ -145,10 +145,8 @@ class Negocios
     public function ListarIconosBanner()
     {
         $enlace = dbConectar();
-       
-
-        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, DescripcionN FROM negocios WHERE 1=1";
-        
+       $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, DescripcionN, c.Descripcion AS nombre_categoria FROM negocios n INNER JOIN categorias c ON n.ID_Categoria = c.ID_Categoria WHERE 1=1";
+        $sql .= " AND Relevancia = 3"; // Solo negocios con Relevancia = 3
 
         // Filtros dinámicos
         

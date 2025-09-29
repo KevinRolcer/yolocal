@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch("../controladores/controladorNegocios.php", {
         method: "POST", 
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ "ope": "LISTAICONOS" }).toString()  
+        body: new URLSearchParams({ "ope": "LISTAICONOSBanner" }).toString()  
     })
     .then(response => response.json())  
     .then(data => {
