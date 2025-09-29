@@ -1,7 +1,7 @@
 <?php
     define("RUTA","");
     date_default_timezone_set('America/Mexico_City');
-
+//s
     function dbConectar()
     {
         static $conexion;
