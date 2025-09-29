@@ -12,15 +12,10 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
     <title>Inicio Yolocal</title>
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="assets/css/inicioCl.css">
-<<<<<<< HEAD
-</head>
-<body>
-=======
+
     <link rel="stylesheet" href="assets/css/footer.css">
     <script type="module" src="assets/js/pagina/funcionesHome1.js"></script>
     <script type="module" src="assets/js/pagina/funcionesHome.js"></script>
->>>>>>> main
-    
     <script defer src="assets/js/menuCl.js"></script>
     <script src="assets/js/carruselCl.js"></script>
     <script defer src="assets/js/carrusel2Cl.js"></script>
@@ -104,46 +99,13 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
 
     <div class="principal">
 
-<<<<<<< HEAD
-        <div class="carrusel">  
-            <div class="destacado">
-                <div class="carousel-container">
-                    <div class="carousel-wrapper">
-                        <div class="carousel-track" id="carouselTrack">
-                            
-                            <?php if (!empty($cafeteriasDestacadas)): ?>
-                                <?php foreach ($cafeteriasDestacadas as $negocio): ?>
-                                    <div class="carousel-slide">
-                                        <div class="slide-background bg-gradient-1">
-                                            <div class="slide-content">
-                                                <div class="slide-image">
-                                                    <img src="<?php echo htmlspecialchars($negocio['Rutaicono']); ?>" alt="Icono de <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>">
-                                                </div>
-                                                <div class="slide-info">
-                                                    <span class="discount-badge">Mejor valorado en Cafeterías</span>
-                                                    <h2 class="slide-title"><?php echo htmlspecialchars($negocio['nombre_negocio']); ?></h2>
-                                                    <p class="slide-description"><?php echo htmlspecialchars($negocio['DescripcionN']); ?></p>
-                                                    <a href="/yolocal/vistas/detalle_negocio_vista.php?id=<?php echo $negocio['ID_Negocio']; ?>" class="btn-conocer-mas btn-amarillo">Ver negocio</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <div class="carousel-slide">
-                                   <p>No hay cafeterías destacadas por el momento.</p>
-                                </div>
-                            <?php endif; ?>
-                            
-                        </div>
-=======
         <div class="destacado">
             <div class="carousel-container">
                 <div class="carousel-wrapper">
                     <div class="carousel-track" id="carouselTrack">
 
                         <!-- Las tarjetas se generarán aquí dinámicamente -->
->>>>>>> main
+
                     </div>
 
                     <!-- Botones de navegación DENTRO del carousel-container -->
@@ -161,8 +123,7 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
                     
                     <div class="carousel-dots" id="carouselDots"></div>
                 </div>
-<<<<<<< HEAD
-=======
+
 
                 <button class="carousel-nav prev" id="prevBtn">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -176,7 +137,7 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
                 </button>
 
                 <div class="carousel-dots" id="carouselDots"></div>
->>>>>>> main
+
             </div>
         </div>
 
@@ -372,14 +333,6 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
                 </div>
             </div>
         </div>
-
-<<<<<<< HEAD
-=======
-
-
-
-
->>>>>>> main
     </div>
 
      <footer>
