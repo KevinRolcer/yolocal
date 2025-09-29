@@ -14,6 +14,7 @@
     <script defer src="assets/js/menuCl.js"></script>
     <script src="assets/js/carruselCl.js"></script>
     <script defer src="assets/js/carrusel2Cl.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
