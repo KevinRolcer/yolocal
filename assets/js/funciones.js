@@ -11,10 +11,6 @@ document.addEventListener("DOMContentLoaded", (event)=>
                 let errores = 0; 
                 
                 let correo = document.querySelector("#nombre");
-                let clave = document.querySelector("#contra");
-               
-                if(!validaContrasena(clave,8,16))
-                    errores++;
                
                 if(errores==0)
                 {                    
