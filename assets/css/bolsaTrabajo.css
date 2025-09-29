@@ -657,7 +657,7 @@ svg{
     font-weight: 500;
 }
 
-/* Mobile modal overlay */
+/* Modal para dispositivos móviles*/
 .modal-overlay {
     display: none;
     position: fixed;
@@ -681,11 +681,11 @@ svg{
     max-height: 90vh;
     border-radius: 20px 20px 0 0;
     overflow-y: auto;
+    overflow-x: hidden; 
     transform: translateY(100%);
     transition: transform 0.3s ease-in-out;
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
-
 
 .modal-overlay.active .modal-content {
     transform: translateY(0);
@@ -695,6 +695,7 @@ svg{
     position: relative;
     padding: 20px;
     border-bottom: 1px solid #e5e7eb;
+    box-sizing: border-box; 
 }
 
 .modal-close {
@@ -716,6 +717,50 @@ svg{
 
 .modal-close:hover {
     background: #e5e7eb;
+}
+
+.job-details-header {
+    padding: 20px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.job-details-header h2,
+.job-details-header .company {
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+.job-details-content {
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.detail-section {
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    gap: 10px;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.detail-label,
+.detail-value {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.apply-btn {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
 }
 
 
@@ -926,6 +971,36 @@ svg{
         align-items: flex-start;
     }
 }
+
+
+/* Media query específica para pantallas muy pequeñas */
+@media (max-width: 380px) {
+    .modal-header {
+        padding: 15px;
+    }
+    
+    .modal-close {
+        top: 15px;
+        right: 15px;
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+    }
+    
+    .job-details-header,
+    .job-details-content {
+        padding: 15px;
+    }
+    
+    .job-details-header h2 {
+        font-size: 18px;
+    }
+    
+    .detail-item {
+        font-size: 14px;
+    }
+}
+
 @media (max-width: 360px) {
     .navbar {
         padding: 10px 12px;
