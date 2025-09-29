@@ -7,11 +7,12 @@
     <title>Inicio Yolocal</title>
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="assets/css/inicioCl.css">
-    <script type="module" src="assets/js/pagina/funcionesHome.js?<?php echo time(); ?>"></script>
-    <script type="module" src="assets/js/pagina/funcionesHome1.js?<?php echo time(); ?>"></script>
+    <script type="module" src="assets/js/pagina/funcionesHome1.js"></script>
+    <script type="module" src="assets/js/pagina/funcionesHome.js"></script>
+    
     <script defer src="assets/js/menuCl.js"></script>
-    <script src="assets/js/carruselCl.js?v=<?php echo time(); ?>"></script>
-    <script defer src="assets/js/carrusel2Cl.js?v=<?php echo time(); ?>"></script>
+    <script src="assets/js/carruselCl.js"></script>
+    <script defer src="assets/js/carrusel2Cl.js"></script>
 </head>
 
 <body>

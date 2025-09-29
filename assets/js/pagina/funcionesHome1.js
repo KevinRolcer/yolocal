@@ -1,6 +1,7 @@
   document.addEventListener("DOMContentLoaded", () => {
+    listarNegociosBanner();
       listarMiembros();
-      listarNegociosBanner();
+      
   });
 
   export function listarMiembros() {
