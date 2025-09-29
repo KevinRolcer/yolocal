@@ -51,7 +51,17 @@ if (isset($_POST["ope"])) {
             "lista" => $lista["miembros"]
            
         ]);
-    }elseif ($ope == "LISTAICONOS2") {
+    }elseif ($ope == "LISTAICONOSBanner") {
+        header('Content-Type: application/json'); // <-- esta línea es clave
+        $lista = $usu->ListarIconosBanner();
+
+        echo json_encode([
+            "success" => true,
+            "lista" => $lista["miembros"]
+           
+        ]);
+    }
+    elseif ($ope == "LISTAICONOS2") {
         header('Content-Type: application/json'); // <-- esta línea es clave
       
 

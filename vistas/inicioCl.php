@@ -7,11 +7,14 @@
     <title>Inicio Yolocal</title>
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="assets/css/inicioCl.css">
-    <script type="module" src="assets/js/pagina/funcionesHome.js?<?php echo time(); ?>"></script>
-    <script type="module" src="assets/js/pagina/funcionesHome1.js?<?php echo time(); ?>"></script>
+    <link rel="stylesheet" href="assets/css/footer.css">
+    <script type="module" src="assets/js/pagina/funcionesHome1.js"></script>
+    <script type="module" src="assets/js/pagina/funcionesHome.js"></script>
+    
     <script defer src="assets/js/menuCl.js"></script>
-    <script defer src="assets/js/carruselCl.js"></script>
+    <script src="assets/js/carruselCl.js"></script>
     <script defer src="assets/js/carrusel2Cl.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
@@ -96,173 +99,7 @@
                 <div class="carousel-wrapper">
                     <div class="carousel-track" id="carouselTrack">
 
-                        <!-- Slide  -->
-                        <div class="carousel-slide">
-                            <div class="slide-background bg-gradient-1">
-                                <div class="slide-content">
-                                    <div class="slide-image">
-                                        <img src="assets/img/Cafeteria.jpg" alt="Cafeteria">
-                                    </div>
-                                    <div class="slide-info">
-                                        <span class="discount-badge">Mejor valorado en Cafeterías</span>
-                                        <h2 class="slide-title">Cafeteria </h2>
-                                        <p class="slide-description">Disfruta de la mejor cafeteria de San Martín. "Frase"</p>
-                                        <button class="slide-button">Ver negocio</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide -->
-                        <div class="carousel-slide">
-                            <div class="slide-background bg-gradient-2">
-                                <div class="slide-content">
-                                    <div class="slide-image">
-                                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&h=300&fit=crop" alt="Headphones">
-                                    </div>
-                                    <div class="slide-info">
-                                        <span class="discount-badge">Limited Time</span>
-                                        <h2 class="slide-title">Premium Headphones</h2>
-                                        <p class="slide-description">Noise-canceling headphones with superior comfort and crystal-clear audio for professionals.</p>
-                                        <button class="slide-button">Get 30% off</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide -->
-                        <div class="carousel-slide">
-                            <div class="slide-background bg-gradient-3">
-                                <div class="slide-content">
-                                    <div class="slide-image">
-                                        <img src="https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300&h=300&fit=crop" alt="Smart Speaker">
-                                    </div>
-                                    <div class="slide-info">
-                                        <span class="discount-badge">Best Seller</span>
-                                        <h2 class="slide-title">Smart Speaker Pro</h2>
-                                        <p class="slide-description">Voice-controlled smart speaker with AI assistant and premium sound quality for your smart home.</p>
-                                        <button class="slide-button">Save 25%</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide-->
-                        <div class="carousel-slide">
-                            <div class="slide-background bg-gradient-4">
-                                <div class="slide-content">
-                                    <div class="slide-image">
-                                        <img src="https://images.unsplash.com/photo-1484704849700-f032a568e944?w=300&h=300&fit=crop" alt="Wireless Earbuds">
-                                    </div>
-                                    <div class="slide-info">
-                                        <span class="discount-badge">New Arrival</span>
-                                        <h2 class="slide-title">Wireless Earbuds</h2>
-                                        <p class="slide-description">True wireless earbuds with active noise cancellation and long-lasting battery life.</p>
-                                        <button class="slide-button">Buy Now 15% off</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide -->
-                        <div class="carousel-slide">
-                            <div class="slide-background bg-gradient-5">
-                                <div class="slide-content">
-                                    <div class="slide-image">
-                                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&h=300&fit=crop" alt="Headphones">
-                                    </div>
-                                    <div class="slide-info">
-                                        <span class="discount-badge">Limited Time</span>
-                                        <h2 class="slide-title">Premium Headphones</h2>
-                                        <p class="slide-description">Noise-canceling headphones with superior comfort and crystal-clear audio for professionals.</p>
-                                        <button class="slide-button">Get 30% off</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide -->
-                        <div class="carousel-slide">
-                            <div class="slide-background bg-gradient-6">
-                                <div class="slide-content">
-                                    <div class="slide-image">
-                                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&h=300&fit=crop" alt="Headphones">
-                                    </div>
-                                    <div class="slide-info">
-                                        <span class="discount-badge">Limited Time</span>
-                                        <h2 class="slide-title">Premium Headphones</h2>
-                                        <p class="slide-description">Noise-canceling headphones with superior comfort and crystal-clear audio for professionals.</p>
-                                        <button class="slide-button">Get 30% off</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide -->
-                        <div class="carousel-slide">
-                            <div class="slide-background bg-gradient-7">
-                                <div class="slide-content">
-                                    <div class="slide-image">
-                                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&h=300&fit=crop" alt="Headphones">
-                                    </div>
-                                    <div class="slide-info">
-                                        <span class="discount-badge">Limited Time</span>
-                                        <h2 class="slide-title">Premium Headphones</h2>
-                                        <p class="slide-description">Noise-canceling headphones with superior comfort and crystal-clear audio for professionals.</p>
-                                        <button class="slide-button">Get 30% off</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Slide -->
-                        <div class="carousel-slide">
-                            <div class="slide-background bg-gradient-8">
-                                <div class="slide-content">
-                                    <div class="slide-image">
-                                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&h=300&fit=crop" alt="Headphones">
-                                    </div>
-                                    <div class="slide-info">
-                                        <span class="discount-badge">Limited Time</span>
-                                        <h2 class="slide-title">Premium Headphones</h2>
-                                        <p class="slide-description">Noise-canceling headphones with superior comfort and crystal-clear audio for professionals.</p>
-                                        <button class="slide-button">Get 30% off</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Slide -->
-                        <div class="carousel-slide">
-                            <div class="slide-background bg-gradient-9">
-                                <div class="slide-content">
-                                    <div class="slide-image">
-                                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&h=300&fit=crop" alt="Headphones">
-                                    </div>
-                                    <div class="slide-info">
-                                        <span class="discount-badge">Limited Time</span>
-                                        <h2 class="slide-title">Premium Headphones</h2>
-                                        <p class="slide-description">Noise-canceling headphones with superior comfort and crystal-clear audio for professionals.</p>
-                                        <button class="slide-button">Get 30% off</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Slide -->
-                        <div class="carousel-slide">
-                            <div class="slide-background bg-gradient-10">
-                                <div class="slide-content">
-                                    <div class="slide-image">
-                                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&h=300&fit=crop" alt="Headphones">
-                                    </div>
-                                    <div class="slide-info">
-                                        <span class="discount-badge">Limited Time</span>
-                                        <h2 class="slide-title">Premium Headphones</h2>
-                                        <p class="slide-description">Noise-canceling headphones with superior comfort and crystal-clear audio for professionals.</p>
-                                        <button class="slide-button">Get 30% off</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                        <!-- Las tarjetas se generarán aquí dinámicamente -->
                     </div>
                 </div>
 
@@ -481,7 +318,76 @@
 
     </div>
 
+     <footer>
+        <div class="footer-container">
+            <div class="buttons-top">
+                <a href="#" class="btn btn-yellow">Conócenos</a>
+                <a href="#" class="btn btn-white">Patrocinadores</a>
+                <a href="#" class="btn btn-yellow">Noticias</a>
+            </div>
 
+            <div class="footer-top">
+                <div class="footer-column">
+                    <ul>
+                        <li><a href="#nosotros">Nosotros</a></li>
+                        <li><a href="#discapacidad">Populares</a></li>
+                        <li><a href="#autismo">Aliados</a></li>
+                        <li><a href="#cancer">Cúpones</a></li>
+                        <li><a href="#derechos">Yo Local Conecta</a></li>
+                    
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <ul>
+                        <li><a href="#universidad">Bolsa de Trabajo</a></li>
+                        <li><a href="#casa">Eventos</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                        <li><a href="#trabaja">Inicia Sesión</a></li>
+                        <li><a href="#politicas">Políticas de privacidad</a></li>
+                       
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <span class="social-icon"><i class="fab fa-twitter"></i></span>
+                            <span>Twitter</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span class="social-icon"><i class="fab fa-facebook-f"></i></span>
+                            <span>Facebook</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span class="social-icon"><i class="fab fa-instagram"></i></span>
+                            <span>Instagram</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span class="social-icon"><i class="fab fa-tiktok"></i></span>
+                            <span>Tik Tok</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-right">
+                    <div class="heart-logo">
+                         <img src="assets/img/LogoYolocal.png" height="100" alt="Logo">
+                    </div>
+                    <div class="contact-info">
+                        <p><strong>C. 16 de Septiembre 311, Col Centro</strong></p>
+                        <p>74000 San Martín Texmelucan de Labastida, Pue.</p>
+                        <p style="margin-top: 15px;">Tel: 2482694278</p>
+                        <p><strong>Yo Local, 2025</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Yo Local Texmelucan. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
 
 </body>
 

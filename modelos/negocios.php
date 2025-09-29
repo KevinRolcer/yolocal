@@ -116,8 +116,40 @@ class Negocios
         $enlace = dbConectar();
        
 
-        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, Direccion FROM negocios WHERE 1=1";
+        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, Direccion FROM negocios WHERE 1=1 ORDER BY RAND()";
         
+
+        // Filtros dinámicos
+        
+        $consulta = $enlace->prepare($sql);
+        
+
+        $consulta->execute();
+        $result = $consulta->get_result();
+
+        $miembros = [];
+        while ($row = $result->fetch_assoc()) {
+            $miembros[] = $row;
+        }
+
+        // Cerrar conexiones
+        $consulta->close();
+        
+        $enlace->close();
+
+        return [
+            "miembros" => $miembros
+            
+        ];
+    }
+    public function ListarIconosBanner()
+    {
+        $enlace = dbConectar();
+       $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, DescripcionN, c.Descripcion AS nombre_categoria 
+            FROM negocios n 
+            INNER JOIN categorias c ON n.ID_Categoria = c.ID_Categoria 
+            WHERE n.Relevancia = 3 
+            ORDER BY RAND()"; // Solo negocios con Relevancia = 3
 
         // Filtros dinámicos
         
@@ -147,7 +179,7 @@ class Negocios
         $enlace = dbConectar();
        
 
-        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, Direccion FROM negocios WHERE 1=1 AND Relevancia = 3";
+        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, Direccion FROM negocios WHERE 1=1 AND Relevancia = 3 ORDER BY RAND()";
         
 
         // Filtros dinámicos
