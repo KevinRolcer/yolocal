@@ -20,7 +20,33 @@ class ImageCarousel {
         this.startAutoPlay();
     }
 
-    
+    // Generamos los slides dinámicamente a partir de los datos
+    renderSlides() {
+        if (!this.track) return;
+        this.track.innerHTML = "";  // Limpiamos los slides anteriores
+        
+        this.slidesData.forEach((slideData, index) => {
+            const slide = document.createElement('div');
+            slide.classList.add('carousel-slide');
+            slide.innerHTML = `
+                <div class="slide-content">
+                    <div class="slide-image">
+                        <img src="${slideData.image || 'assets/img/default.jpg'}" alt="${slideData.title}">
+                    </div>
+                    <div class="slide-info">
+                        <h2 class="slide-title">${slideData.title}</h2>
+                        <p class="slide-description">${slideData.description || ''}</p>
+                    </div>
+                </div>
+            `;
+            this.track.appendChild(slide);
+        });
+
+        // Ahora actualizamos la variable de totalSlides
+        this.slides = document.querySelectorAll('.carousel-slide');
+        this.totalSlides = this.slides.length;
+    }
+
     createDots() {
         for (let i = 0; i < this.totalSlides; i++) {
             const dot = document.createElement('div');
