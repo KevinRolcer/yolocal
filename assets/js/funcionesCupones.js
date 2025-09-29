@@ -127,6 +127,13 @@ function renderizarPromociones(lista) {
       <p class="promo-descripcion">${promo.descripcion ?? "Sin descripción"}</p>
       <p class="promo-titulo">Cupones Restantes: ${promo.cantidad}</p>
       <p class="promo-descripcion">Caducidad: ${promo.fecha_fin}</p>
+       ${
+        usuarioTipo === "admin" ? `
+      <p class="promo-descripcion">Canjeados: ${promo.Canjeados}</p>
+      <p class="promo-descripcion">Descargados: ${promo.Descargados}</p>
+      ` : ''
+      }
+      
     </div>
     <div class="promo-actions">
       <!-- Botón siempre visible -->
@@ -368,6 +375,8 @@ function cargarUsuario(id) {
         document.querySelector("#EditFechaFin").value = data.usuario.fecha_fin;
 
         document.querySelector("#EditCantidad").value = data.usuario.cantidad;
+        document.querySelector("#ID_NegocioEdit").value =
+          data.usuario.ID_Negocio;
       } else {
         Swal.fire(
           "Error",

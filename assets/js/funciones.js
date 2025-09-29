@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", (event)=>
                     let info = new FormData(login);
                     info.append("ope","LOGIN");
 
-                    fetch('../controladores/controladorLogin.php', {
+                    fetch('../../controladores/controladorLogin.php', {
                         method: 'POST',
                         body: info 
                     })
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", (event)=>
                             Swal.fire({
                                 title: "¡Bienvenid@! a Yo local",
                                 text: "La página se actualizará automáticamente, favor de esperar...",
-                                imageUrl: "../assets/img/LogoYolocal.png", 
+                                imageUrl: "../../assets/img/LogoYolocal.png", 
                                 imageWidth: 100,
                                 imageHeight: 100,
                                 allowOutsideClick: false,

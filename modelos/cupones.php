@@ -16,7 +16,116 @@ public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = []
     p.cantidad,
     p.fecha_fin,
     p.Estatus,
+    p.Canjeados,
+    p.Descargados,
     n.nombre_negocio AS nombre_negocio,
+    n.Direccion AS direccion_negocio,
+    c.Descripcion AS categoria
+FROM promociones p
+INNER JOIN negocios n 
+    ON p.ID_Negocio = n.ID_Negocio
+INNER JOIN categorias c 
+    ON n.ID_Categoria = c.ID_Categoria
+WHERE 1=1";
+    
+    $values = [];
+    $tipos = "";
+
+    // Filtros dinámicos
+    if (!empty($filtros['titulo'])) {
+        $sql .= " AND p.titulo LIKE ?";
+        $values[] = "%" . $filtros['titulo'] . "%";
+        $tipos .= "s";
+    }
+
+    if (!empty($filtros['descripcion'])) {
+        $sql .= " AND p.descripcion LIKE ?";
+        $values[] = "%" . $filtros['descripcion'] . "%";
+        $tipos .= "s";
+    }
+
+    if (!empty($filtros['NombreNegocio'])) {
+        $sql .= " AND n.nombre_negocio LIKE ?";
+        $values[] = "%" . $filtros['NombreNegocio'] . "%";
+        $tipos .= "s";
+    }
+
+    // Si el tipo de usuario es "negocio", filtrar por ID_Usuario
+    if ($usuarioTipo === "negocio") {
+        $sql .= " AND n.ID_Usuario = ?";
+        $values[] = $usuarioId;  // Filtrar por negocio específico
+        $tipos .= "i";
+    }
+
+    // Orden y paginación
+    $sql .= " ORDER BY p.ID_Promocion DESC LIMIT ?, ?";
+    $values[] = $offset;
+    $values[] = $registrosPorPagina;
+    $tipos .= "ii";
+
+    // Preparar y ejecutar la consulta
+    $consulta = $enlace->prepare($sql);
+    if (!$consulta) {
+        throw new Exception("Error en la preparación de la consulta: " . $enlace->error);
+    }
+
+    $consulta->bind_param($tipos, ...$values);
+    $consulta->execute();
+    $result = $consulta->get_result();
+
+    $promociones = [];
+    while ($row = $result->fetch_assoc()) {
+        $promociones[] = $row;
+    }
+
+    // Total de registros 
+    $countSql = "SELECT COUNT(*) as total 
+                 FROM promociones p
+                 INNER JOIN negocios n ON p.ID_Negocio = n.ID_Negocio
+                 WHERE 1=1";
+
+    // Si el tipo de usuario es "negocio", aplicar el filtro
+    if ($usuarioTipo === "negocio") {
+        $countSql .= " AND n.ID_Usuario = ?";
+    }
+
+    $countConsulta = $enlace->prepare($countSql);
+    if ($usuarioTipo === "negocio") {
+        $countConsulta->bind_param("i", $usuarioId);
+    }
+    $countConsulta->execute();
+    $countResult = $countConsulta->get_result();
+    $totalRegistros = $countResult->fetch_assoc()["total"];
+    $totalPaginas = ceil($totalRegistros / $registrosPorPagina);
+
+    $consulta->close();
+    $countConsulta->close();
+    $enlace->close();
+
+    return [
+        "promociones" => $promociones,
+        "totalPaginas" => $totalPaginas,
+        "paginaActual" => $pagina,
+    ];
+}
+
+public function ListarTODOSP($pagina = 1, $registrosPorPagina = 10, $filtros = [], $usuarioId, $usuarioTipo)
+{
+    $enlace = dbConectar();
+    $offset = ($pagina - 1) * $registrosPorPagina;
+ 
+    // Consulta con JOIN a negocios
+    $sql = "SELECT 
+    p.ID_Promocion,
+    p.titulo,
+    p.descripcion,
+    p.cantidad,
+    p.fecha_fin,
+    p.Estatus,
+    p.Canjeados,
+    p.Descargados,
+    n.nombre_negocio AS nombre_negocio,
+    n.Direccion AS direccion_negocio,
     c.Descripcion AS categoria
 FROM promociones p
 INNER JOIN negocios n 
@@ -77,7 +186,7 @@ WHERE 1=1";
     $countSql = "SELECT COUNT(*) as total 
                  FROM promociones p
                  INNER JOIN negocios n ON p.ID_Negocio = n.ID_Negocio
-                 WHERE 1=1";
+                 WHERE p.fecha_fin >= CURDATE()";
 
     $countConsulta = $enlace->prepare($countSql);
     $countConsulta->execute();
@@ -95,7 +204,6 @@ WHERE 1=1";
         "paginaActual" => $pagina,
     ];
 }
-
     public function validarNombreUsuario($nombreUsu)
     {
         $enlace = dbConectar();
@@ -192,8 +300,22 @@ WHERE 1=1";
     {
         $enlace = dbConectar();
         $sql = "UPDATE promociones SET cantidad = cantidad - 1 WHERE ID_Promocion=?";
+        $sql2 = "UPDATE promociones SET Canjeados = Canjeados + 1 WHERE ID_Promocion=?";
         $consulta = $enlace->prepare($sql);
         $consulta->bind_param("i", $ID_usuario);
+        $consulta2 = $enlace->prepare($sql2);
+        $consulta2->bind_param("i", $ID_usuario);
+
+        return $consulta->execute() && $consulta2->execute();
+    }
+     public function DESCARGARCUPON($ID_usuario)
+    {
+        $enlace = dbConectar();
+        $sql = "UPDATE promociones SET Descargados = Descargados + 1 WHERE ID_Promocion=?";
+      
+        $consulta = $enlace->prepare($sql);
+        $consulta->bind_param("i", $ID_usuario);
+        
 
         return $consulta->execute();
     }

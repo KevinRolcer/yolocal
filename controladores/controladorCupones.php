@@ -40,6 +40,37 @@ if (isset($_POST["ope"])) {
         "paginaActual" => $lista["paginaActual"]
     ]);
 }
+ if ($ope == "LISTARPROMOCIONESPagina") {
+    header('Content-Type: application/json');
+
+    // Validar sesión
+    
+        $usuarioId = $_POST['usuarioId'] ?? null;
+        $usuarioTipo = $_POST['usuarioTipo'] ?? null;
+
+
+    $pagina = isset($_POST["pagina"]) ? intval($_POST["pagina"]) : 1;
+    $registrosPorPagina = isset($_POST["registrosPorPagina"]) ? intval($_POST["registrosPorPagina"]) : 10;
+
+    // Filtros disponibles
+    $filtros = [
+        "titulo"        => $_POST["titulo"] ?? null,
+        "descripcion"   => $_POST["descripcion"] ?? null,
+        "NombreNegocio" => $_POST["negocio"] ?? null
+    ];
+
+   
+
+    $lista = $usu->ListarTODOSP($pagina, $registrosPorPagina, $filtros,  $usuarioId, $usuarioTipo);
+
+    echo json_encode([
+        "success"      => true,
+        "lista"        => $lista["promociones"],
+        "totalPaginas" => $lista["totalPaginas"],
+        "paginaActual" => $lista["paginaActual"]
+    ]);
+}
+
 
     //  obtener 
     elseif ($ope == "OBTENER") {
@@ -114,6 +145,16 @@ if (isset($_POST["ope"])) {
         echo json_encode($info);
     } elseif ($ope == "RESTARCUPON" && isset($_POST["ID_Promocion"])) {
         $nuevaCantidad = $usu->RestarCupon($_POST["ID_Promocion"]);
+        // aquí haces que RestarCupon() devuelva la cantidad actualizada
+
+        $info = array(
+            "success" => $nuevaCantidad !== false,
+            "nuevaCantidad" => $nuevaCantidad
+        );
+        echo json_encode($info);
+    } 
+    elseif ($ope == "DESCARGARCUPON" && isset($_POST["ID_Promocion"])) {
+        $nuevaCantidad = $usu->DESCARGARCUPON($_POST["ID_Promocion"]);
         // aquí haces que RestarCupon() devuelva la cantidad actualizada
 
         $info = array(

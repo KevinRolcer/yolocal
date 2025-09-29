@@ -4,52 +4,126 @@ class Negocios
 
 
     public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = [], $usuarioId, $usuarioTipo)
-    {
-        $enlace = dbConectar();
-        $offset = ($pagina - 1) * $registrosPorPagina;
+{
+    $enlace = dbConectar();
+    $offset = ($pagina - 1) * $registrosPorPagina;
 
-        $sql = "SELECT `negocios`.*, `usuarios`.*, `categorias`.*
-FROM `negocios` 
-	LEFT JOIN `usuarios` ON `negocios`.`ID_Usuario` = `usuarios`.`ID_Usuario` 
-	LEFT JOIN `categorias` ON `negocios`.`ID_Categoria` = `categorias`.`ID_Categoria` WHERE 1=1";
-        $values = [];
-        $tipos = "";
+    $sql = "SELECT negocios.*, usuarios.*, categorias.*
+            FROM negocios 
+            LEFT JOIN usuarios ON negocios.ID_Usuario = usuarios.ID_Usuario 
+            LEFT JOIN categorias ON negocios.ID_Categoria = categorias.ID_Categoria 
+            WHERE 1=1";
 
-        // Filtros dinámicos
-        if (!empty($filtros['Correo'])) {
-        $sql .= " AND Nombre LIKE ?";
+    $values = [];
+    $tipos = "";
+
+    // Filtros dinámicos
+    if (!empty($filtros['Correo'])) {
+        $sql .= " AND usuarios.Correo LIKE ?";
         $values[] = "%" . $filtros['Correo'] . "%";
         $tipos .= "s";
     }
 
-        if (!empty($filtros['Nombre'])) {
-            $sql .= " AND nombre_negocio LIKE ?";
-            $values[] = "%" . $filtros['Nombre'] . "%";
-            $tipos .= "s";
-        }
-        if ($usuarioTipo === "negocio") {
+    if (!empty($filtros['Nombre'])) {
+        $sql .= " AND negocios.nombre_negocio LIKE ?";
+        $values[] = "%" . $filtros['Nombre'] . "%";
+        $tipos .= "s";
+    }
+
+    // Si el usuario es tipo negocio, filtrar por su propio ID
+    if ($usuarioTipo === "negocio") {
         $sql .= " AND usuarios.ID_Usuario = ?";
         $values[] = $usuarioId;
         $tipos .= "i";
     }
 
+    // Orden y paginación
+    $sql .= " ORDER BY negocios.ID_Negocio DESC LIMIT ?, ?";
+    $values[] = $offset;
+    $values[] = $registrosPorPagina;
+    $tipos .= "ii"; // offset y limit son enteros
+
+    // Preparar y ejecutar
+    $consulta = $enlace->prepare($sql);
+    if (!$consulta) {
+        throw new Exception("Error en la preparación de la consulta: " . $enlace->error);
+    }
+
+    $consulta->bind_param($tipos, ...$values);
+    $consulta->execute();
+    $result = $consulta->get_result();
+
+    $miembros = [];
+    while ($row = $result->fetch_assoc()) {
+        $miembros[] = $row;
+    }
+
+    // Total de registros (con los mismos filtros)
+    $countSql = "SELECT COUNT(*) as total 
+                 FROM negocios 
+                 LEFT JOIN usuarios ON negocios.ID_Usuario = usuarios.ID_Usuario 
+                 WHERE 1=1";
+
+    $countValues = [];
+    $countTipos = "";
+
+    if (!empty($filtros['Correo'])) {
+        $countSql .= " AND usuarios.Correo LIKE ?";
+        $countValues[] = "%" . $filtros['Correo'] . "%";
+        $countTipos .= "s";
+    }
+
+    if (!empty($filtros['Nombre'])) {
+        $countSql .= " AND negocios.nombre_negocio LIKE ?";
+        $countValues[] = "%" . $filtros['Nombre'] . "%";
+        $countTipos .= "s";
+    }
+
+    if ($usuarioTipo === "negocio") {
+        $countSql .= " AND usuarios.ID_Usuario = ?";
+        $countValues[] = $usuarioId;
+        $countTipos .= "i";
+    }
+
+    $countConsulta = $enlace->prepare($countSql);
+    if (!$countConsulta) {
+        throw new Exception("Error en la preparación de la consulta COUNT: " . $enlace->error);
+    }
+
+    if (!empty($countValues)) {
+        $countConsulta->bind_param($countTipos, ...$countValues);
+    }
+
+    $countConsulta->execute();
+    $countResult = $countConsulta->get_result();
+    $totalRegistros = $countResult->fetch_assoc()["total"];
+    $totalPaginas = ceil($totalRegistros / $registrosPorPagina);
+
+    // Cerrar conexiones
+    $consulta->close();
+    $countConsulta->close();
+    $enlace->close();
+
+    return [
+        "miembros" => $miembros,
+        "totalPaginas" => $totalPaginas,
+        "paginaActual" => $pagina,
+    ];
+}
+
+    public function ListarIconos()
+    {
+        $enlace = dbConectar();
        
 
+        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, Direccion FROM negocios WHERE 1=1 ORDER BY RAND()";
         
 
-        // Orden y paginación
-        $sql .= " ORDER BY ID_Negocio DESC LIMIT ?, ?";
-        $values[] = $offset;
-        $values[] = $registrosPorPagina;
-        $tipos .= "ii"; // offset y limit son enteros
-
-        // Preparar y ejecutar
+        // Filtros dinámicos
+        
         $consulta = $enlace->prepare($sql);
-        if (!$consulta) {
-            throw new Exception("Error en la preparación de la consulta: " . $enlace->error);
-        }
+        
 
-        $consulta->bind_param($tipos, ...$values);
         $consulta->execute();
         $result = $consulta->get_result();
 
@@ -58,25 +132,77 @@ FROM `negocios`
             $miembros[] = $row;
         }
 
-        // Total de registros para calcular total de páginas (sin filtros opcional)
-        $countSql = "SELECT COUNT(*) as total FROM negocios WHERE 1=1";
-
-        // Si quieres contar con los mismos filtros, repite los mismos pasos aquí
-        $countConsulta = $enlace->prepare($countSql);
-        $countConsulta->execute();
-        $countResult = $countConsulta->get_result();
-        $totalRegistros = $countResult->fetch_assoc()["total"];
-        $totalPaginas = ceil($totalRegistros / $registrosPorPagina);
-
         // Cerrar conexiones
         $consulta->close();
-        $countConsulta->close();
+        
         $enlace->close();
 
         return [
-            "miembros" => $miembros,
-            "totalPaginas" => $totalPaginas,
-            "paginaActual" => $pagina,
+            "miembros" => $miembros
+            
+        ];
+    }
+    public function ListarIconosBanner()
+    {
+        $enlace = dbConectar();
+       $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, DescripcionN, c.Descripcion AS nombre_categoria 
+            FROM negocios n 
+            INNER JOIN categorias c ON n.ID_Categoria = c.ID_Categoria 
+            WHERE n.Relevancia = 3 
+            ORDER BY RAND()"; // Solo negocios con Relevancia = 3
+
+        // Filtros dinámicos
+        
+        $consulta = $enlace->prepare($sql);
+        
+
+        $consulta->execute();
+        $result = $consulta->get_result();
+
+        $miembros = [];
+        while ($row = $result->fetch_assoc()) {
+            $miembros[] = $row;
+        }
+
+        // Cerrar conexiones
+        $consulta->close();
+        
+        $enlace->close();
+
+        return [
+            "miembros" => $miembros
+            
+        ];
+    }
+    public function ListarIconos2()
+    {
+        $enlace = dbConectar();
+       
+
+        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, Direccion FROM negocios WHERE 1=1 AND Relevancia = 3 ORDER BY RAND()";
+        
+
+        // Filtros dinámicos
+        
+        $consulta = $enlace->prepare($sql);
+        
+
+        $consulta->execute();
+        $result = $consulta->get_result();
+
+        $miembros = [];
+        while ($row = $result->fetch_assoc()) {
+            $miembros[] = $row;
+        }
+
+        // Cerrar conexiones
+        $consulta->close();
+        
+        $enlace->close();
+
+        return [
+            "miembros" => $miembros
+            
         ];
     }
     public function buscarMiembroPorID($ID_Miembro)
@@ -176,6 +302,7 @@ FROM `negocios`
                 Facebook       = ?, 
                 Instagram      = ?,
                 TikTok         = ?,
+                GoogleMaps     = ?,
                 Relevancia     = ?,
                 Rutaicono      = ?
             WHERE ID_Negocio = ?";
@@ -183,7 +310,7 @@ FROM `negocios`
     $consulta = $enlace->prepare($sql);
 
     $consulta->bind_param(
-        "sssssssssisi",
+        "ssssssssssisi",
         $datos["nombre_negocio"],
         $datos["DescripcionN"],
         $datos["Direccion"],
@@ -193,6 +320,7 @@ FROM `negocios`
         $datos["Facebook"],
         $datos["Instagram"],
         $datos["TikTok"],
+        $datos["GoogleMaps"],
         $datos["Relevancia"],
         $rutaIconoFinal,
         $datos["ID_Negocio"]

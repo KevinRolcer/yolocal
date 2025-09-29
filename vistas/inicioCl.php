@@ -5,27 +5,43 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
 <!DOCTYPE html>
 
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio Yolocal</title>
+    <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="assets/css/inicioCl.css">
+<<<<<<< HEAD
 </head>
 <body>
+=======
+    <link rel="stylesheet" href="assets/css/footer.css">
+    <script type="module" src="assets/js/pagina/funcionesHome1.js"></script>
+    <script type="module" src="assets/js/pagina/funcionesHome.js"></script>
+>>>>>>> main
     
+    <script defer src="assets/js/menuCl.js"></script>
+    <script src="assets/js/carruselCl.js"></script>
+    <script defer src="assets/js/carrusel2Cl.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
     <header class="encabezado">
         <nav class="navbar">
             <div class="logo">
                 <img src="assets/img/LogoYolocal.png" alt="">
             </div>
-            
+
             <!-- Menú móvil-->
             <button class="menu-toggle" id="menuToggle">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
             </button>
-            
+
             <div class="menu" id="mainMenu">
                 <a href="#" class="enlace active" data-tooltip="Inicio">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -33,11 +49,17 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
                     </svg>
                     <span class="texto-menu">Inicio</span>
                 </a>
-                <a href="../controladores/NegocioLControlador.php" class="enlace" data-tooltip="Inicio">
+                <a href="controladores/NegocioLControlador.php" class="enlace" data-tooltip="Inicio">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
                     </svg>
                     <span class="texto-menu">Negocios</span>
+                </a>
+                <a href="vistas/empleo.php" class="enlace " data-tooltip="Empleo">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
+                    </svg>
+                    <span class="texto-menu">Bolsa de trabajo</span>
                 </a>
 
                 <a href="vistas/cuponesPagina.php" class="enlace" data-tooltip="Promociones">
@@ -49,7 +71,7 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
                 </a>
 
                 <div class="submenu" data-tooltip="Nosotros">
-                    <a href="#" class="enlace">
+                    <a href="vistas/nosotros.php" class="enlace">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
                         </svg>
@@ -59,9 +81,9 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
                         </svg>
                     </a>
                     <div class="submenu-contenido">
-                        <a href="#">¿Quienes somos?</a>
-                        <a href="#">Contacto</a>
-                        <a href="#">Forma parte de Yolocal</a>
+                        <a href="vistas/nosotros.php">¿Quienes somos?</a>
+                        <a href="vistas/nosotros.php">Contacto</a>
+                        <a href="vistas/nosotros.php">Forma parte de Yolocal</a>
                     </div>
                 </div>
 
@@ -72,7 +94,7 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
                     <span class="btn-text-full">Unete a Yo local</span>
                     <span class="btn-text-short">Unirse</span>
                 </a>
-                <a href="vistas/login.php" class="btn-sesion">
+                <a href="vistas/sistemaAdmin/login.php" class="btn-sesion">
                     <span class="btn-text-full">Iniciar sesión</span>
                     <span class="btn-text-short">Entrar</span>
                 </a>
@@ -82,6 +104,7 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
 
     <div class="principal">
 
+<<<<<<< HEAD
         <div class="carrusel">  
             <div class="destacado">
                 <div class="carousel-container">
@@ -113,6 +136,14 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
                             <?php endif; ?>
                             
                         </div>
+=======
+        <div class="destacado">
+            <div class="carousel-container">
+                <div class="carousel-wrapper">
+                    <div class="carousel-track" id="carouselTrack">
+
+                        <!-- Las tarjetas se generarán aquí dinámicamente -->
+>>>>>>> main
                     </div>
 
                     <!-- Botones de navegación DENTRO del carousel-container -->
@@ -130,17 +161,33 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
                     
                     <div class="carousel-dots" id="carouselDots"></div>
                 </div>
+<<<<<<< HEAD
+=======
+
+                <button class="carousel-nav prev" id="prevBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <button class="carousel-nav next" id="nextBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+
+                <div class="carousel-dots" id="carouselDots"></div>
+>>>>>>> main
             </div>
         </div>
 
-        
+
         <div id="contenedorCupon" class="container">
-    
+
             <h1 class="title">Cupones</h1>
-            
+
             <p class="percentage">30%</p>
-            <button class="button">
-            Ver cuponera
+            <button onclick="location.href='vistas/cuponesPagina.php'" class="button">
+                Ver cuponera
             </button>
 
             <img src="assets/img/LogoYolocal.png" class="logo logo-1 shadow-yellow" alt="Logo">
@@ -167,21 +214,77 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
             <img src="assets/img/LogoYolocal.png" class="logo logo-20 shadow-yellow" alt="Logo">
             <img src="assets/img/LogoYolocal.png" class="logo logo-21 shadow-pink" alt="Logo">
         </div>
-        
+
+
+        <div class="contenedorC">
+
+            <div class="descripcionC">
+                <h2>Aliados</h2>
+                <p>Descubre a los negocios que forman parte de
+                    <span>Yo <span id="span2">local</span></span>
+                </p>
+
+            </div>
+            <div class="carousel-container2">
+                <div class="carousel-inner2">
+                    <div class="carousel-track2">
+                    </div>
+                </div>
+            </div>
+            <div class="encabezadoC">
+                <div>
+                    <h2>Destacado</h2>
+                    <p>Conoce a los negocios que mejor valorados de
+                        <span>Texme<span id="span2">lucan</span></span>
+                    </p>
+                </div>
+
+            </div>
+            <div class="contenedorCarruselC">
+                <div class="carruselC" id="carousel">
+                    <!-- Tarjeta -->
+                    <div class="tarjetaC">
+                        <div class="imagenTarjetaC" style="background-image: ..."></div>
+                        <div class="contenidoTarjetaC">
+                            <h3 class="tituloTarjetaC">Título de negocio</h3>
+                            <div class="ubicacionTarjetaC">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                </svg>
+                                <span>Ubicación</span>
+                            </div>
+                            <div class="calificacionTarjetaC">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                                </svg>
+                                <span>Ver más</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
 
         <div class="descripcionC">
-            <h2>Categorias</h2>
-            <p>Descubre la variedad de establecimientos que forman parte de 
+            <h2>Yo local Conecta
+
+            </h2>
+            <p>Encuentra todo lo que necesitas en
                 <span>Yo <span id="span2">local</span></span>
             </p>
 
         </div>
-         <div class="container">
+        <div class="container">
 
             <div class="row row-3">
                 <div class="card white">
                     <div class="card-header">
-                        <div class="card-title">Categoria</div>
+                        <div class="card-title">Eventos</div>
                         <div class="card-subtitle">Subtitulo</div>
                     </div>
                     <div class="card-content">
@@ -199,7 +302,7 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
 
                 <div class="card purple">
                     <div class="card-header">
-                        <div class="card-title">Categoria</div>
+                        <div class="card-title">Bolsa de trabajo</div>
                         <div class="card-subtitle">Subtitulo</div>
                     </div>
                     <div class="card-content">
@@ -215,14 +318,17 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
 
                 <div class="card white">
                     <div class="card-header">
-                        <div class="card-title">Categoria</div>
+                        <div class="card-title">Noticias</div>
                         <div class="card-subtitle">Subtitulo</div>
                     </div>
                     <div class="card-content">
                         <div class="card-description">
                             Descripción
                         </div>
-                        <div class="card-image">imagen</div>
+                        <div class="card-image">
+                            <img id="noticiasCl"src="assets/img/noticias.png" alt="Cafeteria">
+
+                        </div>
                     </div>
                     <div class="card-footer">
                         <button class="card-button">Más detalles</button>
@@ -233,7 +339,7 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
             <div class="row row-2">
                 <div class="card white">
                     <div class="card-header">
-                        <div class="card-title">Categoria</div>
+                        <div class="card-title">Contacto</div>
                         <div class="card-subtitle">Subtitulo</div>
                     </div>
                     <div class="card-content">
@@ -249,7 +355,7 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
 
                 <div class="card yellow">
                     <div class="card-header">
-                        <div class="card-title">Categorias</div>
+                        <div class="card-title">Patrocinadores</div>
                         <div class="card-subtitle">Negocios</div>
                     </div>
                     <div class="card-content">
@@ -267,9 +373,86 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
             </div>
         </div>
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> main
     </div>
 
-    <script src="assets/js/menuCl.js"></script>
-    <script src="assets/js/carruselCl.js"></script>
+     <footer>
+        <div class="footer-container">
+            <div class="buttons-top">
+                <a href="#" class="btn btn-yellow">Conócenos</a>
+                <a href="#" class="btn btn-white">Patrocinadores</a>
+                <a href="#" class="btn btn-yellow">Noticias</a>
+            </div>
+
+            <div class="footer-top">
+                <div class="footer-column">
+                    <ul>
+                        <li><a href="#nosotros">Nosotros</a></li>
+                        <li><a href="#discapacidad">Populares</a></li>
+                        <li><a href="#autismo">Aliados</a></li>
+                        <li><a href="#cancer">Cúpones</a></li>
+                        <li><a href="#derechos">Yo Local Conecta</a></li>
+                    
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <ul>
+                        <li><a href="#universidad">Bolsa de Trabajo</a></li>
+                        <li><a href="#casa">Eventos</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                        <li><a href="#trabaja">Inicia Sesión</a></li>
+                        <li><a href="#politicas">Políticas de privacidad</a></li>
+                       
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <span class="social-icon"><i class="fab fa-twitter"></i></span>
+                            <span>Twitter</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span class="social-icon"><i class="fab fa-facebook-f"></i></span>
+                            <span>Facebook</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span class="social-icon"><i class="fab fa-instagram"></i></span>
+                            <span>Instagram</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span class="social-icon"><i class="fab fa-tiktok"></i></span>
+                            <span>Tik Tok</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-right">
+                    <div class="heart-logo">
+                         <img src="assets/img/LogoYolocal.png" height="100" alt="Logo">
+                    </div>
+                    <div class="contact-info">
+                        <p><strong>C. 16 de Septiembre 311, Col Centro</strong></p>
+                        <p>74000 San Martín Texmelucan de Labastida, Pue.</p>
+                        <p style="margin-top: 15px;">Tel: 2482694278</p>
+                        <p><strong>Yo Local, 2025</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Yo Local Texmelucan. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
 </body>
+
 </html>

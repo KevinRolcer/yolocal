@@ -25,7 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (listaUsuarios) {
     listaUsuarios.addEventListener("click", (event) => {
       event.preventDefault();
-      const target = event.target;
+      const target = event.target.closest("button"); // busca el botón aunque pulses en el <i>
+      if (!target) return;
 
       if (target.classList.contains("btn-editar")) {
         cargarUsuario(target.dataset.id);
@@ -83,8 +84,8 @@ export function listarMiembros(filtros = filtrosActuales) {
     .then((response) => response.json())
     .then((data) => {
       if (!data.success) {
-        console.error("Error al cargar miembros:", data.msg);
-        renderizarError("No se pudieron cargar los miembros.");
+        console.error("Error al cargar categorias:", data.msg);
+        renderizarError("No se pudieron cargar los categorias.");
         return;
       }
       renderizarMiembros(data.lista);
@@ -290,7 +291,7 @@ function agregarUsuario() {
     .then((data) => {
       console.log(data);
       if (data.success) {
-        Swal.fire("Éxito", "Usuario agregado correctamente", "success");
+        Swal.fire("Éxito", "Categoria agregado correctamente", "success");
         form.reset();
         document.querySelector("#modalAgregar .btn-close").click();
         listarMiembros();
@@ -321,7 +322,7 @@ function cargarUsuario(id) {
       } else {
         Swal.fire(
           "Error",
-          "No se pudo obtener la información del usuario",
+          "No se pudo obtener la información de la categoria",
           "error"
         );
       }
@@ -329,7 +330,7 @@ function cargarUsuario(id) {
     .catch((error) => {
       Swal.fire(
         "Error",
-        "No se pudo obtener la información del usuario: " + error.message,
+        "No se pudo obtener la información de la categoria: " + error.message,
         "error"
       );
     });
@@ -357,7 +358,7 @@ function editarUsuario() {
     .catch((error) => {
       Swal.fire(
         "Error",
-        "No se pudo actualizar el usuario: " + error.message,
+        "No se pudo actualizar la categoria: " + error.message,
         "error"
       );
     });
@@ -382,7 +383,7 @@ function eliminarUsuario(id) {
           if (data.success) {
             Swal.fire(
               "Eliminado",
-              "Usuario eliminado correctamente",
+              "Categoria eliminada correctamente",
               "success"
             );
             listarMiembros();

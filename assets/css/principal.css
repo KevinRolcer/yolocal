@@ -8,13 +8,7 @@
 }
 
 :root {
-    --principal: rgb(76, 6, 130);
-     --barra: rgb(53, 6, 90);
-  --principal2: rgb(97, 63, 155);
-  --secunadrio: rgb( 255, 205, 0);
-  --complementario: rgb(235, 170, 4);
-  --blanco: rgb( 255, 255, 255);
-  --texto: #555;
+  
   --red: #8d2e27;
   --white: #fff;
   --gray: #f5f5f5;
@@ -22,6 +16,16 @@
   --black2: #999;
   --estado: rgb(40, 99, 46);
   --verde:#108d08;
+
+  --principal: rgb(76, 6, 130);
+  --principal2: rgb(97, 63, 155);
+  --secunadrio: rgb(255, 205, 0);
+  --complementario: rgb(235, 170, 4);
+  --blanco: rgb(255, 255, 255);
+  --texto: #555;
+  --texto2: #333;
+  --negro: #000000;
+  --lineas: #b8babe;
 }
 
 body {
@@ -88,12 +92,12 @@ svg{
   cursor: pointer;
 }
 .notificacion:hover{
-  color: var(--red);
+  color: var(--principal);
 }
 .usuario {
   position: relative;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
@@ -110,7 +114,7 @@ svg{
 }
 /* ======================= Caja de notificaciones ====================== */
 .notifi-box .text{
-  color: var(--red);
+  color: var(--principal);
   
 }
 .notifi-box {
@@ -150,7 +154,7 @@ svg{
 }
 
 .noti::-webkit-scrollbar-thumb:hover {
-  background: var(--red); 
+  background: var(--principal); 
 }
 .noti .imgBx {
   position: relative;
@@ -185,7 +189,7 @@ svg{
 }
 
 .noti table tr:hover {
-  background: var(--red);
+  background: var(--principal);
   color: var(--white);
 }
 
@@ -267,7 +271,7 @@ svg{
 }
 
 .dates li.today {
-  background-color: var(--red);
+  background-color: var(--principal2);
   color: white;
   border-radius: 50%;
 }
@@ -347,9 +351,9 @@ svg{
 /* Contenido principal */
         .content {
             margin-left: 0px;
-            padding-left: 57px;
-            padding-top: 50px;
-            min-height: 100vh;
+            padding-left: 30px;
+            padding-top: 15px;
+            min-height: 80vh;
         }
 
         /* Header superior */
@@ -462,7 +466,7 @@ svg{
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            margin-top: 100px;
+            margin-top: 30px;
         }
 
         /* Tarjetas de estadísticas */
