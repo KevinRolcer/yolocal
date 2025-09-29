@@ -7,6 +7,7 @@
     <title>Inicio Yolocal</title>
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="assets/css/inicioCl.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
     <script type="module" src="assets/js/pagina/funcionesHome1.js"></script>
     <script type="module" src="assets/js/pagina/funcionesHome.js"></script>
     
@@ -316,7 +317,76 @@
 
     </div>
 
+     <footer>
+        <div class="footer-container">
+            <div class="buttons-top">
+                <a href="#" class="btn btn-yellow">Conócenos</a>
+                <a href="#" class="btn btn-white">Patrocinadores</a>
+                <a href="#" class="btn btn-yellow">Noticias</a>
+            </div>
 
+            <div class="footer-top">
+                <div class="footer-column">
+                    <ul>
+                        <li><a href="#nosotros">Nosotros</a></li>
+                        <li><a href="#discapacidad">Populares</a></li>
+                        <li><a href="#autismo">Aliados</a></li>
+                        <li><a href="#cancer">Cúpones</a></li>
+                        <li><a href="#derechos">Yo Local Conecta</a></li>
+                    
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <ul>
+                        <li><a href="#universidad">Bolsa de Trabajo</a></li>
+                        <li><a href="#casa">Eventos</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                        <li><a href="#trabaja">Inicia Sesión</a></li>
+                        <li><a href="#politicas">Políticas de privacidad</a></li>
+                       
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <span class="social-icon"><i class="fab fa-twitter"></i></span>
+                            <span>Twitter</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span class="social-icon"><i class="fab fa-facebook-f"></i></span>
+                            <span>Facebook</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span class="social-icon"><i class="fab fa-instagram"></i></span>
+                            <span>Instagram</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span class="social-icon"><i class="fab fa-tiktok"></i></span>
+                            <span>Tik Tok</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-right">
+                    <div class="heart-logo">
+                         <img src="assets/img/LogoYolocal.png" height="100" alt="Logo">
+                    </div>
+                    <div class="contact-info">
+                        <p><strong>C. 16 de Septiembre 311, Col Centro</strong></p>
+                        <p>74000 San Martín Texmelucan de Labastida, Pue.</p>
+                        <p style="margin-top: 15px;">Tel: 2482694278</p>
+                        <p><strong>Yo Local, 2025</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Yo Local Texmelucan. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
 
 </body>
 
