@@ -22,30 +22,41 @@ class ImageCarousel {
 
     // Generamos los slides dinámicamente a partir de los datos
     renderSlides() {
-        if (!this.track) return;
-        this.track.innerHTML = "";  // Limpiamos los slides anteriores
-        
-        this.slidesData.forEach((slideData, index) => {
-            const slide = document.createElement('div');
-            slide.classList.add('carousel-slide');
-            slide.innerHTML = `
-                <div class="slide-content">
-                    <div class="slide-image">
-                        <img src="${slideData.image || 'assets/img/default.jpg'}" alt="${slideData.title}">
-                    </div>
-                    <div class="slide-info">
-                        <h2 class="slide-title">${slideData.title}</h2>
-                        <p class="slide-description">${slideData.description || ''}</p>
-                    </div>
-                </div>
-            `;
-            this.track.appendChild(slide);
-        });
+    if (!this.track) return;
+    this.track.innerHTML = ""; // Limpiamos los slides anteriores
 
-        // Ahora actualizamos la variable de totalSlides
-        this.slides = document.querySelectorAll('.carousel-slide');
-        this.totalSlides = this.slides.length;
-    }
+    // Usamos el HTML correcto que tú proporcionaste
+    this.slidesData.forEach((slideData, index) => {
+        const slide = document.createElement('div');
+        slide.classList.add('carousel-slide');
+        
+        // OJO: Nota que he cambiado las variables para que coincidan con los datos
+        // Por ejemplo: de 'miembro.nombre_negocio' a 'slideData.nombre_negocio'
+        slide.innerHTML = `
+            <div class="slide-background bg-gradient-${(index % 3) + 1}">
+              <div class="slide-content">
+                <div class="slide-image">
+                  <img src="${slideData.Rutaicono || 'assets/img/default.jpg'}" 
+                       alt="${slideData.nombre_negocio}">
+                </div>
+                <div class="slide-info">
+                  <span class="discount-badge">Recomendado en ${slideData.nombre_categoria || "Categoría desconocida"}</span>
+                  <h2 class="slide-title">${slideData.nombre_negocio}</h2>
+                  <p class="slide-description">${slideData.DescripcionN || "Negocio destacado"}</p>
+                  <a href="controladores/DetalleNegocioControlador.php?id=${slideData.ID_Negocio}">
+                    <button class="slide-button">Ver negocio</button>
+                  </a>
+                </div>
+              </div>
+            </div>
+        `;
+        this.track.appendChild(slide);
+    });
+
+    // Actualizamos las variables de totalSlides
+    this.slides = document.querySelectorAll('.carousel-slide');
+    this.totalSlides = this.slides.length;
+}
 
     createDots() {
         for (let i = 0; i < this.totalSlides; i++) {
@@ -192,12 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(data => {
         if (data.success) {
 
-            const slidesData = data.lista.map(item => ({
-                image: item.Rutaicono || 'assets/img/default.jpg', 
-                title: item.nombre_negocio,
-                description: item.DescripcionN || 'Descripción no disponible'
-            }));
-    
+            const slidesData = data.lista;
             new ImageCarousel(slidesData);
         } else {
             console.error('No se pudieron cargar los negocios:', data.msg);

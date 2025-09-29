@@ -1,5 +1,5 @@
   document.addEventListener("DOMContentLoaded", () => {
-    listarNegociosBanner();
+
       listarMiembros();
       
   });
