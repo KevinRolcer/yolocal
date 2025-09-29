@@ -6,7 +6,7 @@ export function listarMiembros() {
     let params = new URLSearchParams();
     params.append("ope", "LISTAICONOS2");
 
-    fetch("../controladores/controladorNegocios.php", {
+    fetch("controladores/controladorNegocios.php", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: params.toString(),

@@ -142,6 +142,37 @@ class Negocios
             
         ];
     }
+    public function ListarIconosBanner()
+    {
+        $enlace = dbConectar();
+       
+
+        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, DescripcionN FROM negocios WHERE 1=1";
+        
+
+        // Filtros dinámicos
+        
+        $consulta = $enlace->prepare($sql);
+        
+
+        $consulta->execute();
+        $result = $consulta->get_result();
+
+        $miembros = [];
+        while ($row = $result->fetch_assoc()) {
+            $miembros[] = $row;
+        }
+
+        // Cerrar conexiones
+        $consulta->close();
+        
+        $enlace->close();
+
+        return [
+            "miembros" => $miembros
+            
+        ];
+    }
     public function ListarIconos2()
     {
         $enlace = dbConectar();
