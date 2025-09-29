@@ -40,15 +40,15 @@ try {
     // Configuración SMTP
     $mail->isSMTP();
     $mail->CharSet = 'UTF-8';
-    $mail->Host = 'mail.yolocaltexmelucan.com';  // Host SMTP de tu proveedor
+    $mail->Host = 'smtp.gmail.com';  // Host SMTP de tu proveedor
     $mail->SMTPAuth = true;
-    $mail->Username = 'contacto@yolocaltexmelucan.com';  // Tu correo completo
-    $mail->Password = 'A3FeiEog@IC*NYBQ';  // La contraseña de tu correo
+    $mail->Username = 'lcldmnstrcn@gmail.com';  // Tu correo completo
+    $mail->Password = 'blul eqsq ifnk fgxn';  // La contraseña de tu correo
     $mail->SMTPSecure = 'ssl';  // Usar SSL ya que el puerto es 465
     $mail->Port = 465;  // Puerto para SSL
 
     // Dirección del remitente
-    $mail->setFrom('contacto@yolocaltexmelucan.com', 'Gestión de YoLocal');
+    $mail->setFrom('lcldmnstrcn@gmail.com', 'Gestión de YoLocal');
     // Dirección del destinatario
     $mail->addAddress($correo, $nom);
     $mail->Subject = 'RECUPERACIÓN DE CONTRASEÑA';

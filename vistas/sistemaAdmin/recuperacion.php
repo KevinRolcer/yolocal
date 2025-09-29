@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="../../assets/css/recuperacion.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Recuperación</title>
+   
 </head>
 
 <body>
@@ -40,7 +40,7 @@
                     </button>
                 </div>
                 <div class="regresar">
-                    <a href="../index.php" type="button" class="btn  ">Regresar</a>
+                    <a href="login.php" type="button" class="btn">Regresar</a>
                 </div>
             </form>
         </div>
