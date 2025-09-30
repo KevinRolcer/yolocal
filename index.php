@@ -24,6 +24,7 @@ $rutas = [
     "usuarios"  => ["admin" => "vistas/sistemaAdmin/usuarios.php"],
     "categorias"=> ["admin" => "vistas/sistemaAdmin/categorias.php"],
     "bolsa_trabajo"=> ["admin" => "vistas/sistemaAdmin/bolsa_trabajo.php"],
+    "eventos"=> ["admin" => "vistas/sistemaAdmin/eventos.php"],
 
     "ventas"  => [
         "admin"   => "vistas/sistemaAdmin/negocios.php",

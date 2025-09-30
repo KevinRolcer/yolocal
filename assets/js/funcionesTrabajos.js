@@ -122,7 +122,10 @@ function renderizarPromociones(lista) {
       <p class="promo-titulo">${promo.nombre_negocio}</p>
       
       <p class="promo-descripcion">${promo.descripcion ?? "Sin descripción"}</p>
-    
+      <p class="promo-horario"><strong>Horario:</strong> ${promo.Tipo_Horario ?? "No especificado"}</p>
+      <p class="promo-salario"><strong>Salario:</strong> ${promo.Salario ?? "No especificado"}</p>
+      <p class="promo-perrequeridas"><strong>Personas Requeridas:</strong> ${promo.PerRequeridas ?? "No especificado"}</p>
+      
     </div>
     <div class="promo-actions">
       
@@ -344,11 +347,18 @@ function cargarUsuario(id) {
       if (data.success) {
         document.querySelector("#ID_Promocion").value =
           data.usuario.ID_Trabajo;
-        document.querySelector("#EditTitulo").value = data.usuario.titulo;
+        document.querySelector("#EditTitulo").value = data.usuario.Titulo;
         document.querySelector("#EditDescripcion").value =
-          data.usuario.descripcion;
+          data.usuario.Descripcion;
+        document.querySelector("#EditHorario").value =
+          data.usuario.Tipo_Horario;
+        document.querySelector("#EditSalario").value = data.usuario.Salario;
+        document.querySelector("#EditPerRequeridas").value =
+          data.usuario.PerRequeridas;
+        
         document.querySelector("#ID_NegocioEdit").value =
           data.usuario.ID_Negocio;
+
         
       } else {
         Swal.fire(

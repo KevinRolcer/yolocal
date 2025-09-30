@@ -13,6 +13,9 @@ public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = []
     p.ID_Trabajo,
     p.titulo,
     p.descripcion,
+    p.Tipo_Horario,
+    p.Salario,
+    p.PerRequeridas,
    p.Estatus,
     n.nombre_negocio AS nombre_negocio,
     n.Direccion AS direccion_negocio,
@@ -96,17 +99,19 @@ WHERE 1=1";
     {
         $enlace = dbConectar();
 
-        $sql = "INSERT INTO trabajos (titulo, descripcion,  ID_Negocio, Estatus ) VALUES (?, ?, ?, 1)";
+        $sql = "INSERT INTO trabajos (titulo, descripcion, Tipo_Horario, Salario, PerRequeridas, ID_Negocio, Estatus ) VALUES (?, ?, ?, ?, ?, ?, 1)";
         $consulta = $enlace->prepare($sql);
 
 
 
         $consulta->bind_param(
-            "ssi",
+            "ssssii",
             $datos["Titulo"],
             $datos["Descripcion"],
-          
-            $datos["ID_Negocio"],
+            $datos["Tipo_Horario"],
+            $datos["Salario"],
+            $datos["PerRequeridas"],
+            $datos["ID_Negocio"]
         
         );
 
@@ -119,15 +124,21 @@ WHERE 1=1";
     $sql = "UPDATE trabajos 
             SET Titulo = ?, 
                 Descripcion = ?, 
+                Tipo_Horario = ?,
+                Salario = ?,
+                PerRequeridas = ?,
                 ID_Negocio = ? 
             WHERE ID_Trabajo = ?";
 
     $consulta = $enlace->prepare($sql);
 
     $consulta->bind_param(
-        "ssii", // Tipos: string, string, int, int
+        "ssssiii", // Tipos: string, string, int, int
         $datos["Titulo"],
         $datos["Descripcion"],
+        $datos["Tipo_Horario"],
+        $datos["Salario"],
+        $datos["PerRequeridas"],
         $datos["ID_Negocio"],
         $datos["ID_Trabajo"]
     );
@@ -140,7 +151,7 @@ WHERE 1=1";
     public function ObtenerUsuario($ID_Promocion)
     {
         $enlace = dbConectar();
-        $sql = "SELECT ID_Trabajo, titulo, descripcion, ID_Negocio FROM trabajos WHERE ID_Trabajo=?";
+        $sql = "SELECT * FROM trabajos WHERE ID_Trabajo=?";
         $consulta = $enlace->prepare($sql);
         $consulta->bind_param("i", $ID_Promocion);
         $consulta->execute();
