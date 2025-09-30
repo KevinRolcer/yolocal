@@ -53,9 +53,9 @@
                 </div>
             </div>
             <div class="sesion">
-                <a href="eventosPag.php" class="btn-prueba">
+                <a href="../vistas/eventosPag.php" class="btn-prueba">
                     <span class="btn-text-full">Eventos</span>
-                    <span class="btn-text-short">Unirse</span>
+                    <span class="btn-text-short">Eventos</span>
                 </a>
                 <a href="../vistas/sistemaAdmin/login.php" class="btn-sesion">
                     <span class="btn-text-full">Iniciar sesión</span>
