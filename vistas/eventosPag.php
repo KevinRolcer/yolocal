@@ -72,8 +72,8 @@
                     </a>
                     <div class="submenu-contenido">
                         <a href="nosotros.php">¿Quienes somos?</a>
-                        <a href="nosotros.php">Contacto</a>
-                        <a href="nosotros.php">Forma parte de Yolocal</a>
+                        <a href="https://wa.me/+522482694278">Contacto</a>
+                        <a href="nosotros.php">Patrocinadores</a>
                     </div>
                 </div>
 

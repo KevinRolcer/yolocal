@@ -55,9 +55,9 @@
                         </svg>
                     </a>
                     <div class="submenu-contenido">
-                        <a href="#">¿Quienes somos?</a>
-                        <a href="#">Contacto</a>
-                        <a href="#">Forma parte de Yolocal</a>
+                        <a href="nosotros.php">¿Quienes somos?</a>
+                        <a href="https://wa.me/+522482694278">Contacto</a>
+                        <a href="#">Patrocinadores</a>
                     </div>
                 </div>
             </div>
