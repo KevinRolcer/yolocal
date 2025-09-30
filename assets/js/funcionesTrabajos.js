@@ -115,36 +115,39 @@ function renderizarPromociones(lista) {
   contenedor.innerHTML = ""; // limpiar antes de renderizar
 
   lista.forEach((promo) => {
-    contenedor.innerHTML += `
-    <div class="promo-card">
-    <div class="promo-info">
-      <h3 class="promo-negocio">${promo.titulo}</h3>
-      <p class="promo-titulo">${promo.nombre_negocio}</p>
+    contenedor.innerHTML +=  `
+    <div class="gasto-card">
       
-      <p class="promo-descripcion">${promo.descripcion ?? "Sin descripción"}</p>
-      <p class="promo-horario"><strong>Horario:</strong> ${promo.Tipo_Horario ?? "No especificado"}</p>
-      <p class="promo-salario"><strong>Salario:</strong> ${promo.Salario ?? "No especificado"}</p>
-      <p class="promo-perrequeridas"><strong>Personas Requeridas:</strong> ${promo.PerRequeridas ?? "No especificado"}</p>
+      <div class="card-icon">
+        <i class="bi bi-briefcase-fill"></i>
+      </div>
+      <h3>${promo.titulo}</h3>
+      <p class="miembro-rol"><strong>${promo.nombre_negocio}</strong></p>
       
+      <div class="card-content">
+        <p>${promo.descripcion ?? "Sin descripción"}</p>
+        <p><strong>Horario:</strong> ${promo.Tipo_Horario ?? "No especificado"}</p>
+        <p><strong>Salario:</strong> ${promo.Salario ?? "No especificado"}</p>
+        <p><strong>Personas Requeridas:</strong> ${promo.PerRequeridas ?? "No especificado"}</p>
+      </div>
+      
+      <div class="card-buttons">
+        <button 
+          class="btn btn-secondary btn-toggle ${promo.Estatus == 1 ? 'btn-green' : 'btn-red'}" 
+          data-id="${promo.ID_Trabajo}" 
+          data-status="${promo.Estatus}">
+          <i class="bi bi-power"></i>
+        </button>
+        <button 
+          class="btn btn-primary btn-editar" 
+          data-id="${promo.ID_Trabajo}" 
+          data-bs-toggle="modal" 
+          data-bs-target="#modalEditar">
+          <i class="bi bi-pencil"></i>
+        </button>
+      </div>
+
     </div>
-    <div class="promo-actions">
-      
-
-      <!-- Botones solo para admin -->
-
-          <button class="icon-btn btn-toggle ${promo.Estatus == 1 ? 'btn-green' : 'btn-red'}" 
-            data-id="${promo.ID_Trabajo}" 
-            data-status="${promo.Estatus}">
-            <i class="bi bi-power"></i>
-          </button>
-
-          <button class="icon-btn yellow btn-editar" data-id="${promo.ID_Trabajo}" 
-            data-bs-toggle="modal" data-bs-target="#modalEditar">
-            <i class="bi bi-pencil"></i>
-          </button>
-       
-    </div>
-  </div>
   `;
   });
   

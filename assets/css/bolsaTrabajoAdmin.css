@@ -1,0 +1,730 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+* {
+  font-family: "Ubuntu", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --red: #8d2e27;
+  --white: #fff;
+  --gray: #f5f5f5;
+  --black1: #222;
+  --black2: #999;
+  --estado: rgb(40, 99, 46);
+  --verde:#108d08;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+
+}
+.svg{
+  width: 30px;
+  height: 30px;
+  
+}
+
+
+/* --------- curva fuera ---------- */
+.navigation ul li:hover a::before,
+.navigation ul li.hovered a::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px 35px 0 10px #5e0a9e;
+  pointer-events: none;
+}
+.navigation ul li:hover a::after,
+.navigation ul li.hovered a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px -35px 0 10px #5e0a9e;
+  pointer-events: none;
+}
+
+
+#chart_div {
+    width: 100% !important;
+    height: 400px !important;
+}
+/* ===================== contenido principal ===================== */
+.main {
+  position: absolute;
+  width: calc(100% - 300px);
+  left: 300px;
+  min-height: 100vh;
+  background: var(--white);
+  transition: 0.5s;
+}
+.main.active {
+  width: calc(100% - 80px);
+  left: 80px;
+}
+
+.main {
+  position: absolute;
+  width: calc(100% - 300px);
+  left: 300px;
+  min-height: 100vh;
+  background: var(--white);
+  transition: 0.5s;
+}
+.main.active {
+  width: calc(100% - 80px);
+  left: 80px;
+}
+
+.topbar {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+}
+
+.toggle {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+.subMenu{
+  display: flex;
+  width: 550px;
+  justify-content: space-around;
+  gap: 15px;
+}
+.gastos, .inventario, 
+.adminUsuarios, .reportes, .membresias{
+padding: 10px 15px;
+border-radius: 30px;
+background-color: var(--black1);
+display: flex;
+gap: 5px;
+transition: .2s ease all;
+}
+.gastos{
+color: rgb(12, 189, 80);
+}
+.inventario{
+color: rgb(241, 241, 18);
+}
+.adminUsuarios{
+background-color: #5e0a9e;
+color: white;
+}
+.reportes{
+color: rgb(248, 144, 32);
+}
+.subMenu .enlace a{
+text-decoration: none;
+color: white;
+}
+.membresias{
+color: #999;
+}
+.inventario:hover .enlace a,
+.gastos:hover .enlace a,
+.reportes:hover .enlace a,
+.membresias:hover .enlace a{
+color: black;
+}
+.inventario:hover, 
+.gastos:hover, .reportes:hover,
+.membresias:hover{
+background-color:  rgb(187, 187, 187);
+color: #5e0a9e;
+}
+.adminUsuarios:hover{
+background-color: var(--black1);
+color: rgb(49, 133, 229);
+
+}
+.contenedor{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  
+}
+.usuario {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.usuario img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.notificacion{
+  cursor: pointer;
+}
+.notificacion:hover{
+  color: #5e0a9e;
+}
+
+  /* ======================= Caja de notificaciones ====================== */
+.notifi-box .text{
+  color: #5e0a9e;
+  
+}
+.notifi-box {
+  width: 300px;
+  height: 0px;
+  opacity: 0;
+  position: absolute; 
+  top: 63px;
+  padding: 10px;
+  right: 50px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+  z-index: 9999; 
+  background-color: white; 
+  border-radius: 8px; 
+  transition: height 0.3s ease, opacity 0.3s ease; 
+  overflow: hidden;
+}
+.noti {
+  position: relative;
+  max-height: 300px;
+  padding: 20px;
+  background: var(--white);
+  overflow: auto; 
+}
+.noti::-webkit-scrollbar {
+  width: 10px; 
+  
+}
+.noti::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+.noti::-webkit-scrollbar-thumb {
+  background-color: #888; 
+  border-radius: 10px; 
+  border: 2px solid #f1f1f1; 
+}
+
+.noti::-webkit-scrollbar-thumb:hover {
+  background: #5e0a9e; 
+}
+.noti .imgBx {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.noti .imgBx img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.noti table tr td {
+  padding: 12px 10px;
+}
+
+.noti table tr td h4 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2rem;
+}
+
+.noti table tr td h4 span {
+  font-size: 14px;
+  color: var(--black2);
+}
+
+.noti table tr:hover {
+  background: #5e0a9e;
+  color: var(--white);
+}
+
+.noti table tr:hover td h4 span {
+  color: var(--white);
+}
+/* ====== Calendario =======*/
+
+.calendar {
+  width: 100%;
+  max-width: 280px; 
+  padding: 10px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px; 
+}
+
+.calendar-header h3 {
+  font-size: 14px; 
+  margin: 0;
+}
+
+.calendar-header button {
+  background-color: #888;
+  border: none;
+  color: white;
+  padding: 3px 6px; 
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px; 
+}
+
+.calendar-header button:hover {
+  background-color: #555;
+}
+
+.weekdays {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.weekdays li {
+  width: 30px; 
+  text-align: center;
+  padding: 5px 0; 
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+}
+
+.dates {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.dates li {
+  width: 30px;
+  height: 30px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 3px; 
+  font-size: 12px; 
+  cursor: pointer;
+}
+
+.dates li.today {
+  background-color: #5e0a9e;
+  color: white;
+  border-radius: 50%;
+}
+
+.dates li.inactive {
+  color: #bbb;
+}
+
+.noti .calend {
+  max-width: 250px; 
+  overflow: hidden;
+}
+
+  /*  ================= Boton de gastos =======*/
+.gB{
+    margin-left: auto;
+    width: 150px;
+    margin-bottom: 20px;
+}
+.gB button{
+    padding: 10px;
+    background-color:#ffcc00;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 20px;
+    border: transparent;
+    cursor: pointer;
+}
+.subMenu svg{
+  width: 20px;
+  height: 20px;
+} 
+/* =============== Filtros para gastos ==============*/
+
+.filter-container {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+}
+
+.filter {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.filter.active {
+    background-color: #5e0a9e;
+    color: white;
+    border-color: #5e0a9e;
+}
+
+.filter .close {
+    display: none;
+    font-size: 14px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: inherit;
+}
+
+.filter.active .close {
+    display: inline;
+}
+
+.filter-container .filter select, 
+.filter-container .filter input[type="date"],
+.filter-container .filter #btnFiltrar {
+    color: white;
+    margin-left: 5px;
+    border: none;
+    outline: none;
+    background: #5e0a9e;
+    font-size: 14px;
+    display: none; 
+}
+
+.filter-container .filter.active select, 
+.filter-container .filter.active input[type="date"],
+.filter-container .filter.active #btnFiltrar {
+    display: inline-block; 
+}
+
+
+.filter.active select, .filter.active input {
+    display: inline-block;
+}
+
+
+#ListaGastos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+#ListaMiembros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.gasto-card {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    text-align: center;
+    transition: transform 0.3s;
+    align-items: center;
+}
+
+.gasto-card:hover {
+    transform: scale(1.05);
+}
+
+.gasto-card h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.gasto-card p {
+    margin: 5px 0;
+}
+
+.card-buttons {
+     display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.card-buttons .btn {
+    margin: 5px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Colores específicos */
+
+#btnEd{
+  background-color: rgb(185, 186, 188);
+  color: black;
+
+}
+#btnE{
+  background-color: rgb(134, 24, 24);
+}
+
+#ListaGastos {
+  max-height: 450px; 
+  overflow-y: auto; 
+}
+
+/* ============== Paginacion =================*/
+
+.btn-editar:hover{
+  background-color: rgb(77, 76, 76);
+  color: white;
+}
+.gasto-card {
+    background: #ffffff;
+     display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* separa contenido y botones */
+    height: 100%; /* asegura que ocupe toda la altura disponible */
+    padding: 15px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.gasto-card:hover {
+    transform: scale(1.05);
+}
+
+.gasto-card h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.gasto-card p {
+    margin: 5px 0;
+}
+
+
+
+
+
+
+.mt-3{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+/* =============== Filtros para gastos ==============*/
+
+.filter-container {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    padding-left: 20px;
+    width: 100%;
+}
+
+.filter {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+}
+
+.filter.active {
+    background-color: #5e0a9e;
+    color: white;
+    border-color: #5e0a9e;
+}
+
+.filter .close {
+    display: none;
+    font-size: 14px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: inherit;
+}
+
+.filter.active .close {
+    display: inline;
+}
+
+.filter-container .filter select, 
+.filter-container .filter input[type="text"],
+.filter-container .filter input[type="number"],
+.filter-container .filter #btnFiltrar {
+    color: white;
+    margin-left: 5px;
+    border: none;
+    outline: none;
+    background: #5e0a9e;
+    font-size: 14px;
+    display: none; 
+}
+
+.filter-container .filter.active select, 
+.filter-container .filter.active input[type="text"],
+.filter-container .filter.active input[type="number"],
+.filter-container .filter.active #btnFiltrar {
+    display: inline-block; 
+}
+
+
+.filter.active select, .filter.active input {
+    display: inline-block;
+}
+.filter-container input::placeholder{
+  color: rgb(193, 190, 190);
+}
+
+
+
+
+.apellidos{
+  display: flex;
+  gap: 10px;
+}
+.apa{
+  width: 50%;
+}
+.ama{
+  width: 50%;
+}
+
+/* Grid para que se acomoden 2 por fila */
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+
+.promo-card {
+  display: flex;
+  flex-direction: column;  
+  justify-content: space-between; 
+  
+  width: 280px;
+  
+  
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+.promo-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Info del negocio/promo */
+.promo-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.promo-titulo {
+  margin: 0;
+  font-weight: 500;
+  color: #555;
+}
+.promo-descripcion {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #777;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* máximo 2 líneas */
+  -webkit-box-orient: vertical;
+}
+
+/* Botones */
+.promo-actions {
+  display: flex;
+  gap: 10px;        /* espacio entre botones */
+  margin-top: 10px; /* separa del texto */
+}
+
+.icon-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.icon-btn:hover {
+  transform: scale(1.1);
+}
+
+.icon-btn.purple { background: #8e44ad; }
+.icon-btn.yellow { background: #f39c12; }
+.icon-btn.green  { background: #27ae60; }
+.icon-btn.blue  { background: #2b8cc7; }
+.btn-green {
+  background: #27ae60;
+  color: white;
+}
+.btn-red {
+  background: rgba(255, 0, 0, 0.801);
+  color: white;
+}

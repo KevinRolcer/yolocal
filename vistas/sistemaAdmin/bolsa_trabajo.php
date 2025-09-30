@@ -7,10 +7,11 @@
     include_once("head.php");
     ?>
     <script type="module" src="assets/js/funcionesTrabajos.js?v=<?php echo time(); ?>"></script>
-    <link rel="stylesheet" href="../assets/css/cupones.css">
+    <link rel="stylesheet" href="../assets/css/bolsaTrabajoAdmin.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <link rel="stylesheet" href="../assets/css/pildora.css">
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script>
         const usuarioId = <?= json_encode($_SESSION["ID_Usuario"]) ?>;
         const usuarioTipo = <?= json_encode($_SESSION["tipo"]) ?>;
@@ -41,46 +42,7 @@
                 <div class="usuario">
                     <img src="../assets/img/descarga.gif"  alt="">
                 </div>
-                <div class="notifi-box" id="box">
-                    <p class="calendario"></p>
-                    <div class="notifi-item">
-                        <div class="text">
-                            <h4>Notificaciones</h4>
-                        </div>
-                        <div class="calend">
-                            <div class="calend">
-                                <div class="calendar">
-                                    <div class="calendar-header">
-                                        <button id="prev">&lt;</button>
-                                        <h3></h3>
-                                        <button id="next">&gt;</button>
-                                    </div>
-                                    <ul class="weekdays">
-                                        <li>Dom</li>
-                                        <li>Lun</li>
-                                        <li>Mar</li>
-                                        <li>Mié</li>
-                                        <li>Jue</li>
-                                        <li>Vie</li>
-                                        <li>Sáb</li>
-                                    </ul>
-                                    <ul class="dates"></ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="noti">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <h4>Sin notificaciones...<br></h4>
-                                    </td>
-                                </tr>
-
-
-                            </table>
-                        </div>
-                    </div>
-                </div>
+               
             </div>
         </div>
         <div class="pill-selector-container">
