@@ -73,9 +73,9 @@ if (isset($_GET['id'])) {
             </div>
 
             <div class="sesion">
-                <a href="#" class="btn-prueba">
-                    <span class="btn-text-full">Unete a Yo local</span>
-                    <span class="btn-text-short">Unirse</span>
+                <a href="../vistas/eventosPag.php" class="btn-prueba">
+                    <span class="btn-text-full">Eventos</span>
+                    <span class="btn-text-short">Eventos</span>
                 </a>
                 <a href="../vistas/sistemaAdmin/login.php" class="btn-sesion">
                     <span class="btn-text-full">Iniciar sesión</span>

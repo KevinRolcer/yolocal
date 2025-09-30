@@ -57,11 +57,13 @@ if (isset($_POST["ope"])) {
         }
     }
     // para agregar  
-    elseif ($ope == "AGREGAR" && isset($_POST["Titulo"], $_POST["Descripcion"],$_POST["ID_Negocio"])) {
+    elseif ($ope == "AGREGAR" && isset($_POST["Titulo"], $_POST["Descripcion"], $_POST["Horario"], $_POST["Salario"], $_POST["PerRequeridas"], $_POST["ID_Negocio"])) {
         $datos = array(
             "Titulo" => $_POST["Titulo"],
             "Descripcion" => $_POST["Descripcion"],
-
+            "Tipo_Horario" => $_POST["Horario"],
+            "Salario" => $_POST["Salario"],
+            "PerRequeridas" => $_POST["PerRequeridas"],
             "ID_Negocio" => $_POST["ID_Negocio"],
            
         );
@@ -77,6 +79,9 @@ if (isset($_POST["ope"])) {
             $_POST["ID_Promocion"],
             $_POST["EditTitulo"],
             $_POST["EditDescripcion"],
+            $_POST["EditHorario"],
+            $_POST["EditSalario"],
+            $_POST["EditPerRequeridas"],
             $_POST["ID_NegocioEdit"]
         )
     ) {
@@ -84,6 +89,9 @@ if (isset($_POST["ope"])) {
             "ID_Trabajo"   => $_POST["ID_Promocion"],
             "Titulo"         => $_POST["EditTitulo"],
             "Descripcion"    => $_POST["EditDescripcion"],
+            "Tipo_Horario"   => $_POST["EditHorario"],
+            "Salario"        => $_POST["EditSalario"],
+            "PerRequeridas"  => $_POST["EditPerRequeridas"],
             "ID_Negocio"     => $_POST["ID_NegocioEdit"]
         );
 

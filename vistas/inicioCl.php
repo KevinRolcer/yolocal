@@ -56,6 +56,7 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
                     </svg>
                     <span class="texto-menu">Bolsa de trabajo</span>
                 </a>
+                
 
                 <a href="vistas/cuponesPagina.php" class="enlace" data-tooltip="Promociones">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -78,16 +79,16 @@ require_once __DIR__. '/../controladores/ControladorInicio.php';
                     <div class="submenu-contenido">
                         <a href="vistas/nosotros.php">¿Quienes somos?</a>
                         <a href="vistas/nosotros.php">Contacto</a>
-                        <a href="vistas/nosotros.php">Forma parte de Yolocal</a>
+                        <a href="vistas/eventosPag.php">Eventos</a>
                     </div>
                 </div>
 
             </div>
 
             <div class="sesion">
-                <a href="#" class="btn-prueba">
-                    <span class="btn-text-full">Unete a Yo local</span>
-                    <span class="btn-text-short">Unirse</span>
+                <a href="vistas/eventosPag.php" class="btn-prueba">
+                    <span class="btn-text-full">Eventos</span>
+                    <span class="btn-text-short">Eventos</span>
                 </a>
                 <a href="vistas/sistemaAdmin/login.php" class="btn-sesion">
                     <span class="btn-text-full">Iniciar sesión</span>

@@ -7,11 +7,10 @@
     include_once("head.php");
     ?>
     <script type="module" src="assets/js/funcionesTrabajos.js?v=<?php echo time(); ?>"></script>
-    <link rel="stylesheet" href="../assets/css/bolsaTrabajoAdmin.css">
+    <link rel="stylesheet" href="../assets/css/cupones.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <link rel="stylesheet" href="../assets/css/pildora.css">
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script>
         const usuarioId = <?= json_encode($_SESSION["ID_Usuario"]) ?>;
         const usuarioTipo = <?= json_encode($_SESSION["tipo"]) ?>;
@@ -42,21 +41,60 @@
                 <div class="usuario">
                     <img src="../assets/img/descarga.gif"  alt="">
                 </div>
-               
+                <div class="notifi-box" id="box">
+                    <p class="calendario"></p>
+                    <div class="notifi-item">
+                        <div class="text">
+                            <h4>Notificaciones</h4>
+                        </div>
+                        <div class="calend">
+                            <div class="calend">
+                                <div class="calendar">
+                                    <div class="calendar-header">
+                                        <button id="prev">&lt;</button>
+                                        <h3></h3>
+                                        <button id="next">&gt;</button>
+                                    </div>
+                                    <ul class="weekdays">
+                                        <li>Dom</li>
+                                        <li>Lun</li>
+                                        <li>Mar</li>
+                                        <li>Mié</li>
+                                        <li>Jue</li>
+                                        <li>Vie</li>
+                                        <li>Sáb</li>
+                                    </ul>
+                                    <ul class="dates"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="noti">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <h4>Sin notificaciones...<br></h4>
+                                    </td>
+                                </tr>
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="pill-selector-container">
         <div class="pill-selector">
-            <a href="index.php?pag=bolsa_trabajo" class="pill-option active" id="opcion1">
+            <a href="index.php?pag=bolsa_trabajo" class="pill-option " id="opcion1">
                 Trabajos
             </a>
-            <a href="index.php?pag=eventos" class="pill-option" id="opcion2">
+            <a href="index.php?pag=eventos" class="pill-option active" id="opcion2">
                 Eventos
             </a>
         </div>
     </div>
         <div class="container mt-5">
-            <h1 class="text-start fw-bold">Bolsa de trabajo</h1>
+            <h1 class="text-start fw-bold">Eventos</h1>
             <h4 class="text-start text-secondary">Sección para administrar la bolsa de trabajo de YoLocal.</h4>
         </div>
         <div class="container mt-5">
@@ -120,27 +158,10 @@
                                     </div>
 
 
+                                    
+                                    
                                     <div class="col-md-12">
-                                        <label for="Horario" class="form-label">Tipo de Horario</label>
-                                        <select class="form-control" id="Horario" name="Horario" required>
-                                            <option value="Turno Completo">Tiempo completo</option>
-                                            <option value="Matutino">Matutino</option>
-                                            <option value="Vespertino">Vespertino</option>
-                                            <option value="Horas">Por horas</option>
-                                           
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="Salario" class="form-label">Salario</label>
-                                        <input type="number" class="form-control" id="Salario" name="Salario" maxlength="6" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="PerRequeridas" class="form-label">Personas Requeridas</label>
-                                        <input type="number" class="form-control" id="PerRequeridas" name="PerRequeridas" maxlength="6" required>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="ID_Negocio" class="form-label">Negocio</label>
+                                        <label for="Descripcion" class="form-label">Negocio</label>
                                         <select class="form-control" id="ID_Negocio" name="ID_Negocio" required>
                                         </select>
                                     </div>
@@ -178,24 +199,8 @@
                                     <textarea class="form-control" id="EditDescripcion" name="EditDescripcion" rows="3" required></textarea>
                                 </div>
 
-                                <div class="col-md-12">
-                                    <label for="EditHorario" class="form-label">Tipo de Horario</label>
-                                    <select class="form-control" id="EditHorario" name="EditHorario" required>
-                                        <option value="Turno Completo">Tiempo completo</option>
-                                        <option value="Matutino">Matutino</option>
-                                        <option value="Vespertino">Vespertino</option>
-                                        <option value="Horas">Por horas</option>
-                                       
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="Salario" class="form-label">Salario</label>
-                                    <input type="number" class="form-control" id="EditSalario" name="EditSalario" maxlength="6" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="EditPerRequeridas" class="form-label">Personas Requeridas</label>
-                                    <input type="number" class="form-control" id="EditPerRequeridas" name="EditPerRequeridas" maxlength="6" required>
-                                </div>
+
+                                
                                 <div class="col-md-12">
                                     <label for="ID_NegocioEdit" class="form-label">Negocio</label>
                                     <select class="form-control" id="ID_NegocioEdit" name="ID_NegocioEdit" required>
