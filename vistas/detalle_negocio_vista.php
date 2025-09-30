@@ -63,8 +63,8 @@
             </div>
 
             <div class="sesion">
-                <a href="#" class="btn-prueba">
-                    <span class="btn-text-full">Unete a Yo local</span>
+                <a href="../vistas/eventosPag.php" class="btn-prueba">
+                    <span class="btn-text-full">Eventos</span>
                     <span class="btn-text-short">Unirse</span>
                 </a>
                 <a href="../vistas/sistemaAdmin/login.php" class="btn-sesion">
