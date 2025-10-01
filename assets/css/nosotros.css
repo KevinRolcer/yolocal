@@ -291,7 +291,7 @@ svg{
     position: absolute;
     width: 500px;
     height: 500px;
-    background: var(--secundario);
+    background: var(--secunadrio);
     border-radius: 50%;
     top: -250px;
     right: -250px;
@@ -336,7 +336,7 @@ svg{
 }
 
 .hero-text .highlight {
-    color: var(--secundario);
+    color: var(--secunadrio);
     display: block;
     font-weight: 800;
 }
@@ -351,20 +351,20 @@ svg{
 
 .cta-button {
     display: inline-block;
-    background: var(--secundario);
-    color: var(--negro);
+    background: var(--secunadrio);
+    color: var(--principal);
     padding: 1rem 2.5rem;
     border-radius: 50px;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s ease;
     animation: fadeInLeft 1s ease 0.4s backwards;
-    box-shadow: 0 10px 30px rgba(255, 205, 0, 0.3);
+    box-shadow: 0 10px 20px rgba(255, 205, 0, 0.3);
 }
 
 .cta-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(255, 205, 0, 0.4);
+    box-shadow: 0 15px 25px rgba(255, 205, 0, 0.4);
     background: var(--complementario);
 }
 
@@ -396,8 +396,6 @@ svg{
 .hero-logo-space:hover {
     transform: scale(1.05);
 }
-
-
 
 @keyframes fadeInLeft {
     from {
@@ -444,7 +442,7 @@ svg{
     transform: translateX(-50%);
     width: 100px;
     height: 4px;
-    background: linear-gradient(90deg, var(--secundario), var(--complementario));
+    background: linear-gradient(90deg, var(--secunadrio), var(--complementario));
     border-radius: 2px;
 }
 
@@ -460,7 +458,7 @@ svg{
 .historia-content p {
     font-size: 1.1rem;
     line-height: 1.9;
-    color: var(--texto);
+    color: var(--lineas);
     margin-bottom: 1.5rem;
 }
 
@@ -484,7 +482,7 @@ svg{
 }
 
 .logo-significado .section-title::after {
-    background: var(--secundario);
+    background: var(--secunadrio);
 }
 
 .logo-cards {
@@ -514,7 +512,7 @@ svg{
 .logo-card .number {
     font-size: 3rem;
     font-weight: 800;
-    color: var(--secundario);
+    color: var(--secunadrio);
     margin-bottom: 1rem;
 }
 
@@ -532,7 +530,7 @@ svg{
 .eslogan {
     text-align: center;
     font-size: 2rem;
-    color: var(--secundario);
+    color: var(--secunadrio);
     margin-top: 3rem;
     font-weight: 700;
     font-style: italic;
@@ -564,7 +562,7 @@ svg{
 .vision-text h3 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
-    color: var(--secundario);
+    color: var(--secunadrio);
 }
 
 .vision-text p {

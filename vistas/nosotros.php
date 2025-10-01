@@ -93,10 +93,7 @@
                 </div>
                 <div class="hero-image">
                     <div class="hero-logo-space">
-                        <div>
-                            <p style="font-weight: 600; margin-bottom: 1rem;">Espacio para logo principal</p>
-                            <p style="font-size: 1rem; opacity: 0.8;">500 x 500 px</p>
-                        </div>
+                        <img src="../assets/img/LogoYolocal.png" alt="">
                     </div>
                 </div>
             </div>
@@ -159,10 +156,7 @@
                     </p>
                 </div>
                 <div class="vision-image">
-                    <div>
-                        <p style="font-weight: 600; margin-bottom: 0.5rem;">Espacio para imagen/logo</p>
-                        <p style="font-size: 0.9rem; opacity: 0.7;">400 x 400 px</p>
-                    </div>
+                    <img src="../assets/img/LogoYolocal.png" alt="">
                 </div>
             </div>
         </section>
