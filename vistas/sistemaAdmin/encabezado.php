@@ -31,11 +31,12 @@ $menus = [
         "roles"  => ["admin"] // solo admin
     ],
     [
-        "titulo" => "Bolsa de Trabajo",
+        "titulo" => "Trabajos y eventos",
         "icono"  => "bi-briefcase",
         "link"   => "index.php?pag=bolsa_trabajo",
         "roles"  => ["admin"] // solo admin
     ]
+    
     
 ];
 ?>

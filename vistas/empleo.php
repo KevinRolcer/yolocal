@@ -52,7 +52,7 @@
                 
 
                 <div class="submenu" data-tooltip="Nosotros">
-                    <a href="#" class="enlace">
+                    <a href="nosotros.php" class="enlace">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
                         </svg>
@@ -62,18 +62,18 @@
                         </svg>
                     </a>
                     <div class="submenu-contenido">
-                        <a href="#">¿Quienes somos?</a>
-                        <a href="#">Contacto</a>
-                        <a href="#">Forma parte de Yolocal</a>
+                        <a href="nosotros.php">¿Quienes somos?</a>
+                        <a href="https://wa.me/+522482694278">Contacto</a>
+                        <a href="nosotros.php">Patrocinadores</a>
                     </div>
                 </div>
 
             </div>
 
             <div class="sesion">
-                <a href="#" class="btn-prueba">
-                    <span class="btn-text-full">Unete a Yo local</span>
-                    <span class="btn-text-short">Unirse</span>
+                <a href="eventosPag.php" class="btn-prueba">
+                    <span class="btn-text-full">Eventos</span>
+                    <span class="btn-text-short">Eventos</span>
                 </a>
                 <a href="sistemaAdmin/login.php" class="btn-sesion">
                     <span class="btn-text-full">Iniciar sesión</span>

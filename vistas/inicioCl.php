@@ -51,6 +51,7 @@
                     </svg>
                     <span class="texto-menu">Bolsa de trabajo</span>
                 </a>
+                
 
                 <a href="vistas/cuponesPagina.php" class="enlace" data-tooltip="Promociones">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -72,17 +73,17 @@
                     </a>
                     <div class="submenu-contenido">
                         <a href="vistas/nosotros.php">¿Quienes somos?</a>
-                        <a href="vistas/nosotros.php">Contacto</a>
-                        <a href="vistas/nosotros.php">Forma parte de Yolocal</a>
+                        <a href="https://wa.me/+522482694278">Contacto</a>
+                        <a href="vistas/eventosPag.php">Patrocinadores</a>
                     </div>
                 </div>
 
             </div>
 
             <div class="sesion">
-                <a href="#" class="btn-prueba">
-                    <span class="btn-text-full">Unete a Yo local</span>
-                    <span class="btn-text-short">Unirse</span>
+                <a href="vistas/eventosPag.php" class="btn-prueba">
+                    <span class="btn-text-full">Eventos</span>
+                    <span class="btn-text-short">Eventos</span>
                 </a>
                 <a href="vistas/sistemaAdmin/login.php" class="btn-sesion">
                     <span class="btn-text-full">Iniciar sesión</span>
@@ -156,7 +157,7 @@
 
         <div class="contenedorC">
 
-            <div class="descripcionC">
+            <div class="descripcionC" id="Aliados">
                 <h2>Aliados</h2>
                 <p>Descubre a los negocios que forman parte de
                     <span>Yo <span id="span2">local</span></span>
@@ -169,9 +170,9 @@
                     </div>
                 </div>
             </div>
-            <div class="encabezadoC">
+            <div class="encabezadoC" id="Populares">
                 <div>
-                    <h2>Destacado</h2>
+                    <h2>Populares</h2>
                     <p>Conoce a los negocios que mejor valorados de
                         <span>Texme<span id="span2">lucan</span></span>
                     </p>
@@ -209,7 +210,7 @@
 
 
 
-        <div class="descripcionC">
+        <div class="descripcionC" id="Conecta">
             <h2>Yo local Conecta
 
             </h2>
@@ -321,49 +322,46 @@
      <footer>
         <div class="footer-container">
             <div class="buttons-top">
-                <a href="#" class="btn btn-yellow">Conócenos</a>
+                <a href="vistas/nosotros.php" class="btn btn-yellow">Conócenos</a>
                 <a href="#" class="btn btn-white">Patrocinadores</a>
-                <a href="#" class="btn btn-yellow">Noticias</a>
+                <a href="vistas/eventosPag.php" class="btn btn-yellow">Eventos</a>
             </div>
 
             <div class="footer-top">
                 <div class="footer-column">
                     <ul>
-                        <li><a href="#nosotros">Nosotros</a></li>
-                        <li><a href="#discapacidad">Populares</a></li>
-                        <li><a href="#autismo">Aliados</a></li>
-                        <li><a href="#cancer">Cúpones</a></li>
-                        <li><a href="#derechos">Yo Local Conecta</a></li>
+                        <li><a href="vistas/nosotros.php">Nosotros</a></li>
+                        <li><a href="#Populares">Populares</a></li>
+                        <li><a href="#Aliados">Aliados</a></li>
+                        <li><a href="vistas/cuponesPagina.php">Cúpones</a></li>
+                        <li><a href="#Conecta">Yo Local Conecta</a></li>
                     
                     </ul>
                 </div>
 
                 <div class="footer-column">
                     <ul>
-                        <li><a href="#universidad">Bolsa de Trabajo</a></li>
-                        <li><a href="#casa">Eventos</a></li>
-                        <li><a href="#contacto">Contacto</a></li>
-                        <li><a href="#trabaja">Inicia Sesión</a></li>
-                        <li><a href="#politicas">Políticas de privacidad</a></li>
+                        <li><a href="vistas/empleo.php">Bolsa de Trabajo</a></li>
+                        <li><a href="vistas/eventosPag.php">Eventos</a></li>
+                        <li><a href="https://wa.me/+522482694278">Contacto</a></li>
+                        <li><a href="vistas/sistemaAdmin/login.php">Inicia Sesión</a></li>
+                        <li><a href="vistas/mapa.php">Mapa</a></li>
                        
                     </ul>
                 </div>
 
                 <div class="footer-column">
                     <div class="social-links">
-                        <a href="#" class="social-link">
-                            <span class="social-icon"><i class="fab fa-twitter"></i></span>
-                            <span>Twitter</span>
-                        </a>
-                        <a href="#" class="social-link">
+                        
+                        <a href="https://www.facebook.com/YoLocalTex/" class="social-link">
                             <span class="social-icon"><i class="fab fa-facebook-f"></i></span>
                             <span>Facebook</span>
                         </a>
-                        <a href="#" class="social-link">
+                        <a href="https://www.instagram.com/yolocal_tex?igsh=MW9peGVreTlpOWptcA==" class="social-link">
                             <span class="social-icon"><i class="fab fa-instagram"></i></span>
                             <span>Instagram</span>
                         </a>
-                        <a href="#" class="social-link">
+                        <a href="https://www.tiktok.com/@yolocaltex?_t=ZS-908kLNRWj15&_r=1" class="social-link">
                             <span class="social-icon"><i class="fab fa-tiktok"></i></span>
                             <span>Tik Tok</span>
                         </a>

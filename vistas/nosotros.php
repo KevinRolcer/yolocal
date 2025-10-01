@@ -56,17 +56,17 @@
                     </a>
                     <div class="submenu-contenido">
                         <a href="#">¿Quienes somos?</a>
-                        <a href="#">Contacto</a>
-                        <a href="#">Forma parte de Yolocal</a>
+                        <a href="https://wa.me/+522482694278">Contacto</a>
+                        <a href="#">Patrocinadores</a>
                     </div>
                 </div>
 
             </div>
 
             <div class="sesion">
-                <a href="#" class="btn-prueba">
-                    <span class="btn-text-full">Unete a Yo local</span>
-                    <span class="btn-text-short">Unirse</span>
+                <a href="eventosPag.php" class="btn-prueba">
+                    <span class="btn-text-full">Eventos</span>
+                    <span class="btn-text-short">Eventos</span>
                 </a>
                 <a href="../vistas/sistemaAdmin/login.php" class="btn-sesion">
                     <span class="btn-text-full">Iniciar sesión</span>
