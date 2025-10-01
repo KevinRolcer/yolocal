@@ -7,7 +7,7 @@
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="../assets/css/nosotros.css">
     <script defer src="../assets/js/nosotrosCl.js"></script>
-
+    <script defer src="../assets/js/menuCl.js"></script>
 </head>
 <body>
     <header class="encabezado">
@@ -56,8 +56,8 @@
                     </a>
                     <div class="submenu-contenido">
                         <a href="#">¿Quienes somos?</a>
-                        <a href="#">Contacto</a>
-                        <a href="#">Forma parte de Yolocal</a>
+                        <a href="https://wa.me/+522482694278">Contacto</a>
+                        <a href="#">Patrocinadores</a>
                     </div>
                 </div>
 
@@ -77,98 +77,140 @@
     </header>
 
 
-    <div class="principal">
-        <div class="container">
-            <div class="content">
-                <div class="left-content">
-                    <h1 class="main-title">Yo Local<br>Si es del barrio,<br><span class="highlight">es de todos</span></h1>
-                    
-                    <p class="subtitle">
-                        Descripción de nosotros
+    <div class="nosotros-container">
+        <section class="hero" id="inicio">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>
+                        Yo Local Texmelucan:
+                        <span class="highlight">el impulso que nace del barrio</span>
+                    </h1>
+                    <p>
+                        Conectamos, empoderamos y visibilizamos todo lo bueno de Texmelucan. 
+                        Desde emprendedores hasta artistas, deportistas y creadores culturales.
                     </p>
-                    
-                    
-                    <div class="info-card">
-                        <div class="card-image">
-                            <img src="../assets/img/LogoYolocal.png" alt="Flores blancas">
-                        </div>
-                        <div class="card-content">
-                            <h3>Ubicación</h3>
-                            <p>Ubicación</p>
-                        </div>
-                    </div>
+                    <a href="#historia" class="cta-button">Conoce nuestra historia</a>
                 </div>
-                
-                <div class="right-content">
-                    <div class="image-container">
-                        <div class="decorative-bg"></div>
-                        <img src="../assets/img/LogoYolocal.png"  class="main-contenedor">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <section class="interactive-section">
-            <div class="containerCl">
-                <h2 class="section-title">Nosotros<br>Misión y visión</h2>
-                
-                <div class="interactive-content">
-                    <div class="text-left">
-                        <div class="info-point top-left" data-position="top-left">
-                            <h3>Titulo</h3>
-                            <p>Descrioción</p>
-                            <div class="point-indicator"></div>
-                        </div>
-                        
-                        <div class="info-point middle-left" data-position="middle-left">
-                            <h3>Titulo</h3>
-                            <p> Descripción</p>
-                            <div class="point-indicator"></div>
-                        </div>
-                        
-                        <div class="info-point bottom-left" data-position="bottom-left">
-                            <h3>Titulo</h3>
-                            <p>Descripción</p>
-                            <div class="point-indicator"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="central-image">
-                        <div class="image-containerCl">
-                            <div class="decorative-circle"></div>
-                            <img src="../assets/img/LogoYolocal.png" alt="Logo Yolocal" class="main-tarjeta">
-                            <div class="floating-particles">
-                                <div class="particle particle-1"></div>
-                                <div class="particle particle-2"></div>
-                                <div class="particle particle-3"></div>
-                                <div class="particle particle-4"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="text-right">
-                        <div class="info-point top-right" data-position="top-right">
-                            <h3>Titulo</h3>
-                            <p>Descripción</p>
-                            <div class="point-indicator"></div>
-                        </div>
-                        
-                        <div class="info-point middle-right" data-position="middle-right">
-                            <h3>Titulo</h3>
-                            <p>Descripción</p>
-                            <div class="point-indicator"></div>
-                        </div>
-                        
-                        <div class="info-point bottom-right" data-position="bottom-right">
-                            <h3>Titulo</h3>
-                            <p>Descripción</p>
-                            <div class="point-indicator"></div>
-                        </div>
+                <div class="hero-image">
+                    <div class="hero-logo-space">
+                        <img src="../assets/img/LogoYolocal.png" alt="">
                     </div>
                 </div>
             </div>
         </section>
 
+        <section class="historia fade-in" id="historia">
+            <h2 class="section-title">Nuestra Historia</h2>
+            <div class="historia-content">
+                <p>
+                    Yo Local nació en plena pandemia, cuando un grupo de amigos vio cómo los negocios cerraban 
+                    y nuestra comunidad necesitaba un empujón. No podíamos quedarnos quietos, así que creamos 
+                    un espacio donde emprendedores, artistas y deportistas de Texmelucan pudieran conectarse, 
+                    crecer y apoyarse entre todos, y donde se pudiera difundir lo bueno que pasa en nuestra ciudad: 
+                    el arte, la cultura, el deporte y cada emprendimiento local.
+                </p>
+                <p>
+                    Hoy, en 2025, esta iniciativa ya está en marcha, es independiente y está liderada desde hace 
+                    cinco años por <strong>Marco Hernández</strong>, Director General de Yo Local, con el impulso 
+                    de <strong>File Ramírez</strong>, para fortalecer lo local y dar visibilidad a todo el talento 
+                    que hay en nuestra comunidad.
+                </p>
+                <div class="highlight-box">
+                    <p style="font-size: 1.2rem; font-weight: 600; margin: 0;">
+                        Yo Local no viene a reemplazar las acciones que los emprendedores hacen día a día, 
+                        sino a sumar, complementar y darles un lugar donde brillar.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="logo-significado fade-in">
+            <h2 class="section-title">Lo que buscamos con nuestro logo</h2>
+            <p style="text-align: center; color: var(--blanco); font-size: 1.2rem; max-width: 800px; margin: 0 auto 3rem;">
+                Cuando veas el logo de Yo Local en un negocio, queremos que pienses en:
+            </p>
+            <div class="logo-cards">
+                <div class="logo-card">
+                    <div class="number">01</div>
+                    <h3>Calidad</h3>
+                    <p>Calidad en todo lo que hacen. Cada negocio con nuestro logo representa excelencia y compromiso con la comunidad.</p>
+                </div>
+                <div class="logo-card">
+                    <div class="number">02</div>
+                    <h3>Identidad Local</h3>
+                    <p>Que es de aquí, que es de Texmelucan. Orgullo por nuestras raíces y lo que nos hace únicos como comunidad.</p>
+                </div>
+            </div>
+            <p class="eslogan">"Yo Local, es de aquí, es de todos"</p>
+        </section>
+
+        <section class="vision fade-in" id="vision">
+            <h2 class="section-title">Nuestra Visión</h2>
+            <div class="vision-content">
+                <div class="vision-text">
+                    <h3>Visión 2025</h3>
+                    <p>
+                        Ser el espacio que conecte, empodere y visibilice todo lo bueno de Texmelucan, 
+                        desde emprendedores hasta artistas, deportistas y creadores culturales, 
+                        fomentando una comunidad unida y activa.
+                    </p>
+                </div>
+                <div class="vision-image">
+                    <img src="../assets/img/LogoYolocal.png" alt="">
+                </div>
+            </div>
+        </section>
+
+        <section class="valores fade-in" id="valores">
+            <h2 class="section-title">Nuestros Valores</h2>
+            <div class="valores-grid">
+                <div class="valor-card">
+                    <div class="valor-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                        </svg>
+                    </div>
+                    <h3>Cercanía</h3>
+                    <p>Somos comunidad, vecinos y aliados. Juntos construimos un Texmelucan más fuerte.</p>
+                </div>
+                <div class="valor-card">
+                    <div class="valor-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                        </svg>
+                    </div>
+                    <h3>Orgullo Local</h3>
+                    <p>Promovemos lo nuestro, lo que hace grande a Texmelucan y nos llena de identidad.</p>
+                </div>
+                <div class="valor-card">
+                    <div class="valor-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+                        </svg>
+                    </div>
+                    <h3>Empoderamiento</h3>
+                    <p>Compartimos herramientas, consejos y apoyo para que cada emprendedor dé su siguiente paso.</p>
+                </div>
+                <div class="valor-card">
+                    <div class="valor-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
+                        </svg>
+                    </div>
+                    <h3>Colaboración</h3>
+                    <p>Juntos logramos más, apoyando y difundiendo los esfuerzos de cada quien.</p>
+                </div>
+                <div class="valor-card">
+                    <div class="valor-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                        </svg>
+                    </div>
+                    <h3>Compromiso</h3>
+                    <p>Trabajamos de corazón para que lo local tenga voz, visibilidad y fuerza.</p>
+                </div>
+            </div>
+        </section>
     </div>
     
 </body>
