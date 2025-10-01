@@ -392,7 +392,7 @@ svg{
 }
 
 .hero-logo-space img{
-    width: 200px;
+    width: 500px;
 }
 .hero-logo-space:hover {
     transform: scale(1.05);
@@ -583,7 +583,9 @@ svg{
     text-align: center;
     padding: 2rem;
 }
-
+.vision-image img{
+    width: 300px;
+}
 /* Valores Section */
 .valores {
     padding: 6rem 5%;
