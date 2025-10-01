@@ -763,6 +763,10 @@ svg{
     .image-container {
         height: 350px;
     }
+
+    .valor-card h3 {
+    font-size: 1.5rem;
+    }
 }
 @media (max-width: 600px) {
     .hero {
