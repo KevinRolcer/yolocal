@@ -7,7 +7,7 @@
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="../assets/css/nosotros.css">
     <script defer src="../assets/js/nosotrosCl.js"></script>
-
+    <script defer src="assets/js/menuCl.js"></script>
 </head>
 <body>
     <header class="encabezado">
