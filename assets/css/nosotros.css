@@ -465,11 +465,13 @@ svg{
 
 .highlight-box {
     background: var(--principal);
-    color: var(--blanco);
     padding: 2rem;
     border-radius: 15px;
     margin-top: 2rem;
     border-left: 5px solid var(--secundario);
+}
+.highlight-box p{
+    color: var(--blanco);
 }
 
 /* Logo Significado Section */
