@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    #map { height: 500px; width: 100%; }
+    #map { height: 500px; width: 80%; }
   </style>
 </head>
 <body>

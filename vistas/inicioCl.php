@@ -5,16 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio Yolocal</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="assets/css/inicioCl.css">
     <link rel="stylesheet" href="assets/css/footer.css">
     <script type="module" src="assets/js/pagina/funcionesHome1.js"></script>
     <script type="module" src="assets/js/pagina/funcionesHome.js"></script>
-    
     <script defer src="assets/js/menuCl.js"></script>
     <script src="assets/js/carruselCl.js"></script>
     <script defer src="assets/js/carrusel2Cl.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -51,7 +53,7 @@
                     </svg>
                     <span class="texto-menu">Bolsa de trabajo</span>
                 </a>
-                
+
 
                 <a href="vistas/cuponesPagina.php" class="enlace" data-tooltip="Promociones">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -207,8 +209,20 @@
         </div>
 
 
+        <div class="descripcionC" id="Conecta">
+            <h2>Mapa de Negocios
 
+            </h2>
+            <p>Negocios que apoyan lo local en
+                <span>Texme <span id="span2">lucan</span></span>
+            </p>
 
+        </div>
+
+        <div id="map"></div>
+
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script src="assets/js/pagina/funcionesMapa.js"></script>
 
         <div class="descripcionC" id="Conecta">
             <h2>Yo local Conecta
@@ -266,7 +280,7 @@
                             Descripción
                         </div>
                         <div class="card-image">
-                            <img id="noticiasCl"src="assets/img/noticias.png" alt="Cafeteria">
+                            <img id="noticiasCl" src="assets/img/noticias.png" alt="Cafeteria">
 
                         </div>
                     </div>
@@ -319,7 +333,7 @@
 
     </div>
 
-     <footer>
+    <footer>
         <div class="footer-container">
             <div class="buttons-top">
                 <a href="vistas/nosotros.php" class="btn btn-yellow">Conócenos</a>
@@ -335,7 +349,7 @@
                         <li><a href="#Aliados">Aliados</a></li>
                         <li><a href="vistas/cuponesPagina.php">Cúpones</a></li>
                         <li><a href="#Conecta">Yo Local Conecta</a></li>
-                    
+
                     </ul>
                 </div>
 
@@ -346,13 +360,13 @@
                         <li><a href="https://wa.me/+522482694278">Contacto</a></li>
                         <li><a href="vistas/sistemaAdmin/login.php">Inicia Sesión</a></li>
                         <li><a href="vistas/mapa.php">Mapa</a></li>
-                       
+
                     </ul>
                 </div>
 
                 <div class="footer-column">
                     <div class="social-links">
-                        
+
                         <a href="https://www.facebook.com/YoLocalTex/" class="social-link">
                             <span class="social-icon"><i class="fab fa-facebook-f"></i></span>
                             <span>Facebook</span>
@@ -370,7 +384,7 @@
 
                 <div class="footer-right">
                     <div class="heart-logo">
-                         <img src="assets/img/LogoYolocal.png" height="100" alt="Logo">
+                        <img src="assets/img/LogoYolocal.png" height="100" alt="Logo">
                     </div>
                     <div class="contact-info">
                         <p><strong>C. 16 de Septiembre 311, Col Centro</strong></p>
