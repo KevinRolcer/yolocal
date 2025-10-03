@@ -165,48 +165,47 @@
             <h2 class="section-title">Nuestros Valores</h2>
         </section>
         
-        <div id="valoresItem" class="grid-container">
-    
-            <div id="itemImg" class="grid-item">
+        <section id="valores-locales">
+            <div class="grid-container">
+                <div class="grid-item" id="itemImg">
                 <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="animales">
-            </div>
-        
-            <div class="grid-item morado">
+                </div>
+
+                <div class="grid-item morado">
                 <div>
                     <h2>Orgullo Local</h2>
                     <small>Promovemos lo nuestro, lo que hace grande a Texmelucan y nos llena de identidad.</small>
                 </div>
-            </div>
-            
-            <div id="itemImg" class="grid-item">
-                <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="molino">
-            </div>
-            
-            <div class="grid-item naranja">
-                <span class="logo">Cercanía</span>
-            </div>
-            
-            <div class="grid-item amarillo">
-                <span class="logo">Colaboración</span>
-            </div>
-            
-            <div id="itemImg" class="grid-item">
-                <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="campo">
-            </div>
-            
-            <div class="grid-item complementario">
-            <div>
-                <h2>Compromiso</h2>
-                <small>Trabajamos de corazón para que lo local tenga voz, visibilidad y fuerza.</small>
-            </div>
-            </div>
-            
-            <div id="itemImg" class="grid-item">
-                <img src="../assets/img/LogoYolocal.png" alt="vaca">
-            </div>
+                </div>
 
-        </div>
+                <div class="grid-item" id="itemImg">
+                    <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="molino">
+                </div>
 
+                <div class="grid-item naranja">
+                    <span class="logo">Cercanía</span>
+                </div>
+
+                <div class="grid-item amarillo">
+                    <span class="logo">Colaboración</span>
+                </div>
+
+                <div class="grid-item" id="itemImg">
+                    <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="campo">
+                </div>
+
+                <div class="grid-item complementario">
+                <div>
+                    <h2>Compromiso</h2>
+                    <small>Trabajamos de corazón para que lo local tenga voz, visibilidad y fuerza.</small>
+                </div>
+                </div>
+
+                <div class="grid-item" id="itemImg">
+                    <img src="../assets/img/LogoYolocal.png" alt="vaca">
+                </div>
+            </div>
+        </section>
     </div>
     
 </body>
