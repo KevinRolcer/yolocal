@@ -540,6 +540,10 @@ svg{
 }
 
 /* Vision Section */
+
+.valores h2 {
+    padding: 0px;
+}
 .vision {
     padding: 6rem 5%;
     background: var(--blanco);
@@ -612,10 +616,10 @@ svg{
   object-fit: cover;
 }
 
-#seccion-identidad .fondo-verde { background: #016f44; }
-#seccion-identidad .fondo-claro { background: #27ae60; }
-#seccion-identidad .fondo-amarillo { background: #f39c12; }
-#seccion-identidad .fondo-complementario { background: #f1c40f; color: #000; }
+#seccion-identidad .fondo-verde { background: var(--principal); }
+#seccion-identidad .fondo-claro { background: var(--secunadrio); }
+#seccion-identidad .fondo-amarillo { background: var(--principal2); }
+#seccion-identidad .fondo-complementario { background: var(--complementario); color: var(--principal2); }
 
 #seccion-identidad h2 {
   font-size: 1.5rem;
