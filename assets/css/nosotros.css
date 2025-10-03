@@ -617,9 +617,9 @@ svg{
 }
 
 #seccion-identidad .fondo-verde { background: var(--principal); }
-#seccion-identidad .fondo-claro { background: var(--secunadrio); }
+#seccion-identidad .fondo-claro { background: var(--complementario); }
 #seccion-identidad .fondo-amarillo { background: var(--principal2); }
-#seccion-identidad .fondo-complementario { background: var(--complementario); color: var(--principal2); }
+#seccion-identidad .fondo-complementario { background: var(--secunadrio); color: var(--principal2); }
 
 #seccion-identidad h2 {
   font-size: 1.5rem;
