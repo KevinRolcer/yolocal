@@ -165,45 +165,47 @@
             <h2 class="section-title">Nuestros Valores</h2>
         </section>
         
-        <section id="valores-locales">
-            <div class="grid-container">
-                <div class="grid-item" id="itemImg">
-                <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="animales">
+        <section id="seccion-identidad">
+            <div class="cuadricula-local">
+                
+                <div class="elemento-local imagen-local">
+                    <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="">
                 </div>
 
-                <div class="grid-item morado">
+                <div class="elemento-local fondo-verde">
                 <div>
                     <h2>Orgullo Local</h2>
                     <small>Promovemos lo nuestro, lo que hace grande a Texmelucan y nos llena de identidad.</small>
                 </div>
                 </div>
 
-                <div class="grid-item" id="itemImg">
-                    <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="molino">
+                <div class="elemento-local imagen-local">
+                <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="">
                 </div>
 
-                <div class="grid-item naranja">
-                    <span class="logo">Cercanía</span>
+                <div class="elemento-local fondo-claro">
+                <span class="etiqueta-local">Cercanía</span>
                 </div>
 
-                <div class="grid-item amarillo">
-                    <span class="logo">Colaboración</span>
+                <div class="elemento-local fondo-amarillo">
+                <span class="etiqueta-local">Colaboración</span>
                 </div>
 
-                <div class="grid-item" id="itemImg">
-                    <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="campo">
+                <div class="elemento-local imagen-local">
+                <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="">
                 </div>
 
-                <div class="grid-item complementario">
+                <div class="elemento-local fondo-complementario">
                 <div>
                     <h2>Compromiso</h2>
                     <small>Trabajamos de corazón para que lo local tenga voz, visibilidad y fuerza.</small>
                 </div>
                 </div>
 
-                <div class="grid-item" id="itemImg">
-                    <img src="../assets/img/LogoYolocal.png" alt="vaca">
+                <div class="elemento-local imagen-local">
+                <img src="../assets/img/LogoYolocal.png" alt="">
                 </div>
+
             </div>
         </section>
     </div>

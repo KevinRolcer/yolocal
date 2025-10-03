@@ -588,65 +588,16 @@ svg{
 .vision-image img{
     width: 300px;
 }
-/* Valores Section */
-.valores {
-    padding: 6rem 5%;
-    background: linear-gradient(to bottom, var(--blanco), rgba(76, 6, 130, 0.05));
-}
+/* Valores Seccion */
 
-.valores-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-}
-
-.valor-card {
-    background: var(--blanco);
-    padding: 2.5rem 2rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-    border-top: 5px solid var(--principal);
-    cursor: pointer;
-}
-
-.valor-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 50px rgba(76, 6, 130, 0.2);
-}
-
-.valor-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-.valor-icon svg{
-        width: 30px;  
-    height: 30px;
-}
-
-.valor-card h3 {
-    font-size: 1.5rem;
-    color: var(--principal);
-    margin-bottom: 1rem;
-}
-
-.valor-card p {
-    color: var(--texto);
-    line-height: 1.7;
-}
-
-#valores-locales .grid-container {
+#seccion-identidad .cuadricula-local {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-auto-rows: 250px;
   width: 100%;
 }
 
-#valores-locales .grid-item {
+#seccion-identidad .elemento-local {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -655,34 +606,34 @@ svg{
   overflow: hidden;
 }
 
-#valores-locales .grid-item img {
+#seccion-identidad .imagen-local img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-#valores-locales .morado { background: var(--principal); }
-#valores-locales .naranja { background: var(--complementario); }
-#valores-locales .amarillo { background: var(--principal2); }
-#valores-locales .complementario { background: var(--secunadrio); color: var(--principal); }
+#seccion-identidad .fondo-verde { background: #016f44; }
+#seccion-identidad .fondo-claro { background: #27ae60; }
+#seccion-identidad .fondo-amarillo { background: #f39c12; }
+#seccion-identidad .fondo-complementario { background: #f1c40f; color: #000; }
 
-#valores-locales .grid-item h2 {
+#seccion-identidad h2 {
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
 
-#valores-locales .grid-item p {
+#seccion-identidad p {
   font-size: 1rem;
   line-height: 1.4;
 }
 
-#valores-locales .grid-item small {
+#seccion-identidad small {
   display: block;
   margin-top: 10px;
   font-size: 0.85rem;
 }
 
-#valores-locales .logo {
+#seccion-identidad .etiqueta-local {
   font-size: 2rem;
   font-weight: bold;
 }
@@ -832,26 +783,23 @@ svg{
         height: 350px;
     }
 
-    .valor-card h3 {
-    font-size: 1.5rem;
-    }
-
-    #valores-locales .grid-container {
+    #seccion-identidad .cuadricula-local {
         grid-template-columns: repeat(2, 1fr);
         grid-auto-rows: auto;
     }
-    #valores-locales .grid-item {
+    #seccion-identidad .elemento-local {
         padding: 25px 15px;
     }
-    #valores-locales #itemImg {
+    #seccion-identidad .imagen-local {
         padding: 0px;
     }
-    #valores-locales .grid-item h2 {
+    #seccion-identidad h2 {
         font-size: 1.4rem;
     }
-    #valores-locales .grid-item p {
+    #seccion-identidad p {
         font-size: 1rem;
     }
+
 
 }
 @media (max-width: 768px) {
@@ -1090,20 +1038,20 @@ svg{
     .image-container {
         height: 250px;
     }
-    #valores-locales .grid-container {
+    #seccion-identidad .cuadricula-local {
         grid-template-columns: 1fr;
         grid-auto-rows: auto;
     }
-    #valores-locales .grid-item {
+    #seccion-identidad .elemento-local {
         padding: 30px 20px;
     }
-    #valores-locales #itemImg {
+    #seccion-identidad .imagen-local {
         padding: 0px;
     }
-    #valores-locales .grid-item h2 {
+    #seccion-identidad h2 {
         font-size: 1.3rem;
     }
-    #valores-locales .grid-item p {
+    #seccion-identidad p {
         font-size: 0.95rem;
     }
 
