@@ -121,6 +121,8 @@ if (isset($_POST["ope"])) {
         "Facebook"       => $_POST["FacebookEdit"] ?? '',
         "Instagram"      => $_POST["InstagramEdit"] ?? '',
         "GoogleMaps"     => $_POST["GoogleMapsEdit"] ?? '',
+        "Latitud"        => $_POST["LatitudEdit"] ?? '',
+        "Longitud"       => $_POST["LongitudEdit"] ?? '',
         "TikTok"         => $_POST["TikTokEdit"] ?? '',
         "Relevancia"     => $_POST["RelevanciaEdit"] ?? '',
         "Icono"          => $_POST["RutaiconoEdit"] ?? '' // para mantener el anterior si no se sube uno nuevo
@@ -153,6 +155,14 @@ if (isset($_POST["ope"])) {
         $info = array(
             "success" => true,
             "negocios" => $negocios
+        );
+        echo json_encode($info);
+    }
+    elseif ($ope == "OBTENERCOORDENADAS") {
+        $coordenadas = $usu->ObtenerCoordenadas();  // Llamar a la función en el modelo
+        $info = array(
+            "success" => true,
+            "coordenadas" => $coordenadas
         );
         echo json_encode($info);
     }

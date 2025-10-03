@@ -303,6 +303,8 @@ class Negocios
                 Instagram      = ?,
                 TikTok         = ?,
                 GoogleMaps     = ?,
+                Latitud        = ?,
+                Longitud       = ?,
                 Relevancia     = ?,
                 Rutaicono      = ?
             WHERE ID_Negocio = ?";
@@ -310,7 +312,7 @@ class Negocios
     $consulta = $enlace->prepare($sql);
 
     $consulta->bind_param(
-        "ssssssssssisi",
+        "ssssssssssssisi",
         $datos["nombre_negocio"],
         $datos["DescripcionN"],
         $datos["Direccion"],
@@ -321,6 +323,8 @@ class Negocios
         $datos["Instagram"],
         $datos["TikTok"],
         $datos["GoogleMaps"],
+        $datos["Latitud"],
+        $datos["Longitud"],
         $datos["Relevancia"],
         $rutaIconoFinal,
         $datos["ID_Negocio"]
@@ -380,6 +384,21 @@ class Negocios
     }
 
     return $negocios;
+}
+public function ObtenerCoordenadas()
+{
+    $enlace = dbConectar();
+    $sql = "SELECT nombre_negocio, Latitud, Longitud FROM negocios";  // Tabla correcta
+    $consulta = $enlace->prepare($sql);
+    $consulta->execute();
+    $result = $consulta->get_result();
+
+    $coordenadas = [];
+    while ($negocio = $result->fetch_assoc()) {
+        $coordenadas[] = $negocio;
+    }
+
+    return $coordenadas;
 }
 public function CambiarEstatus($ID_Negocio, $estatus)
 {

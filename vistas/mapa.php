@@ -4,8 +4,9 @@
   <title>Mapa de Negocios</title>
   <meta charset="utf-8" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
-    #map { height: 500px; width: 100%; }
+    #map { height: 500px; width: 80%; }
   </style>
 </head>
 <body>
@@ -13,27 +14,7 @@
   <div id="map"></div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    // Inicializa el mapa centrado en México
-    var map = L.map('map').setView([23.6345, -102.5528], 5);
+   <script src="../assets/js/pagina/funcionesMapa.js"></script>
 
-    // Capa base (OpenStreetMap gratuito)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
-
-    // Ejemplo: negocios con lat/lng
-    var negocios = [
-      { nombre: "Taquería El Buen Sabor", lat: 19.4326, lng: -99.1332 },
-      { nombre: "Panadería San Juan", lat: 20.6597, lng: -103.3496 }
-    ];
-
-    // Agregar marcadores
-    negocios.forEach(n => {
-      L.marker([n.lat, n.lng])
-        .addTo(map)
-        .bindPopup("<b>" + n.nombre + "</b>");
-    });
-  </script>
 </body>
 </html>

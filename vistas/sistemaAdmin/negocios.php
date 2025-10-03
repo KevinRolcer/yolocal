@@ -234,6 +234,14 @@
                                         <label for="GoogleMapsEdit" class="form-label">Link de Google Maps</label>
                                         <input type="url" class="form-control" id="GoogleMapsEdit" name="GoogleMapsEdit" maxlength="100">
                                     </div>
+                                     <div class="col-md-6">
+                                        <label for="LatitudEdit" class="form-label">Latitud</label>
+                                        <input type="text" class="form-control" id="LatitudEdit" name="LatitudEdit" maxlength="100">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="LongitudEdit" class="form-label">Longitud</label>
+                                        <input type="text" class="form-control" id="LongitudEdit" name="LongitudEdit" maxlength="100">
+                                    </div>
                                     <?php if ($_SESSION["tipo"] === "admin"): ?>
                                         <div class="col-12">
                                             <label for="RelevanciaEdit" class="form-label">Relevancia</label>
