@@ -639,7 +639,7 @@ svg{
     line-height: 1.7;
 }
 
-.grid-container {
+#valoresItem {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: 250px;
@@ -835,7 +835,7 @@ svg{
     font-size: 1.5rem;
     }
 
-    .grid-container {
+    #valoresItem{
         grid-template-columns: repeat(2, 1fr);
         grid-auto-rows: auto;
     }
@@ -1088,7 +1088,7 @@ svg{
     .image-container {
         height: 250px;
     }
-    .grid-container {
+    #valoresItem {
         grid-template-columns: 1fr; 
         grid-auto-rows: auto;
     }

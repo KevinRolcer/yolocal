@@ -165,17 +165,17 @@
             <h2 class="section-title">Nuestros Valores</h2>
         </section>
         
-        <div class="grid-container">
+        <div id="valoresItem" class="grid-container">
     
-        <div id="itemImg" class="grid-item">
-        <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="animales">
-        </div>
-        
-        <div class="grid-item morado">
-            <div>
-                <h2>Orgullo Local</h2>
-                <small>Promovemos lo nuestro, lo que hace grande a Texmelucan y nos llena de identidad.</small>
+            <div id="itemImg" class="grid-item">
+                <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="animales">
             </div>
+        
+            <div class="grid-item morado">
+                <div>
+                    <h2>Orgullo Local</h2>
+                    <small>Promovemos lo nuestro, lo que hace grande a Texmelucan y nos llena de identidad.</small>
+                </div>
             </div>
             
             <div id="itemImg" class="grid-item">
