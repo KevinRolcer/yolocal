@@ -156,7 +156,7 @@
                     </p>
                 </div>
                 <div class="vision-image">
-                    <img src="../assets/img/LogoYolocal.png" alt="">
+                    <img src="../assets/img/LogoYolocal.png" >
                 </div>
             </div>
         </section>
