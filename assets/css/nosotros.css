@@ -328,7 +328,10 @@ svg{
     position: relative;
     z-index: 1;
 }
-
+.hero-text{
+    width: 95%;
+    margin: auto;
+}
 .hero-text h1 {
     font-size: 3.5rem;
     color: var(--blanco);
