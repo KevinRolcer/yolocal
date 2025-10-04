@@ -153,8 +153,14 @@
                                         <div class="invalid-feedback"></div>
                                         <div class="valid-feedback"></div>
                                     </div>
-
                                     <div class="col-md-6">
+                                        <label for="ContraConfirmar" class="form-label">Confirmar Contraseña</label>
+                                        <input type="password" class="form-control" id="ContraConfirmar" name="ContraConfirmar" maxlength="16" required>
+                                        <div class="invalid-feedback"></div>
+                                        <div class="valid-feedback"></div>
+                                    </div>
+
+                                    <div class="col-md-12">
                                         <label for="usutip" class="form-label">Tipo de Usuario</label>
                                         <select class="form-control" id="usutip" name="usutip">
                                             <option value="admin">Administrador</option>

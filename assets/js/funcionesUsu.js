@@ -387,6 +387,11 @@ document.getElementById("limpiarM").addEventListener("click", function () {
 function agregarUsuario() {
   const form = document.querySelector("#formAgregar");
   const datos = new FormData(form);
+  if (datos.get("Contra") !== datos.get("ContraConfirmar")) {
+    Swal.fire("Error", "Las contraseñas no coinciden", "error");
+    return;
+  }
+
   datos.append("ope", "AGREGAR");
 
   fetch("controladores/controladorUsuarios.php", {
