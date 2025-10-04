@@ -136,16 +136,112 @@
             <p style="text-align: center; color: var(--blanco); font-size: 1.2rem; max-width: 800px; margin: 0 auto 3rem;">
                 Cuando veas el logo de Yo Local en un negocio, queremos que pienses en:
             </p>
-            <div class="logo-cards">
-                <div class="logo-card">
-                    <div class="number">01</div>
-                    <h3>Calidad</h3>
-                    <p>Calidad en todo lo que hacen. Cada negocio con nuestro logo representa excelencia y compromiso con la comunidad.</p>
+            <div class="bento-grid">
+                <div class="bento-item item-1">
+                    <div class="careers-begin">
+                        <img src="../assets/img/bocina2Logo.jpg" alt="">
+                    </div>
                 </div>
-                <div class="logo-card">
-                    <div class="number">02</div>
-                    <h3>Identidad Local</h3>
-                    <p>Que es de aquí, que es de Texmelucan. Orgullo por nuestras raíces y lo que nos hace únicos como comunidad.</p>
+
+                <div class="bento-item item-2">
+                    <div class="employee-stats">
+                        <div class="gender-stats">
+                            <div class="stat-badge">
+                                100%
+                            </div>
+
+                        </div>
+                        <div class="chart-container">
+                            <img src="../assets/img/LogoYolocal.png" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-item item-3">
+                    <div class="icon-grid">
+                        <div class="icon-circle icon-dark">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="icon-circle icon-light">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="icon-circle icon-dark">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div class="icon-circle icon-dark">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-item item-4">
+                    <div class="person-container">
+                        <img src="../assets/img/bocinaLogo.jpg" alt="Imagen alusiva" class="person-image">
+                    </div>
+                </div>
+
+                <div class="bento-item item-5">
+                    <div class="business-cards">
+                        <div class="cards-stack">
+                            <div class="card">
+                                <div class="card-title">YoLocal</div>
+                                <div></div>
+                            </div>
+                            <div class="card">
+                                <div class="card-title">Identidad Local</div>
+                                <div>Es de aquí, es de Texmelucan</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-item item-6">
+                    <div class="logo-center">
+                        <div class="logo">
+                            <div class="logo-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="logo-text">Calidad</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-item item-7">
+                    <div class="phone-container">
+                        <div class="phone">
+                            <div class="phone-notch"></div>
+                            <div class="phone-screen">
+                                <div class="app-icons">
+
+                                    <div class="app-icon app-messages">
+                                        <i class="fas fa-comment"></i>
+                                    </div>
+                                    <div class="app-icon app-safari">
+                                        <i class="fas fa-compass"></i>
+                                    </div>
+                                    <div class="app-icon app-music">
+                                        <i class="fas fa-music"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-item item-8">
+                </div>
+
+                <div class="bento-item item-9">
+                    <img src="../assets/img/cameraLogo.jpg" >
+                </div>
+
+                <div class="bento-item item-10">
+                    <div class="billboard">
+                        <div class="billboard-overlay"></div>
+                        <div class="billboard-content">
+                            <h2>Si es de aquí,<br><br>Es de todos</h2>
+                        </div>
+                    </div>
                 </div>
             </div>
             <p class="eslogan">"Yo Local, es de aquí, es de todos"</p>
