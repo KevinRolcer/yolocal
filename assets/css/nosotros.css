@@ -1001,6 +1001,10 @@ svg{
     .image-container {
         height: 280px;
     }
+    #seccion-identidad .etiqueta-local {
+    font-size: 1.5rem;
+    }
+
 }
 
 @media (max-width: 360px) {
@@ -1058,6 +1062,10 @@ svg{
     #seccion-identidad p {
         font-size: 0.95rem;
     }
+    #seccion-identidad .etiqueta-local {
+    font-size: 1rem;
+    }
+
 
 }
 
