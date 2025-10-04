@@ -786,6 +786,12 @@ svg{
     .image-container {
         height: 350px;
     }
+    .hero-logo-space {
+        width: 300px;
+    }
+    .hero-logo-space img{
+        width: 300px;
+    }
 
     #seccion-identidad .cuadricula-local {
         grid-template-columns: repeat(2, 1fr);
@@ -1005,6 +1011,12 @@ svg{
     font-size: 1.5rem;
     }
 
+    .hero-logo-space {
+        width: 200px;
+    }
+    .hero-logo-space img{
+        width: 200px;
+    }
 }
 
 @media (max-width: 360px) {
