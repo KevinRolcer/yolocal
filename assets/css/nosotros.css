@@ -383,26 +383,29 @@ svg{
     overflow-x: hidden;
 
 }
-
 .hero-logo-space {
-    width: 100%;
-    max-width: 500px;
-    height: 500px;
-    border-radius: 30px;
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--blanco);
-    text-align: center;
-    transition: transform 0.3s ease;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  aspect-ratio: 1 / 1; 
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; 
+  color: var(--blanco);
+  text-align: center;
+  transition: transform 0.3s ease;
 }
 
-.hero-logo-space img{
-    width: 500px;
-    overflow-x: hidden;
-
+.hero-logo-space img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; 
+  display: block;
 }
+
 .hero-logo-space:hover {
     transform: scale(1.05);
 }
@@ -1206,10 +1209,8 @@ svg{
         height: 350px;
     }
     .hero-logo-space {
-        width: 300px;
-    }
-    .hero-logo-space img{
-        width: 300px;
+        max-width: 250px;
+        aspect-ratio: 1 / 1;
     }
 
     #seccion-identidad .cuadricula-local {
@@ -1385,6 +1386,8 @@ svg{
     .bento-grid .billboard-content h2 {
         font-size: 1.5rem;
     }
+
+
 }
 
 @media (max-width: 600px) {
@@ -1503,10 +1506,8 @@ svg{
     }
 
     .hero-logo-space {
-        width: 200px;
-    }
-    .hero-logo-space img{
-        width: 200px;
+        max-width: 200px;
+        aspect-ratio: 1 / 1;
     }
 
     .bento-grid {
