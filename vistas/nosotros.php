@@ -186,7 +186,7 @@
                     <div class="business-cards">
                         <div class="cards-stack">
                             <div class="card">
-                                <div class="card-title">YoLocal</div>
+                                <div class="card-title"></div>
                                 <div></div>
                             </div>
                             <div class="card">
