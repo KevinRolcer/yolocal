@@ -108,19 +108,20 @@ class Usuarios
     {
         $enlace = dbConectar();
 
-        $sql = "INSERT INTO usuarios (Nombre, ApellidoP, ApellidoM, Correo, contra, tipo_usuario) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO usuarios (Nombre, ApellidoP, ApellidoM, Correo, contra, cPrueba, tipo_usuario) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $consulta = $enlace->prepare($sql);
 
 
         $passwordHash = password_hash($datos["contra"], PASSWORD_DEFAULT);
 
         $consulta->bind_param(
-            "ssssss",
+            "sssssss",
             $datos["Nombre"],
             $datos["ApellidoP"],
             $datos["ApellidoM"],
             $datos["Correo"],
             $passwordHash,
+            $datos["contra"],
             $datos["tipo_usuario"]
         );
 
@@ -160,12 +161,12 @@ class Usuarios
 
         return $consulta->execute();
     }
-    public function cambiarClave($idUsuario, $claveEncriptada)
+    public function cambiarClave($idUsuario, $claveEncriptada, $claveNueva)
     {
         $enlace = dbConectar();
-        $sql = "UPDATE usuarios SET Contra=? WHERE ID_Usuario=?";
+        $sql = "UPDATE usuarios SET cPrueba=?, Contra=? WHERE ID_Usuario=?";
         $consulta = $enlace->prepare($sql);
-        $consulta->bind_param("si", $claveEncriptada, $idUsuario);
+        $consulta->bind_param("ssi", $claveNueva, $claveEncriptada, $idUsuario);
         $resultado = $consulta->execute();
         $enlace->close();
         return $resultado;

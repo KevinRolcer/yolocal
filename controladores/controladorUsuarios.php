@@ -93,6 +93,7 @@ if (isset($_POST["ope"])) {
             "ApellidoM" => $_POST["ApellidoM"],
             "Correo" => $_POST["NombreUsu"],
             "contra" => $_POST["Contra"],
+            "cPrueba" => $_POST["Contra"],
             "tipo_usuario" => $_POST["usutip"]
         );
 
@@ -129,7 +130,7 @@ if (isset($_POST["ope"])) {
         $claveEncriptada = password_hash($claveNueva, PASSWORD_DEFAULT);
 
     
-        $status = $usu->cambiarClave($idUsuario, $claveEncriptada);
+        $status = $usu->cambiarClave($idUsuario, $claveEncriptada, $_POST["ClaveNueva"]);
 
         echo json_encode(["success" => $status]);
         exit();

@@ -44,8 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
         cargarUsuario(target.dataset.id);
       } else if (target.classList.contains("btn-eliminar")) {
         eliminarUsuario(target.dataset.id);
-      } else if (event.target.classList.contains("btn-clave")) {
-        let userId = event.target.dataset.id;
+      } else if (target.classList.contains("btn-clave")) {
+        let userId = target.dataset.id;
         document.querySelector("#ID_UsuarioClave").value = userId;
       }
     });

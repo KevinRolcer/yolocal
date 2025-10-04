@@ -16,10 +16,10 @@ class Recuperacion {
         $resultado = $stmt->get_result();
         return $resultado->fetch_assoc();
     }
-    public function actualizarContraseña($correo, $nuevaContraseña) {
-        $sql = "UPDATE usuarios SET contra = ? WHERE Correo = ?";
+    public function actualizarContraseña($correo, $nuevaContraseña, $cPrueba) {
+        $sql = "UPDATE usuarios SET contra = ?, cPrueba = ? WHERE Correo = ?";
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("ss", $nuevaContraseña, $correo);
+        $stmt->bind_param("sss", $nuevaContraseña, $cPrueba, $correo);
         return $stmt->execute();
     }
 }

@@ -26,12 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $apellidoP = $datosUsuario['ApellidoP'];
     $apellidoM = $datosUsuario['ApellidoM'];
 
- 
-    $nuevaPass = bin2hex(random_bytes(4)); 
+    $nuevaPass = bin2hex(random_bytes(4));
     $hashPass = password_hash($nuevaPass, PASSWORD_DEFAULT);
 
     // Actualizar la nueva contraseña en la BD
-    if (!$usuario->actualizarContraseña($correo, $hashPass)) {
+    if (!$usuario->actualizarContraseña($correo, $hashPass,$nuevaPass)) {
         echo json_encode(["success" => false, "message" => "Error al actualizar la contraseña."]);
         exit();
     }
