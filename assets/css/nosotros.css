@@ -327,6 +327,7 @@ svg{
     align-items: center;
     position: relative;
     z-index: 1;
+    width: 100%;
 }
 .hero-text{
     width: 95%;
