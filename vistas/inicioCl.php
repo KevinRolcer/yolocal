@@ -102,7 +102,6 @@
                 <div class="carousel-wrapper">
                     <div class="carousel-track" id="carouselTrack">
 
-                        <!-- Las tarjetas se generarán aquí dinámicamente -->
                     </div>
                 </div>
 

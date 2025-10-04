@@ -430,7 +430,7 @@ svg{
     text-align: center;
     font-size: 2.5rem;
     color: var(--principal);
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     position: relative;
     padding-bottom: 1rem;
 }
@@ -540,6 +540,10 @@ svg{
 }
 
 /* Vision Section */
+
+.valores h2 {
+    padding: 0px;
+}
 .vision {
     padding: 6rem 5%;
     background: var(--blanco);
@@ -588,57 +592,55 @@ svg{
 .vision-image img{
     width: 300px;
 }
-/* Valores Section */
-.valores {
-    padding: 6rem 5%;
-    background: linear-gradient(to bottom, var(--blanco), rgba(76, 6, 130, 0.05));
+
+
+#seccion-identidad .cuadricula-local {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 250px;
+  width: 100%;
 }
 
-.valores-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+#seccion-identidad .elemento-local {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
 }
 
-.valor-card {
-    background: var(--blanco);
-    padding: 2.5rem 2rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-    border-top: 5px solid var(--principal);
-    cursor: pointer;
+#seccion-identidad .imagen-local img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.valor-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 50px rgba(76, 6, 130, 0.2);
+#seccion-identidad .fondo-verde { background: var(--principal); }
+#seccion-identidad .fondo-claro { background: var(--complementario); }
+#seccion-identidad .fondo-amarillo { background: var(--principal2); }
+#seccion-identidad .fondo-complementario { background: var(--secunadrio); color: var(--principal2); }
+
+#seccion-identidad h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
 }
 
-.valor-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    text-align: center;
+#seccion-identidad p {
+  font-size: 1rem;
+  line-height: 1.4;
 }
 
-.valor-icon svg{
-        width: 30px;  
-    height: 30px;
+#seccion-identidad small {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.85rem;
 }
 
-.valor-card h3 {
-    font-size: 1.5rem;
-    color: var(--principal);
-    margin-bottom: 1rem;
+#seccion-identidad .etiqueta-local {
+  font-size: 2rem;
+  font-weight: bold;
 }
-
-.valor-card p {
-    color: var(--texto);
-    line-height: 1.7;
-}
-
 
 
 
@@ -785,9 +787,24 @@ svg{
         height: 350px;
     }
 
-    .valor-card h3 {
-    font-size: 1.5rem;
+    #seccion-identidad .cuadricula-local {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: auto;
     }
+    #seccion-identidad .elemento-local {
+        padding: 25px 15px;
+    }
+    #seccion-identidad .imagen-local {
+        padding: 0px;
+    }
+    #seccion-identidad h2 {
+        font-size: 1.4rem;
+    }
+    #seccion-identidad p {
+        font-size: 1rem;
+    }
+
+
 }
 @media (max-width: 768px) {
     .menu-toggle {
@@ -1025,6 +1042,23 @@ svg{
     .image-container {
         height: 250px;
     }
+    #seccion-identidad .cuadricula-local {
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+    }
+    #seccion-identidad .elemento-local {
+        padding: 30px 20px;
+    }
+    #seccion-identidad .imagen-local {
+        padding: 0px;
+    }
+    #seccion-identidad h2 {
+        font-size: 1.3rem;
+    }
+    #seccion-identidad p {
+        font-size: 0.95rem;
+    }
+
 }
 
 .menu.active .enlace {
