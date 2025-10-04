@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../assets/css/nosotros.css">
     <script defer src="../assets/js/nosotrosCl.js"></script>
     <script defer src="../assets/js/menuCl.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 <body>
     <header class="encabezado">
