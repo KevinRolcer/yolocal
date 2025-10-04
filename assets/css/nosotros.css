@@ -349,6 +349,7 @@ svg{
     margin-bottom: 2rem;
     line-height: 1.8;
     animation: fadeInLeft 1s ease 0.2s backwards;
+    text-align: justify;
 }
 
 .cta-button {
