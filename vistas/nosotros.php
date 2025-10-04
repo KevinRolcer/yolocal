@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../assets/css/nosotros.css">
     <script defer src="../assets/js/nosotrosCl.js"></script>
     <script defer src="../assets/js/menuCl.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 <body>
     <header class="encabezado">
@@ -34,6 +36,13 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
                     </svg>
                     <span class="texto-menu">Negocios</span>
+                </a>
+
+                <a href="empleo.php" class="enlace " data-tooltip="Empleo">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
+                    </svg>
+                    <span class="texto-menu">Bolsa de trabajo</span>
                 </a>
 
                 <a href="cuponesPagina.php" class="enlace" data-tooltip="Promociones">
@@ -129,16 +138,112 @@
             <p style="text-align: center; color: var(--blanco); font-size: 1.2rem; max-width: 800px; margin: 0 auto 3rem;">
                 Cuando veas el logo de Yo Local en un negocio, queremos que pienses en:
             </p>
-            <div class="logo-cards">
-                <div class="logo-card">
-                    <div class="number">01</div>
-                    <h3>Calidad</h3>
-                    <p>Calidad en todo lo que hacen. Cada negocio con nuestro logo representa excelencia y compromiso con la comunidad.</p>
+            <div class="bento-grid">
+                <div class="bento-item item-1">
+                    <div class="careers-begin">
+                        <img src="../assets/img/bocina2Logo.jpg" alt="">
+                    </div>
                 </div>
-                <div class="logo-card">
-                    <div class="number">02</div>
-                    <h3>Identidad Local</h3>
-                    <p>Que es de aquí, que es de Texmelucan. Orgullo por nuestras raíces y lo que nos hace únicos como comunidad.</p>
+
+                <div class="bento-item item-2">
+                    <div class="employee-stats">
+                        <div class="gender-stats">
+                            <div class="stat-badge">
+                                100%
+                            </div>
+
+                        </div>
+                        <div class="chart-container">
+                            <img src="../assets/img/LogoYolocal.png" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-item item-3">
+                    <div class="icon-grid">
+                        <div class="icon-circle icon-dark">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="icon-circle icon-light">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="icon-circle icon-dark">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div class="icon-circle icon-dark">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-item item-4">
+                    <div class="person-container">
+                        <img src="../assets/img/bocinaLogo.jpg" alt="Imagen alusiva" class="person-image">
+                    </div>
+                </div>
+
+                <div class="bento-item item-5">
+                    <div class="business-cards">
+                        <div class="cards-stack">
+                            <div class="card">
+                                <div class="card-title"></div>
+                                <div></div>
+                            </div>
+                            <div class="card">
+                                <div class="card-title">Identidad Local</div>
+                                <div>Es de aquí, es de Texmelucan</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-item item-6">
+                    <div class="logo-center">
+                        <div class="logo">
+                            <div class="logo-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="logo-text">Calidad</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-item item-7">
+                    <div class="phone-container">
+                        <div class="phone">
+                            <div class="phone-notch"></div>
+                            <div class="phone-screen">
+                                <div class="app-icons">
+
+                                    <div class="app-icon app-messages">
+                                        <i class="fas fa-comment"></i>
+                                    </div>
+                                    <div class="app-icon app-safari">
+                                        <i class="fas fa-compass"></i>
+                                    </div>
+                                    <div class="app-icon app-music">
+                                        <i class="fas fa-music"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-item item-8">
+                </div>
+
+                <div class="bento-item item-9">
+                    <img src="../assets/img/cameraLogo.jpg" >
+                </div>
+
+                <div class="bento-item item-10">
+                    <div class="billboard">
+                        <div class="billboard-overlay"></div>
+                        <div class="billboard-content">
+                            <h2>Si es de aquí,<br><br>Es de todos</h2>
+                        </div>
+                    </div>
                 </div>
             </div>
             <p class="eslogan">"Yo Local, es de aquí, es de todos"</p>
