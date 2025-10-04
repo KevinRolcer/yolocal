@@ -273,6 +273,8 @@ svg{
 
 .nosotros-container {
     width: 100%;
+    overflow-x: hidden;
+
 }
 
 .hero {
@@ -373,6 +375,8 @@ svg{
     justify-content: center;
     align-items: center;
     animation: fadeInRight 1s ease;
+    overflow-x: hidden;
+
 }
 
 .hero-logo-space {
@@ -384,15 +388,15 @@ svg{
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
     color: var(--blanco);
     text-align: center;
-    padding: 2rem;
     transition: transform 0.3s ease;
 }
 
 .hero-logo-space img{
     width: 500px;
+    overflow-x: hidden;
+
 }
 .hero-logo-space:hover {
     transform: scale(1.05);
