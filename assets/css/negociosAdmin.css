@@ -582,6 +582,11 @@ body {
 .ama {
   width: 50%;
 }
+.btn-pagar {
+  background-color: #000;       /* Fondo negro */
+  color: #fff;                  /* Texto e ícono blancos */
+  
+}
 
 .dropzone {
   border: 2px dashed #0d6efd;

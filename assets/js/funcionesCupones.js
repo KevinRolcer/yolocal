@@ -163,6 +163,7 @@ function renderizarPromociones(lista) {
             data-bs-toggle="modal" data-bs-target="#modalEditar">
             <i class="bi bi-pencil"></i>
           </button>
+         
         ` : ''
       }
     </div>
@@ -375,8 +376,7 @@ function cargarUsuario(id) {
         document.querySelector("#EditFechaFin").value = data.usuario.fecha_fin;
 
         document.querySelector("#EditCantidad").value = data.usuario.cantidad;
-        document.querySelector("#ID_NegocioEdit").value =
-          data.usuario.ID_Negocio;
+        document.querySelector("#ID_NegocioEdit").value = data.usuario.ID_Negocio;
       } else {
         Swal.fire(
           "Error",

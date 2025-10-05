@@ -409,4 +409,14 @@ public function CambiarEstatus($ID_Negocio, $estatus)
 
     return $consulta->execute();
 }
+public function PagarCuota($ID_Negocio)
+{
+    $enlace = dbConectar();
+    $sql = "UPDATE negocios SET fecha_ultimo_pago = CURDATE() WHERE ID_Negocio = ?";
+    $consulta = $enlace->prepare($sql);
+    $consulta->bind_param("i", $ID_Negocio);
+
+
+    return $consulta->execute();
+}
 }

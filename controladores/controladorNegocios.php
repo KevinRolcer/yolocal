@@ -181,7 +181,15 @@ if (isset($_POST["ope"])) {
     echo json_encode([
         "success" => $success
     ]);
-} else {
+} elseif ($ope == "PAGAR" && isset($_POST["ID_Negocio"])) {
+    $id = intval($_POST["ID_Negocio"]);
+
+    $success = $usu->PagarCuota($id);
+
+    echo json_encode([
+        "success" => $success
+    ]);
+}else {
         echo json_encode(array("success" => false, "msg" => "Operación no válida o parámetros insuficientes"));
     }
 } else {

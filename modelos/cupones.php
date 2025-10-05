@@ -332,7 +332,7 @@ WHERE 1=1";
     public function ObtenerUsuario($ID_Promocion)
     {
         $enlace = dbConectar();
-        $sql = "SELECT ID_Promocion, titulo, descripcion, fecha_fin, cantidad FROM promociones WHERE ID_Promocion=?";
+        $sql = "SELECT ID_Promocion, titulo, descripcion, fecha_fin, cantidad, ID_Negocio FROM promociones WHERE ID_Promocion=?";
         $consulta = $enlace->prepare($sql);
         $consulta->bind_param("i", $ID_Promocion);
         $consulta->execute();
