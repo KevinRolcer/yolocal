@@ -145,7 +145,7 @@
 
                                     <div class="col-md-12">
                                         <label for="Descripcion" class="form-label">Descripción</label>
-                                        <textarea class="form-control" id="Descripcion" name="Descripcion" rows="3" required></textarea>
+                                        <textarea class="form-control" id="Descripcion" name="Descripcion" rows="3" maxlength="190" required></textarea>
                                     </div>
 
 
@@ -205,7 +205,7 @@
 
                                 <div class="col-md-12">
                                     <label for="Descripcion" class="form-label">Descripción</label>
-                                    <textarea class="form-control" id="EditDescripcion" name="EditDescripcion" rows="3" required></textarea>
+                                    <textarea class="form-control" id="EditDescripcion" name="EditDescripcion" rows="3" maxlength="190" required></textarea>
                                 </div>
 
 

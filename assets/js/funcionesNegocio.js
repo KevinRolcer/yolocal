@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     listaUsuarios.addEventListener("click", (event) => {
       // Busca el botón más cercano que tenga alguna de las clases de acción
       const target = event.target.closest(
-        ".btn-editar-imagen, .btn-eliminar, .btn-crear-horario, .btn-editar"
+        ".btn-editar-imagen, .btn-eliminar, .btn-crear-horario, .btn-editar, .btn-pagar"
       );
       if (!target) return; // si no hay botón válido, salir
 
@@ -262,6 +262,10 @@ function renderizarMiembros(lista) {
             data-status="${miembro.estado}">
             <i class="bi bi-power"></i>
         </button>
+        <button class="circle-btn btn-pagar" style="background-color: #faa45aff; border: none; color: #ffffffff;" data-id="${miembro.ID_Negocio}">
+  <i class="bi bi-cash"></i>
+</button>
+
         `
             : ""
         }
@@ -906,3 +910,49 @@ document.addEventListener("click", (e) => {
       Swal.fire("Error", "Problema con el servidor: " + error.message, "error");
     });
 });
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".btn-pagar");
+  if (!btn) return;
+
+  const id = btn.dataset.id;
+
+  Swal.fire({
+    title: "¿Estás seguro?",
+    text: "¿Confirmas que el negocio ha pagado su cuota?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, confirmar",
+    cancelButtonText: "Cancelar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch("controladores/controladorNegocios.php", {
+        method: "POST",
+        body: new URLSearchParams({
+          ope: "PAGAR",
+          ID_Negocio: id,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            Swal.fire("Éxito", "Fecha de pago confirmada", "success");
+            listarMiembros(); // refrescar la lista
+          } else {
+            Swal.fire(
+              "Error",
+              data.msg || "No se pudo confirmar el pago",
+              "error"
+            );
+          }
+        })
+        .catch((error) => {
+          Swal.fire(
+            "Error",
+            "Problema con el servidor: " + error.message,
+            "error"
+          );
+        });
+    }
+  });
+});
+
