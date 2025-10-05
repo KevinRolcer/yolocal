@@ -377,9 +377,6 @@ svg{
 
 }
 
-.hero-logo-space:hover {
-    transform: scale(1.05);
-}
 
 @keyframes fadeInLeft {
     from {
