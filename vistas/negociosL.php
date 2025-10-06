@@ -8,6 +8,7 @@
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="../assets/css/negociosCl.css">
     <link rel="stylesheet" href="../assets/css/negocioL.css">
+    <script defer src="../assets/js/menuCl.js"></script>
 </head>
 
 <body>

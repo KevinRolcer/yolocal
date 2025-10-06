@@ -13,6 +13,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="../assets/css/cuponesCl.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
+    <script defer src="../assets/js/menuCl.js"></script>
+
 
 </head>
 
