@@ -123,10 +123,10 @@
 
 /* --- Detalles (Fecha, Hora, Lugar) --- */
 .card-details {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    
 }
 
 .detail-item {

@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalUbicacion = document.getElementById('modal-ubicacion');
 
    
-    const botonesInfo = document.querySelectorAll('.btn-secondary');
+    const botonesInfo = document.querySelectorAll('.btn-secondary, .btn-primary');
+
 
     botonesInfo.forEach(boton => {
         boton.addEventListener('click', function() {
