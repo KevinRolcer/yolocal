@@ -52,10 +52,10 @@
     </div>
 
     <div class="sesion">
-        <a href="#" class="btn-prueba">
-            <span class="btn-text-full">Eventos</span>
-            <span class="btn-text-short">Eventos</span>
-        </a>
+       <a href="../controladores/controladorEvento.php" class="btn-prueba">
+                    <span class="btn-text-full">Eventos</span>
+                    <span class="btn-text-short">Eventos</span>
+                </a>
         <a href="#" class="btn-sesion">
             <span class="btn-text-full">Iniciar sesión</span>
             <span class="btn-text-short">Entrar</span>
