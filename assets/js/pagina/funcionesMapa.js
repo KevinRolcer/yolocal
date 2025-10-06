@@ -1,6 +1,6 @@
 var map = L.map("map", { attributionControl: false }).setView(
   [19.2822, -98.4389],
-  15
+  17
 );
 
 
