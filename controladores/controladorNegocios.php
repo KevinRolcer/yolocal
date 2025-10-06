@@ -159,13 +159,27 @@ if (isset($_POST["ope"])) {
         echo json_encode($info);
     }
     elseif ($ope == "OBTENERCOORDENADAS") {
-        $coordenadas = $usu->ObtenerCoordenadas();  // Llamar a la función en el modelo
+        $coordenadasOriginales = $usu->ObtenerCoordenadas();  
+        $coordenadasLimpias = [];
+
+        foreach ($coordenadasOriginales as $fila) {
+            $latitud = floatval(str_replace('°', '', $fila['Latitud']));
+            $longitud = floatval(str_replace('°', '', $fila['Longitud']));
+
+            $coordenadasLimpias[] = [
+                "Latitud" => $latitud,
+                "Longitud" => $longitud,
+                "nombre_negocio" => $fila['nombre_negocio'] ?? ''
+            ];
+        }
+
         $info = array(
             "success" => true,
-            "coordenadas" => $coordenadas
+            "coordenadas" => $coordenadasLimpias
         );
         echo json_encode($info);
     }
+
     // eliminar 
     elseif ($ope == "ELIMINAR" && isset($_POST["ID_Negocio"])) {
         $status = $usu->Eliminar($_POST["ID_Negocio"]);

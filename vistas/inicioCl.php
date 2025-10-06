@@ -182,7 +182,7 @@
             </div>
             <div class="contenedorCarruselC">
                 <div class="carruselC" id="carousel">
-                    <!-- Tarjeta -->
+                    
                     <div class="tarjetaC">
                         <div class="imagenTarjetaC" style="background-image: ..."></div>
                         <div class="contenidoTarjetaC">

@@ -3,7 +3,7 @@ var map = L.map("map", { attributionControl: false }).setView(
   13
 );
 
-// Capa base
+
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "",
 }).addTo(map);
@@ -31,8 +31,8 @@ function cargarMapas() {
           })
             .addTo(map)
             .bindTooltip("<b>" + coordenada.nombre_negocio + "</b>", {
-              permanent: true, // 👈 siempre visible
-              direction: "top", // 👈 posición de la etiqueta (arriba del marcador)
+              permanent: true, 
+              direction: "top",
               offset: [0, -35],
             });
         });
