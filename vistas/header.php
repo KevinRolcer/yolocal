@@ -52,8 +52,8 @@
                     </div>
                 </div>
             </div>
-            <div class="sesion">
-                <a href="../vistas/eventosPag.php" class="btn-prueba">
+              <div class="sesion">
+                <a href="controladorEvento.php" class="btn-prueba">
                     <span class="btn-text-full">Eventos</span>
                     <span class="btn-text-short">Eventos</span>
                 </a>
