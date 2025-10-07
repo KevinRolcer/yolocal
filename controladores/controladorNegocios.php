@@ -159,26 +159,33 @@ if (isset($_POST["ope"])) {
         echo json_encode($info);
     }
     elseif ($ope == "OBTENERCOORDENADAS") {
-        $coordenadasOriginales = $usu->ObtenerCoordenadas();  
-        $coordenadasLimpias = [];
+    $coordenadasOriginales = $usu->ObtenerCoordenadas();  
+    $coordenadasLimpias = [];
 
-        foreach ($coordenadasOriginales as $fila) {
-            $latitud = floatval(str_replace('°', '', $fila['Latitud']));
-            $longitud = floatval(str_replace('°', '', $fila['Longitud']));
+    foreach ($coordenadasOriginales as $fila) {
+        $latitud = floatval(trim(str_replace(['°', ','], ['', '.'], $fila['Latitud'])));
+        $longitud = floatval(trim(str_replace(['°', ','], ['', '.'], $fila['Longitud'])));
 
+        // Asegurar signo negativo en Puebla
+        if ($longitud > 0) {
+            $longitud = -$longitud;
+        }
+
+        if ($latitud >= 18.9 && $latitud <= 19.6 && $longitud <= -97.8 && $longitud >= -98.6) {
             $coordenadasLimpias[] = [
                 "Latitud" => $latitud,
                 "Longitud" => $longitud,
                 "nombre_negocio" => $fila['nombre_negocio'] ?? ''
             ];
         }
-
-        $info = array(
-            "success" => true,
-            "coordenadas" => $coordenadasLimpias
-        );
-        echo json_encode($info);
     }
+
+    echo json_encode([
+        "success" => true,
+        "coordenadas" => $coordenadasLimpias
+    ]);
+}
+
 
     // eliminar 
     elseif ($ope == "ELIMINAR" && isset($_POST["ID_Negocio"])) {
