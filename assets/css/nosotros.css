@@ -402,6 +402,22 @@ svg{
     }
 }
 
+contenedor-imagen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+}
+
+contenedor-imagen img {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 3 / 2;
+  height: auto;
+  object-fit: cover;
+}
+
 /* Historia Section */
 .historia {
     padding: 6rem 5%;

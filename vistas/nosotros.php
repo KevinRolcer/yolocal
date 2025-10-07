@@ -124,6 +124,10 @@
                     de <strong>File Ramírez</strong>, para fortalecer lo local y dar visibilidad a todo el talento 
                     que hay en nuestra comunidad.
                 </p>
+
+                <div class="contenedor-imagen">
+                    <img src="../assets/img/500461305_1265748865555148_7118814373833271744_n.jpg" alt="Descripción de la imagen">
+                </div>
                 <div class="highlight-box">
                     <p style="font-size: 1.2rem; font-weight: 600; margin: 0;">
                         Yo Local no viene a reemplazar las acciones que los emprendedores hacen día a día, 
@@ -234,7 +238,7 @@
                 </div>
 
                 <div class="bento-item item-9">
-                    <img src="../assets/img/cameraLogo.jpg" >
+                    <img src="../assets/img/504906808_1274803974649637_109377238016440382_n.jpg" >
                 </div>
 
                 <div class="bento-item item-10">
