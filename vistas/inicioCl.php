@@ -300,7 +300,9 @@
                         <div class="card-description">
                             Descripción
                         </div>
-                        <div class="card-image">imagen</div>
+                        <div class="card-image">
+                            <img src="../assets/img/517130134_1300489448747756_547402111643965829_n.jpg" alt="">
+                        </div>
                     </div>
                     <div class="card-footer">
                         <button class="card-button">Más detalles</button>
