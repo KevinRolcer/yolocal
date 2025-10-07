@@ -406,7 +406,8 @@ svg{
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 50%;
+  margin: auto;
   height: auto;
 }
 
@@ -720,10 +721,7 @@ svg{
 .bento-grid .item-9 img{
     height: 250px;
 }
-.bento-grid .item-9 img {
-    width: 100%;
-    height: 100%;
-}
+
 
 .bento-grid .item-10 {
     grid-column: 4 / 5;
