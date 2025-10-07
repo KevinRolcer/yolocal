@@ -278,7 +278,7 @@
             <div class="cuadricula-local">
                 
                 <div class="elemento-local imagen-local">
-                    <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="">
+                    <img src="../assets/img/FB_IMG_1756146843356.jpg" >
                 </div>
 
                 <div class="elemento-local fondo-verde">
@@ -289,19 +289,19 @@
                 </div>
 
                 <div class="elemento-local imagen-local">
-                <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="">
+                    <img src="../assets/img/536268525_1342941101169257_4922557954711145459_n.jpg" >
                 </div>
 
                 <div class="elemento-local fondo-claro">
-                <span class="etiqueta-local">Cercanía</span>
+                    <span class="etiqueta-local">Cercanía</span>
                 </div>
 
                 <div class="elemento-local fondo-amarillo">
-                <span class="etiqueta-local">Colaboración</span>
+                    <span class="etiqueta-local">Colaboración</span>
                 </div>
 
                 <div class="elemento-local imagen-local">
-                <img src="https://i.pinimg.com/736x/43/2c/d3/432cd36c93689f0ece8e244ef0b5ee29.jpg" alt="">
+                    <img src="../assets/img/520394522_1312200724243295_3004440740833289141_n.jpg" >
                 </div>
 
                 <div class="elemento-local fondo-complementario">
@@ -312,7 +312,7 @@
                 </div>
 
                 <div class="elemento-local imagen-local">
-                <img src="../assets/img/LogoYolocal.png" alt="">
+                    <img src="../assets/img/535679528_1342940947835939_8377570259417786869_n.jpg" >
                 </div>
 
             </div>

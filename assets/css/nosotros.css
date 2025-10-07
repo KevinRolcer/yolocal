@@ -412,7 +412,7 @@ svg{
 
 .contenedor-imagen img {
   width: 100%;
-  max-width: 300px;
+  max-width: 400px;
   aspect-ratio: 3 / 2;
   height: auto;
   object-fit: cover;
