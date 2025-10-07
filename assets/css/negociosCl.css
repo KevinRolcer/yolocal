@@ -548,14 +548,35 @@ svg{
     .navbar {
         padding: 12px 16px;
     }
-    
+
     .logo {
         font-size: 20px;
     }
-    
+
     .menu {
         right: -100%;
         height: 100vh;
+         width: 220px;
+    }
+
+    .btn-text-full {
+        display: none;
+    }
+
+    .btn-text-short {
+        display: inline;
+    }
+
+    .sesion {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .btn-prueba,
+    .btn-sesion {
+        width: auto;
+        padding: 8px 12px;
+        font-size: 13px;
     }
 }
 
@@ -571,7 +592,7 @@ svg{
     
     .btn-prueba,
     .btn-sesion {
-        padding: 6px 10px;
+        padding: 6px 8px;
         font-size: 12px;
     }
 }
