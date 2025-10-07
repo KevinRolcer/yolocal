@@ -218,19 +218,7 @@
 
         
     </div>
-    <script>
-        function detectarDesbordes() {
-        document.querySelectorAll('*').forEach(el => {
-            if (el.offsetWidth > document.documentElement.clientWidth) {
-            console.warn('⚠️ Elemento que desborda:', el);
-            el.style.outline = "2px solid red";
-            }
-        });
-        }
-
-        window.addEventListener('load', detectarDesbordes);
-        window.addEventListener('resize', detectarDesbordes);
-    </script>
+    
 
     <script src="../assets/js/bolsaTrabajoCl.js"></script>
     <script src="../assets/js/menuCl.js"></script>

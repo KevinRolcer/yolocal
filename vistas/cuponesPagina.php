@@ -125,19 +125,7 @@
         </div>
 
     </div>
-    <script>
-        function detectarDesbordes() {
-        document.querySelectorAll('*').forEach(el => {
-            if (el.offsetWidth > document.documentElement.clientWidth) {
-            console.warn('⚠️ Elemento que desborda:', el);
-            el.style.outline = "2px solid red";
-            }
-        });
-        }
-
-        window.addEventListener('load', detectarDesbordes);
-        window.addEventListener('resize', detectarDesbordes);
-    </script>
+    
 
 </body>
 
