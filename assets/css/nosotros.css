@@ -402,7 +402,7 @@ svg{
     }
 }
 
-contenedor-imagen {
+.contenedor-imagen {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -410,7 +410,7 @@ contenedor-imagen {
   height: auto;
 }
 
-contenedor-imagen img {
+.contenedor-imagen img {
   width: 100%;
   max-width: 300px;
   aspect-ratio: 3 / 2;
@@ -653,7 +653,8 @@ contenedor-imagen img {
     border-radius: 25px;
     overflow: hidden;
     position: relative;
-    min-height: 280px;
+    min-height: 250px;
+    height: 250px;
     transition: transform 0.3s ease;
 }
 
@@ -716,6 +717,9 @@ contenedor-imagen img {
     background-color: var(--lineas);
 }
 
+.bento-grid .item-9 img{
+    height: 250px;
+}
 .bento-grid .item-9 img {
     width: 100%;
     height: 100%;
