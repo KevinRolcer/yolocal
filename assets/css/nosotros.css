@@ -96,10 +96,16 @@ svg{
 
 /* Menú principal */
 .menu {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    padding:0px 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+  padding: 0 10px;
+  position: static;
+  height: auto;
+  background-color: transparent;
+  box-shadow: none;
+  transform: none;
 }
 .menu .texto-menu{
     font-size: 14px;
