@@ -269,7 +269,13 @@ svg{
 }
 
 /* Sección de Negocios*/
-
+.principal{
+    overflow-x: hidden; 
+    position: relative;
+    width: 100vw;         
+    max-width: 100vw;
+    box-sizing: border-box;
+}
 .categories-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

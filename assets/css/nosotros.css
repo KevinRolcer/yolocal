@@ -272,9 +272,11 @@ svg{
 
 
 .nosotros-container {
-    width: 100%;
-    overflow-x: hidden;
-
+    overflow-x: hidden; 
+    position: relative;
+    width: 100vw;         
+    max-width: 100vw;
+    box-sizing: border-box;
 }
 
 .hero {
