@@ -26,12 +26,19 @@ function cargarMapas() {
     .then((data) => {
       if (data.success) {
         data.coordenadas.forEach((coordenada) => {
-          L.marker([coordenada.Latitud, coordenada.Longitud], {
-            icon: purpleIcon,
-          })
+          console.log(
+            "Negocio:", coordenada.nombre_negocio,
+            "Lat:", coordenada.Latitud,
+            "Lon:", coordenada.Longitud
+          );
+
+          L.marker(
+            [parseFloat(coordenada.Latitud), parseFloat(coordenada.Longitud)],
+            { icon: purpleIcon }
+          )
             .addTo(map)
             .bindTooltip("<b>" + coordenada.nombre_negocio + "</b>", {
-              permanent: true, 
+              permanent: true,
               direction: "top",
               offset: [0, -35],
             });
@@ -40,6 +47,7 @@ function cargarMapas() {
         Swal.fire("Error", "No se pudieron cargar los negocios", "error");
       }
     })
+
     .catch((error) => {
       Swal.fire(
         "Error",
