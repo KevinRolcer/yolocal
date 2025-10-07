@@ -223,28 +223,14 @@
         document.querySelectorAll('*').forEach(el => {
             if (el.offsetWidth > document.documentElement.clientWidth) {
             console.warn('⚠️ Elemento que desborda:', el);
-            console.log('Ancho elemento:', el.offsetWidth, 'Ancho viewport:', document.documentElement.clientWidth);
+            el.style.outline = "2px solid red";
             }
         });
         }
 
-        function verificarAncho() {
-        const ancho = window.innerWidth;
-
-        if (ancho <= 480) {
-            console.log('🔍 Verificando desbordes en pantallas de hasta 480px...');
-            detectarDesbordes();
-        }
-
-        if (ancho <= 360) {
-            console.log('🔍 Verificando desbordes en pantallas de hasta 360px...');
-            detectarDesbordes();
-        }
-        }
-
-        window.addEventListener('load', verificarAncho);
-        window.addEventListener('resize', verificarAncho);
-</script>
+        window.addEventListener('load', detectarDesbordes);
+        window.addEventListener('resize', detectarDesbordes);
+    </script>
 
     <script src="../assets/js/bolsaTrabajoCl.js"></script>
     <script src="../assets/js/menuCl.js"></script>
