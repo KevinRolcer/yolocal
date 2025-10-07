@@ -715,7 +715,7 @@ svg{
 .bento-grid .item-9 {
     grid-column: 3 / 4;
     grid-row: 3 / 4;
-    background-color: var(--lineas);
+    background-color: var(--principal2);
 }
 
 .bento-grid .item-9 img{
