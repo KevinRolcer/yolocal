@@ -948,8 +948,8 @@ svg {
 
 .card-image {
     flex: 1;
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: auto;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     display: flex;
