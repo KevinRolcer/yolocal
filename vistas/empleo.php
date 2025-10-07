@@ -218,6 +218,14 @@
 
         
     </div>
+    <script>
+        [...document.querySelectorAll('*')].forEach(el => {
+        if (el.offsetWidth > document.documentElement.clientWidth) {
+            console.log('Elemento que desborda:', el);
+        }
+        });
+
+    </script>
 
     <script src="../assets/js/bolsaTrabajoCl.js"></script>
     <script src="../assets/js/menuCl.js"></script>
