@@ -278,10 +278,8 @@ svg{
 
 .principal {
     margin: 0 auto;
-    padding: 20px;
     display: flex;
     flex-direction: column;
-
     width: 100vw;         
     overflow-x: hidden; 
     position: relative;
