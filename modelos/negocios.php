@@ -148,7 +148,7 @@ class Negocios
        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, DescripcionN, c.Descripcion AS nombre_categoria 
             FROM negocios n 
             INNER JOIN categorias c ON n.ID_Categoria = c.ID_Categoria 
-            WHERE n.Relevancia = 3 
+            WHERE n.Relevancia = 4 
             ORDER BY RAND()"; // Solo negocios con Relevancia = 3
 
         // Filtros dinámicos

@@ -190,11 +190,11 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="Salario" class="form-label">Salario</label>
-                                    <input type="number" class="form-control" id="EditSalario" name="EditSalario" maxlength="6" required>
+                                    <input type="number" class="form-control" id="EditSalario" name="EditSalario" maxlength="6" >
                                 </div>
                                 <div class="col-md-6">
                                     <label for="EditPerRequeridas" class="form-label">Personas Requeridas</label>
-                                    <input type="number" class="form-control" id="EditPerRequeridas" name="EditPerRequeridas" maxlength="6" required>
+                                    <input type="number" class="form-control" id="EditPerRequeridas" name="EditPerRequeridas" maxlength="6" >
                                 </div>
                                 <div class="col-md-12">
                                     <label for="ID_NegocioEdit" class="form-label">Negocio</label>
