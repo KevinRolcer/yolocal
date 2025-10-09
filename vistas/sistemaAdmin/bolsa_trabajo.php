@@ -133,11 +133,11 @@
 
                                     <div class="col-md-6">
                                         <label for="Salario" class="form-label">Salario</label>
-                                        <input type="number" class="form-control" id="Salario" name="Salario" maxlength="6" required>
+                                        <input type="number" class="form-control" id="Salario" name="Salario" maxlength="6" >
                                     </div>
                                     <div class="col-md-6">
                                         <label for="PerRequeridas" class="form-label">Personas Requeridas</label>
-                                        <input type="number" class="form-control" id="PerRequeridas" name="PerRequeridas" maxlength="6" required>
+                                        <input type="number" class="form-control" id="PerRequeridas" name="PerRequeridas" maxlength="6" >
                                     </div>
                                     <div class="col-md-12">
                                         <label for="ID_Negocio" class="form-label">Negocio</label>
