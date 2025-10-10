@@ -49,6 +49,9 @@ renderJobs(trabajos) {
             logoPath: job.Rutaicono,
             logoColor: "linear-gradient(45deg, #6366f1, #8b5cf6)",
             description: job.Descripcion,
+            tipoHorario: job.Tipo_Horario,
+            Salario: job.Salario,
+            personasRequeridas: job.PerRequeridas,
             correo: job.CorreoN,
             telefono: job.Telefono,
             direccion: job.Direccion
@@ -66,6 +69,7 @@ renderJobs(trabajos) {
                 </div>
                 <div class="job-info">
                     <h3>${job.Titulo}</h3>
+                    <div class="job-description">${job.Descripcion}</div>
                     <div class="company-name">${job.nombre_negocio}</div>
                     <div class="job-description">${job.Direccion}</div>
                 </div>
@@ -81,13 +85,13 @@ renderJobs(trabajos) {
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                     </svg>
-                    Personas requeridas
+                    Personas Requeridas: ${job.PerRequeridas}
                 </span>
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
-                    Tipo de horario
+                    Tipo de horario: ${job.Tipo_Horario}
                 </span>
             </div>
         `;
@@ -165,7 +169,10 @@ renderJobs(trabajos) {
         const desktopCompany = document.querySelector(".job-details .company");
         const desktopLogo = document.querySelector(".job-details .detail-company-logo");
         const desktopDescription = document.querySelector(".job-details .detail-section p");
+        const desktopSalario = document.querySelector(".job-details .detail-item .detail-value");
+        const desktopHorarios = document.querySelector(".job-details .detail-item .detail-Horario");
         const desktopPhone = document.querySelector(".job-details .number-section a");
+
 
         if (desktopTitle) desktopTitle.textContent = job.title;
         if (desktopCompany) desktopCompany.textContent = job.company;
@@ -179,11 +186,16 @@ renderJobs(trabajos) {
         }
         if (desktopDescription) desktopDescription.textContent = job.description;
         if (desktopPhone) desktopPhone.textContent = job.telefono;
+        if (desktopSalario) desktopSalario.textContent = "Salario: " + (job.Salario ? job.Salario : "No especificado");
+        if (desktopHorarios) desktopHorarios.textContent = "Tipo de horario: " + (job.tipoHorario ? job.tipoHorario : "No especificado");
 
         const modalTitle = document.querySelector("#modalJobHeader h2");
         const modalCompany = document.querySelector("#modalJobHeader .company");
         const modalLogo = document.querySelector("#modalJobHeader .detail-company-logo");
         const modalDescription = document.querySelector("#modalJobContent .detail-section p");
+        const modalSalario = document.querySelector("#modalJobContent .detail-item .detail-value");
+        const modalHorarios = document.querySelector("#modalJobContent .detail-item .detail-Horario");
+        const modalPhone = document.querySelector("#modalJobContent .detail-section a");
 
         if (modalTitle) modalTitle.textContent = job.title;
         if (modalCompany) modalCompany.textContent = job.company;
@@ -196,6 +208,9 @@ renderJobs(trabajos) {
             modalLogo.style.background = job.logoColor;
         }
         if (modalDescription) modalDescription.textContent = job.description;
+        if (modalSalario) modalSalario.textContent = "Salario: " + (job.Salario ? job.Salario : "No especificado");
+        if (modalHorarios) modalHorarios.textContent = "Tipo de horario: " + (job.tipoHorario ? job.tipoHorario : "No especificado");
+        if (modalPhone) modalPhone.textContent = job.telefono;
     }
 
     openJobModal() {

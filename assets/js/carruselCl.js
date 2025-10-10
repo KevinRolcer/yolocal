@@ -1,8 +1,8 @@
 // ---> 1. DEFINE TUS BANNERS PREDEFINIDOS AQUÍ
 const predefinedBanners = [
-  { type: 'banner', src: '../assets/img/banners/banner-p1.jfif' },
-  { type: 'banner', src: '../assets/img/banners/banner-p2.jfif' },
-  { type: 'banner', src: '../assets/img/banners/banner-p3.jfif' }
+  { type: 'banner', src: '../assets/img/banners/1.png' },
+  { type: 'banner', src: '../assets/img/banners/2.png' },
+  { type: 'banner', src: '../assets/img/banners/3.png' }
 ];
 
 
@@ -208,15 +208,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const slidesFromDB = data.lista;
             let combinedData = [...slidesFromDB];
 
-            if (combinedData.length > 2) {
-              combinedData.splice(2, 0, predefinedBanners[0]);
+            if (combinedData.length > 1) {
+              combinedData.splice(1, 0, predefinedBanners[0]);
             }
         
-            if (combinedData.length > 3) {
+            if (combinedData.length > 2) {
               combinedData.splice(3, 0, predefinedBanners[1]);
             }
-        
-            if (combinedData.length > 4) {
+
+            if (combinedData.length > 2) {
                 combinedData.splice(4, 0, predefinedBanners[2]);
             }
 

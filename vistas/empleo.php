@@ -149,7 +149,7 @@
                     <div class="detail-section">
                         <div class="detail-item">
                             <span class="detail-label">Horarios</span>
-                            <span class="detail-value">Días de trabajo (Lun-Vie)</span>
+                            <span class="detail-Horario">Días de trabajo (Lun-Vie)</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label"></span>
@@ -195,7 +195,7 @@
                     <div class="detail-section">
                         <div class="detail-item">
                             <span class="detail-label">Horarios</span>
-                            <span class="detail-value">Días de trabajo (Lun-Vie)</span>
+                            <span class="detail-Horario">Días de trabajo (Lun-Vie)</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label"></span>
