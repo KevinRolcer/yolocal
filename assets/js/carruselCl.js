@@ -239,15 +239,15 @@ document.addEventListener("DOMContentLoaded", () => {
         let combinedData = [...slidesFromDB];
 
         if (combinedData.length > 1) {
-          combinedData.splice(1, 0, predefinedBanners[0]);
+          combinedData.splice(2, 0, predefinedBanners[0]);
         }
 
-        if (combinedData.length > 2) {
-          combinedData.splice(3, 0, predefinedBanners[1]);
+        if (combinedData.length > 5) {
+          combinedData.splice(6, 0, predefinedBanners[1]);
         }
 
-        if (combinedData.length > 2) {
-          combinedData.splice(4, 0, predefinedBanners[2]);
+        if (combinedData.length > 10) {
+          combinedData.splice(10, 0, predefinedBanners[2]);
         }
 
         new ImageCarousel(combinedData);
