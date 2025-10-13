@@ -26,7 +26,7 @@
     <div class="main">
         <div class="topbar">
             <div class="toggle">
-                <svg class="svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <svg class="svg" xmlns="ehttp://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </div>
@@ -128,7 +128,7 @@
             <?php if ($_SESSION["tipo"] === "admin"): ?>
                 <div class="d-flex justify-content-end gap-2 mb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPromocion">
-                        Cargar trabajo
+                        Cargar evento
                     </button>
                     
                 </div>
