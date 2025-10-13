@@ -39,7 +39,7 @@
                     </svg>
                 </div>
                 <div class="usuario">
-                    <img src="../assets/img/descarga.gif"  alt="">
+                    <img src="../assets/img/descarga.gif" alt="">
                 </div>
                 <div class="notifi-box" id="box">
                     <p class="calendario"></p>
@@ -84,15 +84,15 @@
             </div>
         </div>
         <div class="pill-selector-container">
-        <div class="pill-selector">
-            <a href="index.php?pag=bolsa_trabajo" class="pill-option " id="opcion1">
-                Trabajos
-            </a>
-            <a href="index.php?pag=eventos" class="pill-option active" id="opcion2">
-                Eventos
-            </a>
+            <div class="pill-selector">
+                <a href="index.php?pag=bolsa_trabajo" class="pill-option " id="opcion1">
+                    Trabajos
+                </a>
+                <a href="index.php?pag=eventos" class="pill-option active" id="opcion2">
+                    Eventos
+                </a>
+            </div>
         </div>
-    </div>
         <div class="container mt-5">
             <h1 class="text-start fw-bold">Eventos</h1>
             <h4 class="text-start text-secondary">Sección para administrar la bolsa de trabajo de YoLocal.</h4>
@@ -112,11 +112,11 @@
                     <button class="close">✖</button>
                 </div>
                 <?php if ($_SESSION["tipo"] === "admin"): ?>
-                <div class="filter" data-filter="negocio">
-                    <span>Negocio</span>
-                    <input type="text" id="filtroNegocio" class="hidden" placeholder="Escribe aquí..">
-                    <button class="close">✖</button>
-                </div>
+                    <div class="filter" data-filter="negocio">
+                        <span>Negocio</span>
+                        <input type="text" id="filtroNegocio" class="hidden" placeholder="Escribe aquí..">
+                        <button class="close">✖</button>
+                    </div>
                 <?php endif; ?>
 
 
@@ -130,7 +130,7 @@
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPromocion">
                         Cargar evento
                     </button>
-                    
+
                 </div>
             <?php endif; ?>
 
@@ -140,7 +140,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalPromocionLabel">Cargar Trabajo</h5>
+                            <h5 class="modal-title" id="modalPromocionLabel">Cargar evento</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
@@ -148,7 +148,7 @@
                                 <div class="row g-3">
 
                                     <div class="col-md-12">
-                                        <label for="Titulo" class="form-label">Título</label>
+                                        <label for="Titulo" class="form-label">Título del evento</label>
                                         <input type="text" class="form-control" id="Titulo" name="Titulo" maxlength="100" required>
                                     </div>
 
@@ -158,12 +158,17 @@
                                     </div>
 
 
-                                    
-                                    
+
+
                                     <div class="col-md-12">
                                         <label for="Descripcion" class="form-label">Negocio</label>
                                         <select class="form-control" id="ID_Negocio" name="ID_Negocio" required>
                                         </select>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="Titulo" class="form-label">Cargar imagenes</label>
+                                        <input type="text" class="form-control" id="Titulo" name="Titulo" maxlength="100" required>
                                     </div>
 
                                 </div>
@@ -200,7 +205,7 @@
                                 </div>
 
 
-                                
+
                                 <div class="col-md-12">
                                     <label for="ID_NegocioEdit" class="form-label">Negocio</label>
                                     <select class="form-control" id="ID_NegocioEdit" name="ID_NegocioEdit" required>
@@ -215,7 +220,7 @@
                 </div>
             </div>
 
-          
+
 
             <!-- Tabla de Usuarios -->
             <div class="mt-3">
@@ -231,7 +236,7 @@
 
 
         <script src="../assets/js/main.js"></script>
-        
+
 </body>
 
 </html>
