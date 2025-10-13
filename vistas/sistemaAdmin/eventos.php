@@ -182,20 +182,20 @@
                                         <input type="file" class="form-control" id="RutaImagenE" name="RutaImagenE" accept="image/*">
                                     </div>
 
-                                    <div class="col-md-12">
+                                    <!--<div class="col-md-12">
                                         <label for="Descripcion" class="form-label">Negocio</label>
                                         <select class="form-control" id="ID_Negocio" name="ID_Negocio" required>
                                         </select>
-                                    </div>
+                                    </div> -->
 
 
-                                    <!--<div class="col-md-12">
+                                    <div class="col-md-12">
                                         <label for="ID_Categoria" class="form-label">Categoría</label>
                                         <select class="form-select" id="ID_Categoria" name="ID_Categoria" required>
                                             <option value="">Seleccionar...</option>
                                         </select>
                                     </div>
-                                </div> -->
+                                </div>
 
                                 <div class="text-end mt-3">
                                     <button type="button" class="btn btn-primary" onclick="agregarEvento()">Guardar</button>
@@ -282,4 +282,4 @@
 
 </body>
 
-</htm
+</html>
