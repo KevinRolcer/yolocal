@@ -6,7 +6,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesTrabajos.js?v=<?php echo time(); ?>"></script>
+    <script type="module" src="assets/js/funcionesEventos.js?v=<?php echo time(); ?>"></script>
     <link rel="stylesheet" href="../assets/css/cupones.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <link rel="stylesheet" href="../assets/css/pildora.css">
@@ -95,7 +95,7 @@
         </div>
         <div class="container mt-5">
             <h1 class="text-start fw-bold">Eventos</h1>
-            <h4 class="text-start text-secondary">Sección para administrar la bolsa de trabajo de YoLocal.</h4>
+            <h4 class="text-start text-secondary">Sección para administrar los eventos de YoLocal.</h4>
         </div>
         <div class="container mt-5">
             <div class="filter-container">
@@ -183,12 +183,19 @@
                                     </div>
 
                                     <div class="col-md-12">
+                                        <label for="Descripcion" class="form-label">Negocio</label>
+                                        <select class="form-control" id="ID_Negocio" name="ID_Negocio" required>
+                                        </select>
+                                    </div>
+
+
+                                    <!--<div class="col-md-12">
                                         <label for="ID_Categoria" class="form-label">Categoría</label>
                                         <select class="form-select" id="ID_Categoria" name="ID_Categoria" required>
                                             <option value="">Seleccionar...</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="text-end mt-3">
                                     <button type="button" class="btn btn-primary" onclick="agregarEvento()">Guardar</button>
@@ -265,22 +272,14 @@
                 </div>
             </div>
 
-
             <!-- Tabla de Usuarios -->
-            <div class="mt-3">
-
-                <div id="ListaMiembros">
-                    <div id="contenedor" class="promo-grid"></div>
-
-                </div>
-                <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
-            </div>
 
         </div>
 
 
-        <script src="../assets/js/main.js"></script>
+           <script src="../assets/js/main.js"></script>
+
 
 </body>
 
-</html>
+</htm

@@ -9,7 +9,7 @@ function listarEventos(pagina = 1) {
     formData.append("pagina", pagina);
     formData.append("registrosPorPagina", 20);
 
-    fetch("../controlador/controladorEventos.php", {
+    fetch("../controladores/controladorEventos.php", {
         method: "POST",
         body: formData
     })
@@ -53,7 +53,7 @@ function agregarEvento() {
     const formData = new FormData(form);
     formData.append("ope", "AGREGAR");
 
-    fetch("../controlador/controladorEventos.php", {
+    fetch("../controladores/controladorEventos.php", {
         method: "POST",
         body: formData
     })
@@ -76,7 +76,7 @@ function obtenerEvento(id) {
     formData.append("ope", "OBTENER");
     formData.append("ID_Evento", id);
 
-    fetch("../controlador/controladorEventos.php", {
+    fetch("../controladores/controladorEventos.php", {
         method: "POST",
         body: formData
     })
@@ -109,7 +109,7 @@ function editarEvento() {
     const formData = new FormData(form);
     formData.append("ope", "EDITAR");
 
-    fetch("../controlador/controladorEventos.php", {
+    fetch("../controladores/controladorEventos.php", {
         method: "POST",
         body: formData
     })
@@ -137,7 +137,7 @@ function eliminarEvento(id) {
     formData.append("ope", "ELIMINAR");
     formData.append("ID_Evento", id);
 
-    fetch("../controlador/controladorEventos.php", {
+    fetch("../controladores/controladorEventos.php", {
         method: "POST",
         body: formData
     })
