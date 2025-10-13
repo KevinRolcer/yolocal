@@ -137,89 +137,133 @@
 
             <!-- Modal AGREGAR -->
             <div class="modal fade" id="modalPromocion" tabindex="-1" aria-labelledby="modalPromocionLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalPromocionLabel">Cargar evento</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="formPromocion">
+                            <form id="formEvento" enctype="multipart/form-data">
                                 <div class="row g-3">
 
                                     <div class="col-md-12">
-                                        <label for="Titulo" class="form-label">Título del evento</label>
-                                        <input type="text" class="form-control" id="Titulo" name="Titulo" maxlength="100" required>
+                                        <label for="TituloE" class="form-label">Título del evento</label>
+                                        <input type="text" class="form-control" id="TituloE" name="TituloE" maxlength="100" required>
                                     </div>
 
                                     <div class="col-md-12">
-                                        <label for="Descripcion" class="form-label">Descripción</label>
-                                        <textarea class="form-control" id="Descripcion" name="Descripcion" rows="3" required></textarea>
+                                        <label for="DescripcionE" class="form-label">Descripción</label>
+                                        <textarea class="form-control" id="DescripcionE" name="DescripcionE" rows="3" required></textarea>
                                     </div>
 
+                                    <div class="col-md-6">
+                                        <label for="PrecioE" class="form-label">Precio</label>
+                                        <input type="number" step="0.01" class="form-control" id="PrecioE" name="PrecioE" placeholder="0.00">
+                                    </div>
 
+                                    <div class="col-md-6">
+                                        <label for="FechaE" class="form-label">Fecha del evento</label>
+                                        <input type="date" class="form-control" id="FechaE" name="FechaE">
+                                    </div>
 
+                                    <div class="col-md-6">
+                                        <label for="HoraE" class="form-label">Hora</label>
+                                        <input type="time" class="form-control" id="HoraE" name="HoraE">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="UbicacionE" class="form-label">Ubicación</label>
+                                        <input type="text" class="form-control" id="UbicacionE" name="UbicacionE" maxlength="255">
+                                    </div>
 
                                     <div class="col-md-12">
-                                        <label for="Descripcion" class="form-label">Negocio</label>
-                                        <select class="form-control" id="ID_Negocio" name="ID_Negocio" required>
+                                        <label for="RutaImagenE" class="form-label">Imagen del evento</label>
+                                        <input type="file" class="form-control" id="RutaImagenE" name="RutaImagenE" accept="image/*">
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="ID_Categoria" class="form-label">Categoría</label>
+                                        <select class="form-select" id="ID_Categoria" name="ID_Categoria" required>
+                                            <option value="">Seleccionar...</option>
                                         </select>
                                     </div>
-
-                                    <div class="col-md-12">
-                                        <label for="Titulo" class="form-label">Cargar imagenes</label>
-                                        <input type="text" class="form-control" id="Titulo" name="Titulo" maxlength="100" required>
-                                    </div>
-
                                 </div>
 
                                 <div class="text-end mt-3">
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                    <button type="button" class="btn btn-primary" onclick="agregarEvento()">Guardar</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-
 
             <!-- Modal EDITAR -->
             <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalEditarLabel">Editar informacion</h5>
+                            <h5 class="modal-title" id="modalEditarLabel">Editar evento</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="formEditar">
-                                <input type="hidden" id="ID_Promocion" name="ID_Promocion">
-                                <div class="col-md-12">
-                                    <label for="Titulo" class="form-label">Título</label>
-                                    <input type="text" class="form-control" id="EditTitulo" name="EditTitulo" maxlength="100" required>
+                            <form id="formEditar" enctype="multipart/form-data">
+                                <input type="hidden" id="ID_Evento" name="ID_Evento">
+
+                                <div class="row g-3">
+
+                                    <div class="col-md-12">
+                                        <label for="EditTituloE" class="form-label">Título del evento</label>
+                                        <input type="text" class="form-control" id="EditTituloE" name="TituloE" required>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="EditDescripcionE" class="form-label">Descripción</label>
+                                        <textarea class="form-control" id="EditDescripcionE" name="DescripcionE" rows="3" required></textarea>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="EditPrecioE" class="form-label">Precio</label>
+                                        <input type="number" step="0.01" class="form-control" id="EditPrecioE" name="PrecioE">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="EditFechaE" class="form-label">Fecha</label>
+                                        <input type="date" class="form-control" id="EditFechaE" name="FechaE">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="EditHoraE" class="form-label">Hora</label>
+                                        <input type="time" class="form-control" id="EditHoraE" name="HoraE">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="EditUbicacionE" class="form-label">Ubicación</label>
+                                        <input type="text" class="form-control" id="EditUbicacionE" name="UbicacionE">
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="EditRutaImagenE" class="form-label">Nueva imagen (opcional)</label>
+                                        <input type="file" class="form-control" id="EditRutaImagenE" name="RutaImagenE" accept="image/*">
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="EditID_Categoria" class="form-label">Categoría</label>
+                                        <select class="form-select" id="EditID_Categoria" name="ID_Categoria">
+                                            <option value="">Seleccionar...</option>
+                                        </select>
+                                    </div>
                                 </div>
 
-                                <div class="col-md-12">
-                                    <label for="Descripcion" class="form-label">Descripción</label>
-                                    <textarea class="form-control" id="EditDescripcion" name="EditDescripcion" rows="3" required></textarea>
-                                </div>
-
-
-
-                                <div class="col-md-12">
-                                    <label for="ID_NegocioEdit" class="form-label">Negocio</label>
-                                    <select class="form-control" id="ID_NegocioEdit" name="ID_NegocioEdit" required>
-                                    </select>
-                                </div>
                                 <div class="text-end mt-3">
-                                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                                    <button type="button" class="btn btn-primary" onclick="editarEvento()">Actualizar</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-
 
 
             <!-- Tabla de Usuarios -->
