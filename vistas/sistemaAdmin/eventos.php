@@ -15,6 +15,7 @@
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
    <link rel="stylesheet" href="../assets/css/eventosL.css">
+    <link rel="stylesheet" href="../assets/css/eventos2.css">
     <script>
     
    
@@ -22,118 +23,6 @@
         const usuarioTipo = <?= json_encode($_SESSION["tipo"] ?? null) ?>;
     </script>
 </head>
-<style>
-    /* ================= Tarjetas de Eventos ================= */
-
-/* Contenedor principal que organiza las tarjetas en una cuadrícula responsive */
-.promo-grid {
-    display: grid;
-    /* Crea columnas de 280px como mínimo, y se ajustan para llenar el espacio */
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px; /* Espacio entre las tarjetas */
-    padding: 20px;
-}
-
-/* La tarjeta principal */
-.promo-card {
-    background-color: #ffffff; /* Fondo blanco */
-    border-radius: 15px; /* Bordes redondeados */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil para darle profundidad */
-    overflow: hidden; /* Asegura que la imagen no se salga de los bordes redondeados */
-    display: flex;
-    flex-direction: column; /* Apila la imagen y el contenido verticalmente */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.promo-card:hover {
-    transform: translateY(-5px); /* Efecto de levitación al pasar el cursor */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* --- Contenedor de la Imagen --- */
-.promo-card-image {
-    height: 180px; /* Altura fija para todas las imágenes */
-    width: 100%;
-    overflow: hidden; /* Oculta cualquier parte de la imagen que se desborde */
-}
-
-/* --- La Imagen --- */
-.promo-card-image img {
-    width: 100%;
-    height: 100%;
-    /* La propiedad clave para que la imagen no se deforme */
-    object-fit: cover; 
-    object-position: center; /* Centra la imagen dentro del contenedor */
-}
-
-/* --- Contenido de la Tarjeta --- */
-.promo-card-content {
-    padding: 15px;
-    flex-grow: 1; /* Permite que esta sección crezca para llenar el espacio sobrante */
-    display: flex;
-    flex-direction: column;
-}
-
-.promo-card-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #333;
-}
-
-.promo-card-description {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 12px;
-    flex-grow: 1; /* Empuja los detalles y botones hacia abajo */
-}
-
-.promo-card-info {
-    font-size: 0.85rem;
-    color: #555;
-    border-top: 1px solid #f0f0f0;
-    padding-top: 10px;
-    margin-top: auto; /* Se alinea al fondo */
-}
-
-/* --- Sección de Botones de Acción --- */
-.promo-card-actions {
-    display: flex;
-    justify-content: flex-end; /* Alinea los botones a la derecha */
-    gap: 10px; /* Espacio entre los botones */
-    padding-top: 15px;
-}
-
-/* --- Estilo de los Botones (Editar y Eliminar) --- */
-.btn-edit,
-.btn-delete {
-    width: 40px;          /* Ancho fijo */
-    height: 40px;         /* Alto fijo */
-    border-radius: 50%;   /* ¡Esto los hace circulares! */
-    border: none;         /* Sin bordes */
-    display: flex;
-    align-items: center;  /* Centra el ícono verticalmente */
-    justify-content: center; /* Centra el ícono horizontalmente */
-    color: white;         /* Color del ícono */
-    font-size: 18px;      /* Tamaño del ícono */
-    cursor: pointer;
-    transition: opacity 0.3s ease;
-}
-
-.btn-edit:hover,
-.btn-delete:hover {
-    opacity: 0.85; /* Ligera transparencia al pasar el cursor */
-}
-
-/* Color específico para cada botón */
-.btn-edit {
-    background-color: #ffc107; /* Amarillo */
-}
-
-.btn-delete {
-    background-color: #a52a2a; /* Rojo oscuro (Brown) */
-}
-</style>
 
 <body class="bg-light">
     <div class="navigation">
