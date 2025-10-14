@@ -1,139 +1,78 @@
 <?php
-class Eventos
-{
-    public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = [])
-    {
-        $enlace = dbConectar();
-        $offset = ($pagina - 1) * $registrosPorPagina;
+class ModeloEventos {
+    private $conexion;
 
-        $sql = "SELECT 
-                    e.ID_Evento,
-                    e.TituloE,
-                    e.DescripcionE,
-                    e.PrecioE,
-                    e.FechaE,
-                    e.HoraE,
-                    e.UbicacionE,
-                    e.RutaImagenE,
-                    c.Descripcion AS categoria
+    public function __construct($conexion) {
+        $this->conexion = $conexion;
+    }
+
+    /**
+     * Obtiene todas las categorías de la base de datos.
+     */
+    public function listarCategorias() {
+        $sql = "SELECT ID_Categoria, Descripcion FROM categorias ORDER BY Descripcion ASC";
+        $resultado = $this->conexion->query($sql);
+        return $resultado->fetch_all(MYSQLI_ASSOC);
+    }
+
+    /**
+     * Obtiene todos los eventos, uniendo la información de la categoría.
+     */
+    public function listarEventos() {
+        $sql = "SELECT e.*, c.Descripcion AS NombreCategoria 
                 FROM eventos e
-                INNER JOIN categorias c ON e.ID_Categoria = c.ID_Categoria
-                WHERE 1=1";
-
-        $values = [];
-        $tipos = "";
-
-        // Filtros dinámicos
-        if (!empty($filtros['titulo'])) {
-            $sql .= " AND e.TituloE LIKE ?";
-            $values[] = "%" . $filtros['titulo'] . "%";
-            $tipos .= "s";
-        }
-
-        if (!empty($filtros['descripcion'])) {
-            $sql .= " AND e.DescripcionE LIKE ?";
-            $values[] = "%" . $filtros['descripcion'] . "%";
-            $tipos .= "s";
-        }
-
-        // Orden y paginación
-        $sql .= " ORDER BY e.ID_Evento DESC LIMIT ?, ?";
-        $values[] = $offset;
-        $values[] = $registrosPorPagina;
-        $tipos .= "ii";
-
-        $consulta = $enlace->prepare($sql);
-        $consulta->bind_param($tipos, ...$values);
-        $consulta->execute();
-
-        $result = $consulta->get_result();
-        $eventos = [];
-        while ($row = $result->fetch_assoc()) {
-            $eventos[] = $row;
-        }
-
-        // Total registros
-        $countSql = "SELECT COUNT(*) as total FROM eventos";
-        $countResult = $enlace->query($countSql);
-        $totalRegistros = $countResult->fetch_assoc()["total"];
-        $totalPaginas = ceil($totalRegistros / $registrosPorPagina);
-
-        $consulta->close();
-        $enlace->close();
-
-        return [
-            "eventos" => $eventos,
-            "totalPaginas" => $totalPaginas,
-            "paginaActual" => $pagina,
-        ];
+                JOIN categorias c ON e.ID_Categoria = c.ID_Categoria
+                ORDER BY e.FechaE DESC";
+        $resultado = $this->conexion->query($sql);
+        return $resultado->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function Agregar($datos)
-    {
-        $enlace = dbConectar();
-        $sql = "INSERT INTO eventos (TituloE, DescripcionE, PrecioE, FechaE, HoraE, UbicacionE, RutaImagenE, ID_Categoria)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        $consulta = $enlace->prepare($sql);
-
-        $consulta->bind_param(
-            "ssdssssi",
-            $datos["TituloE"],
-            $datos["DescripcionE"],
-            $datos["PrecioE"],
-            $datos["FechaE"],
-            $datos["HoraE"],
-            $datos["UbicacionE"],
-            $datos["RutaImagenE"],
-            $datos["ID_Categoria"]
+    /**
+     * Obtiene un solo evento por su ID.
+     */
+    public function obtenerEventoPorId($id) {
+        $stmt = $this->conexion->prepare("SELECT * FROM eventos WHERE ID_Evento = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        return $resultado->fetch_assoc();
+    }
+    
+    /**
+     * Agrega un nuevo evento a la base de datos.
+     */
+    public function agregarEvento($titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $nombreImagen, $idCategoria) {
+        $stmt = $this->conexion->prepare(
+            "INSERT INTO eventos (TituloE, DescripcionE, PrecioE, FechaE, HoraE, UbicacionE, RutaImagenE, ID_Categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         );
-
-        return $consulta->execute();
+        $stmt->bind_param("sssssssi", $titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $nombreImagen, $idCategoria);
+        return $stmt->execute();
     }
 
-    public function Editar($datos)
-    {
-        $enlace = dbConectar();
-        $sql = "UPDATE eventos 
-                SET TituloE = ?, DescripcionE = ?, PrecioE = ?, FechaE = ?, HoraE = ?, 
-                    UbicacionE = ?, RutaImagenE = ?, ID_Categoria = ?
-                WHERE ID_Evento = ?";
-        $consulta = $enlace->prepare($sql);
-
-        $consulta->bind_param(
-            "ssdssssii",
-            $datos["TituloE"],
-            $datos["DescripcionE"],
-            $datos["PrecioE"],
-            $datos["FechaE"],
-            $datos["HoraE"],
-            $datos["UbicacionE"],
-            $datos["RutaImagenE"],
-            $datos["ID_Categoria"],
-            $datos["ID_Evento"]
-        );
-
-        return $consulta->execute();
+    /**
+     * Edita un evento existente.
+     */
+    public function editarEvento($id, $titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $nombreImagen, $idCategoria) {
+        // Si no se subió una nueva imagen, no actualizamos ese campo
+        if ($nombreImagen) {
+            $sql = "UPDATE eventos SET TituloE = ?, DescripcionE = ?, PrecioE = ?, FechaE = ?, HoraE = ?, UbicacionE = ?, RutaImagenE = ?, ID_Categoria = ? WHERE ID_Evento = ?";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bind_param("sssssssii", $titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $nombreImagen, $idCategoria, $id);
+        } else {
+            $sql = "UPDATE eventos SET TituloE = ?, DescripcionE = ?, PrecioE = ?, FechaE = ?, HoraE = ?, UbicacionE = ?, ID_Categoria = ? WHERE ID_Evento = ?";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bind_param("ssssssii", $titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $idCategoria, $id);
+        }
+        return $stmt->execute();
     }
 
-    public function Obtener($ID_Evento)
-    {
-        $enlace = dbConectar();
-        $sql = "SELECT * FROM eventos WHERE ID_Evento=?";
-        $consulta = $enlace->prepare($sql);
-        $consulta->bind_param("i", $ID_Evento);
-        $consulta->execute();
-
-        $result = $consulta->get_result();
-        return $result->num_rows > 0 ? $result->fetch_assoc() : null;
-    }
-
-    public function Eliminar($ID_Evento)
-    {
-        $enlace = dbConectar();
-        $sql = "DELETE FROM eventos WHERE ID_Evento=?";
-        $consulta = $enlace->prepare($sql);
-        $consulta->bind_param("i", $ID_Evento);
-        return $consulta->execute();
+    /**
+     * Elimina un evento de la base de datos.
+     */
+    public function eliminarEvento($id) {
+        $stmt = $this->conexion->prepare("DELETE FROM eventos WHERE ID_Evento = ?");
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
     }
 }
 ?>

@@ -1,154 +1,213 @@
+
+
 document.addEventListener("DOMContentLoaded", () => {
-    listarEventos();
+    cargarCategorias();
+    listarEventosEnTarjetas();
+
+    // Asignar el evento de envío al formulario de AGREGAR
+    document.getElementById('formEvento').addEventListener('submit', (e) => {
+        e.preventDefault();
+        agregarEvento();
+    });
+
+    // Asignar el evento de envío al formulario de EDITAR
+    document.getElementById('formEditar').addEventListener('submit', (e) => {
+        e.preventDefault();
+        editarEvento();
+    });
+
+    // Delegación de eventos para los botones de editar y eliminar
+    const contenedor = document.getElementById('contenedor');
+    contenedor.addEventListener('click', (e) => {
+        if (e.target.matches('.btn-edit, .btn-edit *')) {
+            const button = e.target.closest('.btn-edit');
+            const id = button.dataset.id;
+            abrirModalEditar(id);
+        }
+        if (e.target.matches('.btn-delete, .btn-delete *')) {
+            const button = e.target.closest('.btn-delete');
+            const id = button.dataset.id;
+            eliminarEvento(id);
+        }
+    });
 });
 
-// LISTAR EVENTOS
-function listarEventos(pagina = 1) {
+/**
+ * Carga las categorías en los selectores de los modales.
+ */
+function cargarCategorias() {
     const formData = new FormData();
-    formData.append("ope", "LISTAR");
-    formData.append("pagina", pagina);
-    formData.append("registrosPorPagina", 20);
+    formData.append("ope", "CARGAR_CATEGORIAS");
 
-    fetch("../controladores/controladorEventos.php", {
-        method: "POST",
-        body: formData
+    fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) { return; }
+        const selectAgregar = document.getElementById("ID_Categoria");
+        const selectEditar = document.getElementById("EditID_Categoria");
+        selectAgregar.innerHTML = '<option value="">Seleccione una categoría...</option>';
+        selectEditar.innerHTML = '<option value="">Seleccione una categoría...</option>';
+        data.lista.forEach(cat => {
+            const option = `<option value="${cat.ID_Categoria}">${cat.Descripcion}</option>`;
+            selectAgregar.innerHTML += option;
+            selectEditar.innerHTML += option;
+        });
     })
-        .then(response => response.json())
-        .then(data => {
-            const tabla = document.getElementById("tablaEventos");
-            tabla.innerHTML = "";
-
-            if (!data.success || data.lista.length === 0) {
-                tabla.innerHTML = "<tr><td colspan='10'>No hay eventos registrados</td></tr>";
-                return;
-            }
-
-            data.lista.forEach(evento => {
-                const fila = `
-                    <tr>
-                        <td>${evento.ID_Evento}</td>
-                        <td>${evento.TituloE}</td>
-                        <td>${evento.DescripcionE}</td>
-                        <td>${evento.PrecioE ?? ""}</td>
-                        <td>${evento.FechaE ?? ""}</td>
-                        <td>${evento.HoraE ?? ""}</td>
-                        <td>${evento.UbicacionE ?? ""}</td>
-                        <td>${evento.RutaImagenE ? `<img src="../imagenes/${evento.RutaImagenE}" width="80">` : "Sin imagen"}</td>
-                        <td>${evento.ID_Categoria}</td>
-                        <td>
-                            <button onclick="obtenerEvento(${evento.ID_Evento})">✏️</button>
-                            <button onclick="eliminarEvento(${evento.ID_Evento})">🗑️</button>
-                        </td>
-                    </tr>
-                `;
-                tabla.innerHTML += fila;
-            });
-        })
-        .catch(error => console.error("Error al listar eventos:", error));
+    .catch(error => console.error("Error al cargar categorías:", error));
 }
 
-//AGREGAR EVENTO
+/**
+ * Obtiene y muestra los eventos como tarjetas.
+ */
+function listarEventosEnTarjetas() {
+    const formData = new FormData();
+    formData.append("ope", "LISTAR");
+    
+    fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
+    .then(response => response.json())
+    .then(data => {
+        const contenedor = document.getElementById("contenedor");
+        contenedor.innerHTML = "";
+
+        if (!data.success || !data.lista || data.lista.length === 0) {
+            contenedor.innerHTML = "<p class='text-center text-secondary'>No hay eventos registrados.</p>";
+            return;
+        }
+
+        data.lista.forEach(evento => {
+            // **CAMBIO IMPORTANTE**: Añadimos data-id a los botones
+            const tarjeta = `
+                <div class="promo-card">
+                    <div class="promo-card-image">
+                        <img src="${evento.RutaImagenE ? '../imagenes/' + evento.RutaImagenE : '../assets/img/default-event.png'}" alt="${evento.TituloE}">
+                    </div>
+                    <div class="promo-card-content">
+                        <span class="badge bg-secondary mb-2">${evento.NombreCategoria}</span>
+                        <h5 class="promo-card-title">${evento.TituloE}</h5>
+                        <p class="promo-card-description">${evento.DescripcionE}</p>
+                        <p class="promo-card-info">
+                            <strong>📅 Fecha:</strong> ${evento.FechaE}<br>
+                            <strong>⏰ Hora:</strong> ${evento.HoraE}<br>
+                            <strong>📍 Lugar:</strong> ${evento.UbicacionE}<br>
+                            <strong>💰 Precio:</strong> ${evento.PrecioE || 'Gratis'}
+                        </p>
+                        <div class="promo-card-actions">
+                            <button class="btn-edit" data-id="${evento.ID_Evento}">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </button>
+                            <button class="btn-delete" data-id="${evento.ID_Evento}">
+                                <i class="bi bi-trash3-fill"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            contenedor.innerHTML += tarjeta;
+        });
+    })
+    .catch(error => {
+        console.error("Error al listar eventos:", error);
+        contenedor.innerHTML = "<p class='text-center text-danger'>Ocurrió un error al cargar los eventos.</p>";
+    });
+}
+
+/**
+ * Envía los datos del formulario para agregar un nuevo evento.
+ */
 function agregarEvento() {
     const form = document.getElementById("formEvento");
     const formData = new FormData(form);
     formData.append("ope", "AGREGAR");
 
-    fetch("../controladores/controladorEventos.php", {
-        method: "POST",
-        body: formData
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert("✅ Evento agregado correctamente");
-                form.reset();
-                listarEventos();
-            } else {
-                alert("❌ No se pudo agregar el evento");
-            }
-        })
-        .catch(error => console.error("Error al agregar:", error));
+    fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("✅ Evento agregado correctamente");
+            form.reset();
+            bootstrap.Modal.getInstance(document.getElementById('modalEvento')).hide();
+            listarEventosEnTarjetas();
+        } else {
+            alert("❌ " + (data.message || 'No se pudo agregar el evento.'));
+        }
+    });
 }
 
-// OBTENER EVENTO PARA EDITAR
-function obtenerEvento(id) {
+/**
+ * Obtiene los datos de un evento y abre el modal de edición.
+ */
+function abrirModalEditar(id) {
     const formData = new FormData();
     formData.append("ope", "OBTENER");
     formData.append("ID_Evento", id);
 
-    fetch("../controladores/controladorEventos.php", {
-        method: "POST",
-        body: formData
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (!data.success) {
-                alert("No se encontró el evento");
-                return;
-            }
+    fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            alert("Error: No se encontró el evento.");
+            return;
+        }
+        
+        const evento = data.evento;
+        // **CORRECCIÓN**: Asegúrate de que los IDs del formulario de edición son correctos
+        document.getElementById("ID_Evento_Editar").value = evento.ID_Evento; // Campo oculto para el ID
+        document.getElementById("EditTituloE").value = evento.TituloE;
+        document.getElementById("EditDescripcionE").value = evento.DescripcionE;
+        document.getElementById("EditPrecioE").value = evento.PrecioE;
+        document.getElementById("EditFechaE").value = evento.FechaE;
+        document.getElementById("EditHoraE").value = evento.HoraE;
+        document.getElementById("EditUbicacionE").value = evento.UbicacionE;
+        document.getElementById("EditID_Categoria").value = evento.ID_Categoria;
 
-            const evento = data.evento;
-            document.getElementById("ID_Evento").value = evento.ID_Evento;
-            document.getElementById("TituloE").value = evento.TituloE;
-            document.getElementById("DescripcionE").value = evento.DescripcionE;
-            document.getElementById("PrecioE").value = evento.PrecioE;
-            document.getElementById("FechaE").value = evento.FechaE;
-            document.getElementById("HoraE").value = evento.HoraE;
-            document.getElementById("UbicacionE").value = evento.UbicacionE;
-            document.getElementById("ID_Categoria").value = evento.ID_Categoria;
-
-            document.getElementById("btnGuardar").style.display = "none";
-            document.getElementById("btnActualizar").style.display = "inline-block";
-        })
-        .catch(error => console.error("Error al obtener evento:", error));
+        new bootstrap.Modal(document.getElementById('modalEditar')).show();
+    });
 }
 
-// EDITAR EVENTO
+/**
+ * Envía los datos actualizados de un evento.
+ */
 function editarEvento() {
-    const form = document.getElementById("formEvento");
+    const form = document.getElementById("formEditar");
     const formData = new FormData(form);
     formData.append("ope", "EDITAR");
+    // **CORRECCIÓN**: El ID se obtiene del campo oculto correcto
+    formData.append("ID_Evento", document.getElementById("ID_Evento_Editar").value);
 
-    fetch("../controladores/controladorEventos.php", {
-        method: "POST",
-        body: formData
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert("✅ Evento actualizado correctamente");
-                form.reset();
-                listarEventos();
 
-                document.getElementById("btnGuardar").style.display = "inline-block";
-                document.getElementById("btnActualizar").style.display = "none";
-            } else {
-                alert("❌ No se pudo actualizar el evento");
-            }
-        })
-        .catch(error => console.error("Error al editar evento:", error));
+    fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("✅ Evento actualizado correctamente");
+            bootstrap.Modal.getInstance(document.getElementById('modalEditar')).hide();
+            listarEventosEnTarjetas();
+        } else {
+            alert("❌ No se pudo actualizar el evento.");
+        }
+    });
 }
 
-// ELIMINAR EVENTO
+/**
+ * Elimina un evento previa confirmación.
+ */
 function eliminarEvento(id) {
-    if (!confirm("¿Seguro que deseas eliminar este evento?")) return;
+    if (!confirm("¿Estás seguro de que deseas eliminar este evento? Esta acción no se puede deshacer.")) {
+        return;
+    }
 
     const formData = new FormData();
     formData.append("ope", "ELIMINAR");
     formData.append("ID_Evento", id);
 
-    fetch("../controladores/controladorEventos.php", {
-        method: "POST",
-        body: formData
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert("🗑️ Evento eliminado correctamente");
-                listarEventos();
-            } else {
-                alert("❌ No se pudo eliminar el evento");
-            }
-        })
-        .catch(error => console.error("Error al eliminar evento:", error));
+    fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("🗑️ Evento eliminado correctamente");
+            listarEventosEnTarjetas();
+        } else {
+            alert("❌ No se pudo eliminar el evento.");
+        }
+    });
 }
