@@ -15,8 +15,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalUbicacion = document.getElementById('modal-ubicacion');
 
    
+<<<<<<< HEAD
     const botonesInfo = document.querySelectorAll('.btn-secondary, .btn-primary');
 
+=======
+    const botonesInfo = document.querySelectorAll('.btn-secondary');
+>>>>>>> becario
 
     botonesInfo.forEach(boton => {
         boton.addEventListener('click', function() {

@@ -64,7 +64,21 @@ svg {
 .logo img {
     width: 44px;
 }
-
+/* Botón amarillo para "Ver negocio" */
+.btn-amarillo {
+    background-color: #FFD600;
+    color: #222;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(255, 214, 0, 0.2);
+    transition: background 0.2s, color 0.2s;
+}
+.btn-amarillo:hover {
+    background-color: #ffe066;
+    color: #111;
+}
 
 /* Menú hamburguesa */
 .menu-toggle {

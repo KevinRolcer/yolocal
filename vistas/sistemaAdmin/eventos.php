@@ -2,18 +2,25 @@
 <html lang="es">
 
 <head>
-    <title>Cupones - Yo Local</title>
+    <title>Eventos - Yo Local</title>
     <?php
+    // Asegúrate de que este archivo inicie la sesión y contenga las configuraciones necesarias
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesTrabajos.js?v=<?php echo time(); ?>"></script>
-    <link rel="stylesheet" href="../assets/css/cupones.css">
+    <script type="module" src="assets/js/funcionesEventos.js?v=<?php echo time(); ?>"></script>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="../assets/css/bolsaTrabajoAdmin.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <link rel="stylesheet" href="../assets/css/pildora.css">
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+   <link rel="stylesheet" href="../assets/css/eventosL.css">
+    <link rel="stylesheet" href="../assets/css/eventos2.css">
     <script>
-        const usuarioId = <?= json_encode($_SESSION["ID_Usuario"]) ?>;
-        const usuarioTipo = <?= json_encode($_SESSION["tipo"]) ?>;
+    
+   
+        const usuarioId = <?= json_encode($_SESSION["ID_Usuario"] ?? null) ?>;
+        const usuarioTipo = <?= json_encode($_SESSION["tipo"] ?? null) ?>;
     </script>
 </head>
 
@@ -31,7 +38,6 @@
                 </svg>
             </div>
 
-
             <div class="contenedor">
                 <div class="notificacion" onclick="toggleNotifi()">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -39,67 +45,29 @@
                     </svg>
                 </div>
                 <div class="usuario">
-                    <img src="../assets/img/descarga.gif"  alt="">
-                </div>
-                <div class="notifi-box" id="box">
-                    <p class="calendario"></p>
-                    <div class="notifi-item">
-                        <div class="text">
-                            <h4>Notificaciones</h4>
-                        </div>
-                        <div class="calend">
-                            <div class="calend">
-                                <div class="calendar">
-                                    <div class="calendar-header">
-                                        <button id="prev">&lt;</button>
-                                        <h3></h3>
-                                        <button id="next">&gt;</button>
-                                    </div>
-                                    <ul class="weekdays">
-                                        <li>Dom</li>
-                                        <li>Lun</li>
-                                        <li>Mar</li>
-                                        <li>Mié</li>
-                                        <li>Jue</li>
-                                        <li>Vie</li>
-                                        <li>Sáb</li>
-                                    </ul>
-                                    <ul class="dates"></ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="noti">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <h4>Sin notificaciones...<br></h4>
-                                    </td>
-                                </tr>
-
-
-                            </table>
-                        </div>
-                    </div>
+                    <img src="../assets/img/descarga.gif" alt="">
                 </div>
             </div>
         </div>
+        
         <div class="pill-selector-container">
-        <div class="pill-selector">
-            <a href="index.php?pag=bolsa_trabajo" class="pill-option " id="opcion1">
-                Trabajos
-            </a>
-            <a href="index.php?pag=eventos" class="pill-option active" id="opcion2">
-                Eventos
-            </a>
+            <div class="pill-selector">
+                <a href="index.php?pag=bolsa_trabajo" class="pill-option" id="opcion1">
+                    Trabajos
+                </a>
+                <a href="index.php?pag=eventos" class="pill-option active" id="opcion2">
+                    Eventos
+                </a>
+            </div>
         </div>
-    </div>
+        
         <div class="container mt-5">
             <h1 class="text-start fw-bold">Eventos</h1>
-            <h4 class="text-start text-secondary">Sección para administrar la bolsa de trabajo de YoLocal.</h4>
+            <h4 class="text-start text-secondary">Sección para administrar los eventos de YoLocal.</h4>
         </div>
+        
         <div class="container mt-5">
             <div class="filter-container">
-
                 <div class="filter" data-filter="titulo">
                     <span>Título</span>
                     <input type="text" id="filtroTitulo" class="hidden" placeholder="Escribe aquí..">
@@ -111,63 +79,72 @@
                     <input type="text" id="filtroDescripcion" class="hidden" placeholder="Escribe aquí..">
                     <button class="close">✖</button>
                 </div>
+                
                 <?php if ($_SESSION["tipo"] === "admin"): ?>
-                <div class="filter" data-filter="negocio">
-                    <span>Negocio</span>
-                    <input type="text" id="filtroNegocio" class="hidden" placeholder="Escribe aquí..">
+                <div class="filter" data-filter="categoria">
+                    <span>Categoría</span>
+                    <input type="text" id="filtroCategoria" class="hidden" placeholder="Escribe aquí..">
                     <button class="close">✖</button>
                 </div>
                 <?php endif; ?>
 
-
                 <div class="filter-promociones">
                     <button id="limpiarFiltros" class="btn btn-secondary">Limpiar Filtros</button>
                 </div>
-
             </div>
+            
             <?php if ($_SESSION["tipo"] === "admin"): ?>
-                <div class="d-flex justify-content-end gap-2 mb-3">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPromocion">
-                        Cargar trabajo
-                    </button>
-                    
-                </div>
+            <div class="d-flex justify-content-end gap-2 mb-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEvento">
+                    Cargar Evento
+                </button>
+            </div>
             <?php endif; ?>
 
-
-            <!-- Modal AGREGAR -->
-            <div class="modal fade" id="modalPromocion" tabindex="-1" aria-labelledby="modalPromocionLabel" aria-hidden="true">
-                <div class="modal-dialog">
+            <div class="modal fade" id="modalEvento" tabindex="-1" aria-labelledby="modalEventoLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalPromocionLabel">Cargar Trabajo</h5>
+                            <h5 class="modal-title" id="modalEventoLabel">Cargar Evento</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="formPromocion">
+                            <form id="formEvento" enctype="multipart/form-data">
                                 <div class="row g-3">
-
                                     <div class="col-md-12">
-                                        <label for="Titulo" class="form-label">Título</label>
-                                        <input type="text" class="form-control" id="Titulo" name="Titulo" maxlength="100" required>
+                                        <label for="TituloE" class="form-label">Título del Evento</label>
+                                        <input type="text" class="form-control" id="TituloE" name="TituloE" maxlength="50" required>
                                     </div>
-
                                     <div class="col-md-12">
-                                        <label for="Descripcion" class="form-label">Descripción</label>
-                                        <textarea class="form-control" id="Descripcion" name="Descripcion" rows="3" required></textarea>
+                                        <label for="DescripcionE" class="form-label">Descripción</label>
+                                        <textarea class="form-control" id="DescripcionE" name="DescripcionE" rows="3" maxlength="500" required></textarea>
                                     </div>
-
-
-                                    
-                                    
+                                    <div class="col-md-6">
+                                        <label for="PrecioE" class="form-label">Precio ($)</label>
+                                        <input type="text" class="form-control" id="PrecioE" name="PrecioE" placeholder="Ej: 150.00 o Gratis" maxlength="6">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="FechaE" class="form-label">Fecha del Evento</label>
+                                        <input type="date" class="form-control" id="FechaE" name="FechaE" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="HoraE" class="form-label">Hora del Evento</label>
+                                        <input type="time" class="form-control" id="HoraE" name="HoraE" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="UbicacionE" class="form-label">Ubicación</label>
+                                        <input type="text" class="form-control" id="UbicacionE" name="UbicacionE" maxlength="200" required>
+                                    </div>
                                     <div class="col-md-12">
-                                        <label for="Descripcion" class="form-label">Negocio</label>
-                                        <select class="form-control" id="ID_Negocio" name="ID_Negocio" required>
-                                        </select>
+                                        <label for="RutaImagenE" class="form-label">Imagen del Evento</label>
+                                        <input type="file" class="form-control" id="RutaImagenE" name="RutaImagenE" accept="image/*">
                                     </div>
-
+                                    <div class="col-md-12">
+                                        <label for="ID_Categoria" class="form-label">Categoría</label>
+                                        <select class="form-control" id="ID_Categoria" name="ID_Categoria" required>
+                                            </select>
+                                    </div>
                                 </div>
-
                                 <div class="text-end mt-3">
                                     <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
@@ -177,61 +154,69 @@
                 </div>
             </div>
 
-
-            <!-- Modal EDITAR -->
-            <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalEditarLabel">Editar informacion</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+           <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarLabel">Editar Evento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formEditar" enctype="multipart/form-data">
+                    <input type="hidden" id="ID_Evento_Editar" name="ID_Evento">
+                    
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label for="EditTituloE" class="form-label">Título del Evento</label>
+                            <input type="text" class="form-control" id="EditTituloE" name="TituloE" maxlength="50" required>
                         </div>
-                        <div class="modal-body">
-                            <form id="formEditar">
-                                <input type="hidden" id="ID_Promocion" name="ID_Promocion">
-                                <div class="col-md-12">
-                                    <label for="Titulo" class="form-label">Título</label>
-                                    <input type="text" class="form-control" id="EditTitulo" name="EditTitulo" maxlength="100" required>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="Descripcion" class="form-label">Descripción</label>
-                                    <textarea class="form-control" id="EditDescripcion" name="EditDescripcion" rows="3" required></textarea>
-                                </div>
-
-
-                                
-                                <div class="col-md-12">
-                                    <label for="ID_NegocioEdit" class="form-label">Negocio</label>
-                                    <select class="form-control" id="ID_NegocioEdit" name="ID_NegocioEdit" required>
-                                    </select>
-                                </div>
-                                <div class="text-end mt-3">
-                                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                                </div>
-                            </form>
+                        <div class="col-md-12">
+                            <label for="EditDescripcionE" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="EditDescripcionE" name="DescripcionE" rows="3" maxlength="500" required></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EditPrecioE" class="form-label">Precio ($)</label>
+                            <input type="text" class="form-control" id="EditPrecioE" name="PrecioE" maxlength="6">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EditFechaE" class="form-label">Fecha del Evento</label>
+                            <input type="date" class="form-control" id="EditFechaE" name="FechaE" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EditHoraE" class="form-label">Hora del Evento</label>
+                            <input type="time" class="form-control" id="EditHoraE" name="HoraE" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EditUbicacionE" class="form-label">Ubicación</label>
+                            <input type="text" class="form-control" id="EditUbicacionE" name="UbicacionE" maxlength="200" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="EditRutaImagenE" class="form-label">Nueva Imagen (Opcional)</label>
+                            <input type="file" class="form-control" id="EditRutaImagenE" name="RutaImagenE" accept="image/*">
+                        </div>
+                        <div class="col-md-12">
+                            <label for="EditID_Categoria" class="form-label">Categoría</label>
+                            <select class="form-control" id="EditID_Categoria" name="ID_Categoria" required>
+                                </select>
                         </div>
                     </div>
-                </div>
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </div>
+                </form>
             </div>
+        </div>
+    </div>
+</div>
 
-          
-
-            <!-- Tabla de Usuarios -->
             <div class="mt-3">
-
-                <div id="ListaMiembros">
-                    <div id="contenedor" class="promo-grid"></div>
-
-                </div>
+                <div id="contenedor" class="promo-grid">
+                    </div>
                 <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
             </div>
-
         </div>
-
-
-        <script src="../assets/js/main.js"></script>
-        
+    </div>
+    <script src="../assets/js/main.js"></script>
 </body>
 
 </html>
