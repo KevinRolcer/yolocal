@@ -179,7 +179,7 @@ class Negocios
         $enlace = dbConectar();
        
 
-        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, Direccion FROM negocios WHERE 1=1 AND Relevancia = 4 ORDER BY RAND()";
+        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, Direccion FROM negocios WHERE 1=1 AND Relevancia IN (3, 4) ORDER BY RAND()";
         
 
         // Filtros dinámicos
