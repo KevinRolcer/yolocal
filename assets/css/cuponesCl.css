@@ -300,11 +300,11 @@ svg{
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 24px;
-    width: 90%;
-    max-width: 1150px; 
+    width: 85%;
+    max-width: 950px; 
     margin: 0 auto;
     padding: 0 0px; 
-    margin-bottom: 30px;
+    margin-bottom: 22px;
 }
 
 .coupon-card 
@@ -354,7 +354,7 @@ svg{
 
 .perforation-line {
     position: absolute;
-    right: 15%;
+    right: 17%;
     top: 0;
     bottom: 0;
     width: 2px;
