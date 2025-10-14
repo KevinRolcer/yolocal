@@ -1,8 +1,4 @@
-<?php
-require_once __DIR__ . '/../modelos/Carrucel.php';
 
-
-?>
 <!DOCTYPE html>
 <html lang="es">
 
