@@ -294,17 +294,45 @@ svg{
     border-right: 4px solid transparent;
     border-bottom: 4px solid #333;
 }
-/* Sección de cupones */
 
-.coupons-grid {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 24px;
-    width: 85%;
-    max-width: 950px; 
-    margin: 0 auto;
-    padding: 0 0px; 
-    margin-bottom: 22px;
+.coupons-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 24px; width: 85%; max-width: 950px; margin: 0 auto; padding: 0 0px; margin-bottom: 22px; }
+
+@media (max-width: 480px) {
+  .coupon-content {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .main-content {
+    margin-right: 0;
+    margin-bottom: 16px;
+  }
+
+  .action-section {
+    width: 100%;
+    align-items: center;
+    padding-left: 0;
+  }
+
+  .perforation-line {
+    left: 90%;
+    transform: translateX(-50%);
+    right: auto;
+  }
+
+  .coupon-card::before,
+  .coupon-card::after {
+    display: none;
+  }
+
+  .coupon-card,
+  .coupon-content,
+  .main-content {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
 }
 
 .coupon-card 
