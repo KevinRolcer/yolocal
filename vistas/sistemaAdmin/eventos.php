@@ -8,7 +8,7 @@
     include_once("head.php");
     ?>
     <script type="module" src="assets/js/funcionesEventos.js?v=<?php echo time(); ?>"></script>
-    
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../assets/css/bolsaTrabajoAdmin.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <link rel="stylesheet" href="../assets/css/pildora.css">

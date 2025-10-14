@@ -1,5 +1,3 @@
-
-
 document.addEventListener("DOMContentLoaded", () => {
     cargarCategorias();
     listarEventosEnTarjetas();
@@ -75,7 +73,6 @@ function listarEventosEnTarjetas() {
         }
 
         data.lista.forEach(evento => {
-            // **CAMBIO IMPORTANTE**: Añadimos data-id a los botones
             const tarjeta = `
                 <div class="promo-card">
                     <div class="promo-card-image">
@@ -93,10 +90,10 @@ function listarEventosEnTarjetas() {
                         </p>
                         <div class="promo-card-actions">
                             <button class="btn-edit" data-id="${evento.ID_Evento}">
-                                <i class="bi bi-pencil-square"></i> Editar
+                                <i class="bi bi-pencil-square"></i> 
                             </button>
                             <button class="btn-delete" data-id="${evento.ID_Evento}">
-                                <i class="bi bi-trash3-fill"></i> Eliminar
+                                <i class="bi bi-trash3-fill"></i> 
                             </button>
                         </div>
                     </div>
@@ -112,7 +109,7 @@ function listarEventosEnTarjetas() {
 }
 
 /**
- * Envía los datos del formulario para agregar un nuevo evento.
+ * Envía los datos del formulario para agregar un nuevo evento con SweetAlert.
  */
 function agregarEvento() {
     const form = document.getElementById("formEvento");
@@ -123,13 +120,30 @@ function agregarEvento() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert("✅ Evento agregado correctamente");
-            form.reset();
             bootstrap.Modal.getInstance(document.getElementById('modalEvento')).hide();
+            Swal.fire({
+                icon: 'success',
+                title: '¡Evento Guardado!',
+                text: 'El nuevo evento ha sido registrado correctamente.',
+                timer: 2000,
+                showConfirmButton: false
+            });
             listarEventosEnTarjetas();
         } else {
-            alert("❌ " + (data.message || 'No se pudo agregar el evento.'));
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: data.message || 'No se pudo agregar el evento.'
+            });
         }
+    })
+    .catch(error => {
+        console.error("Error en agregarEvento:", error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error de Conexión',
+            text: 'No se pudo comunicar con el servidor.'
+        });
     });
 }
 
@@ -145,13 +159,12 @@ function abrirModalEditar(id) {
     .then(response => response.json())
     .then(data => {
         if (!data.success) {
-            alert("Error: No se encontró el evento.");
+            Swal.fire("Error", "No se encontró el evento.", "error");
             return;
         }
         
         const evento = data.evento;
-        // **CORRECCIÓN**: Asegúrate de que los IDs del formulario de edición son correctos
-        document.getElementById("ID_Evento_Editar").value = evento.ID_Evento; // Campo oculto para el ID
+        document.getElementById("ID_Evento_Editar").value = evento.ID_Evento;
         document.getElementById("EditTituloE").value = evento.TituloE;
         document.getElementById("EditDescripcionE").value = evento.DescripcionE;
         document.getElementById("EditPrecioE").value = evento.PrecioE;
@@ -165,49 +178,91 @@ function abrirModalEditar(id) {
 }
 
 /**
- * Envía los datos actualizados de un evento.
+ * Envía los datos actualizados de un evento con SweetAlert.
  */
 function editarEvento() {
     const form = document.getElementById("formEditar");
     const formData = new FormData(form);
     formData.append("ope", "EDITAR");
-    // **CORRECCIÓN**: El ID se obtiene del campo oculto correcto
     formData.append("ID_Evento", document.getElementById("ID_Evento_Editar").value);
-
 
     fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert("✅ Evento actualizado correctamente");
             bootstrap.Modal.getInstance(document.getElementById('modalEditar')).hide();
+            Swal.fire({
+                icon: 'success',
+                title: '¡Actualizado!',
+                text: 'El evento ha sido modificado correctamente.',
+                timer: 2000,
+                showConfirmButton: false
+            });
             listarEventosEnTarjetas();
         } else {
-            alert("❌ No se pudo actualizar el evento.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo actualizar el evento.'
+            });
         }
+    })
+    .catch(error => {
+        console.error("Error en editarEvento:", error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error de Conexión',
+            text: 'No se pudo comunicar con el servidor.'
+        });
     });
 }
 
 /**
- * Elimina un evento previa confirmación.
+ * Pide confirmación con SweetAlert para eliminar un evento.
  */
 function eliminarEvento(id) {
-    if (!confirm("¿Estás seguro de que deseas eliminar este evento? Esta acción no se puede deshacer.")) {
-        return;
-    }
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esta acción!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, ¡eliminar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si el usuario confirma, se elimina
+            const formData = new FormData();
+            formData.append("ope", "ELIMINAR");
+            formData.append("ID_Evento", id);
 
-    const formData = new FormData();
-    formData.append("ope", "ELIMINAR");
-    formData.append("ID_Evento", id);
-
-    fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("🗑️ Evento eliminado correctamente");
-            listarEventosEnTarjetas();
-        } else {
-            alert("❌ No se pudo eliminar el evento.");
+            fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire(
+                        '¡Eliminado!',
+                        'El evento ha sido eliminado.',
+                        'success'
+                    );
+                    listarEventosEnTarjetas(); // Actualiza la lista
+                } else {
+                    Swal.fire(
+                        'Error',
+                        data.message || 'No se pudo eliminar el evento.',
+                        'error'
+                    );
+                }
+            })
+            .catch(error => {
+                console.error("Error en eliminarEvento:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error de Conexión',
+                    text: 'No se pudo comunicar con el servidor.'
+                });
+            });
         }
     });
 }
