@@ -1284,12 +1284,12 @@ svg {
     .slide-image {
         flex: 0 0 auto;
         margin-right: 0;
-        margin-top: 30px;
+        margin-top: 15px;
         width: 150px;
     }
 
     .slide-image img {
-        height: 200px;
+        height: 150px;
     }
 
     .slide-title {
