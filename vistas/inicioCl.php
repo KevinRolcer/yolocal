@@ -233,102 +233,122 @@
             </p>
 
         </div>
-        <div class="container">
 
+
+        <div class="yolocalconecta">
             <div class="row row-3">
                 <div class="card white">
-                    <div class="card-header">
-                        <div class="card-title">Eventos</div>
-                        <div class="card-subtitle">Subtitulo</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            Descripción
+                    <div class="card-left">
+                        <div class="card-header">
+                            <div class="card-title">Eventos</div>
+                            <div class="card-subtitle">Subtitulo</div>
                         </div>
+                        <div class="card-content">
+                            <div class="card-description">
+                                Descripción
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="card-button">Más detalles</button>
+                        </div>
+                    </div>
+                    <div class="card-right">
                         <div class="card-image">
-                            <img src="assets/img/Cafeteria.jpg" alt="Cafeteria">
+                            <img src="assets/img/517130134_1300489448747756_547402111643965829_n.jpg" alt="Contacto">
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="card-button">Más detalles</button>
                     </div>
                 </div>
 
                 <div class="card purple">
-                    <div class="card-header">
-                        <div class="card-title">Bolsa de trabajo</div>
-                        <div class="card-subtitle">Subtitulo</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            Descripción
+                    <div class="card-left">
+                        <div class="card-header">
+                            <div class="card-title">Bolsa de trabajo</div>
+                            <div class="card-subtitle">Subtitulo</div>
                         </div>
-                        <div class="card-image">img</div>
+                        <div class="card-content">
+                            <div class="card-description">
+                                Descripción
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="card-button">Más detalles</button>
+                        </div>
                     </div>
-                    <div class="card-footer">
-                        <button class="card-button">Más detalles</button>
+                    <div class="card-right">
+                        <div class="card-image">
+                            <img src="assets/img/bolsa-trabajo.jpg" alt="Bolsa de trabajo">
+                        </div>
                     </div>
                 </div>
 
                 <div class="card white">
-                    <div class="card-header">
-                        <div class="card-title">Noticias</div>
-                        <div class="card-subtitle">Subtitulo</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            Descripción
+                    <div class="card-left">
+                        <div class="card-header">
+                            <div class="card-title">Noticias</div>
+                            <div class="card-subtitle">Subtitulo</div>
                         </div>
+                        <div class="card-content">
+                            <div class="card-description">
+                                Descripción
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="card-button">Más detalles</button>
+                        </div>
+                    </div>
+                    <div class="card-right">
                         <div class="card-image">
-                            <img id="noticiasCl" src="assets/img/noticias.png" alt="Cafeteria">
-
+                            <img src="assets/img/noticias.png" alt="Noticias">
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="card-button">Más detalles</button>
                     </div>
                 </div>
             </div>
 
             <div class="row row-2">
                 <div class="card white">
-                    <div class="card-header">
-                        <div class="card-title">Contacto</div>
-                        <div class="card-subtitle">Subtitulo</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            Descripción
+                    <div class="card-left">
+                        <div class="card-header">
+                            <div class="card-title">Contacto</div>
+                            <div class="card-subtitle">Subtitulo</div>
                         </div>
+                        <div class="card-content">
+                            <div class="card-description">
+                                Descripción
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="card-button">Más detalles</button>
+                        </div>
+                    </div>
+                    <div class="card-right">
                         <div class="card-image">
-                            <img src="../assets/img/517130134_1300489448747756_547402111643965829_n.jpg" alt="">
+
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <button class="card-button">Más detalles</button>
                     </div>
                 </div>
 
-                <div class="card yellow">
-                    <div class="card-header">
-                        <div class="card-title">Patrocinadores</div>
-                        <div class="card-subtitle">Negocios</div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-description">
-                            Explora mas tipos de negocios que forman parte de Yolocal
+                <div class="card yellow card-yolocal">
+                    <div class="card-left yellow-content">
+                        <div class="card-header">
+                            <div class="card-title">Patrocinadores</div>
+                            <div class="card-subtitle">Negocios</div>
                         </div>
-                        <div id="cardLogo" class="card-image">
-                            <img src="assets/img/LogoYolocal.png" alt="">
+                        <div class="card-content">
+                            <div class="card-description">
+                                El corazón de Yolocal
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="card-button">Más detalles</button>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <button class="card-button">Más detalles</button>
+                    <div class="card-right yellow-image">
+                        <img src="assets/img/LogoYolocal.png" alt="Yolocal">
                     </div>
                 </div>
+
             </div>
         </div>
-
 
 
 

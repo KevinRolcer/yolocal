@@ -866,132 +866,111 @@ svg {
 }
 
 
-/* Categorias*/
 
-.container {
+/* Categorias YoLocal Conecta */
+
+.yolocalconecta {
     max-width: 1200px;
     margin: 0 auto;
     padding: 10px;
 }
 
-.row {
+.yolocalconecta .row {
     display: flex;
     gap: 20px;
     margin-bottom: 20px;
     flex-wrap: wrap;
 }
 
-.row-3 .card {
+.yolocalconecta .row-3 .card {
     flex: 1;
     min-width: 300px;
 }
 
-.row-2 .card {
+.yolocalconecta .row-2 .card {
     flex: 1;
     min-width: 380px;
 }
 
-.card {
+.yolocalconecta .card {
     background: var(--blanco);
     border-radius: 20px;
-    padding: 15px;
+    padding: 20px;
     color: var(--texto2);
     position: relative;
-    min-height: 100px;
-    height: 160px;
+    min-height: 180px;
+    height: 180px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
 }
 
-.card:hover {
+.yolocalconecta .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
-.card.blue {
+.yolocalconecta .card.blue {
     background: white;
 }
 
-.card.purple {
+.yolocalconecta .card.purple {
     background: var(--principal2);
     color: var(--blanco);
 }
 
-
-.card.yellow {
+.yolocalconecta .card.yellow {
     background: var(--complementario);
     color: var(--blanco);
 }
 
+.yolocalconecta .card-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 15px;
+    z-index: 2;
+}
 
+.yolocalconecta .card-header {
+    margin-bottom: 10px;
+}
 
-.card-title {
+.yolocalconecta .card-title {
     font-size: 24px;
     font-weight: bold;
     line-height: 1.2;
+    margin-bottom: 5px;
 }
 
-.card-subtitle {
+.yolocalconecta .card-subtitle {
     font-size: 16px;
     opacity: 0.9;
     font-weight: 300;
 }
 
-.card-content {
+.yolocalconecta .card-content {
     flex: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 }
 
-.card-description {
-    flex: 1;
+.yolocalconecta .card-description {
     font-size: 14px;
     line-height: 1.5;
     opacity: 0.9;
-    padding-right: 20px;
 }
 
-.card.yellow .card-content {
-    gap: 140px;
-    justify-content: space-around;
-}
-
-.card-image {
-    flex: 1;
-    width: 80px;
-    height: auto;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: auto;
-}
-
-.card.yellow .card-image img {
-    width: 500px;
-    min-width: 420px;
-}
-
-.card-image img {
-    width: 100px;
-    border-radius: 10px;
-}
-
-#noticiasCl{
-    width: 250px;
-    min-width: 140px;
-}
-.card-footer {
+.yolocalconecta .card-footer {
     display: flex;
     justify-content: flex-start;
+    margin-top: 10px;
 }
 
-.card-button {
+.yolocalconecta .card-button {
     background: var(--principal);
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
@@ -1004,22 +983,104 @@ svg {
     backdrop-filter: blur(10px);
 }
 
-.card-button:hover {
+.yolocalconecta .card-button:hover {
     background: rgba(255, 205, 0, 0.8);
     transform: translateY(-2px);
     color: var(--principal);
 }
 
-.discount-badge {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 12px;
-    font-weight: bold;
-    backdrop-filter: blur(10px);
+.yolocalconecta .card-right {
+    flex: 1;
+    position: relative;
+    margin: -20px -20px -20px 0;
+    overflow: hidden;
+    border-radius: 0 20px 20px 0;
+}
+
+.yolocalconecta .card-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.yolocalconecta .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0 20px 20px 0;
+}
+
+.card-yolocal {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: var(--complementario);
+  color: var(--blanco);
+  border-radius: 20px;
+  padding: 10px;
+  height: 110px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Lado izquierdo (texto) */
+.card-yolocal .yellow-content {
+  width: 33%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 5px;
+  gap: 10px;
+  z-index: 2;
+}
+
+.card-yolocal .card-title {
+  font-size: 18px;
+  line-height: 1.1;
+  margin-bottom: 2px;
+  font-weight: bold;
+}
+
+.card-yolocal .card-subtitle {
+  font-size: 16px;
+  margin-bottom: 3px;
+  font-weight: 400;
+}
+
+.card-yolocal .card-description {
+  font-size: 14px;
+  line-height: 1.2;
+  margin-bottom: 3px;
+  word-wrap: break-word;
+}
+
+.card-yolocal .card-button {
+
+  background: var(--principal);
+  color: #fff;
+
+}
+
+.card-yolocal .yellow-image {
+  position: absolute;
+  right: -30%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 120%;
+  height: 190%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-yolocal .yellow-image img {
+    
+    width: 450px;
+    min-width: 420px;
 }
 
 
@@ -1213,27 +1274,7 @@ svg {
         font-size: 0.85rem;
     }
 
-    .row {
-        flex-direction: column;
-    }
-
-    .card {
-        min-width: unset;
-        margin-bottom: 15px;
-    }
-
-    .card-title {
-        font-size: 20px;
-    }
-
-    .card-image {
-        width: 70px;
-        height: 60px;
-    }
-
-    .card.yellow .card-content {
-        gap: 110px;
-    }
+    
 
     .title {
         font-size: 2.25rem;
@@ -1276,6 +1317,67 @@ svg {
 
     .carruselC {
         gap: 16px;
+    }
+
+
+    .yolocalconecta {
+        padding: 15px;
+    }
+
+    .yolocalconecta .row {
+        gap: 15px;
+    }
+
+    .yolocalconecta .row-3 .card,
+    .yolocalconecta .row-2 .card {
+        min-width: 100%;
+        flex: 1 1 100%;
+    }
+
+    .yolocalconecta .card {
+        height: auto;
+        min-height: 160px;
+        padding: 15px;
+        flex-direction: column;
+    }
+
+    .yolocalconecta .card-left {
+        flex: none;
+        width: 100%;
+        padding-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .yolocalconecta .card-right {
+        flex: none;
+        width: 100%;
+        height: 150px;
+        margin: 0 -15px -15px -15px;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .yolocalconecta .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .yolocalconecta .card-title {
+        font-size: 20px;
+    }
+
+    .yolocalconecta .card-subtitle {
+        font-size: 14px;
+    }
+
+    .yolocalconecta .card-description {
+        font-size: 13px;
+    }
+    .card-yolocal .yellow-image {
+        right: -20%;
+        width: 95%;
+        height: 150%;
     }
 }
 
@@ -1367,33 +1469,8 @@ svg {
         font-size: 0.70rem;
         padding: 8px 12px;
     }
-
-    .card {
-        padding: 10px;
-    }
-
-    .card-description {
-        padding-right: 10px;
-    }
-
     .container {
         padding: 10px;
-    }
-
-    .card-content {
-        width: 340px;
-    }
-
-    .card-header {
-        width: 320px;
-    }
-
-    .row.row-2 {
-        width: 380px;
-    }
-
-    .card.yellow .card-content {
-        gap: 90px;
     }
 
     .encabezadoC  {
@@ -1412,6 +1489,57 @@ svg {
 
     .contenidoTarjetaC  {
         padding: 16px;
+    }
+    
+    .yolocalconecta {
+        padding: 10px;
+    }
+
+    .yolocalconecta .row {
+        gap: 12px;
+    }
+
+    .yolocalconecta .card {
+        height: auto;
+        min-height: 140px;
+        padding: 12px;
+    }
+
+    .yolocalconecta .card-left {
+        margin-bottom: 12px;
+    }
+
+    .yolocalconecta .card-right {
+        height: 130px;
+        margin: 0 -12px -12px -12px;
+    }
+
+    .yolocalconecta .card-title {
+        font-size: 18px;
+    }
+
+    .yolocalconecta .card-subtitle {
+        font-size: 13px;
+    }
+
+    .yolocalconecta .card-description {
+        font-size: 12px;
+    }
+
+    .yolocalconecta .card-button {
+        padding: 6px 16px;
+        font-size: 13px;
+    }
+
+    .card-yolocal {
+        height: 100px;
+        padding: 8px;
+    }
+
+    .card-yolocal .yellow-image {
+        right: -30%;
+        width: 120%;
+        height: 190%;
     }
 
 }
@@ -1447,6 +1575,84 @@ svg {
     .discount {
         font-size: 1rem;
     }
+
+    .yolocalconecta {
+        padding: 8px;
+    }
+
+    .yolocalconecta .row {
+        gap: 10px;
+    }
+
+    .yolocalconecta .card {
+        min-height: 120px;
+        padding: 10px;
+    }
+
+    .yolocalconecta .card-left {
+        margin-bottom: 10px;
+    }
+
+    .yolocalconecta .card-right {
+        height: 110px;
+        margin: 0 -10px -10px -10px;
+    }
+
+    .yolocalconecta .card-title {
+        font-size: 16px;
+    }
+
+    .yolocalconecta .card-subtitle {
+        font-size: 12px;
+    }
+
+    .yolocalconecta .card-description {
+        font-size: 11px;
+    }
+
+    .yolocalconecta .card-button {
+        padding: 5px 14px;
+        font-size: 12px;
+    }
+
+    /* Yellow card en móvil pequeño - HORIZONTAL MUY COMPACTO */
+    .yolocalconecta .card.yellow {
+        height: 110px;
+        min-height: 110px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .yolocalconecta .yellow-content {
+        flex: none;
+        padding: 0 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 2;
+        white-space: normal;
+        overflow-wrap: break-word;
+    }
+
+    .yolocalconecta .yellow-image {
+        position: absolute;
+        transform: translateY(-50%);
+        height: 180%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .yolocalconecta .yellow-image img {
+        width: 90%;
+        height: 90%;
+        object-fit: contain;
+    }
+
+
 }
 
 @keyframes fadeIn {
