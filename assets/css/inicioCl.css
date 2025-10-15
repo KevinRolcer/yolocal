@@ -1284,6 +1284,7 @@ svg {
     .slide-image {
         flex: 0 0 auto;
         margin-right: 0;
+        margin-bottom: 10px;
         margin-top: 15px;
         width: 150px;
     }
