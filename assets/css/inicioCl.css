@@ -680,7 +680,8 @@ svg {
 /*Vista de cupones */
 #contenedorCupon {
     position: relative;
-    height: 70vh;
+    margin-top: 10px;
+    height: 80vh;
     background-color: var(--secunadrio);
     min-height: 70vh;
     display: flex;
