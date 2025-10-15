@@ -342,7 +342,7 @@ svg {
 
 .slide-image {
     flex: 0 0 300px;
-    margin-right: 60px;
+    margin-right: 20px;
     position: relative;
 }
 
@@ -373,7 +373,7 @@ svg {
     border-radius: 20px;
     font-size: 14px;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
 }
@@ -381,15 +381,15 @@ svg {
 .slide-title {
     font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     line-height: 1.2;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .slide-description {
-    font-size: 1rem;
+    font-size: .8rem;
     line-height: 1.6;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     opacity: 0.9;
     max-width: 500px;
 }
@@ -1286,7 +1286,7 @@ svg {
         margin-right: 0;
         margin-bottom: 30px;
         margin-top: 30px;
-        width: 250px;
+        width: 150px;
     }
 
     .slide-image img {
@@ -1298,8 +1298,8 @@ svg {
     }
 
     .slide-description {
-        font-size: .8rem;
-        margin-bottom: 20px;
+        font-size: .7rem;
+        margin-bottom: 10px;
     }
 
     .carousel-nav {
@@ -1737,7 +1737,10 @@ svg {
         height: 90%;
         object-fit: contain;
     }
-
+    .dot {
+        width: 9px;
+        height: 9px;
+    }
 
 }
 
