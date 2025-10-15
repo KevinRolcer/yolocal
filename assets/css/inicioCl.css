@@ -681,8 +681,7 @@ svg {
 #contenedorCupon {
     position: relative;
     height: 70vh;
-        background-color: var(--secunadrio);
-
+    background-color: var(--secunadrio);
     min-height: 70vh;
     display: flex;
     flex-direction: column;
