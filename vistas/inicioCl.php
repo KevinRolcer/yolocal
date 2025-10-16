@@ -303,11 +303,11 @@
                     <div class="card-left">
                         <div class="card-header">
                             <div class="card-title">Eventos</div>
-                            <div class="card-subtitle">Subtitulo</div>
+                            <div class="card-subtitle">Los mejores eventos de Texmelucan</div>
                         </div>
                         <div class="card-content">
                             <div class="card-description">
-                                Descripción
+                                
                             </div>
                         </div>
                         <div class="card-footer">
@@ -325,11 +325,11 @@
                     <div class="card-left">
                         <div class="card-header">
                             <div class="card-title">Bolsa de trabajo</div>
-                            <div class="card-subtitle">Subtitulo</div>
+                            <div class="card-subtitle">Encuentra tu empleo ideal en Texmelucan</div>
                         </div>
                         <div class="card-content">
                             <div class="card-description">
-                                Descripción
+                             
                             </div>
                         </div>
                         <div class="card-footer">
@@ -347,11 +347,11 @@
                     <div class="card-left">
                         <div class="card-header">
                             <div class="card-title">Noticias</div>
-                            <div class="card-subtitle">Subtitulo</div>
+                            <div class="card-subtitle">Mantente informado sobre lo que sucede en Texmelucan</div>
                         </div>
                         <div class="card-content">
                             <div class="card-description">
-                                Descripción
+                                
                             </div>
                         </div>
                         <div class="card-footer">
@@ -371,7 +371,7 @@
                     <div class="card-left">
                         <div class="card-header">
                             <div class="card-title">Contacto</div>
-                            <div class="card-subtitle">Subtitulo</div>
+                            <div class="card-subtitle">¿Tienes alguna pregunta? Contáctanos</div>
                         </div>
                         <div class="card-content">
                             <div class="card-description">
@@ -393,7 +393,7 @@
                     <div class="card-left yellow-content">
                         <div class="card-header">
                             <div class="card-title">Patrocinadores</div>
-                            <div class="card-subtitle">Negocios</div>
+                            <div class="card-subtitle">Negocios que apoyan <br> a la comunidad</div>
                         </div>
                         <div class="card-content">
                             <div class="card-description">
