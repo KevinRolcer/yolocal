@@ -54,7 +54,6 @@ function initMap() {
     cargarNegocios();
 }
 
-// Obtener ubicación del usuario
 function obtenerUbicacionUsuario() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -184,92 +183,64 @@ function agregarMarcadores() {
 
 // Renderizar lista de negocios
 function renderizarNegocios() {
-    const listaNegocios = document.getElementById('listaNegocios');
-    const filtroEstado = document.getElementById('filtroEstado').value;
-    const filtroOrden = document.getElementById('filtroOrden').value;
-    const textoBusqueda = document.getElementById('inputBuscador').value.toLowerCase();
-    
-    // Filtrar negocios
-    let negociosFiltrados = negociosData.filter(negocio => {
-        const cumpleBusqueda = negocio.nombre_negocio.toLowerCase().includes(textoBusqueda);
-        const cumpleEstado = filtroEstado === 'todos' || 
-                            (filtroEstado === 'abierto' && negocio.abierto) ||
-                            (filtroEstado === 'cerrado' && !negocio.abierto);
-        return cumpleBusqueda && cumpleEstado;
-    });
-    
-    // Ordenar negocios
-    negociosFiltrados.sort((a, b) => {
-        switch(filtroOrden) {
-            case 'cercano':
-                return a.distancia - b.distancia;
-            case 'nombre':
-                return a.nombre_negocio.localeCompare(b.nombre_negocio);
-            case 'calificacion':
-                return (b.calificacion || 0) - (a.calificacion || 0);
-            default:
-                return 0;
-        }
-    });
-    
-    // Renderizar
-    if (negociosFiltrados.length === 0) {
-        mostrarMensajeVacio('No se encontraron negocios');
-        return;
-    }
-    
-    listaNegocios.innerHTML = negociosFiltrados.map(negocio => `
-        <div class="negocio-card" data-id="${negocio.id_negocio}" onclick="seleccionarNegocio(${JSON.stringify(negocio).replace(/"/g, '&quot;')})">
-            <div class="negocio-header">
-                <div class="negocio-logo">
-                    <img src="${negocio.logo || '../assets/img/LogoYolocal.png'}" alt="${negocio.nombre_negocio}" onerror="this.src='../assets/img/LogoYolocal.png'">
-                </div>
-                <div class="negocio-info">
-                    <div class="negocio-nombre">${negocio.nombre_negocio}</div>
-                    <div class="negocio-distancia">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                            <circle cx="12" cy="10" r="3"/>
-                        </svg>
-                        ${negocio.distancia.toFixed(1)} km
-                    </div>
-                    <div class="negocio-estado ${negocio.abierto ? 'abierto' : 'cerrado'}">
-                        ${negocio.abierto ? '● Abierto ahora' : '● Cerrado'}
-                    </div>
-                </div>
-                <button class="negocio-favorito" onclick="toggleFavorito(event, ${negocio.id_negocio})">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="negocio-detalles">
-                <div class="negocio-calificacion">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                    </svg>
-                    ${(negocio.calificacion || 4.5).toFixed(1)}
-                </div>
-                <div class="negocio-precio">$$</div>
-            </div>
-            <div class="negocio-acciones">
-                <button class="btn-accion" onclick="verDetalles(event, ${negocio.id_negocio})">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 16v-4M12 8h.01"/>
-                    </svg>
-                    Ver más
-                </button>
-                <button class="btn-accion primario" onclick="trazarRuta(event, ${negocio.Latitud}, ${negocio.Longitud}, '${negocio.nombre_negocio.replace(/'/g, "\\'")}')">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 11l19-9-9 19-2-8-8-2z"/>
-                    </svg>
-                    Ruta
-                </button>
-            </div>
+  const listaNegocios = document.getElementById('listaNegocios');
+  if (!listaNegocios) return;
+
+  const filtroEstado = document.getElementById('filtroEstado')?.value || 'todos';
+  const filtroOrden = document.getElementById('filtroOrden')?.value || 'cercano';
+  const textoBusqueda = document.getElementById('inputBuscador')?.value.toLowerCase() || '';
+
+  // Filtrar negocios según búsqueda y estado
+  let negociosFiltrados = negociosData.filter(n => {
+    const coincideNombre = n.nombre_negocio.toLowerCase().includes(textoBusqueda);
+    const coincideEstado =
+      filtroEstado === 'todos' ||
+      (filtroEstado === 'abierto' && n.abierto) ||
+      (filtroEstado === 'cerrado' && !n.abierto);
+    return coincideNombre && coincideEstado;
+  });
+
+  negociosFiltrados.sort((a, b) => {
+    if (filtroOrden === 'nombre') return a.nombre_negocio.localeCompare(b.nombre_negocio);
+    return a.distancia - b.distancia; 
+  });
+
+  if (negociosFiltrados.length === 0) {
+    mostrarMensajeVacio('No se encontraron negocios');
+    return;
+  }
+
+  listaNegocios.innerHTML = '';
+
+  // Crear las tarjetas de negocios
+  negociosFiltrados.forEach(negocio => {
+    const div = document.createElement('div');
+    div.className = 'negocio-card';
+    div.dataset.id = negocio.id_negocio;
+
+    div.innerHTML = `
+      <div class="negocio-header">
+        <div class="negocio-logo">
+          <img src="${negocio.logo || '../assets/img/LogoYolocal.png'}"
+               alt="${negocio.nombre_negocio}"
+               onerror="this.src='../assets/img/LogoYolocal.png'">
         </div>
-    `).join('');
+        <div class="negocio-info">
+          <div class="negocio-nombre">${negocio.nombre_negocio}</div>
+          <div class="negocio-distancia">${negocio.distancia ? negocio.distancia.toFixed(1) + ' km' : ''}</div>
+          <div class="negocio-estado ${negocio.abierto ? 'abierto' : 'cerrado'}">
+            ${negocio.abierto ? '● Abierto ahora' : '● Cerrado'}
+          </div>
+        </div>
+      </div>
+    `;
+
+    div.addEventListener('click', () => seleccionarNegocio(negocio));
+    listaNegocios.appendChild(div);
+  });
 }
+
+
 
 // Seleccionar negocio
 function seleccionarNegocio(negocio) {
@@ -344,47 +315,40 @@ function mostrarInfoCard(negocio) {
     infoCard.style.display = 'block';
 }
 
-// Trazar ruta
 function trazarRuta(event, lat, lng, nombre) {
-    if (event) event.stopPropagation();
-    
-    if (!ubicacionUsuario) {
-        alert('No se pudo obtener tu ubicación');
-        return;
-    }
-    
-    // Eliminar ruta anterior si existe
-    if (routingControl) {
-        map.removeControl(routingControl);
-    }
-    
-    // Crear nueva ruta
-    routingControl = L.Routing.control({
-        waypoints: [
-            L.latLng(ubicacionUsuario.lat, ubicacionUsuario.lng),
-            L.latLng(lat, lng)
-        ],
-        routeWhileDragging: false,
-        showAlternatives: false,
-        lineOptions: {
-            styles: [{ color: '#6613F0', weight: 5 }]
-        },
-        createMarker: function() { return null; }, // No crear marcadores adicionales
-    }).addTo(map);
-    
-    // Cerrar panel en móvil
-    if (window.innerWidth <= 768) {
-        document.getElementById('panelLateral').classList.remove('activo');
-    }
+  if (event) event.stopPropagation();
+
+  if (!ubicacionUsuario) {
+    alert('No se pudo obtener tu ubicación');
+    return;
+  }
+
+  // Eliminar ruta anterior correctamente
+  if (routingControl) {
+    map.removeControl(routingControl);
+    routingControl = null;
+  }
+
+  routingControl = L.Routing.control({
+    waypoints: [
+      L.latLng(ubicacionUsuario.lat, ubicacionUsuario.lng),
+      L.latLng(lat, lng)
+    ],
+    routeWhileDragging: false,
+    showAlternatives: false,
+    lineOptions: { styles: [{ color: '#6613F0', weight: 5 }] },
+    createMarker: () => null
+  }).addTo(map);
+
+  map.setView([lat, lng], 15);
 }
 
-// Toggle favorito
+
 function toggleFavorito(event, id) {
     event.stopPropagation();
     const btn = event.currentTarget;
     btn.classList.toggle('activo');
     
-    // Aquí guardarías en localStorage o base de datos
     console.log('Toggle favorito:', id);
 }
 

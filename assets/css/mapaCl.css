@@ -482,7 +482,7 @@ svg{
 
 /* Card de Negocio */
 .negocio-card {
-    background: var(--blanco);
+    background: var(--principal2);
     border-radius: 16px;
     padding: 16px;
     margin-bottom: 12px;
@@ -492,7 +492,7 @@ svg{
 }
 
 .negocio-card:hover {
-    background: var(--complementario);
+    background: var(--principal2);
     border-color: var(--complementario);
     transform: translateX(4px);
 }
