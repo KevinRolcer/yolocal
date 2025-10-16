@@ -395,7 +395,12 @@ document.addEventListener('DOMContentLoaded', function() {
     btnTogglePanel.addEventListener('click', () => {
         panelLateral.classList.toggle('activo');
     });
-    
+    const btnVolver = document.querySelector('.btn-volver');
+    if (btnVolver) {
+        btnVolver.addEventListener('click', () => {
+            panelLateral.classList.remove('activo');
+        });
+    }
     // Buscador
     const inputBuscador = document.getElementById('inputBuscador');
     const btnLimpiar = document.getElementById('btnLimpiar');

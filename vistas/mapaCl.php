@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <link rel="stylesheet" href="../assets/css/mapaCl.css">
+    <script defer src="../assets/js/menuCl.js"></script>
+
 </head>
 <body>
     
@@ -90,7 +92,7 @@
             
             <div class="header-panel">
                 <div class="usuario-info">
-                    <button class="btn-volver" onclick="window.history.back()">
+                    <button class="btn-volver" onclick="cerrarPanelLateral()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M19 12H5M12 19l-7-7 7-7"/>
                         </svg>
