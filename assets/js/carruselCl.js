@@ -90,7 +90,7 @@ class ImageCarousel {
 
   updateDots() {
     this.dotsContainer.innerHTML = "";
-    const maxVisibleDots = 2; 
+    const maxVisibleDots = 11; 
 
     if (this.isMobileView.matches && this.totalSlides > maxVisibleDots) {
   
