@@ -311,7 +311,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <a href="controladores/ControladorEvento.php"><button class="card-button">Más detalles</button></a>
+                            <a href="controladores/controladorEvento.php"><button class="card-button">Más detalles</button></a>
                         </div>
                     </div>
                     <div class="card-right">
@@ -422,7 +422,7 @@
             <div class="buttons-top">
                 <a href="vistas/nosotros.php" class="btn btn-yellow">Conócenos</a>
                 <a href="#" class="btn btn-white">Patrocinadores</a>
-                <a href="vistas/eventosPag.php" class="btn btn-yellow">Eventos</a>
+                <a href="controladores/controladorEvento.php" class="btn btn-yellow">Eventos</a>
             </div>
 
             <div class="footer-top">
