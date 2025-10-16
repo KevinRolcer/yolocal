@@ -89,7 +89,7 @@ class ImageCarousel {
 
   updateDots() {
     this.dotsContainer.innerHTML = "";
-    const maxVisibleDots = 10; 
+    const maxVisibleDots = 11; 
 
     if (this.totalSlides <= maxVisibleDots) {
  
