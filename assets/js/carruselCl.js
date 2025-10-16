@@ -25,6 +25,7 @@ class ImageCarousel {
     this.prevBtn = document.getElementById("prevBtn");
     this.nextBtn = document.getElementById("nextBtn");
     this.dotsContainer = document.getElementById("carouselDots");
+    this.isMobileView = window.matchMedia("(max-width: 767px)");
 
     // Prevenir errores si no se encuentran los elementos del DOM
     if (!this.track || !this.prevBtn || !this.nextBtn || !this.dotsContainer) {
@@ -89,14 +90,10 @@ class ImageCarousel {
 
   updateDots() {
     this.dotsContainer.innerHTML = "";
-    const maxVisibleDots = 11; 
+    const maxVisibleDots = 2; 
 
-    if (this.totalSlides <= maxVisibleDots) {
- 
-      for (let i = 0; i < this.totalSlides; i++) {
-        this._createSingleDot(i);
-      }
-    } else {
+    if (this.isMobileView.matches && this.totalSlides > maxVisibleDots) {
+  
       let start = Math.max(0, this.currentSlide - Math.floor(maxVisibleDots / 2));
       let end = Math.min(this.totalSlides - 1, start + maxVisibleDots - 1);
 
@@ -105,6 +102,10 @@ class ImageCarousel {
       }
 
       for (let i = start; i <= end; i++) {
+        this._createSingleDot(i);
+      }
+    } else {
+      for (let i = 0; i < this.totalSlides; i++) {
         this._createSingleDot(i);
       }
     }
@@ -123,6 +124,8 @@ class ImageCarousel {
   addEventListeners() {
     this.prevBtn.addEventListener("click", () => this.prevSlide());
     this.nextBtn.addEventListener("click", () => this.nextSlide());
+    
+    this.isMobileView.addEventListener("change", () => this.updateDots());
 
     let startX = 0;
     this.track.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, { passive: true });
@@ -130,18 +133,14 @@ class ImageCarousel {
       const endX = e.changedTouches[0].clientX;
       this.handleSwipe(startX, endX);
     });
-
-    // Eventos de teclado
     document.addEventListener("keydown", (e) => {
       if (e.key === "ArrowLeft") this.prevSlide();
       if (e.key === "ArrowRight") this.nextSlide();
     });
-
     const container = this.track.closest(".carousel-container");
     container.addEventListener("mouseenter", () => this.stopAutoPlay());
     container.addEventListener("mouseleave", () => this.startAutoPlay());
   }
-
   handleSwipe(startX, endX) {
     const threshold = 50; 
     const diff = startX - endX;
