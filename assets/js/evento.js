@@ -1,65 +1,119 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const modal = document.getElementById("modal-evento");
+  if (!modal) return;
 
-document.addEventListener('DOMContentLoaded', function() {
+  const modalCerrar = modal.querySelector(".modal-cerrar");
+  const modalImg = document.getElementById("modal-img");
+  const modalTitulo = document.getElementById("modal-titulo");
+  const modalCategoria = document.getElementById("modal-categoria");
+  const modalPrecio = document.getElementById("modal-precio");
+  const modalDescripcion = document.getElementById("modal-descripcion");
+  const modalFecha = document.getElementById("modal-fecha");
+  const modalHora = document.getElementById("modal-hora");
+  const modalUbicacion = document.getElementById("modal-ubicacion");
 
-    const modal = document.getElementById('modal-evento');
-    if (!modal) return; 
+  function abrirModal(tarjeta) {
+    if (!tarjeta) return;
 
-    const modalCerrar = modal.querySelector('.modal-cerrar');
-    const modalImg = document.getElementById('modal-img');
-    const modalTitulo = document.getElementById('modal-titulo');
-    const modalCategoria = document.getElementById('modal-categoria');
-    const modalPrecio = document.getElementById('modal-precio');
-    const modalDescripcion = document.getElementById('modal-descripcion');
-    const modalFecha = document.getElementById('modal-fecha');
-    const modalHora = document.getElementById('modal-hora');
-    const modalUbicacion = document.getElementById('modal-ubicacion');
+    const eventoId = tarjeta.dataset.eventoId;
 
-   
-    const botonesInfo = document.querySelectorAll('.btn-secondary, .btn-primary');
+    modalImg.src = tarjeta.querySelector(".card-image").src;
+    modalTitulo.textContent = tarjeta.querySelector("h3").textContent;
+    modalCategoria.textContent = tarjeta.querySelector(".card-tag").textContent;
+    modalPrecio.textContent = tarjeta.querySelector(".card-price").textContent;
+    modalDescripcion.textContent =
+      tarjeta.querySelector(".card-description").textContent;
+    modalFecha.innerHTML = tarjeta.querySelector(
+      ".card-details .detail-item:nth-child(1)"
+    ).innerHTML;
+    modalHora.innerHTML = tarjeta.querySelector(
+      ".card-details .detail-item:nth-child(2)"
+    ).innerHTML;
+    modalUbicacion.innerHTML = tarjeta.querySelector(
+      ".card-details .detail-item:nth-child(3)"
+    ).innerHTML;
 
+    modal.style.display = "flex";
 
-    botonesInfo.forEach(boton => {
-        boton.addEventListener('click', function() {
-           
-            const tarjeta = this.closest('.event-card');
+    if (eventoId) {
+      window.location.hash = "evento-" + eventoId;
+    }
+  }
 
+  function cerrarModal() {
+    modal.style.display = "none";
 
-            const imagenSrc = tarjeta.querySelector('.card-image').src;
-            const titulo = tarjeta.querySelector('h3').textContent;
-            const categoria = tarjeta.querySelector('.card-tag').textContent;
-            const precio = tarjeta.querySelector('.card-price').textContent;
-            const descripcion = tarjeta.querySelector('.card-description').textContent;
-        
-            const fechaHTML = tarjeta.querySelector('.card-details .detail-item:nth-child(1)').innerHTML;
-            const horaHTML = tarjeta.querySelector('.card-details .detail-item:nth-child(2)').innerHTML;
-            const ubicacionHTML = tarjeta.querySelector('.card-details .detail-item:nth-child(3)').innerHTML;
+    history.pushState(
+      "",
+      document.title,
+      window.location.pathname + window.location.search
+    );
+  }
 
+  function abrirModalDesdeURL() {
+    const hash = window.location.hash;
+    if (hash.startsWith("#evento-")) {
+      const eventoId = hash.substring("#evento-".length);
+      const tarjeta = document.querySelector(
+        `.event-card[data-evento-id="${eventoId}"]`
+      );
+      if (tarjeta) {
+        // Si encontramos la tarjeta, llamamos a nuestra función central
+        abrirModal(tarjeta);
+      }
+    }
+  }
+
+  const botonesInfo = document.querySelectorAll(".btn-primary");
+  botonesInfo.forEach((boton) => {
+    boton.addEventListener("click", function () {
+      const tarjeta = this.closest(".event-card");
+      abrirModal(tarjeta); 
+    });
+  });
+
+  // Lógica para el botón de compartir (esta parte estaba bien)
+  const botonesCompartir = document.querySelectorAll(".btn-share");
+  botonesCompartir.forEach((boton) => {
+    boton.addEventListener("click", function (event) {
+      event.stopPropagation();
+      const tarjeta = this.closest(".event-card");
+      const eventoId = tarjeta.dataset.eventoId;
+      if (!eventoId) return;
+
+      const urlParaCompartir = `${window.location.origin}${window.location.pathname}#evento-${eventoId}`;
+
+      navigator.clipboard
+        .writeText(urlParaCompartir)
+        .then(() => {
          
-            modalImg.src = imagenSrc;
-            modalTitulo.textContent = titulo;
-            modalCategoria.textContent = categoria;
-            modalPrecio.textContent = precio;
-            modalDescripcion.textContent = descripcion;
-            modalFecha.innerHTML = fechaHTML;
-            modalHora.innerHTML = horaHTML;
-            modalUbicacion.innerHTML = ubicacionHTML;
-            
-                   modal.style.display = 'flex';
+          Swal.fire({
+            icon: "success",
+            title: "¡Enlace Copiado al portapapeles!",
+            text: urlParaCompartir,
+            confirmButtonColor: "#3085d6", 
+            timer: 2000, 
+          });
+        })
+        .catch((err) => {
+          console.error("Error al copiar el enlace: ", err);
+
+          Swal.fire({
+            icon: "error",
+            title: "¡Oops!",
+            text: "No se pudo copiar el enlace.",
+          });
         });
     });
+  });
 
-
-    function cerrarModal() {
-        modal.style.display = 'none';
+  // Eventos para cerrar el modal
+  modalCerrar.addEventListener("click", cerrarModal);
+  modal.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      cerrarModal();
     }
+  });
 
-    modalCerrar.addEventListener('click', cerrarModal);
-
-   
-    modal.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            cerrarModal();
-        }
-    });
-
-}); 
+  abrirModalDesdeURL();
+});
