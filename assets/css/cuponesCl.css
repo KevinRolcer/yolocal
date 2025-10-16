@@ -566,14 +566,6 @@ svg{
   color: rgb(193, 190, 190);
 }
 
-.principal {
-    overflow-x: hidden; 
-    position: relative;
-    width: 100vw;         
-    max-width: 100vw;
-    overflow-x: hidden; 
-    box-sizing: border-box;
-}
 
 .filter-container {
   display: flex;

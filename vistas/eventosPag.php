@@ -176,6 +176,7 @@ date_default_timezone_set('America/Mexico_City');
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/evento.js?version=1.2"></script>
+    <script src="../assets/js/menuCl.js"></script>
 
 </body>
 
