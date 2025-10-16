@@ -1,4 +1,3 @@
-// ---> 1. DEFINE TUS BANNERS PREDEFINIDOS AQUÍ
 const predefinedBanners = [
   {
     type: "banner",
@@ -27,20 +26,24 @@ class ImageCarousel {
     this.nextBtn = document.getElementById("nextBtn");
     this.dotsContainer = document.getElementById("carouselDots");
 
+    // Prevenir errores si no se encuentran los elementos del DOM
+    if (!this.track || !this.prevBtn || !this.nextBtn || !this.dotsContainer) {
+      console.error("Faltan elementos esenciales del carrusel en el DOM.");
+      return;
+    }
+
     this.init();
   }
 
   init() {
     this.renderSlides();
-    this.createDots();
     this.addEventListeners();
-    this.updateCarousel();
+    this.updateCarousel(); 
     this.startAutoPlay();
   }
 
   renderSlides() {
-    if (!this.track) return;
-    this.track.innerHTML = "";
+    this.track.innerHTML = ""; 
 
     this.slidesData.forEach((slideData, index) => {
       const slide = document.createElement("div");
@@ -48,66 +51,73 @@ class ImageCarousel {
 
       if (slideData.type === "banner") {
         slide.innerHTML = `
-        <div class="slide-background-banner">
+          <div class="slide-background-banner">
             <picture>
-                <source media="(min-width: 768px)" srcset="${slideData.srcDesktop}">
-                
-                <source media="(max-width: 767px)" srcset="${slideData.srcMobile}">
-                
-                <img src="${slideData.srcDesktop}" alt="Anuncio" class="banner-image">
+              <source media="(min-width: 768px)" srcset="${slideData.srcDesktop}">
+              <source media="(max-width: 767px)" srcset="${slideData.srcMobile}">
+              <img src="${slideData.srcDesktop}" alt="Anuncio" class="banner-image">
             </picture>
-        </div>
-    `;
+          </div>
+        `;
       } else {
+        // Plantilla para los slides que vienen de la base de datos
         slide.innerHTML = `
-                    <div class="slide-background bg-gradient-${
-                      (index % 3) + 1
-                    }">
-                        <div class="slide-content">
-                            <div class="slide-image">
-                                <img src="${
-                                  slideData.Rutaicono ||
-                                  "assets/img/default.jpg"
-                                }" 
-                                     alt="${slideData.nombre_negocio}">
-                            </div>
-                            <div class="slide-info">
-                                <span class="discount-badge">Recomendado en ${
-                                  slideData.nombre_categoria ||
-                                  "Categoría desconocida"
-                                }</span>
-                                <h2 class="slide-title">${
-                                  slideData.nombre_negocio
-                                }</h2>
-                                <p class="slide-description">${
-                                  slideData.DescripcionN || "Negocio destacado"
-                                }</p>
-                                <a href="controladores/DetalleNegocioControlador.php?id=${
-                                  slideData.ID_Negocio
-                                }">
-                                    <button class="slide-button">Ver negocio</button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                `;
+          <div class="slide-background bg-gradient-${(index % 3) + 1}">
+            <div class="slide-content">
+              <div class="slide-image">
+                <img src="${slideData.Rutaicono || "assets/img/default.jpg"}" alt="${slideData.nombre_negocio}">
+              </div>
+              <div class="slide-info">
+                <span class="discount-badge">Recomendado en ${slideData.nombre_categoria || "Categoría"}</span>
+                <h2 class="slide-title">${slideData.nombre_negocio}</h2>
+                <p class="slide-description">${slideData.DescripcionN || "Negocio destacado"}</p>
+                <a href="controladores/DetalleNegocioControlador.php?id=${slideData.ID_Negocio}">
+                  <button class="slide-button">Ver negocio</button>
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
       }
       this.track.appendChild(slide);
     });
 
-    // Actualizamos las variables de totalSlides
+    // Actualizamos la colección de slides y el total
     this.slides = document.querySelectorAll(".carousel-slide");
     this.totalSlides = this.slides.length;
   }
 
-  createDots() {
+  updateDots() {
     this.dotsContainer.innerHTML = "";
-    for (let i = 0; i < this.totalSlides; i++) {
-      const dot = document.createElement("div");
-      dot.classList.add("dot");
-      dot.addEventListener("click", () => this.goToSlide(i));
-      this.dotsContainer.appendChild(dot);
+    const maxVisibleDots = 10; 
+
+    if (this.totalSlides <= maxVisibleDots) {
+ 
+      for (let i = 0; i < this.totalSlides; i++) {
+        this._createSingleDot(i);
+      }
+    } else {
+      let start = Math.max(0, this.currentSlide - Math.floor(maxVisibleDots / 2));
+      let end = Math.min(this.totalSlides - 1, start + maxVisibleDots - 1);
+
+      if (end - start + 1 < maxVisibleDots) {
+        start = Math.max(0, end - maxVisibleDots + 1);
+      }
+
+      for (let i = start; i <= end; i++) {
+        this._createSingleDot(i);
+      }
     }
+  }
+
+  _createSingleDot(index) {
+    const dot = document.createElement("div");
+    dot.classList.add("dot");
+    if (index === this.currentSlide) {
+      dot.classList.add("active"); 
+    }
+    dot.addEventListener("click", () => this.goToSlide(index));
+    this.dotsContainer.appendChild(dot);
   }
 
   addEventListeners() {
@@ -115,40 +125,28 @@ class ImageCarousel {
     this.nextBtn.addEventListener("click", () => this.nextSlide());
 
     let startX = 0;
-    let endX = 0;
-
-    this.track.addEventListener("touchstart", (e) => {
-      startX = e.touches[0].clientX;
-    });
-
+    this.track.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, { passive: true });
     this.track.addEventListener("touchend", (e) => {
-      endX = e.changedTouches[0].clientX;
+      const endX = e.changedTouches[0].clientX;
       this.handleSwipe(startX, endX);
     });
 
+    // Eventos de teclado
     document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") {
-        this.prevSlide();
-      } else if (e.key === "ArrowRight") {
-        this.nextSlide();
-      }
+      if (e.key === "ArrowLeft") this.prevSlide();
+      if (e.key === "ArrowRight") this.nextSlide();
     });
 
-    const container = document.querySelector(".carousel-container");
+    const container = this.track.closest(".carousel-container");
     container.addEventListener("mouseenter", () => this.stopAutoPlay());
     container.addEventListener("mouseleave", () => this.startAutoPlay());
   }
 
   handleSwipe(startX, endX) {
-    const threshold = 50;
+    const threshold = 50; 
     const diff = startX - endX;
-
     if (Math.abs(diff) > threshold) {
-      if (diff > 0) {
-        this.nextSlide();
-      } else {
-        this.prevSlide();
-      }
+      diff > 0 ? this.nextSlide() : this.prevSlide();
     }
   }
 
@@ -158,8 +156,7 @@ class ImageCarousel {
   }
 
   prevSlide() {
-    this.currentSlide =
-      (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+    this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
     this.updateCarousel();
   }
 
@@ -169,50 +166,41 @@ class ImageCarousel {
   }
 
   updateCarousel() {
+    // Mover el carrusel
     const translateX = -this.currentSlide * 100;
     this.track.style.transform = `translateX(${translateX}%)`;
 
-    const dots = document.querySelectorAll(".dot");
-    dots.forEach((dot, index) => {
-      dot.classList.toggle("active", index === this.currentSlide);
-    });
+    this.updateDots();
 
     this.animateSlideContent();
   }
 
   animateSlideContent() {
     this.slides.forEach((slide) => {
-      const elements = slide.querySelectorAll(".slide-info > *");
-      elements.forEach((el) => {
+      slide.querySelectorAll(".slide-info > *").forEach((el) => {
         el.style.animation = "none";
       });
     });
 
     setTimeout(() => {
       const currentSlideElement = this.slides[this.currentSlide];
-
       const elements = currentSlideElement.querySelectorAll(".slide-info > *");
-
       elements.forEach((el, index) => {
         el.style.animation = `slideInRight 0.6s ease ${index * 0.1}s both`;
       });
-    }, 50);
+    }, 50); 
   }
 
   startAutoPlay() {
-    this.autoPlayInterval = setInterval(() => {
-      this.nextSlide();
-    }, 5000);
+    this.stopAutoPlay(); 
+    this.autoPlayInterval = setInterval(() => this.nextSlide(), 5000);
   }
 
   stopAutoPlay() {
-    if (this.autoPlayInterval) {
-      clearInterval(this.autoPlayInterval);
-    }
+    clearInterval(this.autoPlayInterval);
   }
 }
 
-// Estilo de la animación (sin cambios)
 const style = document.createElement("style");
 style.textContent = `
     @keyframes slideInRight {
@@ -226,6 +214,7 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// Carga de datos e instanciación del carrusel
 document.addEventListener("DOMContentLoaded", () => {
   fetch("../controladores/controladorNegocios.php", {
     method: "POST",
@@ -238,24 +227,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const slidesFromDB = data.lista;
         let combinedData = [...slidesFromDB];
 
-        if (combinedData.length > 1) {
-          combinedData.splice(2, 0, predefinedBanners[0]);
-        }
-
-        if (combinedData.length > 5) {
-          combinedData.splice(6, 0, predefinedBanners[1]);
-        }
-
-        if (combinedData.length > 10) {
-          combinedData.splice(10, 0, predefinedBanners[2]);
-        }
-
+        if (combinedData.length > 1) combinedData.splice(2, 0, predefinedBanners[0]);
+        if (combinedData.length > 5) combinedData.splice(6, 0, predefinedBanners[1]);
+        if (combinedData.length > 10) combinedData.splice(10, 0, predefinedBanners[2]);
+        
         new ImageCarousel(combinedData);
       } else {
         console.error("No se pudieron cargar los negocios:", data.msg);
       }
     })
-    .catch((error) => {
-      console.error("Error al conectar con el servidor:", error);
-    });
+    .catch((error) => console.error("Error al conectar con el servidor:", error));
 });

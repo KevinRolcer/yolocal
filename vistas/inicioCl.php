@@ -271,7 +271,7 @@
         </div>
 
 
-        <div class="descripcionC" id="Conecta">
+        <div class="descripcionC" >
             <h2>Mapa de Negocios
 
             </h2>
@@ -311,7 +311,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="card-button">Más detalles</button>
+                            <a href="controladores/ControladorEvento.php"><button class="card-button">Más detalles</button></a>
                         </div>
                     </div>
                     <div class="card-right">
@@ -333,7 +333,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="card-button">Más detalles</button>
+                           <a href="vistas/empleo.php"><button class="card-button">Más detalles</button></a> 
                         </div>
                     </div>
                     <div class="card-right">
@@ -379,7 +379,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="card-button">Más detalles</button>
+                           <a href="https://wa.me/+522482694278"><button class="card-button">Más detalles</button>  </a> 
                         </div>
                     </div>
                     <div class="card-right">

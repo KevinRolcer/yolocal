@@ -14,6 +14,7 @@ date_default_timezone_set('America/Mexico_City');
     
     <link rel="stylesheet" href="../assets/css/negociosCl.css">
      <link rel="stylesheet" href="../assets/css/eventos.css"> </head>
+    
 
 <body>
 
@@ -159,6 +160,8 @@ date_default_timezone_set('America/Mexico_City');
             </div>
         </div>
     </div>
-    <script src="/yolocal/assets/js/evento.js"></script>
+
+    <script src="../assets/js/evento.js"></script>
+    
 </body>
 </html>
