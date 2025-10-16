@@ -77,7 +77,7 @@
                     <div class="submenu-contenido">
                         <a href="vistas/nosotros.php">¿Quienes somos?</a>
                         <a href="https://wa.me/+522482694278">Contacto</a>
-                        <a href="vistas/eventosPag.php">Patrocinadores</a>
+                        <a href="vistas/patrocinadores.php">Patrocinadores</a>
                     </div>
                 </div>
 
@@ -440,7 +440,7 @@
                 <div class="footer-column">
                     <ul>
                         <li><a href="vistas/empleo.php">Bolsa de Trabajo</a></li>
-                        <li><a href="vistas/eventosPag.php">Eventos</a></li>
+                        <li><a href="controladores/controladorEvento.php">Eventos</a></li>
                         <li><a href="https://wa.me/+522482694278">Contacto</a></li>
                         <li><a href="vistas/sistemaAdmin/login.php">Inicia Sesión</a></li>
                         <li><a href="vistas/mapa.php">Mapa</a></li>

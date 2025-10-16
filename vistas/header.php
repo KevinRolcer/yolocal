@@ -48,7 +48,7 @@
                     <div class="submenu-contenido">
                         <a href="../vistas/nosotros.php">¿Quienes somos?</a>
                         <a href="https://wa.me/+522482694278">Contacto</a>
-                        <a href="../vistas/nosotros.php">Patrocinadores</a>
+                        <a href="../vistas/patrocinadores.php">Patrocinadores</a>
                     </div>
                 </div>
             </div>

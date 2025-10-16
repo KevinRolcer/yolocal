@@ -1,38 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <?php
-    include_once("sistemaAdmin/head.php");
-    ?>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cupones - Yolocal</title>
-    <link href="../assets/img/LogoYolocal.png" rel="icon" />
-    <script type="module" src="../assets/js/pagina/funcionesCupones.js?v=<?php echo time(); ?>"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <link rel="stylesheet" href="../assets/css/cuponesCl.css">
-    <link rel="stylesheet" href="../assets/css/paginacion.css">
-    <script defer src="../assets/js/menuCl.js"></script>
-
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Comunidad YoLocal</title>
+     <link href="../assets/img/LogoYolocal.png" rel="icon" />
+     <link rel="stylesheet" href="../assets/css/bolsaTrabajo.css">
+    <style>
+    
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap');
+    :root {
+      --brand-yellow: #ffc400f3;
+      --brand-purple: #5A1F9C;
+      --background-light: #fdfcf8;
+      --text-dark: #333;
+      --shadow-color: rgba(90, 31, 156, 0.1);
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background-light);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before, body::after {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.5;
+    }
+    body::before {
+      background-color: var(--brand-yellow);
+      width: 400px;
+      height: 400px;
+      top: -150px;
+      left: -150px;
+    }
+    body::after {
+      background-color: var(--brand-purple);
+      width: 500px;
+      height: 500px;
+      bottom: -200px;
+      right: -200px;
+    }
+    .gallery-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3rem;
+    }
+    .gallery-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      text-align: center;
+      color: var(--brand-purple);
+      margin-bottom: 1rem;
+    }
+    .gallery-item {
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      overflow: hidden;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .gallery-item:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px var(--shadow-color);
+    }
+    @media (max-width: 768px) {
+      .gallery-container { padding: 2rem 1rem; gap: 2rem; }
+      .gallery-title { font-size: 2.5rem; }
+      body::before, body::after { width: 300px; height: 300px; filter: blur(80px); }
+    }
+  </style>
 </head>
-
 <body>
-
     <header class="encabezado">
         <nav class="navbar">
             <div class="logo">
-                <img src="../assets/img/LogoYolocal.png" alt="local">
+                <img src="../assets/img/LogoYolocal.png" alt="">
             </div>
-
+            
             <!-- Menú móvil-->
             <button class="menu-toggle" id="menuToggle">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
             </button>
-
+            
             <div class="menu" id="mainMenu">
                 <a href="../index.php" class="enlace " data-tooltip="Inicio">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -54,13 +120,15 @@
                     <span class="texto-menu">Bolsa de trabajo</span>
                 </a>
 
-                <a href="cuponesPagina.php" class="enlace active" data-tooltip="Promociones">
+                <a href="cuponesPagina.php" class="enlace " data-tooltip="Promociones">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75v16.5M2.25 12h19.5M6.375 17.25a4.875 4.875 0 0 0 4.875-4.875V12m6.375 5.25a4.875 4.875 0 0 1-4.875-4.875V12m-9 8.25h16.5a1.5 1.5 0 0 0 1.5-1.5V5.25a1.5 1.5 0 0 0-1.5-1.5H3.75a1.5 1.5 0 0 0-1.5 1.5v13.5a1.5 1.5 0 0 0 1.5 1.5Zm12.621-9.44c-1.409 1.41-4.242 1.061-4.242 1.061s-.349-2.833 1.06-4.242a2.25 2.25 0 0 1 3.182 3.182ZM10.773 7.63c1.409 1.409 1.06 4.242 1.06 4.242S9 12.22 7.592 10.811a2.25 2.25 0 1 1 3.182-3.182Z" />
                     </svg>
 
                     <span class="texto-menu">Cupones</span>
                 </a>
+
+                
 
                 <div class="submenu" data-tooltip="Nosotros">
                     <a href="nosotros.php" class="enlace">
@@ -75,7 +143,7 @@
                     <div class="submenu-contenido">
                         <a href="nosotros.php">¿Quienes somos?</a>
                         <a href="https://wa.me/+522482694278">Contacto</a>
-                        <a href="patrocinadores.php">Patrocinadores</a>
+                        <a href="nosotros.php">Patrocinadores</a>
                     </div>
                 </div>
 
@@ -94,39 +162,41 @@
         </nav>
     </header>
 
+    <main class="gallery-container">
+    
+    <h1 class="gallery-title">Nuestra Comunidad</h1>
 
-    <div class="principal">
+    <div class="gallery-item">
+      <picture>
+        <source media="(min-width: 769px)" srcset="../assets/img/banners/1.png">
+        <source media="(max-width: 768px)" srcset="../assets/img/banners/1_mobile.png">
+        <img src="../assets/img/banners/1_mobile.png" alt="Patrocinadores de YoLocal">
+      </picture>
+    </div>
 
-        <div class="filter-container">
-
-
-
-            <div class="search-bar " data-filter="descripcion">
-                <input type="text" id="filtroDescripcion" placeholder="Buscar descripción" />
-                <button type="button">
-                    <i class="bi bi-search"></i>
-                </button>
-            </div>
-
-
-
-        </div>
-        <div class="coupons-grid">
-
-        </div>
-
-        <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
-        <div class="descripcionC">
-
-            <p>Sumérgete en el mundo de los cupones y descuentos exclusivos para
-                <span>Yo <span id="span2">local</span></span>
-            </p>
-
-        </div>
-
+    <div class="gallery-item">
+      <picture>
+        <source media="(min-width: 769px)" srcset="../assets/img/banners/3.png">
+        <source media="(max-width: 768px)" srcset="../assets/img/banners/3_mobile.png">
+        <img src="../assets/img/banners/3_mobile.png" alt="Alianzas de YoLocal">
+      </picture>
     </div>
     
+    <div class="gallery-item">
+      <picture>
+        <source media="(min-width: 769px)" srcset="../assets/img/banners/2.png">
+        <source media="(max-width: 768px)" srcset="../assets/img/banners/2_mobile.png">
+        <img src="../assets/img/banners/2_mobile.png" alt="Cupones de descuento YoLocal">
+      </picture>
+    </div>
+
+  </main>
+       
+    
+
+    
+    <script src="../assets/js/menuCl.js"></script>
+
 
 </body>
-
 </html>
