@@ -1023,7 +1023,7 @@ svg {
 }
 
 .yolocalconecta .card-subtitle {
-    font-size: 14px;
+    font-size: 12px;
     opacity: 0.9;
     font-weight: 300;
 }
@@ -1043,7 +1043,6 @@ svg {
 .yolocalconecta .card-footer {
     display: flex;
     justify-content: flex-start;
-    margin-top: 10px;
 }
 
 .yolocalconecta .card-button {
