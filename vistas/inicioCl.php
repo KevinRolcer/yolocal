@@ -317,8 +317,8 @@
                         </div>
                     </div>
                     <div class="card-right">
-                        <div id="imagenCl" class="card-image">
-                            <img src="assets/img/Plan Texmeluquense.png" alt="Contacto">
+                        <div>
+                            <img class="imagenCl" src="assets/img/Plan Texmeluquense.png" alt="Contacto">
                         </div>
                     </div>
                 </div>
@@ -339,8 +339,8 @@
                         </div>
                     </div>
                     <div class="card-right">
-                        <div id="imagenCl" class="card-image">
-                            <img src="assets/img/El Rincón del Chambeador.png" alt="Bolsa de trabajo">
+                        <div >
+                            <img class="imagenCl" src="assets/img/El Rincón del Chambeador.png" alt="Bolsa de trabajo">
                         </div>
                     </div>
                 </div>
@@ -364,8 +364,8 @@
                         </div>
                     </div>
                     <div class="card-right">
-                        <div  id="imagenCl" class="card-image">
-                            <img src="assets/img/calles.png" alt="Noticias">
+                        <div >
+                            <img class="imagenCl" src="assets/img/calles.png" alt="Noticias">
                         </div>
                     </div>
                 </div>
