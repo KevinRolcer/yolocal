@@ -1638,6 +1638,11 @@ svg {
     .card{
         height: 350px;
     }
+    .imagenCl{
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
 }
 
 @media (max-width: 360px) {
@@ -1750,6 +1755,11 @@ svg {
         width: 9px;
         height: 9px;
     }
+    .imagenCl{
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
 
 }
 
