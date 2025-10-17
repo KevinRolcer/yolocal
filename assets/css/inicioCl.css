@@ -1089,7 +1089,7 @@ svg {
     border-radius: 0 20px 20px 0;
 }
 
- #whatsapp {
+ #whatsapp img{
     height: 100%;
     object-fit: cover;
 }
