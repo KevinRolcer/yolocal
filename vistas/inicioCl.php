@@ -380,7 +380,6 @@
                         </div>
                         <div class="card-content">
                             <div class="card-description">
-                                Descripción
                             </div>
                         </div>
                         <div class="card-footer">
