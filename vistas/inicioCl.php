@@ -301,8 +301,11 @@
                 <div class="card white">
                     <div class="card-left">
                         <div class="card-header">
-                            <div class="card-title">Eventos</div>
-                            <div class="card-subtitle">Los mejores eventos de Texmelucan</div>
+                            <div class="card-title">Plan Texmeluquense</div>
+                            <div class="card-subtitle">
+                                Descubre los eventos que están poniendo el ambiente 
+                                en el barrio y arma tu plan con toda la actitud.
+                            </div>
                         </div>
                         <div class="card-content">
                             <div class="card-description">
@@ -323,8 +326,8 @@
                 <div class="card purple">
                     <div class="card-left">
                         <div class="card-header">
-                            <div class="card-title">Bolsa de trabajo</div>
-                            <div class="card-subtitle">Encuentra tu empleo ideal en Texmelucan</div>
+                            <div class="card-title">El Rincón del Chambeador</div>
+                            <div class="card-subtitle">La chamba que buscas, aquí mismo en tu barrio.</div>
                         </div>
                         <div class="card-content">
                             <div class="card-description">
@@ -337,7 +340,7 @@
                     </div>
                     <div class="card-right">
                         <div class="card-image">
-                            <img src="assets/img/bolsa-trabajo.jpg" alt="Bolsa de trabajo">
+                            <img src="assets/img/El Rincón del Chambeador.png" alt="Bolsa de trabajo">
                         </div>
                     </div>
                 </div>
@@ -345,8 +348,11 @@
                 <div class="card white">
                     <div class="card-left">
                         <div class="card-header">
-                            <div class="card-title">Noticias</div>
-                            <div class="card-subtitle">Mantente informado sobre lo que sucede en Texmelucan</div>
+                            <div class="card-title">Lo que suena en las calles </div>
+                            <div class="card-subtitle">
+                                Descubre lo que se oye en el barrio y cómo los 
+                                emprendedores hacen vibrar Texmelucan.
+                            </div>
                         </div>
                         <div class="card-content">
                             <div class="card-description">
@@ -383,7 +389,10 @@
                     </div>
                     <div class="card-right">
                         <div class="card-image">
-
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100" height="100">
+                                <path fill="#25D366" d="M256 0C114.836 0 0 114.836 0 256c0 45.63 12.297 89.063 35.672 127.297L0 512l131.703-35.672C170.937 499.703 214.37 512 256 512c141.164 0 256-114.836 256-256S397.164 0 256 0z"/>
+                                <path fill="#FFF" d="M391.703 361.297c-10.297 28.703-50.297 53.703-71.297 56.297-18.703 2.297-41.297 3.703-66.297-4.297-15.297-5.297-35.297-11.297-61.297-29.297-51.297-35.297-84.297-97.297-86.297-101.297-2-4-20.297-40.297-19.297-77.297 1-36.297 21.297-54.297 29.297-61.297 7.297-7.297 15.297-9.297 20.297-9.297 5.297 0 10.297.297 14.297.297 4.297 0 10.297-.297 15.297 11.297 5.297 11.297 18.297 39.297 19.297 42.297 1 3.297 1.297 7.297-.297 10.297-1.297 3-2.297 5.297-4.297 7.297-2 2-4.297 4.297-6.297 6.297-2 2-4.297 4.297-6.297 6.297-2 2-4.297 4.297-2.297 8.297 2 4 8.297 13.297 17.297 22.297 11.297 11.297 20.297 18.297 24.297 20.297 4 2 7.297 2 10.297-1.297 3-3.297 13.297-15.297 16.297-20.297 3-5.297 6.297-4.297 10.297-2.297 4 2 25.297 11.297 29.297 13.297 4 2 7.297 3.297 8.297 5.297 1 2 1 11.297-2.297 22.297z"/>
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -400,7 +409,9 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="card-button">Más detalles</button>
+                            <a href="vistas/patrocinadores.php">
+                                <button class="card-button">Más detalles</button>
+                            </a>    
                         </div>
                     </div>
                     <div class="card-right yellow-image">
@@ -420,7 +431,7 @@
         <div class="footer-container">
             <div class="buttons-top">
                 <a href="vistas/nosotros.php" class="btn btn-yellow">Conócenos</a>
-                <a href="#" class="btn btn-white">Patrocinadores</a>
+                <a href="vistas/patrocinadores.php" class="btn btn-white">Patrocinadores</a>
                 <a href="controladores/controladorEvento.php" class="btn btn-yellow">Eventos</a>
             </div>
 
