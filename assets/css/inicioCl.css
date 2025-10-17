@@ -1442,6 +1442,9 @@ svg {
         object-fit: cover;
         border-radius: 0 0 20px 20px;
     }
+    #whatsapp{
+        padding: 10px;
+    }
 
     .yolocalconecta .card-title {
         font-size: 20px;
@@ -1628,7 +1631,9 @@ svg {
     .num-6 {
         display: none;
     }
-
+    .card{
+        height: 350px;
+    }
 }
 
 @media (max-width: 360px) {

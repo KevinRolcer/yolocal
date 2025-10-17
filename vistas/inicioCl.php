@@ -365,7 +365,7 @@
                     </div>
                     <div class="card-right">
                         <div class="card-image">
-                            <img src="assets/img/Lo que suena en las calles.png" alt="Noticias">
+                            <img src="assets/img/calles.png" alt="Noticias">
                         </div>
                     </div>
                 </div>
@@ -388,8 +388,8 @@
                         </div>
                     </div>
                     <div class="card-right">
-                        <div class="card-image">
-                            <img src="../assets/img/whatsapp.png" alt="">
+                        <div id="whatsapp" class="card-image">
+                            <img src="assets/img/whatsapp.png" alt="">
                         </div>
                     </div>
                 </div>
