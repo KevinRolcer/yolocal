@@ -6,9 +6,7 @@ class ModeloEventos {
         $this->conexion = $conexion;
     }
 
-    /**
-     * Obtiene todas las categorías de la base de datos.
-     */
+    
     public function listarCategorias() {
         $sql = "SELECT ID_Categoria, Descripcion FROM categorias ORDER BY Descripcion ASC";
         $resultado = $this->conexion->query($sql);
@@ -19,7 +17,7 @@ class ModeloEventos {
      * Obtiene todos los eventos, uniendo la información de la categoría.
      */
     public function listarEventos() {
-        $sql = "SELECT e.*, c.Descripcion AS NombreCategoria 
+        $sql = "SELECT e.*, c.Descripcion AS NombreCategoria
                 FROM eventos e
                 JOIN categorias c ON e.ID_Categoria = c.ID_Categoria
                 ORDER BY e.FechaE DESC";
@@ -37,31 +35,36 @@ class ModeloEventos {
         $resultado = $stmt->get_result();
         return $resultado->fetch_assoc();
     }
-    
+
     /**
-     * Agrega un nuevo evento a la base de datos.
      */
-    public function agregarEvento($titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $nombreImagen, $idCategoria) {
+    public function agregarEvento($titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $telefono, $nombreImagen, $idCategoria) { // Añadido $telefono
         $stmt = $this->conexion->prepare(
-            "INSERT INTO eventos (TituloE, DescripcionE, PrecioE, FechaE, HoraE, UbicacionE, RutaImagenE, ID_Categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            // SQL incluye Telefono
+            "INSERT INTO eventos (TituloE, DescripcionE, PrecioE, FechaE, HoraE, UbicacionE, Telefono, RutaImagenE, ID_Categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
-        $stmt->bind_param("sssssssi", $titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $nombreImagen, $idCategoria);
+        // Bind Param incluye una 's' para $telefono
+        $stmt->bind_param("ssssssssi", $titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $telefono, $nombreImagen, $idCategoria);
         return $stmt->execute();
     }
 
     /**
-     * Edita un evento existente.
+     * Edita un evento existente (CON CAMPO TELEFONO).
      */
-    public function editarEvento($id, $titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $nombreImagen, $idCategoria) {
+    public function editarEvento($id, $titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $telefono, $nombreImagen, $idCategoria) { // Añadido $telefono
         // Si no se subió una nueva imagen, no actualizamos ese campo
         if ($nombreImagen) {
-            $sql = "UPDATE eventos SET TituloE = ?, DescripcionE = ?, PrecioE = ?, FechaE = ?, HoraE = ?, UbicacionE = ?, RutaImagenE = ?, ID_Categoria = ? WHERE ID_Evento = ?";
+             // SQL incluye Telefono = ?
+            $sql = "UPDATE eventos SET TituloE = ?, DescripcionE = ?, PrecioE = ?, FechaE = ?, HoraE = ?, UbicacionE = ?, Telefono = ?, RutaImagenE = ?, ID_Categoria = ? WHERE ID_Evento = ?";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->bind_param("sssssssii", $titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $nombreImagen, $idCategoria, $id);
+             // Bind Param incluye una 's' para $telefono
+            $stmt->bind_param("ssssssssii", $titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $telefono, $nombreImagen, $idCategoria, $id);
         } else {
-            $sql = "UPDATE eventos SET TituloE = ?, DescripcionE = ?, PrecioE = ?, FechaE = ?, HoraE = ?, UbicacionE = ?, ID_Categoria = ? WHERE ID_Evento = ?";
+             // SQL incluye Telefono = ?
+            $sql = "UPDATE eventos SET TituloE = ?, DescripcionE = ?, PrecioE = ?, FechaE = ?, HoraE = ?, UbicacionE = ?, Telefono = ?, ID_Categoria = ? WHERE ID_Evento = ?";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->bind_param("ssssssii", $titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $idCategoria, $id);
+            // Bind Param incluye una 's' para $telefono
+            $stmt->bind_param("sssssssii", $titulo, $descripcion, $precio, $fecha, $hora, $ubicacion, $telefono, $idCategoria, $id);
         }
         return $stmt->execute();
     }

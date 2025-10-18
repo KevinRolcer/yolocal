@@ -55,12 +55,12 @@ function cargarCategorias() {
 }
 
 /**
- * Obtiene y muestra los eventos como tarjetas.
+ * Obtiene y muestra los eventos como tarjetas (CON CAMPO TELEFONO).
  */
 function listarEventosEnTarjetas() {
     const formData = new FormData();
     formData.append("ope", "LISTAR");
-    
+
     fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
     .then(response => response.json())
     .then(data => {
@@ -73,6 +73,10 @@ function listarEventosEnTarjetas() {
         }
 
         data.lista.forEach(evento => {
+
+            // Lógica condicional para mostrar el teléfono solo si no está vacío
+            const telefonoInfo = evento.Telefono ? `<strong>📞 Teléfono:</strong> ${evento.Telefono}<br>` : ''; // Usa evento.Telefono
+
             const tarjeta = `
                 <div class="promo-card">
                     <div class="promo-card-image">
@@ -86,14 +90,14 @@ function listarEventosEnTarjetas() {
                             <strong>📅 Fecha:</strong> ${evento.FechaE}<br>
                             <strong>⏰ Hora:</strong> ${evento.HoraE}<br>
                             <strong>📍 Lugar:</strong> ${evento.UbicacionE}<br>
-                            <strong>💰 Precio:</strong> ${evento.PrecioE || 'Gratis'}
+                            ${telefonoInfo} <strong>💰 Precio:</strong> ${evento.PrecioE || 'Gratis'}
                         </p>
                         <div class="promo-card-actions">
-                            <button class="btn-edit" data-id="${evento.ID_Evento}">
-                                <i class="bi bi-pencil-square"></i> 
+                            <button class="btn-edit" data-id="${evento.ID_Evento}" title="Editar Evento">
+                                <i class="bi bi-pencil-square"></i>
                             </button>
-                            <button class="btn-delete" data-id="${evento.ID_Evento}">
-                                <i class="bi bi-trash3-fill"></i> 
+                            <button class="btn-delete" data-id="${evento.ID_Evento}" title="Eliminar Evento">
+                                <i class="bi bi-trash3-fill"></i>
                             </button>
                         </div>
                     </div>
@@ -113,7 +117,7 @@ function listarEventosEnTarjetas() {
  */
 function agregarEvento() {
     const form = document.getElementById("formEvento");
-    const formData = new FormData(form);
+    const formData = new FormData(form); // Recoge automáticamente el campo Telefono
     formData.append("ope", "AGREGAR");
 
     fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
@@ -128,6 +132,7 @@ function agregarEvento() {
                 timer: 2000,
                 showConfirmButton: false
             });
+            form.reset();
             listarEventosEnTarjetas();
         } else {
             Swal.fire({
@@ -148,7 +153,7 @@ function agregarEvento() {
 }
 
 /**
- * Obtiene los datos de un evento y abre el modal de edición.
+ * Obtiene los datos de un evento y abre el modal de edición (CON CAMPO TELEFONO).
  */
 function abrirModalEditar(id) {
     const formData = new FormData();
@@ -162,7 +167,7 @@ function abrirModalEditar(id) {
             Swal.fire("Error", "No se encontró el evento.", "error");
             return;
         }
-        
+
         const evento = data.evento;
         document.getElementById("ID_Evento_Editar").value = evento.ID_Evento;
         document.getElementById("EditTituloE").value = evento.TituloE;
@@ -171,6 +176,7 @@ function abrirModalEditar(id) {
         document.getElementById("EditFechaE").value = evento.FechaE;
         document.getElementById("EditHoraE").value = evento.HoraE;
         document.getElementById("EditUbicacionE").value = evento.UbicacionE;
+        document.getElementById("EditTelefono").value = evento.Telefono; // <-- Pone el valor del teléfono en el input
         document.getElementById("EditID_Categoria").value = evento.ID_Categoria;
 
         new bootstrap.Modal(document.getElementById('modalEditar')).show();
@@ -182,7 +188,7 @@ function abrirModalEditar(id) {
  */
 function editarEvento() {
     const form = document.getElementById("formEditar");
-    const formData = new FormData(form);
+    const formData = new FormData(form); // Recoge automáticamente el campo Telefono
     formData.append("ope", "EDITAR");
     formData.append("ID_Evento", document.getElementById("ID_Evento_Editar").value);
 
@@ -203,7 +209,7 @@ function editarEvento() {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'No se pudo actualizar el evento.'
+                text: data.message || 'No se pudo actualizar el evento.' // Usa el mensaje del controlador
             });
         }
     })
@@ -250,7 +256,7 @@ function eliminarEvento(id) {
                 } else {
                     Swal.fire(
                         'Error',
-                        data.message || 'No se pudo eliminar el evento.',
+                        data.message || 'No se pudo eliminar el evento.', // Usa el mensaje del controlador
                         'error'
                     );
                 }
