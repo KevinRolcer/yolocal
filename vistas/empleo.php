@@ -105,7 +105,7 @@
                     Filtrar
                 </button>
             </div>
-            
+            <!-- Filtros activos 
             <div class="active-filters">
                 <div class="filter-tag">
                     Filtro 1 <span class="close" onclick="removeFilter(this)">×</span>
@@ -118,6 +118,7 @@
                 </div>
                 <a href="#" class="clear-all" onclick="clearAllFilters()">Clear All</a>
             </div>
+            -->
         </div>
 
         <div class="main-content">
