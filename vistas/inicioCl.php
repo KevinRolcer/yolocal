@@ -9,11 +9,11 @@
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="assets/css/inicioCl.css">
     <link rel="stylesheet" href="assets/css/footer.css">
-    <script type="module" src="assets/js/pagina/funcionesHome1.js?v=<?php echo time(); ?>"></script>
-    <script type="module" src="assets/js/pagina/funcionesHome.js?v=<?php echo time(); ?>"></script>
-    <script defer src="assets/js/menuCl.js?v=<?php echo time(); ?>"></script>
-    <script src="assets/js/carruselCl.js?v=<?php echo time(); ?>"></script>
-    <script defer src="assets/js/carrusel2Cl.js?v=<?php echo time(); ?>"></script>
+    <script type="module" src="assets/js/pagina/funcionesHome1.js"></script>
+    <script type="module" src="assets/js/pagina/funcionesHome.js"></script>
+    <script defer src="assets/js/menuCl.js"></script>
+    <script src="assets/js/carruselCl.js"></script>
+    <script defer src="assets/js/carrusel2Cl.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

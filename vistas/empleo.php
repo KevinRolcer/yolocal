@@ -221,7 +221,7 @@
     </div>
     
 
-    <script src="../assets/js/bolsaTrabajoCl.js?v=<?php echo time(); ?>"></script>
+    <script src="../assets/js/bolsaTrabajoCl.js"></script>
     <script src="../assets/js/menuCl.js"></script>
 
 
