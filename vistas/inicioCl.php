@@ -3,18 +3,27 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Inicio Yolocal</title>
+    <title>Inicio Yolocal</title><meta name="description" content="Describe your website here. This text appears in search results.">
+
+    <meta property="og:title" content="Inicio Yolocal">
+    <meta property="og:description" content="Conectamos, empoderamos y visibilizamos todo lo bueno de Texmelucan. Desde emprendedores hasta artistas, deportistas y creadores culturales.">
+    <meta property="og:image" content="https://www.yolocaltexmelucan.com/assets/img/LogoYolocal.png">
+    <meta property="og:url" content="https://www.yolocaltexmelucan.com/index.php">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image"> <meta name="twitter:title" content="Inicio Yolocal">
+    <meta name="twitter:description" content="Conectamos, empoderamos y visibilizamos todo lo bueno de Texmelucan. Desde emprendedores hasta artistas, deportistas y creadores culturales.">
+    <meta name="twitter:image" content="https://www.yolocaltexmelucan.com/assets/img/LogoYolocal.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="assets/css/inicioCl.css">
     <link rel="stylesheet" href="assets/css/footer.css">
-    <script type="module" src="assets/js/pagina/funcionesHome1.js?v=<?php echo time(); ?>"></script>
-    <script type="module" src="assets/js/pagina/funcionesHome.js?v=<?php echo time(); ?>"></script>
-    <script defer src="assets/js/menuCl.js?v=<?php echo time(); ?>"></script>
-    <script src="assets/js/carruselCl.js?v=<?php echo time(); ?>"></script>
-    <script defer src="assets/js/carrusel2Cl.js?v=<?php echo time(); ?>"></script>
+    <script type="module" src="assets/js/pagina/funcionesHome1.js"></script>
+    <script type="module" src="assets/js/pagina/funcionesHome.js"></script>
+    <script defer src="assets/js/menuCl.js"></script>
+    <script src="assets/js/carruselCl.js"></script>
+    <script defer src="assets/js/carrusel2Cl.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -302,8 +311,11 @@
                 <div class="card white">
                     <div class="card-left">
                         <div class="card-header">
-                            <div class="card-title">Eventos</div>
-                            <div class="card-subtitle">Los mejores eventos de Texmelucan</div>
+                            <div class="card-title">Plan Texmeluquense</div>
+                            <div class="card-subtitle">
+                                Descubre los eventos que están poniendo el ambiente 
+                                en el barrio y arma tu plan con toda la actitud.
+                            </div>
                         </div>
                         <div class="card-content">
                             <div class="card-description">
@@ -315,8 +327,8 @@
                         </div>
                     </div>
                     <div class="card-right">
-                        <div class="card-image">
-                            <img src="assets/img/517130134_1300489448747756_547402111643965829_n.jpg" alt="Contacto">
+                        <div>
+                            <img class="imagenCl" src="assets/img/Plan Texmeluquense.png" alt="Contacto">
                         </div>
                     </div>
                 </div>
@@ -324,8 +336,8 @@
                 <div class="card purple">
                     <div class="card-left">
                         <div class="card-header">
-                            <div class="card-title">Bolsa de trabajo</div>
-                            <div class="card-subtitle">Encuentra tu empleo ideal en Texmelucan</div>
+                            <div class="card-title">El Rincón del Chambeador</div>
+                            <div class="card-subtitle">La chamba que buscas, aquí mismo en tu barrio.</div>
                         </div>
                         <div class="card-content">
                             <div class="card-description">
@@ -337,8 +349,8 @@
                         </div>
                     </div>
                     <div class="card-right">
-                        <div class="card-image">
-                            <img src="assets/img/bolsa-trabajo.jpg" alt="Bolsa de trabajo">
+                        <div >
+                            <img class="imagenCl" src="assets/img/El Rincón del Chambeador.png" alt="Bolsa de trabajo">
                         </div>
                     </div>
                 </div>
@@ -346,8 +358,11 @@
                 <div class="card white">
                     <div class="card-left">
                         <div class="card-header">
-                            <div class="card-title">Noticias</div>
-                            <div class="card-subtitle">Mantente informado sobre lo que sucede en Texmelucan</div>
+                            <div class="card-title">Lo que suena en las calles </div>
+                            <div class="card-subtitle">
+                                Descubre lo que se oye en el barrio y cómo los 
+                                emprendedores hacen vibrar Texmelucan.
+                            </div>
                         </div>
                         <div class="card-content">
                             <div class="card-description">
@@ -359,8 +374,8 @@
                         </div>
                     </div>
                     <div class="card-right">
-                        <div class="card-image">
-                            <img src="assets/img/noticias.png" alt="Noticias">
+                        <div >
+                            <img class="imagenCl" src="assets/img/calles.png" alt="Noticias">
                         </div>
                     </div>
                 </div>
@@ -375,7 +390,6 @@
                         </div>
                         <div class="card-content">
                             <div class="card-description">
-                                Descripción
                             </div>
                         </div>
                         <div class="card-footer">
@@ -383,8 +397,8 @@
                         </div>
                     </div>
                     <div class="card-right">
-                        <div class="card-image">
-
+                        <div id="whatsapp" class="card-image">
+                            <img src="assets/img/whatsapp.png" alt="">
                         </div>
                     </div>
                 </div>
@@ -401,7 +415,9 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button class="card-button">Más detalles</button>
+                            <a href="vistas/patrocinadores.php">
+                                <button class="card-button">Más detalles</button>
+                            </a>    
                         </div>
                     </div>
                     <div class="card-right yellow-image">
@@ -421,7 +437,7 @@
         <div class="footer-container">
             <div class="buttons-top">
                 <a href="vistas/nosotros.php" class="btn btn-yellow">Conócenos</a>
-                <a href="#" class="btn btn-white">Patrocinadores</a>
+                <a href="vistas/patrocinadores.php" class="btn btn-white">Patrocinadores</a>
                 <a href="controladores/controladorEvento.php" class="btn btn-yellow">Eventos</a>
             </div>
 

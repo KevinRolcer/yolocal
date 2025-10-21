@@ -1023,7 +1023,7 @@ svg {
 }
 
 .yolocalconecta .card-subtitle {
-    font-size: 16px;
+    font-size: 12px;
     opacity: 0.9;
     font-weight: 300;
 }
@@ -1043,7 +1043,6 @@ svg {
 .yolocalconecta .card-footer {
     display: flex;
     justify-content: flex-start;
-    margin-top: 10px;
 }
 
 .yolocalconecta .card-button {
@@ -1071,22 +1070,31 @@ svg {
     margin: -20px -20px -20px 0;
     overflow: hidden;
     border-radius: 0 20px 20px 0;
+
+
 }
 
 .yolocalconecta .card-image {
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.1);
+    object-fit: cover;
 }
 
-.yolocalconecta .card-image img {
+.yolocalconecta .card-image  {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 0 20px 20px 0;
+}
+ .imagenCl{
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+ #whatsapp img{
+    height: 100%;
+    object-fit: cover;
 }
 
 .card-yolocal {
@@ -1434,15 +1442,9 @@ svg {
         height: 150px;
         margin: 0 -15px -15px -15px;
         border-radius: 0 0 20px 20px;
+       
     }
-
-    .yolocalconecta .card-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 0 0 20px 20px;
-    }
-
+    
     .yolocalconecta .card-title {
         font-size: 20px;
     }
@@ -1459,6 +1461,11 @@ svg {
         width: 95%;
         height: 150%;
     }
+    .imagenCl{
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
 }
 
 @media (max-width: 767px) {
@@ -1628,7 +1635,14 @@ svg {
     .num-6 {
         display: none;
     }
-
+    .card{
+        height: 350px;
+    }
+    .imagenCl{
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
 }
 
 @media (max-width: 360px) {
@@ -1741,6 +1755,11 @@ svg {
         width: 9px;
         height: 9px;
     }
+    .imagenCl{
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
 
 }
 

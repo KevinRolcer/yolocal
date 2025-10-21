@@ -21,6 +21,9 @@
 }
 
 
+body{
+    overflow-x: hidden;
+}
 
 
 svg{
@@ -563,13 +566,6 @@ svg{
   color: rgb(193, 190, 190);
 }
 
-.principal {
-    overflow-x: hidden; 
-    position: relative;
-    width: 100vw;         
-    max-width: 100vw;
-    box-sizing: border-box;
-}
 
 .filter-container {
   display: flex;

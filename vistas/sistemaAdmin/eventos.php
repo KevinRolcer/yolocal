@@ -7,7 +7,7 @@
     // Asegúrate de que este archivo inicie la sesión y contenga las configuraciones necesarias
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesEventos.js?v=<?php echo time(); ?>"></script>
+    <script type="module" src="assets/js/funcionesEventos.js"></script>
      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../assets/css/bolsaTrabajoAdmin.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">

@@ -6,7 +6,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesTrabajos.js?v=<?php echo time(); ?>"></script>
+    <script type="module" src="assets/js/funcionesTrabajos.js"></script>
     <link rel="stylesheet" href="../assets/css/bolsaTrabajoAdmin.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <link rel="stylesheet" href="../assets/css/pildora.css">
