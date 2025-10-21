@@ -4,7 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Inicio Yolocal</title>
+    <title>Inicio Yolocal</title><meta name="description" content="Describe your website here. This text appears in search results.">
+
+    <meta property="og:title" content="Inicio Yolocal">
+    <meta property="og:description" content="Conectamos, empoderamos y visibilizamos todo lo bueno de Texmelucan. Desde emprendedores hasta artistas, deportistas y creadores culturales.">
+    <meta property="og:image" content="https://www.yolocaltexmelucan.com/assets/img/LogoYolocal.png">
+    <meta property="og:url" content="https://www.yolocaltexmelucan.com/index.php">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image"> <meta name="twitter:title" content="Inicio Yolocal">
+    <meta name="twitter:description" content="Conectamos, empoderamos y visibilizamos todo lo bueno de Texmelucan. Desde emprendedores hasta artistas, deportistas y creadores culturales.">
+    <meta name="twitter:image" content="https://www.yolocaltexmelucan.com/assets/img/LogoYolocal.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="assets/css/inicioCl.css">
