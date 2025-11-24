@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cupones - Yolocal</title>
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
-    <script type="module" src="../assets/js/pagina/funcionesCupones.js?v=<?php echo time(); ?>"></script>
+    <script type="module" src="../assets/js/pagina/funcionesCupones.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="../assets/css/cuponesCl.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">

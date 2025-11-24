@@ -51,18 +51,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function abrirModalDesdeURL() {
-    const hash = window.location.hash;
-    if (hash.startsWith("#evento-")) {
-      const eventoId = hash.substring("#evento-".length);
-      const tarjeta = document.querySelector(
-        `.event-card[data-evento-id="${eventoId}"]`
-      );
-      if (tarjeta) {
-        // Si encontramos la tarjeta, llamamos a nuestra función central
-        abrirModal(tarjeta);
-      }
+    // Usamos URLSearchParams para leer los parámetros de la URL
+    const params = new URLSearchParams(window.location.search);
+    const eventoId = params.get('evento'); // Buscamos el parámetro 'evento'
+
+    if (eventoId) {
+        const tarjeta = document.querySelector(`.event-card[data-evento-id="${eventoId}"]`);
+        if (tarjeta) {
+            abrirModal(tarjeta); // La función abrirModal que ya tienes
+        }
     }
-  }
+}
 
   const botonesInfo = document.querySelectorAll(".btn-primary");
   botonesInfo.forEach((boton) => {
@@ -73,39 +72,29 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Lógica para el botón de compartir (esta parte estaba bien)
-  const botonesCompartir = document.querySelectorAll(".btn-share");
-  botonesCompartir.forEach((boton) => {
-    boton.addEventListener("click", function (event) {
-      event.stopPropagation();
-      const tarjeta = this.closest(".event-card");
-      const eventoId = tarjeta.dataset.eventoId;
-      if (!eventoId) return;
+  const botonesCompartir = document.querySelectorAll('.btn-share');
+botonesCompartir.forEach(boton => {
+    boton.addEventListener('click', function(event) {
+        event.stopPropagation();
+        const tarjeta = this.closest('.event-card');
+        const eventoId = tarjeta.dataset.eventoId;
+        if (!eventoId) return;
 
-      const urlParaCompartir = `${window.location.origin}${window.location.pathname}#evento-${eventoId}`;
+        // **CAMBIO CLAVE:** Creamos la URL con un parámetro, no con un hash
+        const urlParaCompartir = `${window.location.origin}${window.location.pathname}?evento=${eventoId}`;
 
-      navigator.clipboard
-        .writeText(urlParaCompartir)
-        .then(() => {
-         
-          Swal.fire({
-            icon: "success",
-            title: "¡Enlace Copiado al portapapeles!",
-            text: urlParaCompartir,
-            confirmButtonColor: "#3085d6", 
-            timer: 2000, 
-          });
-        })
-        .catch((err) => {
-          console.error("Error al copiar el enlace: ", err);
-
-          Swal.fire({
-            icon: "error",
-            title: "¡Oops!",
-            text: "No se pudo copiar el enlace.",
-          });
+        navigator.clipboard.writeText(urlParaCompartir).then(() => {
+            Swal.fire({
+              icon: 'success',
+              title: '¡Enlace Copiado!',
+              text: 'Ya puedes compartirlo donde quieras.',
+              timer: 2500
+            });
+        }).catch(err => {
+            console.error('Error al copiar el enlace: ', err);
         });
     });
-  });
+});
 
   // Eventos para cerrar el modal
   modalCerrar.addEventListener("click", cerrarModal);

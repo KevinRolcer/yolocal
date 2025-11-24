@@ -7,7 +7,7 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="../assets/js/funcionesNegocio.js?v=<?php echo time(); ?>"></script>
+    <script type="module" src="../assets/js/funcionesNegocio.js"></script>
     <link rel="stylesheet" href="../assets/css/negociosAdmin.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <script src="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.js"></script>

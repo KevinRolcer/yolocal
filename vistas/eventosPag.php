@@ -2,6 +2,7 @@
 setlocale(LC_TIME, 'es_ES.UTF-8', 'es_MX.UTF-8', 'spanish');
 date_default_timezone_set('America/Mexico_City');
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -9,6 +10,12 @@ date_default_timezone_set('America/Mexico_City');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eventos - Yolocal</title>
+    <meta property="og:title" content="<?php echo $ogTitle; ?>" />
+    <meta property="og:description" content="<?php echo $ogDescription; ?>" />
+    <meta property="og:image" content="<?php echo $ogImage; ?>" />
+    <meta property="og:url" content="<?php echo $ogUrl; ?>" />
+    <meta property="og:type" content="website" />
+    
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
 
     <link rel="stylesheet" href="../assets/css/negociosCl.css">
@@ -175,7 +182,7 @@ date_default_timezone_set('America/Mexico_City');
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../assets/js/evento.js?version=1.2"></script>
+    <script src="../assets/js/evento.js?version=1.3"></script>
     <script src="../assets/js/menuCl.js"></script>
 
 </body>

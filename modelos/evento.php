@@ -36,5 +36,24 @@ class EventoModelo {
             die("Error al consultar los eventos: " . $e->getMessage());
         }
     }
+    public static function obtenerPorId($db, $id) {
+
+        $stmt = $db->prepare("SELECT TituloE, DescripcionE, RutaImagenE FROM eventos WHERE ID_Evento = ?");
+        
+        if ($stmt === false) {
+
+            error_log('Error en la preparación de la consulta: ' . $db->error);
+            return null;
+        }
+
+        $stmt->bind_param("i", $id);
+
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $evento = $resultado->fetch_assoc();
+        $stmt->close();
+        return $evento; 
+    }
+
 }
 ?>
