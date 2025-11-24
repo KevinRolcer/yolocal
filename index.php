@@ -6,6 +6,18 @@ if (session_status() === PHP_SESSION_NONE) {
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+
+$estadoPago = 0; 
+
+if ($estadoPago === 0) {
+    include_once("noPago.php");
+    exit();
+}
+
+// ============================================
+// CÓDIGO ORIGINAL - Solo se ejecuta si estadoPago = 1
+// ============================================
+
 if (!isset($_SESSION["sistema"]) || $_SESSION["sistema"] !== "YoLocal") {
  
     include_once("vistas/inicioCl.php"); 
