@@ -10,7 +10,7 @@ ini_set('display_errors', 1);
 $estadoPago = 0; 
 
 if ($estadoPago === 0) {
-    include_once("noPago.php");
+    include_once("vistas/noPago.php");
     exit();
 }
 
