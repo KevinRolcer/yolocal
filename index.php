@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 
-$estadoPago = 0; 
+$estadoPago = 1; 
 
 if ($estadoPago === 0) {
     include_once("vistas/noPago.php");
@@ -26,7 +26,7 @@ if (!isset($_SESSION["sistema"]) || $_SESSION["sistema"] !== "YoLocal") {
 
 
 $tipoUsuario = $_SESSION["tipo"] ?? null;
-$pag = $_GET["pag"] ?? "home"; // por defecto ir a home
+$pag = $_GET["pag"] ?? "home";
 
 $rutas = [
     "admin"     => ["admin"   => "vistas/sistemaAdmin/home.php"],
