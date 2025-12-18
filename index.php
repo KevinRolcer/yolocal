@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 
-$estadoPago = 1; 
+$estadoPago = 0; 
 
 if ($estadoPago === 0) {
     include_once("vistas/noPago.php");
