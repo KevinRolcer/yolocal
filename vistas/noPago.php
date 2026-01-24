@@ -181,10 +181,9 @@
             <img class="imagen" src="../assets/img/LogoYolocal.png" alt="">
         </div>
         <div class="oops">Oops!</div>
-        <div class="error-code">404</div>
+        <div class="error-code">Sitio desactivado</div>
         <div class="message">
-            Tu página está actualmente bajo mantenimiento<br>
-            Por favor, intenta de nuevo más tarde.
+            Tu página está actualmente desactivada <br>
         </div>
     </div>
 
