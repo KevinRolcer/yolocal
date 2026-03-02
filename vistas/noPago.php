@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Página no encontrada</title>
+    <title>Página desactivada</title>
     <style>
         * {
             margin: 0;
@@ -183,7 +183,7 @@
         <div class="oops">Oops!</div>
         <div class="error-code">Sitio desactivado</div>
         <div class="message">
-            Tu página está actualmente desactivada <br>
+            Tu página está actualmente desactivada por cuestiones administrativas <br>
         </div>
     </div>
 
