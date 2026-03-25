@@ -183,7 +183,7 @@
         <div class="oops">Oops!</div>
         <div class="error-code">Sitio desactivado</div>
         <div class="message">
-            Tu página está actualmente desactivada por cuestiones administrativas <br>
+            Sitio desactivado por cuestiones administrativas <br>
         </div>
     </div>
 
