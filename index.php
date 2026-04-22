@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-
+//pago
 $estadoPago = 1; 
 
 if ($estadoPago === 0) {
