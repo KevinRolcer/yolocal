@@ -1,10 +1,41 @@
 <?php
 include_once("../config.php");
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+function cuponPerteneceAlUsuario($idPromocion, $idUsuario)
+{
+    $enlace = dbConectar();
+    $sql = "SELECT 1
+            FROM promociones p
+            INNER JOIN negocios n ON p.ID_Negocio = n.ID_Negocio
+            WHERE p.ID_Promocion = ? AND n.ID_Usuario = ?";
+    $consulta = $enlace->prepare($sql);
+    $consulta->bind_param("ii", $idPromocion, $idUsuario);
+    $consulta->execute();
+    $result = $consulta->get_result();
+    return $result->num_rows > 0;
+}
+
+function negocioPerteneceAlUsuario($idNegocio, $idUsuario)
+{
+    $enlace = dbConectar();
+    $sql = "SELECT 1 FROM negocios WHERE ID_Negocio = ? AND ID_Usuario = ?";
+    $consulta = $enlace->prepare($sql);
+    $consulta->bind_param("ii", $idNegocio, $idUsuario);
+    $consulta->execute();
+    $result = $consulta->get_result();
+    return $result->num_rows > 0;
+}
+
 if (isset($_POST["ope"])) {
     $ope = $_POST["ope"];
     include_once("../modelos/cupones.php");
     $usu = new Cupones();
+    $usuarioIdSesion = $_SESSION["ID_Usuario"] ?? null;
+    $usuarioTipoSesion = $_SESSION["tipo"] ?? null;
 
 
 
@@ -15,8 +46,8 @@ if (isset($_POST["ope"])) {
 
     // Validar sesión
     
-        $usuarioId = $_POST['usuarioId'] ?? null;
-        $usuarioTipo = $_POST['usuarioTipo'] ?? null;
+        $usuarioId = $usuarioIdSesion ?? ($_POST['usuarioId'] ?? null);
+        $usuarioTipo = $usuarioTipoSesion ?? ($_POST['usuarioTipo'] ?? null);
 
 
     $pagina = isset($_POST["pagina"]) ? intval($_POST["pagina"]) : 1;
@@ -45,8 +76,8 @@ if (isset($_POST["ope"])) {
 
     // Validar sesión
     
-        $usuarioId = $_POST['usuarioId'] ?? null;
-        $usuarioTipo = $_POST['usuarioTipo'] ?? null;
+        $usuarioId = $usuarioIdSesion ?? ($_POST['usuarioId'] ?? null);
+        $usuarioTipo = $usuarioTipoSesion ?? ($_POST['usuarioTipo'] ?? null);
 
 
     $pagina = isset($_POST["pagina"]) ? intval($_POST["pagina"]) : 1;
@@ -75,6 +106,10 @@ if (isset($_POST["ope"])) {
     //  obtener 
     elseif ($ope == "OBTENER") {
         if (isset($_POST["ID_Promocion"])) {
+            if ($usuarioTipoSesion === "negocio" && !cuponPerteneceAlUsuario(intval($_POST["ID_Promocion"]), intval($usuarioIdSesion))) {
+                echo json_encode(["success" => false, "msg" => "No autorizado."]);
+                exit();
+            }
             $usuario = $usu->ObtenerUsuario($_POST["ID_Promocion"]);
             if ($usuario) {
                 echo json_encode(["success" => true, "usuario" => $usuario]);
@@ -87,6 +122,11 @@ if (isset($_POST["ope"])) {
     }
     // para agregar  
     elseif ($ope == "AGREGAR" && isset($_POST["Titulo"], $_POST["Descripcion"], $_POST["FechaFin"], $_POST["Cantidad"], $_POST["ID_Negocio"], $_POST["promoMiercoles"])) {
+        if ($usuarioTipoSesion === "negocio" && !negocioPerteneceAlUsuario(intval($_POST["ID_Negocio"]), intval($usuarioIdSesion))) {
+            echo json_encode(["success" => false, "msg" => "Solo puedes publicar promociones de tu negocio."]);
+            exit();
+        }
+
         $datos = array(
             "Titulo" => $_POST["Titulo"],
             "Descripcion" => $_POST["Descripcion"],
@@ -112,6 +152,18 @@ if (isset($_POST["ope"])) {
             $_POST["ID_NegocioEdit"]
         )
     ) {
+        if ($usuarioTipoSesion === "negocio") {
+            if (!cuponPerteneceAlUsuario(intval($_POST["ID_Promocion"]), intval($usuarioIdSesion))) {
+                echo json_encode(["success" => false, "msg" => "No autorizado."]);
+                exit();
+            }
+
+            if (!negocioPerteneceAlUsuario(intval($_POST["ID_NegocioEdit"]), intval($usuarioIdSesion))) {
+                echo json_encode(["success" => false, "msg" => "Solo puedes asignar promociones a tu negocio."]);
+                exit();
+            }
+        }
+
         $datos = array(
             "ID_Promocion"   => $_POST["ID_Promocion"],
             "Titulo"         => $_POST["EditTitulo"],
@@ -144,6 +196,11 @@ if (isset($_POST["ope"])) {
         $info = array("success" => $status);
         echo json_encode($info);
     } elseif ($ope == "RESTARCUPON" && isset($_POST["ID_Promocion"])) {
+        if ($usuarioTipoSesion === "negocio" && !cuponPerteneceAlUsuario(intval($_POST["ID_Promocion"]), intval($usuarioIdSesion))) {
+            echo json_encode(["success" => false, "msg" => "No autorizado."]);
+            exit();
+        }
+
         $nuevaCantidad = $usu->RestarCupon($_POST["ID_Promocion"]);
         // aquí haces que RestarCupon() devuelva la cantidad actualizada
 
@@ -154,6 +211,11 @@ if (isset($_POST["ope"])) {
         echo json_encode($info);
     } 
     elseif ($ope == "DESCARGARCUPON" && isset($_POST["ID_Promocion"])) {
+        if ($usuarioTipoSesion === "negocio" && !cuponPerteneceAlUsuario(intval($_POST["ID_Promocion"]), intval($usuarioIdSesion))) {
+            echo json_encode(["success" => false, "msg" => "No autorizado."]);
+            exit();
+        }
+
         $nuevaCantidad = $usu->DESCARGARCUPON($_POST["ID_Promocion"]);
         // aquí haces que RestarCupon() devuelva la cantidad actualizada
 
@@ -163,6 +225,11 @@ if (isset($_POST["ope"])) {
         );
         echo json_encode($info);
     } elseif ($ope == "AGREGARCUPON" && isset($_POST["ID_PromocionC"]) && isset($_POST["cantidad"])) {
+        if ($usuarioTipoSesion === "negocio" && !cuponPerteneceAlUsuario(intval($_POST["ID_PromocionC"]), intval($usuarioIdSesion))) {
+            echo json_encode(["success" => false, "msg" => "No autorizado."]);
+            exit();
+        }
+
         $id = intval($_POST["ID_PromocionC"]);
         $cantidad = intval($_POST["cantidad"]);
 
@@ -173,6 +240,11 @@ if (isset($_POST["ope"])) {
         ]);
     } 
     elseif ($ope == "CAMBIARESTATUS" && isset($_POST["ID_Promocion"], $_POST["estatus"])) {
+    if ($usuarioTipoSesion === "negocio" && !cuponPerteneceAlUsuario(intval($_POST["ID_Promocion"]), intval($usuarioIdSesion))) {
+        echo json_encode(["success" => false, "msg" => "No autorizado."]);
+        exit();
+    }
+
     $id = intval($_POST["ID_Promocion"]);
     $estatus = intval($_POST["estatus"]);
 

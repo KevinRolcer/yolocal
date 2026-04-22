@@ -50,9 +50,11 @@
             <a href="index.php?pag=bolsa_trabajo" class="pill-option active" id="opcion1">
                 Trabajos
             </a>
+            <?php if ($_SESSION["tipo"] === "admin"): ?>
             <a href="index.php?pag=eventos" class="pill-option" id="opcion2">
                 Eventos
             </a>
+            <?php endif; ?>
         </div>
     </div>
         <div class="container mt-5">
@@ -87,7 +89,7 @@
                 </div>
 
             </div>
-            <?php if ($_SESSION["tipo"] === "admin"): ?>
+            <?php if ($_SESSION["tipo"] === "admin" || $_SESSION["tipo"] === "negocio"): ?>
                 <div class="d-flex justify-content-end gap-2 mb-3">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPromocion">
                         Cargar trabajo

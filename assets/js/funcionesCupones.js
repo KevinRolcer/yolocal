@@ -128,7 +128,7 @@ function renderizarPromociones(lista) {
       <p class="promo-titulo">Cupones Restantes: ${promo.cantidad}</p>
       <p class="promo-descripcion">Caducidad: ${promo.fecha_fin}</p>
        ${
-        usuarioTipo === "admin" ? `
+        (usuarioTipo === "admin" || usuarioTipo === "negocio") ? `
       <p class="promo-descripcion">Canjeados: ${promo.Canjeados}</p>
       <p class="promo-descripcion">Descargados: ${promo.Descargados}</p>
       ` : ''
@@ -148,7 +148,7 @@ function renderizarPromociones(lista) {
 
       <!-- Botones solo para admin -->
       ${
-        usuarioTipo === "admin" ? `
+        (usuarioTipo === "admin" || usuarioTipo === "negocio") ? `
           <button class="icon-btn blue btn-agregar" data-bs-toggle="modal" data-bs-target="#modalAgregarC" data-id="${promo.ID_Promocion}">
             <i class="bi bi-plus-circle"></i>
           </button>

@@ -1,10 +1,41 @@
 <?php
 include_once("../config.php");
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+function trabajoPerteneceAlUsuario($idTrabajo, $idUsuario)
+{
+    $enlace = dbConectar();
+    $sql = "SELECT 1
+            FROM trabajos t
+            INNER JOIN negocios n ON t.ID_Negocio = n.ID_Negocio
+            WHERE t.ID_Trabajo = ? AND n.ID_Usuario = ?";
+    $consulta = $enlace->prepare($sql);
+    $consulta->bind_param("ii", $idTrabajo, $idUsuario);
+    $consulta->execute();
+    $result = $consulta->get_result();
+    return $result->num_rows > 0;
+}
+
+function negocioPerteneceAlUsuario($idNegocio, $idUsuario)
+{
+    $enlace = dbConectar();
+    $sql = "SELECT 1 FROM negocios WHERE ID_Negocio = ? AND ID_Usuario = ?";
+    $consulta = $enlace->prepare($sql);
+    $consulta->bind_param("ii", $idNegocio, $idUsuario);
+    $consulta->execute();
+    $result = $consulta->get_result();
+    return $result->num_rows > 0;
+}
+
 if (isset($_POST["ope"])) {
     $ope = $_POST["ope"];
     include_once("../modelos/trabajos.php");
     $usu = new Trabajos();
+    $usuarioIdSesion = $_SESSION["ID_Usuario"] ?? null;
+    $usuarioTipoSesion = $_SESSION["tipo"] ?? null;
 
 
 
@@ -15,8 +46,8 @@ if (isset($_POST["ope"])) {
 
     // Validar sesión
     
-        $usuarioId = $_POST['usuarioId'] ?? null;
-        $usuarioTipo = $_POST['usuarioTipo'] ?? null;
+        $usuarioId = $usuarioIdSesion ?? ($_POST['usuarioId'] ?? null);
+        $usuarioTipo = $usuarioTipoSesion ?? ($_POST['usuarioTipo'] ?? null);
 
 
     $pagina = isset($_POST["pagina"]) ? intval($_POST["pagina"]) : 1;
@@ -46,6 +77,10 @@ if (isset($_POST["ope"])) {
     //  obtener 
     elseif ($ope == "OBTENER") {
         if (isset($_POST["ID_Promocion"])) {
+            if ($usuarioTipoSesion === "negocio" && !trabajoPerteneceAlUsuario(intval($_POST["ID_Promocion"]), intval($usuarioIdSesion))) {
+                echo json_encode(["success" => false, "msg" => "No autorizado."]);
+                exit();
+            }
             $usuario = $usu->ObtenerUsuario($_POST["ID_Promocion"]);
             if ($usuario) {
                 echo json_encode(["success" => true, "usuario" => $usuario]);
@@ -58,6 +93,11 @@ if (isset($_POST["ope"])) {
     }
     // para agregar  
     elseif ($ope == "AGREGAR" && isset($_POST["Titulo"], $_POST["Descripcion"], $_POST["Horario"], $_POST["Salario"], $_POST["PerRequeridas"], $_POST["ID_Negocio"])) {
+        if ($usuarioTipoSesion === "negocio" && !negocioPerteneceAlUsuario(intval($_POST["ID_Negocio"]), intval($usuarioIdSesion))) {
+            echo json_encode(["success" => false, "msg" => "Solo puedes publicar vacantes de tu negocio."]);
+            exit();
+        }
+
         $datos = array(
             "Titulo" => $_POST["Titulo"],
             "Descripcion" => $_POST["Descripcion"],
@@ -85,6 +125,18 @@ if (isset($_POST["ope"])) {
             $_POST["ID_NegocioEdit"]
         )
     ) {
+        if ($usuarioTipoSesion === "negocio") {
+            if (!trabajoPerteneceAlUsuario(intval($_POST["ID_Promocion"]), intval($usuarioIdSesion))) {
+                echo json_encode(["success" => false, "msg" => "No autorizado."]);
+                exit();
+            }
+
+            if (!negocioPerteneceAlUsuario(intval($_POST["ID_NegocioEdit"]), intval($usuarioIdSesion))) {
+                echo json_encode(["success" => false, "msg" => "Solo puedes asignar vacantes a tu negocio."]);
+                exit();
+            }
+        }
+
         $datos = array(
             "ID_Trabajo"   => $_POST["ID_Promocion"],
             "Titulo"         => $_POST["EditTitulo"],
@@ -103,6 +155,11 @@ if (isset($_POST["ope"])) {
     // eliminar 
  
     elseif ($ope == "CAMBIARESTATUS" && isset($_POST["ID_Promocion"], $_POST["estatus"])) {
+    if ($usuarioTipoSesion === "negocio" && !trabajoPerteneceAlUsuario(intval($_POST["ID_Promocion"]), intval($usuarioIdSesion))) {
+        echo json_encode(["success" => false, "msg" => "No autorizado."]);
+        exit();
+    }
+
     $id = intval($_POST["ID_Promocion"]);
     $estatus = intval($_POST["estatus"]);
 
