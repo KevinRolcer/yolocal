@@ -370,11 +370,17 @@ class Negocios
             return null;
         }
     }
-    public function ObtenerNegocios()
+    public function ObtenerNegocios($idUsuario = null)
 {
     $enlace = dbConectar();
-    $sql = "SELECT * FROM negocios";  // Tabla correcta
+    $sql = "SELECT * FROM negocios";
+    if ($idUsuario !== null) {
+        $sql .= " WHERE ID_Usuario = ?";
+    }
     $consulta = $enlace->prepare($sql);
+    if ($idUsuario !== null) {
+        $consulta->bind_param("i", $idUsuario);
+    }
     $consulta->execute();
     $result = $consulta->get_result();
 
@@ -385,6 +391,7 @@ class Negocios
 
     return $negocios;
 }
+
 public function ObtenerCoordenadas()
 {
     $enlace = dbConectar();

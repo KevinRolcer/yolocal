@@ -1,6 +1,10 @@
 <?php
 include_once("../config.php");
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (isset($_POST["ope"])) {
     $ope = $_POST["ope"];
     include_once("../modelos/negocios.php");
@@ -151,7 +155,15 @@ if (isset($_POST["ope"])) {
             echo json_encode(["success" => false, "msg" => "ID de miembro no proporcionado."]);
         }
     } elseif ($ope == "OBTENERMEMBRESIAS") {
-        $negocios = $usu->ObtenerNegocios();  // Llamar a la función en el modelo
+        $tipoSesion = $_SESSION["tipo"] ?? null;
+        $idSesion = $_SESSION["ID_Usuario"] ?? null;
+
+        if ($tipoSesion === "negocio" && $idSesion) {
+            $negocios = $usu->ObtenerNegocios($idSesion);
+        } else {
+            $negocios = $usu->ObtenerNegocios();
+        }
+
         $info = array(
             "success" => true,
             "negocios" => $negocios

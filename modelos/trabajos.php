@@ -49,6 +49,13 @@ WHERE 1=1";
         $tipos .= "s";
     }
 
+    // Si el tipo de usuario es negocio, solo ve vacantes de sus negocios
+    if ($usuarioTipo === "negocio") {
+        $sql .= " AND n.ID_Usuario = ?";
+        $values[] = $usuarioId;
+        $tipos .= "i";
+    }
+
    
     // Orden y paginación
     $sql .= " ORDER BY p.ID_Trabajo DESC LIMIT ?, ?";
@@ -77,7 +84,14 @@ WHERE 1=1";
                  INNER JOIN negocios n ON p.ID_Negocio = n.ID_Negocio
                  WHERE 1=1";
 
+    if ($usuarioTipo === "negocio") {
+        $countSql .= " AND n.ID_Usuario = ?";
+    }
+
     $countConsulta = $enlace->prepare($countSql);
+    if ($usuarioTipo === "negocio") {
+        $countConsulta->bind_param("i", $usuarioId);
+    }
     $countConsulta->execute();
     $countResult = $countConsulta->get_result();
     $totalRegistros = $countResult->fetch_assoc()["total"];
