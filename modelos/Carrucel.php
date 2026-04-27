@@ -38,7 +38,7 @@ class Carrucel {
         $sql = "SELECT n.*, c.Descripcion as nombre_categoria
                 FROM negocios n
                 LEFT JOIN categorias c ON n.ID_Categoria = c.ID_Categoria
-                WHERE n.ID_Negocio = ? AND n.estado = 1";
+                WHERE n.ID_Negocio = ?";
         
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $idNegocio);
