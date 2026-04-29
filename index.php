@@ -1,5 +1,5 @@
 <?php 
-//puto agustin
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -11,7 +11,8 @@ if (!isset($_SESSION["sistema"]) || $_SESSION["sistema"] !== "YoLocal") {
     include_once("vistas/inicioCl.php"); 
     exit(); 
 }
-
+//puto agustin
+//Creadores: Arath, Kevin, Agusdick y Luis
 
 $tipoUsuario = $_SESSION["tipo"] ?? null;
 $pag = $_GET["pag"] ?? "home";
