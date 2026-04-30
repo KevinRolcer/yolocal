@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    .yl-loader {
+      background: #0d0d0d;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .yl-loader.hide {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .yl-loader-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      letter-spacing: 3px;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .yl-loader-logo .yo {
+      color: #a3e635;
+    }
+
+    .yl-loader-logo .local {
+      color: #fff;
+    }
+
+    .yl-loader-crew {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      color: #7c3aed;
+      letter-spacing: 8px;
+      margin-bottom: 2.5rem;
+    }
+
+    .yl-loader-chick {
+      font-size: 48px;
+      margin-bottom: 1.5rem;
+      animation: bounce 0.6s infinite alternate;
+    }
+
+    @keyframes bounce {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-10px);
+      }
+    }
+
+    .yl-bar-wrap {
+      width: 220px;
+      height: 12px;
+      background: #222;
+      border-radius: 99px;
+      border-color: whitesmoke;
+      overflow: hidden;
+      margin-bottom: 0.75rem;
+    }
+
+    .yl-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #7c3aed, #a3e635);
+      border-radius: 59px;
+      transition: width 0.05s linear;
+     
+    }
+
+    .yl-bar-pct {
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      color: #555;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+
+    .yl-bar-msg {
+      font-family: 'Nunito', sans-serif;
+      font-size: 15px;
+      color: #dbdada;
+      margin-top: 0.5rem;
+      letter-spacing: 1px;
+      min-height: 18px;
+      transition: opacity 0.3s;
+      font-weight: bold;
+    }
+
+    .yl-main {
+      background: #0d0d0d;
+      min-height: 100vh;
+      font-family: 'Nunito', sans-serif;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .yl-main.show {
+      opacity: 1;
+    }
+
+    .yl-bg-splat {
+      position: absolute;
+      top: -60px;
+      left: -60px;
+      width: 340px;
+      height: 340px;
+      background: #7c3aed;
+      border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+    .yl-bg-splat2 {
+      position: absolute;
+      bottom: -40px;
+      right: -40px;
+      width: 260px;
+      height: 260px;
+      background: #a3e635;
+      border-radius: 40% 60% 30% 70% / 60% 40% 50% 50%;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    .yl-hero {
+      position: relative;
+      padding: 2rem 1.5rem 1rem;
+      text-align: center;
+    }
+
+    .yl-badge {
+      display: inline-block;
+      background: #7c3aed;
+      color: #a3e635;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 0.75rem;
+    }
+
+    .yl-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 56px;
+      letter-spacing: 2px;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .yl-logo .yo {
+      color: #a3e635;
+    }
+
+    .yl-logo .local {
+      color: #fff;
+    }
+
+    .yl-crew {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      color: #7c3aed;
+      letter-spacing: 6px;
+      margin-bottom: 0.5rem;
+    }
+
+    .yl-tagline {
+      color: #aaa;
+      font-size: 13px;
+      font-weight: 400;
+      margin-bottom: 0.25rem;
+    }
+
+    .yl-age {
+      display: inline-block;
+      background: #a3e635;
+      color: #0d0d0d;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    .yl-card-row {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 0 1.25rem 2rem;
+      position: relative;
+    }
+
+    .yl-card {
+      border-radius: 18px;
+      padding: 1.25rem 1.25rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.18s cubic-bezier(.22, .68, 0, 1.2);
+      border: 2px solid transparent;
+    }
+
+    .yl-card:active {
+      transform: scale(0.97);
+    }
+
+    .yl-card:hover {
+      transform: translateY(-3px) scale(1.01);
+    }
+
+    .yl-card-negocios {
+      background: #1a0a2e;
+      border-color: #7c3aed;
+    }
+
+    .yl-card-cupones {
+      background: #0f1f05;
+      border-color: #a3e635;
+    }
+
+    .yl-card-trabajo {
+      background: #1a1205;
+      border-color: #f59e0b;
+    }
+
+    .yl-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .yl-icon-negocios {
+      background: #3b1fa8;
+    }
+
+    .yl-icon-cupones {
+      background: #3a5c10;
+    }
+
+    .yl-icon-trabajo {
+      background: #7c4a00;
+    }
+
+    .yl-card-text {
+      flex: 1;
+    }
+
+    .yl-card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 1px;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    .yl-card-negocios .yl-card-title {
+      color: #c084fc;
+    }
+
+    .yl-card-cupones .yl-card-title {
+      color: #a3e635;
+    }
+
+    .yl-card-trabajo .yl-card-title {
+      color: #fbbf24;
+    }
+
+    .yl-card-sub {
+      font-size: 12px;
+      font-weight: 400;
+      color: #888;
+      line-height: 1.4;
+    }
+
+    .yl-arrow {
+      font-size: 20px;
+      opacity: 0.5;
+    }
+
+    .yl-card-negocios .yl-arrow {
+      color: #c084fc;
+    }
+
+    .yl-card-cupones .yl-arrow {
+      color: #a3e635;
+    }
+
+    .yl-card-trabajo .yl-arrow {
+      color: #fbbf24;
+    }
+
+    .yl-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .yl-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #333;
+    }
+
+    .yl-dot.active {
+      background: #7c3aed;
+    }
+
+    .yl-footer {
+      text-align: center;
+      padding: 0 1.5rem 2rem;
+      color: #444;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="position:relative; min-height:100vh;">
+
+    <div class="yl-loader" id="loader">
+      <div class="yl-loader-chick">🐥</div>
+      <div class="yl-loader-logo"><span class="yo">YO</span> <span class="local">LOCAL</span></div>
+      <div class="yl-loader-crew">CREW</div>
+      <div class="yl-bar-wrap">
+        <div class="yl-bar-fill" id="bar"></div>
+      </div>
+      <div class="yl-bar-pct" id="pct">0%</div>
+      <div class="yl-bar-msg" id="msg">Cargando el barrio...</div>
+    </div>
+
+    <div class="yl-main" id="main">
+      <div class="yl-bg-splat"></div>
+      <div class="yl-bg-splat2"></div>
+      <div class="yl-hero">
+        <div class="yl-badge">Nueva Tarjeta de Beneficios</div>
+        <div class="yl-logo"><span class="yo">YO</span> <span class="local">LOCAL</span></div>
+        <div class="yl-crew">CREW</div>
+        <p class="yl-tagline">Beneficios para chavos, de chavos.</p>
+        <div class="yl-age">Para 12 a 29 años · Gratis</div>
+      </div>
+      <div class="yl-card-row">
+        <a class="yl-card yl-card-negocios" href="#"
+          onclick="sendPrompt('Muéstrame los negocios disponibles en Yo Local Crew'); return false;">
+          <div class="yl-icon yl-icon-negocios">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+          </div>
+          <div class="yl-card-text">
+            <div class="yl-card-title">Negocios</div>
+            <div class="yl-card-sub">Locales del barrio con beneficios exclusivos para ti</div>
+          </div>
+          <div class="yl-arrow">›</div>
+        </a>
+        <a class="yl-card yl-card-cupones" href="#"
+          onclick="sendPrompt('Muéstrame los cupones y descuentos disponibles en Yo Local Crew'); return false;">
+          <div class="yl-icon yl-icon-cupones">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#a3e635" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+              <line x1="7" y1="7" x2="7.01" y2="7" />
+            </svg>
+          </div>
+          <div class="yl-card-text">
+            <div class="yl-card-title">Cupones</div>
+            <div class="yl-card-sub">Descuentos y promos exclusivas en tus lugares favoritos</div>
+          </div>
+          <div class="yl-arrow">›</div>
+        </a>
+        <a class="yl-card yl-card-trabajo" href="#"
+          onclick="sendPrompt('Muéstrame las ofertas de trabajo disponibles en Yo Local Crew'); return false;">
+          <div class="yl-icon yl-icon-trabajo">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+            </svg>
+          </div>
+          <div class="yl-card-text">
+            <div class="yl-card-title">Ofertas de trabajo</div>
+            <div class="yl-card-sub">¿Necesitas chamba? Encuentra oportunidades laborales cerca</div>
+          </div>
+          <div class="yl-arrow">›</div>
+        </a>
+      </div>
+      <div class="yl-dots">
+        <div class="yl-dot active"></div>
+        <div class="yl-dot"></div>
+        <div class="yl-dot"></div>
+      </div>
+      <div class="yl-footer">Somos barrio · Somos comunidad · Somos Yo Local</div>
+    </div>
+
+  </div>
+
+  <script>
+    const bar = document.getElementById('bar');
+    const pct = document.getElementById('pct');
+    const msg = document.getElementById('msg');
+    const loader = document.getElementById('loader');
+    const main = document.getElementById('main');
+
+    const messages = [
+      { at: 0, text: 'Cargando el barrio...' },
+      { at: 40, text: 'Preparando tus beneficios...' },
+      { at: 75, text: 'Casi listo, brou...' },
+      { at: 95, text: '¡Ya merito!' },
+    ];
+
+    const duration = 2000;
+    const interval = 30;
+    let progress = 0;
+
+    const timer = setInterval(() => {
+      progress += (interval / duration) * 100;
+      if (progress >= 100) progress = 100;
+
+      const rounded = Math.round(progress);
+      bar.style.width = rounded + '%';
+      pct.textContent = rounded + '%';
+
+      const active = messages.filter(m => m.at <= rounded).pop();
+      if (active) msg.textContent = active.text;
+
+      if (progress >= 100) {
+        clearInterval(timer);
+        setTimeout(() => {
+          loader.classList.add('hide');
+          main.classList.add('show');
+        }, 300);
+      }
+    }, interval);
+  </script>
+
+</body>
+
+</html>
