@@ -15,7 +15,14 @@
     }
 
     .yl-loader {
-      background: #0d0d0d;
+
+      /* IMAGEN DE FONDO */
+      background-image: url('../imagenes/fondo.png');
+      background-size: cover;
+      /* Ajusta sin deformar */
+      background-position: center;
+      /* Centrada */
+      background-repeat: no-repeat;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -32,34 +39,19 @@
       visibility: hidden;
     }
 
-    .yl-loader-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 64px;
-      letter-spacing: 3px;
-      line-height: 1;
-      margin-bottom: 0.25rem;
-    }
-
-    .yl-loader-logo .yo {
-      color: #a3e635;
-    }
-
-    .yl-loader-logo .local {
-      color: #fff;
-    }
-
-    .yl-loader-crew {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      color: #7c3aed;
-      letter-spacing: 8px;
-      margin-bottom: 2.5rem;
-    }
-
     .yl-loader-chick {
-      font-size: 48px;
       margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       animation: bounce 0.6s infinite alternate;
+    }
+
+    .yl-loader-chick img {
+      width: 40vw;
+      max-width: 250px;
+      min-width: 120px;
+      height: auto;
     }
 
     @keyframes bounce {
@@ -88,7 +80,7 @@
       background: linear-gradient(90deg, #7c3aed, #a3e635);
       border-radius: 59px;
       transition: width 0.05s linear;
-     
+
     }
 
     .yl-bar-pct {
@@ -111,11 +103,21 @@
     }
 
     .yl-main {
-      background: #0d0d0d;
       min-height: 100vh;
       font-family: 'Nunito', sans-serif;
       position: relative;
       overflow: hidden;
+
+      /* FONDO CON IMAGEN */
+      background-image: url('../imagenes/fondo.png');
+      background-size: cover;
+      /* Ajuste perfecto sin deformar */
+      background-position: center;
+      /* Centrada */
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      /* efecto elegante en PC */
+
       opacity: 0;
       transition: opacity 0.5s ease;
     }
@@ -124,6 +126,7 @@
       opacity: 1;
     }
 
+    /*
     .yl-bg-splat {
       position: absolute;
       top: -60px;
@@ -147,7 +150,7 @@
       opacity: 0.12;
       pointer-events: none;
     }
-
+*/
     .yl-hero {
       position: relative;
       padding: 2rem 1.5rem 1rem;
@@ -175,20 +178,44 @@
       margin-bottom: 0.25rem;
     }
 
-    .yl-logo .yo {
-      color: #a3e635;
+    .yl-logo {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 0.2rem;
     }
 
-    .yl-logo .local {
-      color: #fff;
+    .yl-logo img {
+      width: 10vw;
+      /* Escala según pantalla */
+      max-width: 60px;
+      /* Límite en escritorio */
+      min-width: 60px;
+      /* No muy pequeño */
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
     }
 
-    .yl-crew {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      color: #7c3aed;
-      letter-spacing: 6px;
+    .yl-question {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       margin-bottom: 0.5rem;
+    }
+
+    .yl-question img {
+      width: 60vw;
+      /* Escala según pantalla */
+      max-width: 320px;
+      /* Límite en escritorio */
+      min-width: 180px;
+      /* No muy pequeño */
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
     }
 
     .yl-tagline {
@@ -349,6 +376,105 @@
       letter-spacing: 1px;
       text-transform: uppercase;
     }
+
+    .yl-bottom-sheet {
+      position: fixed;
+      bottom: -100%;
+      left: 0;
+      right: 0;
+      background: #000000;
+      border-radius: 20px 20px 0 0;
+      padding: 1.5rem;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+      transition: bottom 0.5s ease;
+      z-index: 20;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .yl-bottom-sheet.show {
+      bottom: 0;
+    }
+
+    .yl-bottom-sheet-header {
+      width: 100%;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .yl-bottom-sheet-header img {
+      width: 100%;
+      /* Ocupa todo el ancho */
+      height: auto;
+      /* Mantiene proporción */
+      max-height: 80px;
+      /* Controla que no crezca demasiado */
+      object-fit: contain;
+    }
+
+    .yl-bottom-sheet-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .yl-promo-big {
+      width: 100%;
+      height: 200px;
+      background: #333;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .yl-promo-small-row {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .yl-promo-small {
+      flex: 1;
+      height: 100px;
+      background: #333;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 12px;
+    }
+
+    .yl-btn-verde {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      background-color: #a3e635;
+      ;
+      color: rgb(0, 0, 0);
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .yl-btn-verde:hover {
+      background-color: #a3e635;
+      color: rgb(255, 255, 255);
+    }
   </style>
 </head>
 
@@ -356,9 +482,8 @@
   <div style="position:relative; min-height:100vh;">
 
     <div class="yl-loader" id="loader">
-      <div class="yl-loader-chick">🐥</div>
-      <div class="yl-loader-logo"><span class="yo">YO</span> <span class="local">LOCAL</span></div>
-      <div class="yl-loader-crew">CREW</div>
+      <div class="yl-loader-chick"><img src="../imagenes/logo-sinfondo.png" alt="Chick"></div>
+
       <div class="yl-bar-wrap">
         <div class="yl-bar-fill" id="bar"></div>
       </div>
@@ -370,15 +495,16 @@
       <div class="yl-bg-splat"></div>
       <div class="yl-bg-splat2"></div>
       <div class="yl-hero">
+        <div class="yl-logo"><img src="../imagenes/logo-sinfondo.png" alt="Yo Local Crew"></div>
+        <div class="yl-question"><img src="../imagenes/header_main.png" alt="Yo Local Crew"></div>
+
         <div class="yl-badge">Nueva Tarjeta de Beneficios</div>
-        <div class="yl-logo"><span class="yo">YO</span> <span class="local">LOCAL</span></div>
-        <div class="yl-crew">CREW</div>
         <p class="yl-tagline">Beneficios para chavos, de chavos.</p>
         <div class="yl-age">Para 12 a 29 años · Gratis</div>
       </div>
       <div class="yl-card-row">
-        <a class="yl-card yl-card-negocios" href="#"
-          onclick="sendPrompt('Muéstrame los negocios disponibles en Yo Local Crew'); return false;">
+        <a class="yl-card yl-card-negocios" href="eventosPag.php"
+          >
           <div class="yl-icon yl-icon-negocios">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">
@@ -387,13 +513,13 @@
             </svg>
           </div>
           <div class="yl-card-text">
-            <div class="yl-card-title">Negocios</div>
-            <div class="yl-card-sub">Locales del barrio con beneficios exclusivos para ti</div>
+            <div class="yl-card-title">Eventos</div>
+            <div class="yl-card-sub">Los mejores eventos del barrio para pasar el rato y hacer comunidad</div>
           </div>
           <div class="yl-arrow">›</div>
         </a>
-        <a class="yl-card yl-card-cupones" href="#"
-          onclick="sendPrompt('Muéstrame los cupones y descuentos disponibles en Yo Local Crew'); return false;">
+        <a class="yl-card yl-card-cupones" href="cuponesPagina.php"
+          >
           <div class="yl-icon yl-icon-cupones">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#a3e635" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">
@@ -407,8 +533,8 @@
           </div>
           <div class="yl-arrow">›</div>
         </a>
-        <a class="yl-card yl-card-trabajo" href="#"
-          onclick="sendPrompt('Muéstrame las ofertas de trabajo disponibles en Yo Local Crew'); return false;">
+        <a class="yl-card yl-card-trabajo" href="empleo.php"
+        >
           <div class="yl-icon yl-icon-trabajo">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">
@@ -429,6 +555,30 @@
         <div class="yl-dot"></div>
       </div>
       <div class="yl-footer">Somos barrio · Somos comunidad · Somos Yo Local</div>
+    </div>
+
+    <div class="yl-bottom-sheet" id="bottomSheet">
+      <button class="yl-bottom-sheet-close" onclick="closeBottomSheet()">&times;</button>
+      <div class="yl-bottom-sheet-header"><img src="../imagenes/head-shader.png" alt="Yo Local Crew"></div>
+      <div class="yl-promo-big">
+        <img src="../imagenes/papirrin.png" alt="Promoción grande"
+          style="width:100%; height:100%;  border-radius:10px;">
+      </div>
+      <div class="yl-promo-small-row">
+        <div class="yl-promo-small">
+          <img src="../imagenes/pan.png" alt="Promoción pequeña 1"
+            style="width:100%; height:100%;  border-radius:10px;">
+        </div>
+        <div class="yl-promo-small">
+          <img src="../imagenes/digital.png" alt="Promoción pequeña 2"
+            style="width:100%; height:100%;  border-radius:10px;">
+        </div>
+        <div class="yl-promo-small">
+          <img src="../imagenes/mecadito.png" alt="Promoción pequeña 3"
+            style="width:100%; height:100%;  border-radius:10px;">
+        </div>
+      </div>
+      <button class="yl-btn-verde">Ver mis cupones</button>
     </div>
 
   </div>
@@ -467,9 +617,16 @@
         setTimeout(() => {
           loader.classList.add('hide');
           main.classList.add('show');
+          setTimeout(() => {
+            document.getElementById('bottomSheet').classList.add('show');
+          }, 500);
         }, 300);
       }
     }, interval);
+
+    function closeBottomSheet() {
+      document.getElementById('bottomSheet').classList.remove('show');
+    }
   </script>
 
 </body>
