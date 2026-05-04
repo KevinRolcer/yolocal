@@ -7,17 +7,19 @@
     $adminCssFiles = ["assets/css/eventosModern.css", "assets/css/paginacion.css", "assets/css/pildora.css"];
     include_once("head.php");
     ?>
-    <script>
-        if (typeof usuarioId === 'undefined') {
-            var usuarioId = <?= json_encode($_SESSION["ID_Usuario"] ?? null) ?>;
-        }
-        if (typeof usuarioTipo === 'undefined') {
-            var usuarioTipo = <?= json_encode($_SESSION["tipo"] ?? null) ?>;
-        }
-    </script>
     <script type="module" src="assets/js/funcionesEventos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="../assets/css/bolsaTrabajoAdmin.css">
+    <link rel="stylesheet" href="../assets/css/paginacion.css">
+    <link rel="stylesheet" href="../assets/css/pildora.css">
+    <link href="../assets/img/LogoYolocal.png" rel="icon" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../assets/css/eventosL.css">
+    <link rel="stylesheet" href="../assets/css/eventos2.css">
+    <script>
+        const usuarioId = <?= json_encode($_SESSION["ID_Usuario"] ?? null) ?>;
+        const usuarioTipo = <?= json_encode($_SESSION["tipo"] ?? null) ?>;
+    </script>
 </head>
 
 <body class="eventos-modern-page">
@@ -41,41 +43,50 @@
                 </div>
             </div>
         </div>
-        
-        <div class="container mt-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <!-- Search row at the top where title was -->
-                <div class="job-search-row flex-grow-1 me-4" style="background: #f8fafc; padding: 0.4rem 0.85rem; border-radius: 12px; border: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.75rem;">
-                    <i class="ri-search-line"></i>
-                    <input type="text" id="filtroTitulo" placeholder="Buscar eventos por título o descripción..." style="border: none; background: transparent; outline: none; flex: 1;">
+
+        <div class="pill-selector-container">
+            <div class="pill-selector">
+                <a href="index.php?pag=bolsa_trabajo" class="pill-option" id="opcion1">
+                    Trabajos
+                </a>
+                <a href="index.php?pag=eventos" class="pill-option active" id="opcion2">
+                    Eventos
+                </a>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <h1 class="text-start fw-bold">Eventos</h1>
+            <h4 class="text-start text-secondary">Sección para administrar los eventos de YoLocal.</h4>
+        </div>
+
+        <div class="container mt-5">
+            <div class="filter-container">
+                <div class="filter" data-filter="titulo">
+                    <span>Título</span>
+                    <input type="text" id="filtroTitulo" class="hidden" placeholder="Escribe aquí..">
+                    <button class="close">✖</button>
                 </div>
 
-                <div class="d-flex align-items-center gap-3">
-                    <div class="pill-selector">
-                        <a href="index.php?pag=bolsa_trabajo" class="pill-option" id="opcion1">
-                            Trabajos
-                        </a>
-                        <a href="index.php?pag=eventos" class="pill-option active" id="opcion2">
-                            Eventos
-                        </a>
-                    </div>
+                <div class="filter" data-filter="descripcion">
+                    <span>Descripción</span>
+                    <input type="text" id="filtroDescripcion" class="hidden" placeholder="Escribe aquí..">
+                    <button class="close">✖</button>
+                </div>
 
-                    <?php if ($_SESSION["tipo"] === "admin"): ?>
-                        <button type="button" class="btn btn-primary px-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#modalEvento">
-                            <i class="ri-add-line me-1"></i> Cargar
-                        </button>
-                    <?php endif; ?>
+                <?php if ($_SESSION["tipo"] === "admin"): ?>
+                <div class="filter" data-filter="categoria">
+                    <span>Categoría</span>
+                    <input type="text" id="filtroCategoria" class="hidden" placeholder="Escribe aquí..">
+                    <button class="close">✖</button>
+                </div>
+                <?php endif; ?>
+
+                <div class="filter-promociones">
+                    <button id="limpiarFiltros" class="btn btn-secondary">Limpiar Filtros</button>
                 </div>
             </div>
 
-            <!-- Smaller Filters below -->
-            <div class="job-toolbar-minimal">
-                <div class="job-pills-container" id="eventFilterPills">
-                    <button class="job-pill active" data-filter="all">Todos</button>
-                    <button class="job-pill" id="limpiarFiltros">Limpiar filtros</button>
-                </div>
-            </div>
-            
             <?php if ($_SESSION["tipo"] === "admin"): ?>
             <div class="d-flex justify-content-end gap-2 mb-3">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEvento">
@@ -118,6 +129,10 @@
                                         <label for="UbicacionE" class="form-label">Ubicaci&oacute;n</label>
                                         <input type="text" class="form-control" id="UbicacionE" name="UbicacionE" maxlength="200" required>
                                     </div>
+                                    <div class="col-md-6">
+                                        <label for="Telefono" class="form-label">Teléfono de Contacto (Opcional)</label>
+                                        <input type="tel" class="form-control" id="Telefono" name="Telefono" maxlength="15" placeholder="Ej: 2481234567">
+                                    </div>
                                     <div class="col-md-12">
                                         <label for="RutaImagenE" class="form-label">Imagen del Evento</label>
                                         <input type="file" class="form-control" id="RutaImagenE" name="RutaImagenE" accept="image/*">
@@ -137,60 +152,63 @@
                 </div>
             </div>
 
-           <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalEditarLabel">Editar Evento</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                <form id="formEditar" enctype="multipart/form-data">
-                    <input type="hidden" id="ID_Evento_Editar" name="ID_Evento">
-                    
-                    <div class="row g-3">
-                        <div class="col-md-12">
-                            <label for="EditTituloE" class="form-label">T&iacute;tulo del Evento</label>
-                            <input type="text" class="form-control" id="EditTituloE" name="TituloE" maxlength="50" required>
+            <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalEditarLabel">Editar Evento</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
-                        <div class="col-md-12">
-                            <label for="EditDescripcionE" class="form-label">Descripci&oacute;n</label>
-                            <textarea class="form-control" id="EditDescripcionE" name="DescripcionE" rows="3" maxlength="500" required></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="EditPrecioE" class="form-label">Precio ($)</label>
-                            <input type="text" class="form-control" id="EditPrecioE" name="PrecioE" maxlength="6">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="EditFechaE" class="form-label">Fecha del Evento</label>
-                            <input type="date" class="form-control" id="EditFechaE" name="FechaE" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="EditHoraE" class="form-label">Hora del Evento</label>
-                            <input type="time" class="form-control" id="EditHoraE" name="HoraE" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="EditUbicacionE" class="form-label">Ubicaci&oacute;n</label>
-                            <input type="text" class="form-control" id="EditUbicacionE" name="UbicacionE" maxlength="200" required>
-                        </div>
-                        <div class="col-md-12">
-                            <label for="EditRutaImagenE" class="form-label">Nueva Imagen (Opcional)</label>
-                            <input type="file" class="form-control" id="EditRutaImagenE" name="RutaImagenE" accept="image/*">
-                        </div>
-                        <div class="col-md-12">
-                            <label for="EditID_Categor&iacute;a" class="form-label">Categor&iacute;a</label>
-                            <select class="form-control" id="EditID_Categor&iacute;a" name="ID_Categor&iacute;a" required>
-                                </select>
+                        <div class="modal-body">
+                            <form id="formEditar" enctype="multipart/form-data">
+                                <input type="hidden" id="ID_Evento_Editar" name="ID_Evento">
+                                <div class="row g-3">
+                                    <div class="col-md-12">
+                                        <label for="EditTituloE" class="form-label">T&iacute;tulo del Evento</label>
+                                        <input type="text" class="form-control" id="EditTituloE" name="TituloE" maxlength="50" required>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="EditDescripcionE" class="form-label">Descripci&oacute;n</label>
+                                        <textarea class="form-control" id="EditDescripcionE" name="DescripcionE" rows="3" maxlength="500" required></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="EditPrecioE" class="form-label">Precio ($)</label>
+                                        <input type="text" class="form-control" id="EditPrecioE" name="PrecioE" maxlength="6">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="EditFechaE" class="form-label">Fecha del Evento</label>
+                                        <input type="date" class="form-control" id="EditFechaE" name="FechaE" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="EditHoraE" class="form-label">Hora del Evento</label>
+                                        <input type="time" class="form-control" id="EditHoraE" name="HoraE" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="EditUbicacionE" class="form-label">Ubicaci&oacute;n</label>
+                                        <input type="text" class="form-control" id="EditUbicacionE" name="UbicacionE" maxlength="200" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="EditTelefono" class="form-label">Teléfono de Contacto (Opcional)</label>
+                                        <input type="tel" class="form-control" id="EditTelefono" name="Telefono" maxlength="15" placeholder="Ej: 2481234567">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="EditRutaImagenE" class="form-label">Nueva Imagen (Opcional)</label>
+                                        <input type="file" class="form-control" id="EditRutaImagenE" name="RutaImagenE" accept="image/*">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="EditID_Categoria" class="form-label">Categoría</label>
+                                        <select class="form-control" id="EditID_Categoria" name="ID_Categoria" required>
+                                            </select>
+                                    </div>
+                                </div>
+                                <div class="text-end mt-3">
+                                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="text-end mt-3">
-                        <button type="submit" class="btn btn-primary">Actualizar</button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
 
             <div class="mt-3">
                 <div id="contenedor" class="eventos-grid">

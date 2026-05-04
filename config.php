@@ -1,5 +1,5 @@
 <?php
-    define("RUTA","/yolocal");
+    define("RUTA","/yolocal/");
     date_default_timezone_set('America/Mexico_City');
 //s
     function dbConectar()
