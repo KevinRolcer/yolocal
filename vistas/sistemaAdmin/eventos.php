@@ -4,28 +4,24 @@
 <head>
     <title>Eventos - Yo Local</title>
     <?php
-    // Asegúrate de que este archivo inicie la sesión y contenga las configuraciones necesarias
+    $adminCssFiles = ["assets/css/eventosModern.css", "assets/css/paginacion.css", "assets/css/pildora.css"];
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesEventos.js"></script>
-     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="../assets/css/bolsaTrabajoAdmin.css">
-    <link rel="stylesheet" href="../assets/css/paginacion.css">
-    <link rel="stylesheet" href="../assets/css/pildora.css">
-    <link href="../assets/img/LogoYolocal.png" rel="icon" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-   <link rel="stylesheet" href="../assets/css/eventosL.css">
-    <link rel="stylesheet" href="../assets/css/eventos2.css">
     <script>
-    
-   
-        const usuarioId = <?= json_encode($_SESSION["ID_Usuario"] ?? null) ?>;
-        const usuarioTipo = <?= json_encode($_SESSION["tipo"] ?? null) ?>;
+        if (typeof usuarioId === 'undefined') {
+            var usuarioId = <?= json_encode($_SESSION["ID_Usuario"] ?? null) ?>;
+        }
+        if (typeof usuarioTipo === 'undefined') {
+            var usuarioTipo = <?= json_encode($_SESSION["tipo"] ?? null) ?>;
+        }
     </script>
+    <script type="module" src="assets/js/funcionesEventos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
 </head>
 
-<body class="bg-light">
-    <div class="navigation">
+<body class="eventos-modern-page">
+    <div class="navigation admin-sidebar">
         <?php
         include_once("encabezado.php")
         ?>
@@ -33,63 +29,50 @@
     <div class="main">
         <div class="topbar">
             <div class="toggle">
-                <svg class="svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
+                <i class="ri-menu-2-line admin-menu-icon" aria-hidden="true"></i>
             </div>
 
             <div class="contenedor">
                 <div class="notificacion" onclick="toggleNotifi()">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
-                    </svg>
+                    <i class="ri-notification-3-line"></i>
                 </div>
                 <div class="usuario">
-                    <img src="../assets/img/descarga.gif" alt="">
+                    <img src="assets/img/descarga.gif" alt="">
                 </div>
             </div>
         </div>
         
-        <div class="pill-selector-container">
-            <div class="pill-selector">
-                <a href="index.php?pag=bolsa_trabajo" class="pill-option" id="opcion1">
-                    Trabajos
-                </a>
-                <a href="index.php?pag=eventos" class="pill-option active" id="opcion2">
-                    Eventos
-                </a>
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <!-- Search row at the top where title was -->
+                <div class="job-search-row flex-grow-1 me-4" style="background: #f8fafc; padding: 0.4rem 0.85rem; border-radius: 12px; border: 1px solid #f1f5f9; display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="ri-search-line"></i>
+                    <input type="text" id="filtroTitulo" placeholder="Buscar eventos por título o descripción..." style="border: none; background: transparent; outline: none; flex: 1;">
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <div class="pill-selector">
+                        <a href="index.php?pag=bolsa_trabajo" class="pill-option" id="opcion1">
+                            Trabajos
+                        </a>
+                        <a href="index.php?pag=eventos" class="pill-option active" id="opcion2">
+                            Eventos
+                        </a>
+                    </div>
+
+                    <?php if ($_SESSION["tipo"] === "admin"): ?>
+                        <button type="button" class="btn btn-primary px-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#modalEvento">
+                            <i class="ri-add-line me-1"></i> Cargar
+                        </button>
+                    <?php endif; ?>
+                </div>
             </div>
-        </div>
-        
-        <div class="container mt-5">
-            <h1 class="text-start fw-bold">Eventos</h1>
-            <h4 class="text-start text-secondary">Sección para administrar los eventos de YoLocal.</h4>
-        </div>
-        
-        <div class="container mt-5">
-            <div class="filter-container">
-                <div class="filter" data-filter="titulo">
-                    <span>Título</span>
-                    <input type="text" id="filtroTitulo" class="hidden" placeholder="Escribe aquí..">
-                    <button class="close">✖</button>
-                </div>
 
-                <div class="filter" data-filter="descripcion">
-                    <span>Descripción</span>
-                    <input type="text" id="filtroDescripcion" class="hidden" placeholder="Escribe aquí..">
-                    <button class="close">✖</button>
-                </div>
-                
-                <?php if ($_SESSION["tipo"] === "admin"): ?>
-                <div class="filter" data-filter="categoria">
-                    <span>Categoría</span>
-                    <input type="text" id="filtroCategoria" class="hidden" placeholder="Escribe aquí..">
-                    <button class="close">✖</button>
-                </div>
-                <?php endif; ?>
-
-                <div class="filter-promociones">
-                    <button id="limpiarFiltros" class="btn btn-secondary">Limpiar Filtros</button>
+            <!-- Smaller Filters below -->
+            <div class="job-toolbar-minimal">
+                <div class="job-pills-container" id="eventFilterPills">
+                    <button class="job-pill active" data-filter="all">Todos</button>
+                    <button class="job-pill" id="limpiarFiltros">Limpiar filtros</button>
                 </div>
             </div>
             
@@ -112,11 +95,11 @@
                             <form id="formEvento" enctype="multipart/form-data">
                                 <div class="row g-3">
                                     <div class="col-md-12">
-                                        <label for="TituloE" class="form-label">Título del Evento</label>
+                                        <label for="TituloE" class="form-label">T&iacute;tulo del Evento</label>
                                         <input type="text" class="form-control" id="TituloE" name="TituloE" maxlength="50" required>
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="DescripcionE" class="form-label">Descripción</label>
+                                        <label for="DescripcionE" class="form-label">Descripci&oacute;n</label>
                                         <textarea class="form-control" id="DescripcionE" name="DescripcionE" rows="3" maxlength="500" required></textarea>
                                     </div>
                                     <div class="col-md-6">
@@ -132,7 +115,7 @@
                                         <input type="time" class="form-control" id="HoraE" name="HoraE" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="UbicacionE" class="form-label">Ubicación</label>
+                                        <label for="UbicacionE" class="form-label">Ubicaci&oacute;n</label>
                                         <input type="text" class="form-control" id="UbicacionE" name="UbicacionE" maxlength="200" required>
                                     </div>
                                     <div class="col-md-12">
@@ -140,8 +123,8 @@
                                         <input type="file" class="form-control" id="RutaImagenE" name="RutaImagenE" accept="image/*">
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="ID_Categoria" class="form-label">Categoría</label>
-                                        <select class="form-control" id="ID_Categoria" name="ID_Categoria" required>
+                                        <label for="ID_Categor&iacute;a" class="form-label">Categor&iacute;a</label>
+                                        <select class="form-control" id="ID_Categor&iacute;a" name="ID_Categor&iacute;a" required>
                                             </select>
                                     </div>
                                 </div>
@@ -167,11 +150,11 @@
                     
                     <div class="row g-3">
                         <div class="col-md-12">
-                            <label for="EditTituloE" class="form-label">Título del Evento</label>
+                            <label for="EditTituloE" class="form-label">T&iacute;tulo del Evento</label>
                             <input type="text" class="form-control" id="EditTituloE" name="TituloE" maxlength="50" required>
                         </div>
                         <div class="col-md-12">
-                            <label for="EditDescripcionE" class="form-label">Descripción</label>
+                            <label for="EditDescripcionE" class="form-label">Descripci&oacute;n</label>
                             <textarea class="form-control" id="EditDescripcionE" name="DescripcionE" rows="3" maxlength="500" required></textarea>
                         </div>
                         <div class="col-md-6">
@@ -187,7 +170,7 @@
                             <input type="time" class="form-control" id="EditHoraE" name="HoraE" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="EditUbicacionE" class="form-label">Ubicación</label>
+                            <label for="EditUbicacionE" class="form-label">Ubicaci&oacute;n</label>
                             <input type="text" class="form-control" id="EditUbicacionE" name="UbicacionE" maxlength="200" required>
                         </div>
                         <div class="col-md-12">
@@ -195,8 +178,8 @@
                             <input type="file" class="form-control" id="EditRutaImagenE" name="RutaImagenE" accept="image/*">
                         </div>
                         <div class="col-md-12">
-                            <label for="EditID_Categoria" class="form-label">Categoría</label>
-                            <select class="form-control" id="EditID_Categoria" name="ID_Categoria" required>
+                            <label for="EditID_Categor&iacute;a" class="form-label">Categor&iacute;a</label>
+                            <select class="form-control" id="EditID_Categor&iacute;a" name="ID_Categor&iacute;a" required>
                                 </select>
                         </div>
                     </div>
@@ -210,13 +193,13 @@
 </div>
 
             <div class="mt-3">
-                <div id="contenedor" class="promo-grid">
+                <div id="contenedor" class="eventos-grid">
                     </div>
                 <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
             </div>
         </div>
     </div>
-    <script src="../assets/js/main.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 
 </html>

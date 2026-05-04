@@ -23,6 +23,7 @@ class Usuarios
             $_SESSION["nombre"] = "{$usuario['Nombre']} {$usuario['ApellidoP']} {$usuario['ApellidoM']}";
             $_SESSION["tipo"] = "{$usuario['tipo_usuario']}";
             $_SESSION["ID_Usuario"] = "{$usuario['ID_Usuario']}";
+            $_SESSION["foto_perfil"] = $usuario["RutaPerfil"] ?? "";
             $_SESSION["LAST_ACTIVITY"] = time();
             return array(true, $usuario['tipo_usuario']);
         } else {

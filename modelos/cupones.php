@@ -50,6 +50,14 @@ WHERE 1=1";
         $tipos .= "s";
     }
 
+    if (!empty($filtros['estado'])) {
+        if ($filtros['estado'] === 'activo') {
+            $sql .= " AND p.Estatus = 1 AND p.fecha_fin >= CURDATE()";
+        } elseif ($filtros['estado'] === 'expirado') {
+            $sql .= " AND p.fecha_fin < CURDATE()";
+        }
+    }
+
     // Si el tipo de usuario es "negocio", filtrar por ID_Usuario
     if ($usuarioTipo === "negocio") {
         $sql .= " AND n.ID_Usuario = ?";
@@ -78,20 +86,48 @@ WHERE 1=1";
         $promociones[] = $row;
     }
 
-    // Total de registros 
+    // Total de registros (con filtros)
     $countSql = "SELECT COUNT(*) as total 
                  FROM promociones p
                  INNER JOIN negocios n ON p.ID_Negocio = n.ID_Negocio
                  WHERE 1=1";
+    
+    $countValues = [];
+    $countTipos = "";
 
-    // Si el tipo de usuario es "negocio", aplicar el filtro
+    if (!empty($filtros['titulo'])) {
+        $countSql .= " AND p.titulo LIKE ?";
+        $countValues[] = "%" . $filtros['titulo'] . "%";
+        $countTipos .= "s";
+    }
+    if (!empty($filtros['descripcion'])) {
+        $countSql .= " AND p.descripcion LIKE ?";
+        $countValues[] = "%" . $filtros['descripcion'] . "%";
+        $countTipos .= "s";
+    }
+    if (!empty($filtros['NombreNegocio'])) {
+        $countSql .= " AND n.nombre_negocio LIKE ?";
+        $countValues[] = "%" . $filtros['NombreNegocio'] . "%";
+        $countTipos .= "s";
+    }
+
+    if (!empty($filtros['estado'])) {
+        if ($filtros['estado'] === 'activo') {
+            $countSql .= " AND p.Estatus = 1 AND p.fecha_fin >= CURDATE()";
+        } elseif ($filtros['estado'] === 'expirado') {
+            $countSql .= " AND p.fecha_fin < CURDATE()";
+        }
+    }
+
     if ($usuarioTipo === "negocio") {
         $countSql .= " AND n.ID_Usuario = ?";
+        $countValues[] = $usuarioId;
+        $countTipos .= "i";
     }
 
     $countConsulta = $enlace->prepare($countSql);
-    if ($usuarioTipo === "negocio") {
-        $countConsulta->bind_param("i", $usuarioId);
+    if (!empty($countTipos)) {
+        $countConsulta->bind_param($countTipos, ...$countValues);
     }
     $countConsulta->execute();
     $countResult = $countConsulta->get_result();
@@ -100,12 +136,12 @@ WHERE 1=1";
 
     $consulta->close();
     $countConsulta->close();
-    $enlace->close();
 
     return [
         "promociones" => $promociones,
         "totalPaginas" => $totalPaginas,
         "paginaActual" => $pagina,
+        "totalRegistros" => $totalRegistros
     ];
 }
 

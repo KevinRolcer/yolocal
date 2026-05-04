@@ -4,16 +4,14 @@
 <head>
     <title>Usuarios - Yo Local</title>
     <?php
+    $adminCssFiles = ["assets/css/usuarios.css", "assets/css/paginacion.css", "assets/css/adminFormal.css"];
     include_once("head.php");
     ?>
     <script type="module" src="assets/js/funcionesUsu.js"></script>
-    <link rel="stylesheet" href="../assets/css/usuarios.css">
-    <link rel="stylesheet" href="../assets/css/paginacion.css">
-    <link href="../assets/img/LogoYolocal.png" rel="icon" />
 </head>
 
-<body class="bg-light">
-    <div class="navigation">
+<body>
+    <div class="navigation admin-sidebar">
         <?php
         include_once("encabezado.php")
         ?>
@@ -21,9 +19,7 @@
     <div class="main">
         <div class="topbar">
             <div class="toggle">
-                <svg class="svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
+                <i class="ri-menu-2-line admin-menu-icon" aria-hidden="true"></i>
             </div>
 
 
@@ -34,7 +30,7 @@
                     </svg>
                 </div>
                 <div class="usuario">
-                    <img src="../assets/img/descarga.gif"  alt="">
+                    <img src="assets/img/descarga.gif"  alt="">
                 </div>
                 <div class="notifi-box" id="box">
                     <p class="calendario"></p>
@@ -54,10 +50,10 @@
                                         <li>Dom</li>
                                         <li>Lun</li>
                                         <li>Mar</li>
-                                        <li>Mié</li>
+                                        <li>Mi&eacute;</li>
                                         <li>Jue</li>
                                         <li>Vie</li>
-                                        <li>Sáb</li>
+                                        <li>S&aacute;b</li>
                                     </ul>
                                     <ul class="dates"></ul>
                                 </div>
@@ -78,41 +74,92 @@
                 </div>
             </div>
         </div>
-        <div class="container mt-5">
-            <h1 class="text-start fw-bold">Usuarios</h1>
-            <h4 class="text-start text-secondary">Sección para administrar usuarios de YoLocal.</h4>
-        </div>
-        <div class="container mt-5">
-            <div class="filter-container">
-                <!--
-            <div class="filter" data-filter="id">
-                <span>ID</span><input type="number" id="idM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
-            </div>
-            -->
-                <div class="filter" data-filter="nombre">
-                    <span>Nombre</span> <input type="text" id="nombreM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
+        <main class="admin-users-page">
+            <section class="users-hero">
+                <div>
+                    <span class="eyebrow">Administraci&oacute;n</span>
+                    <h1 class="admin-page-title">Usuarios</h1>
                 </div>
-                <div class="filter" data-filter="apellidos">
-                    <span>Apellidos </span> <input type="text" id="apeP" placeholder="Escribe aquí.." class="hidden"> <button class="close">✖</button>
-                </div>
-                <div class="filter" data-filter="numero">
-                    <span>Correo</span> <input type="text" id="numM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
-                </div>
-                <div class="filter-miembros">
-                    <button id="limpiarM" class="btn btn-secondary">Limpiar Filtros</button>
-                </div>
-            </div>
-
-            <div class="gB">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregar">
-                    Agregar Usuario
+                <button type="button" class="btn btn-primary btn-add-user" data-bs-toggle="modal" data-bs-target="#modalAgregar">
+                    <i class="bi bi-person-plus"></i>
+                    Nuevo usuario
                 </button>
-            </div>
+            </section>
+
+            <section class="users-toolbar" aria-label="Filtros de usuarios">
+                <div class="search-filter-row">
+                    <!-- Dynamic single search input -->
+                    <div class="search-input-wrapper" id="searchWrapper">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Buscar por nombre..." autocomplete="off" data-filter-key="Nombre">
+                        <button class="search-clear" type="button" id="searchClear" aria-label="Limpiar">&times;</button>
+                    </div>
+
+                    <!-- Filter dropdown -->
+                    <div class="filter-dropdown" id="filterDropdown">
+                        <button class="btn-filter-toggle" type="button" id="btnFilterToggle">
+                            <i class="bi bi-funnel"></i>
+                            <span>Filtrar</span>
+                            <span class="filter-badge" id="filterBadge" style="display:none;">0</span>
+                        </button>
+                        <div class="filter-dropdown-menu" id="filterMenu">
+                            <div class="filter-menu-title">Filtrar por</div>
+                            <button class="filter-option active" data-key="Nombre" data-placeholder="Buscar por nombre..." type="button">
+                                <i class="bi bi-person"></i> Nombre
+                                <i class="bi bi-check2 check-icon"></i>
+                            </button>
+                            <button class="filter-option" data-key="Apellidos" data-placeholder="Buscar por apellidos..." type="button">
+                                <i class="bi bi-person-lines-fill"></i> Apellidos
+                                <i class="bi bi-check2 check-icon"></i>
+                            </button>
+                            <button class="filter-option" data-key="Telefono" data-placeholder="Buscar por correo..." type="button">
+                                <i class="bi bi-envelope"></i> Correo
+                                <i class="bi bi-check2 check-icon"></i>
+                            </button>
+                            <button class="filter-option" data-key="ID_Miembro" data-placeholder="Buscar por n&uacute;mero..." type="button">
+                                <i class="bi bi-hash"></i> N&ordm; de usuario
+                                <i class="bi bi-check2 check-icon"></i>
+                            </button>
+                            <div class="filter-divider"></div>
+                            <div class="filter-status-group">
+                                <span class="filter-status-label"><i class="bi bi-shield-check"></i> Estado</span>
+                                <div class="status-toggle-group" id="statusToggle">
+                                    <button class="status-btn active" data-status="todos" type="button">Todos</button>
+                                    <button class="status-btn" data-status="activo" type="button">Activo</button>
+                                    <button class="status-btn" data-status="inactivo" type="button">Inactivo</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Privacy toggle -->
+                    <button class="btn-privacy-toggle" type="button" id="btnPrivacyToggle">
+                        <i class="bi bi-eye-slash"></i>
+                        <span>Ocultar datos</span>
+                    </button>
+
+                    <!-- Sort buttons -->
+                    <button class="btn-sort-toggle" type="button" id="btnSortAz" title="Ordenar alfab&eacute;ticamente">
+                        <i class="bi bi-sort-alpha-down"></i>
+                        <span>Az</span>
+                    </button>
+                    <button class="btn-sort-toggle" type="button" id="btnSortNum" title="Ordenar por n&uacute;mero">
+                        <i class="bi bi-sort-numeric-down"></i>
+                        <span>1-9</span>
+                    </button>
+
+                    <!-- Clear all -->
+                    <button id="limpiarM" class="btn btn-light btn-clear-filters" type="button">
+                        <i class="bi bi-x-circle"></i>
+                        Limpiar
+                    </button>
+                </div>
+            </section>
 
 
             <!-- Modal AGREGAR -->
             <div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalAgregarLabel">Agregar Usuario</h5>
@@ -120,55 +167,55 @@
                         </div>
                         <div class="modal-body">
                             <form id="formAgregar">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
+                                <div class="row g-2">
+                                    <div class="col-md-4">
                                         <label for="Nombre" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="Nombre" name="Nombre" maxlength="30" required>
+                                        <input type="text" class="form-control" id="Nombre" name="Nombre" maxlength="30" placeholder="Nombre" required>
                                         <div class="invalid-feedback"></div>
                                         <div class="valid-feedback"></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="ApellidoP" class="form-label">Apellido Paterno</label>
-                                        <input type="text" class="form-control" id="ApellidoP" name="ApellidoP" maxlength="30" required>
+                                    <div class="col-md-4">
+                                        <label for="ApellidoP" class="form-label">Ap. Paterno</label>
+                                        <input type="text" class="form-control" id="ApellidoP" name="ApellidoP" maxlength="30" placeholder="Paterno" required>
                                         <div class="invalid-feedback"></div>
                                         <div class="valid-feedback"></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="ApellidoM" class="form-label">Apellido Materno</label>
-                                        <input type="text" class="form-control" id="ApellidoM" name="ApellidoM" maxlength="30" required>
+                                    <div class="col-md-4">
+                                        <label for="ApellidoM" class="form-label">Ap. Materno</label>
+                                        <input type="text" class="form-control" id="ApellidoM" name="ApellidoM" maxlength="30" placeholder="Materno" required>
                                         <div class="invalid-feedback"></div>
                                         <div class="valid-feedback"></div>
                                     </div>
 
-                                    <div class="col-md-12">
+                                    <div class="col-md-8">
                                         <label for="NombreUsu" class="form-label">Correo</label>
-                                        <input type="text" class="form-control" id="NombreUsu" name="NombreUsu" maxlength="50" required>
+                                        <input type="text" class="form-control" id="NombreUsu" name="NombreUsu" maxlength="50" placeholder="correo@ejemplo.com" required>
                                         <span id="errorNombreUsu"></span>
                                         <div class="invalid-feedback"></div>
                                         <div class="valid-feedback"></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="Contra" class="form-label">Contraseña</label>
-                                        <input type="password" class="form-control" id="Contra" name="Contra" maxlength="16" required>
-                                        <div class="invalid-feedback"></div>
-                                        <div class="valid-feedback"></div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="ContraConfirmar" class="form-label">Confirmar Contraseña</label>
-                                        <input type="password" class="form-control" id="ContraConfirmar" name="ContraConfirmar" maxlength="16" required>
-                                        <div class="invalid-feedback"></div>
-                                        <div class="valid-feedback"></div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <label for="usutip" class="form-label">Tipo de Usuario</label>
+                                    <div class="col-md-4">
+                                        <label for="usutip" class="form-label">Tipo</label>
                                         <select class="form-control" id="usutip" name="usutip">
                                             <option value="admin">Administrador</option>
                                             <option value="negocio">Negocio</option>
                                         </select>
                                     </div>
+
+                                    <div class="col-md-6">
+                                        <label for="Contra" class="form-label">Contrase&ntilde;a</label>
+                                        <input type="password" class="form-control" id="Contra" name="Contra" maxlength="16" placeholder="••••••••" required>
+                                        <div class="invalid-feedback"></div>
+                                        <div class="valid-feedback"></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="ContraConfirmar" class="form-label">Confirmar</label>
+                                        <input type="password" class="form-control" id="ContraConfirmar" name="ContraConfirmar" maxlength="16" placeholder="••••••••" required>
+                                        <div class="invalid-feedback"></div>
+                                        <div class="valid-feedback"></div>
+                                    </div>
                                 </div>
-                                <div class="text-end mt-3">
+                                <div class="text-end mt-2">
                                     <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
                             </form>
@@ -248,12 +295,12 @@
                 </div>
             </div>
 
-            <!-- Modal para cambiar contraseña -->
+            <!-- Modal para cambiar contrase&ntilde;a -->
             <div class="modal fade" id="modalEditarClave" tabindex="-1" aria-labelledby="modalEditarClaveLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalEditarClaveLabel">Cambiar Contraseña</h5>
+                            <h5 class="modal-title" id="modalEditarClaveLabel">Cambiar Contrase&ntilde;a</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
@@ -261,7 +308,7 @@
                                 <input type="hidden" id="ID_UsuarioClave" name="ID_Usuario">
 
                                 <div class="mb-3">
-                                    <label for="ClaveNueva" class="form-label">Nueva Contraseña</label>
+                                    <label for="ClaveNueva" class="form-label">Nueva Contrase&ntilde;a</label>
                                     <input type="password" class="form-control" id="ClaveNueva" name="ClaveNueva" maxlength="16" required>
                                     <div class="invalid-feedback">
                                         Password is required
@@ -271,7 +318,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="ConfirmarClave" class="form-label">Confirmar Contraseña</label>
+                                    <label for="ConfirmarClave" class="form-label">Confirmar Contrase&ntilde;a</label>
                                     <input type="password" class="form-control" id="ConfirmarClave" name="ConfirmarClave" maxlength="16" required>
                                     <div class="invalid-feedback">
                                         Password is required
@@ -288,17 +335,24 @@
             </div>
 
             <!-- Tabla de Usuarios -->
-            <div class="mt-3">
-                <h4 class="text-center">Lista de Usuarios</h4>
-                <div class="row" id="ListaMiembros">
+            <section class="users-list-panel">
+                <div class="users-list-header">
+                    <h2 class="admin-section-title">Directorio</h2>
+                    <span class="results-counter" id="usuariosContador">Cargando...</span>
                 </div>
-                <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
-            </div>
+                <div id="ListaMiembros" class="users-grid">
+                </div>
+                <div class="pagination-footer">
+                    <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
+                    <span class="per-page-label" id="porPaginaLabel"></span>
+                </div>
+            </section>
 
-        </div>
+        </main>
 
 
-        <script src="../assets/js/main.js"></script>
+    </div>
+    <script src="assets/js/main.js"></script>
 </body>
 
 </html>

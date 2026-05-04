@@ -15,7 +15,7 @@ if (isset($_POST["ope"])) {
 
     // listar 
     if ($ope == "LISTAUSUARIOS") {
-        header('Content-Type: application/json'); // <-- esta línea es clave
+        header('Content-Type: application/json');
         $usuarioId = $_POST['usuarioId'] ?? null;
         $usuarioTipo = $_POST['usuarioTipo'] ?? null;
 
@@ -27,19 +27,27 @@ if (isset($_POST["ope"])) {
         $registrosPorPagina = isset($_POST["registrosPorPagina"]) ? intval($_POST["registrosPorPagina"]) : 10;
 
         $filtros = [
-            "ID_Usuario" => $_POST["id"] ?? null,
-            "Nombre" => $_POST["nombre"] ?? null,
-
-            "Correo" => $_POST["telefono"] ?? null
+            "Nombre"  => $_POST["nombre"] ?? null,
+            "Correo"  => $_POST["telefono"] ?? null,
+            "Estatus" => $_POST["estatus"] ?? null,
+            "Categorias" => $_POST["categorias"] ?? null
         ];
 
-        $lista = $usu->ListarTODOS($pagina, $registrosPorPagina, $filtros, $usuarioId, $usuarioTipo);
+        $ordenColumna   = $_POST["ordenColumna"] ?? 'ID_Negocio';
+        $ordenDireccion = $_POST["ordenDireccion"] ?? 'DESC';
+
+        // Map frontend column names to DB column names for businesses
+        if ($ordenColumna === 'Nombre') $ordenColumna = 'nombre_negocio';
+        if ($ordenColumna === 'id') $ordenColumna = 'ID_Negocio';
+
+        $lista = $usu->ListarTODOS($pagina, $registrosPorPagina, $filtros, $usuarioId, $usuarioTipo, $ordenColumna, $ordenDireccion);
 
         echo json_encode([
             "success" => true,
             "lista" => $lista["miembros"],
             "totalPaginas" => $lista["totalPaginas"],
-            "paginaActual" => $lista["paginaActual"]
+            "paginaActual" => $lista["paginaActual"],
+            "totalRegistros" => $lista["totalRegistros"]
         ]);
     }elseif ($ope == "LISTAICONOS") {
         header('Content-Type: application/json'); // <-- esta línea es clave
@@ -185,6 +193,7 @@ if (isset($_POST["ope"])) {
 
         if ($latitud >= 18.9 && $latitud <= 19.6 && $longitud <= -97.8 && $longitud >= -98.6) {
             $coordenadasLimpias[] = [
+                "ID_Negocio" => $fila['ID_Negocio'] ?? '',
                 "Latitud" => $latitud,
                 "Longitud" => $longitud,
                 "nombre_negocio" => $fila['nombre_negocio'] ?? ''

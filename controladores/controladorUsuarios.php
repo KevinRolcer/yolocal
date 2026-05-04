@@ -60,15 +60,20 @@ if (isset($_POST["ope"])) {
         "ID_Usuario" => $_POST["id"] ?? null,
         "Nombre" => $_POST["nombre"] ?? null,
         "Apellidos" => $_POST["apellidos"] ?? null,
-        "Correo" => $_POST["telefono"] ?? null
+        "Correo" => $_POST["telefono"] ?? null,
+        "Estatus" => $_POST["estatus"] ?? null
     ];
 
-    $lista = $usu->ListarTODOS($pagina, $registrosPorPagina, $filtros);
+    $ordenColumna = $_POST["ordenColumna"] ?? 'ID_Usuario';
+    $ordenDireccion = $_POST["ordenDireccion"] ?? 'DESC';
+
+    $lista = $usu->ListarTODOS($pagina, $registrosPorPagina, $filtros, $ordenColumna, $ordenDireccion);
 
     echo json_encode([
         "success" => true,
         "lista" => $lista["miembros"],
         "totalPaginas" => $lista["totalPaginas"],
+        "totalRegistros" => $lista["totalRegistros"],
         "paginaActual" => $lista["paginaActual"]
     ]);
 }
@@ -133,6 +138,18 @@ if (isset($_POST["ope"])) {
         $status = $usu->cambiarClave($idUsuario, $claveEncriptada, $_POST["ClaveNueva"]);
 
         echo json_encode(["success" => $status]);
+        exit();
+    }
+    elseif ($ope == "SUBIR_FOTO_PERFIL" && isset($_POST["ID_Usuario"], $_FILES["fotoPerfil"])) {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
+        $idUsuario = intval($_POST["ID_Usuario"]);
+        $resultado = $usu->guardarFotoPerfil($idUsuario, $_FILES["fotoPerfil"]);
+
+        header('Content-Type: application/json');
+        echo json_encode($resultado);
         exit();
     }
     

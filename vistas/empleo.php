@@ -96,7 +96,7 @@
                     </span>
                     <input type="text" class="search-input" placeholder="Buscar empleos..." id="searchInput">
                 </div>
-                <button class="filter-btn" onclick="toggleFilters()">
+                <button class="filter-btn" type="button" onclick="toggleFilters()">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
@@ -104,6 +104,28 @@
                     </span>
                     Filtrar
                 </button>
+            </div>
+            <div class="job-filters-panel" id="jobFiltersPanel" aria-label="Filtros de empleos">
+                <label class="job-filter-control">
+                    <span>Horario</span>
+                    <select id="filterSchedule">
+                        <option value="">Todos</option>
+                        <option value="Tiempo completo">Tiempo completo</option>
+                        <option value="Matutino">Matutino</option>
+                        <option value="Vespertino">Vespertino</option>
+                        <option value="Por horas">Por horas</option>
+                        <option value="__SIN_TURNO__">Sin turno</option>
+                    </select>
+                </label>
+                <label class="job-filter-control">
+                    <span>Salario</span>
+                    <select id="filterSalary">
+                        <option value="">Todos</option>
+                        <option value="paid">Con salario</option>
+                        <option value="unpaid">Sin salario</option>
+                    </select>
+                </label>
+                <button class="clear-filters-btn" type="button" id="clearJobFilters">Limpiar filtros</button>
             </div>
             <!-- Filtros activos 
             <div class="active-filters">
@@ -126,10 +148,11 @@
             <div class="jobs-list">
                 <div class="jobs-header">
                     <div class="jobs-count">No. de empleos</div>
-                    <select class="sort-select">
-                        <option>Filtros principales</option>
-                        <option>Filtro 1</option>
-                        <option>Filtro 2</option>
+                    <select class="sort-select" id="sortJobs" aria-label="Ordenar empleos">
+                        <option value="recent">Más recientes</option>
+                        <option value="title">Título A-Z</option>
+                        <option value="salary-desc">Mayor salario</option>
+                        <option value="salary-asc">Menor salario</option>
                     </select>
                 </div>
 

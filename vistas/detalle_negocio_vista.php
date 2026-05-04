@@ -1,12 +1,14 @@
 <?php
-require_once __DIR__ . '/../modelos/Carrucel.php';
-
-$negocio = null;
-if (isset($_GET['id'])) {
+if (!isset($negocio) && isset($_GET['id'])) {
+    require_once __DIR__ . '/../modelos/Carrucel.php';
     $idNegocio = intval($_GET['id']);
     $carrucel = new Carrucel();
     $negocio = $carrucel->obtenerNegocioPorId($idNegocio);
 }
+
+$negocio = $negocio ?? [];
+$horarios = $horarios ?? [];
+$imagenes = $imagenes ?? [];
 ?>
 <!DOCTYPE html>
 <html lang="es">

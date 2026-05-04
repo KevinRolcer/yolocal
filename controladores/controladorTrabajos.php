@@ -57,7 +57,8 @@ if (isset($_POST["ope"])) {
     $filtros = [
         "titulo"        => $_POST["titulo"] ?? null,
         "descripcion"   => $_POST["descripcion"] ?? null,
-        "NombreNegocio" => $_POST["negocio"] ?? null
+        "NombreNegocio" => $_POST["negocio"] ?? null,
+        "horario"       => $_POST["horario"] ?? null
     ];
 
    
@@ -68,7 +69,8 @@ if (isset($_POST["ope"])) {
         "success"      => true,
         "lista"        => $lista["promociones"],
         "totalPaginas" => $lista["totalPaginas"],
-        "paginaActual" => $lista["paginaActual"]
+        "paginaActual" => $lista["paginaActual"],
+        "totalRegistros" => $lista["totalRegistros"]
     ]);
 }
 

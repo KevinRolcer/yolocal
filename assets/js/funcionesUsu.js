@@ -5,7 +5,8 @@ import {
   validaSoloLetras,
   validaContrasena,
 } from "./validaciones.js?v=3.8.2";
-document.addEventListener("DOMContentLoaded", () => {
+
+function iniciarModuloUsuarios() {
   NomUsuRep();
 
   // agregar usuario
@@ -84,7 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   listarMiembros();
-});
+  initUsersFilters();
+}
 function NomUsuRep() {
   document.getElementById("NombreUsu").addEventListener("blur", function () {
     let nombreUsu = this.value.trim();
@@ -107,8 +109,8 @@ function NomUsuRep() {
       .then((data) => {
         if (data.success) {
           if (data.existe) {
-            mensajeError.textContent =
-              "⚠️ El nombre de usuario ya está en uso.";
+            mensajeError.innerHTML =
+              '<i class="bi bi-exclamation-circle"></i> El nombre de usuario ya está en uso.';
             mensajeError.style.color = "red";
           } else {
             mensajeError.textContent = "";
@@ -158,6 +160,30 @@ function CorreoUsuRep() {
 let paginaActual = 1;
 const registrosPorPagina = 10;
 let filtrosActuales = {};
+let filtroDebounceTimer = null;
+let ocultarDatosSensibles = false;
+let ultimaListaRenderizada = [];
+let ultimoTotalRegistros = 0;
+let ordenColumnaActual = 'ID_Usuario';
+let ordenDireccionActual = 'DESC';
+
+function enmascararCorreo(correo) {
+  if (!correo || !correo.includes("@")) return correo;
+  const [local, dominio] = correo.split("@");
+  if (local.length <= 2) return "**@" + dominio;
+  return local[0] + local[1] + "***@" + dominio;
+}
+
+function enmascararApellido(apellido) {
+  if (!apellido || apellido.length <= 2) return apellido;
+  return apellido[0] + "*".repeat(apellido.length - 2) + apellido[apellido.length - 1];
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciarModuloUsuarios, { once: true });
+} else {
+  iniciarModuloUsuarios();
+}
 
 export function listarMiembros(filtros = filtrosActuales) {
   filtrosActuales = filtros; 
@@ -171,6 +197,13 @@ export function listarMiembros(filtros = filtrosActuales) {
   if (filtros.Nombre) params.append("nombre", filtros.Nombre);
   if (filtros.Apellidos) params.append("apellidos", filtros.Apellidos);
   if (filtros.Telefono) params.append("telefono", filtros.Telefono);
+  if (filtros.Estatus && filtros.Estatus !== "todos") params.append("estatus", filtros.Estatus);
+
+  // Sorting params
+  params.append("ordenColumna", ordenColumnaActual);
+  params.append("ordenDireccion", ordenDireccionActual);
+  
+  console.log(`Listando con orden: ${ordenColumnaActual} ${ordenDireccionActual}`);
 
   fetch("controladores/controladorUsuarios.php", {
     method: "POST",
@@ -184,8 +217,16 @@ export function listarMiembros(filtros = filtrosActuales) {
         renderizarError("No se pudieron cargar los miembros.");
         return;
       }
-      renderizarMiembros(data.lista);
+      renderizarMiembros(data.lista, data.totalRegistros);
+      // Store for re-rendering on privacy toggle
+      ultimaListaRenderizada = data.lista;
+      ultimoTotalRegistros = data.totalRegistros;
       actualizarPaginacion(data.totalPaginas);
+      // Update per-page label
+      const perPageLabel = document.getElementById("porPaginaLabel");
+      if (perPageLabel) {
+        perPageLabel.textContent = `Mostrando ${data.lista ? data.lista.length : 0} por página`;
+      }
     })
     .catch((error) => {
       console.error("Error en la solicitud:", error);
@@ -193,7 +234,7 @@ export function listarMiembros(filtros = filtrosActuales) {
     });
 }
 
-function renderizarMiembros(lista) {
+function renderizarMiembrosLegacy(lista) {
   const contenedor = document.querySelector("#ListaMiembros");
   contenedor.innerHTML = "";
 
@@ -237,6 +278,99 @@ function renderizarError(mensaje) {
             <p>${mensaje}</p>
         </div>
     `;
+}
+
+function renderizarMiembros(lista, totalRegistros) {
+  const contenedor = document.querySelector("#ListaMiembros");
+  const contador = document.querySelector("#usuariosContador");
+  contenedor.innerHTML = "";
+
+  if (!lista || lista.length === 0) {
+    if (contador) contador.textContent = "0 usuarios";
+    contenedor.innerHTML = `
+            <div class="no-results">
+                <i class="bi bi-search"></i>
+                <h3>Sin resultados</h3>
+                <p>No se encontr&oacute; ning&uacute;n usuario con los filtros aplicados.</p>
+            </div>
+        `;
+    return;
+  }
+
+  if (contador) {
+    const total = totalRegistros != null ? totalRegistros : lista.length;
+    contador.textContent = `${total} ${total === 1 ? "usuario" : "usuarios"}`;
+  }
+
+  lista.forEach((miembro) => {
+    const id = escapeHTML(miembro.ID_Usuario);
+    const nombre = escapeHTML(miembro.Nombre);
+    let apellidoP = escapeHTML(miembro.ApellidoP);
+    let apellidoM = escapeHTML(miembro.ApellidoM);
+    let correo = escapeHTML(miembro.Correo);
+    const tipo = escapeHTML(miembro.tipo_usuario);
+    const estatus = miembro.Estatus || "activo";
+
+    // Apply masking if privacy mode is on
+    if (ocultarDatosSensibles) {
+      correo = enmascararCorreo(correo);
+      apellidoP = enmascararApellido(apellidoP);
+      apellidoM = enmascararApellido(apellidoM);
+    }
+
+    const nombreCompleto = `${nombre} ${apellidoP} ${apellidoM}`.trim();
+    const iniciales = obtenerIniciales(miembro.Nombre, miembro.ApellidoP);
+    const rolClase = tipo.toLowerCase() === "admin" ? "role-admin" : "role-business";
+    const estatusTexto = estatus === "activo" ? "Cuenta activa" : "Cuenta inactiva";
+    const estatusIcono = estatus === "activo" ? "bi-shield-check" : "bi-shield-x";
+    const estatusClase = estatus === "activo" ? "status-activo" : "status-inactivo";
+
+    contenedor.innerHTML += `
+            <article class="usuario-card">
+                <div class="usuario-card-header">
+                    <div class="usuario-avatar" aria-hidden="true">${iniciales}</div>
+                    <div class="usuario-card-title">
+                        <span class="usuario-id">#${id}</span>
+                        <h3>${nombreCompleto}</h3>
+                    </div>
+                    <span class="role-pill ${rolClase}">${tipo}</span>
+                </div>
+                <div class="usuario-card-body">
+                    <p class="usuario-email"><i class="bi bi-envelope"></i>${correo}</p>
+                    <div class="usuario-meta">
+                        <span class="${estatusClase}"><i class="bi ${estatusIcono}"></i>${estatusTexto}</span>
+                    </div>
+                </div>
+                <div class="card-buttons" aria-label="Acciones de ${nombreCompleto}">
+                    <button class="icon-btn btn-editar" data-id="${id}" data-bs-toggle="modal" data-bs-target="#modalEditar" title="Editar usuario" aria-label="Editar ${nombreCompleto}">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="icon-btn btn-clave" data-id="${id}" data-bs-toggle="modal" data-bs-target="#modalEditarClave" title="Cambiar contrase&ntilde;a" aria-label="Cambiar contrase&ntilde;a de ${nombreCompleto}">
+                        <i class="bi bi-key"></i>
+                    </button>
+                    <button class="icon-btn btn-eliminar" data-id="${id}" title="Eliminar usuario" aria-label="Eliminar ${nombreCompleto}">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </article>
+        `;
+  });
+}
+
+function escapeHTML(valor) {
+  return String(valor ?? "").replace(/[&<>"']/g, (caracter) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;",
+  }[caracter]));
+}
+
+function obtenerIniciales(nombre = "", apellido = "") {
+  const primera = String(nombre).trim().charAt(0);
+  const segunda = String(apellido).trim().charAt(0);
+  return `${primera}${segunda}`.toUpperCase() || "US";
 }
 
 function actualizarPaginacion(totalPaginas) {
@@ -302,87 +436,261 @@ function actualizarPaginacion(totalPaginas) {
 }
 
 function aplicarFiltros() {
-  const filtros = {
-    //ID_Miembro: document.getElementById("idM").value.trim(),
-    Nombre: document.getElementById("nombreM").value.trim(),
-    Apellidos: document.getElementById("apeP").value.trim(),
-    Telefono: document.getElementById("numM").value.trim(),
-  };
+  const searchInput = document.getElementById("searchInput");
+  const filterKey = searchInput ? searchInput.dataset.filterKey : "Nombre";
+  const searchValue = searchInput ? searchInput.value.trim() : "";
+
+  const filtros = {};
+  if (searchValue) {
+    filtros[filterKey] = searchValue;
+  }
+
+  // Get current status filter
+  const activeStatus = document.querySelector("#statusToggle .status-btn.active");
+  if (activeStatus) {
+    filtros.Estatus = activeStatus.dataset.status;
+  }
 
   paginaActual = 1;
   listarMiembros(filtros);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const filtersContainer = document.querySelector(".filter-container");
+function programarAplicacionFiltros() {
+  if (filtroDebounceTimer) {
+    clearTimeout(filtroDebounceTimer);
+  }
+  filtroDebounceTimer = setTimeout(() => {
+    aplicarFiltros();
+  }, 260);
+}
 
-  if (!filtersContainer) {
-    console.error("Error: No se encontró el contenedor de filtros.");
-    return;
+function initUsersFilters() {
+  const searchInput = document.getElementById("searchInput");
+  const searchClear = document.getElementById("searchClear");
+  const searchWrapper = document.getElementById("searchWrapper");
+  const btnToggle = document.getElementById("btnFilterToggle");
+  const filterMenu = document.getElementById("filterMenu");
+  const filterDropdown = document.getElementById("filterDropdown");
+  const clearAllButton = document.getElementById("limpiarM");
+  const filterBadge = document.getElementById("filterBadge");
+
+  if (!searchInput || !btnToggle || !filterMenu) return;
+
+  // --- Search input events ---
+  searchInput.addEventListener("input", () => {
+    updateClearButton();
+    programarAplicacionFiltros();
+  });
+
+  searchInput.addEventListener("focus", () => {
+    searchWrapper.classList.add("focused");
+  });
+
+  searchInput.addEventListener("blur", () => {
+    searchWrapper.classList.remove("focused");
+  });
+
+  // --- Clear single input ---
+  if (searchClear) {
+    searchClear.addEventListener("mousedown", (e) => e.preventDefault());
+    searchClear.addEventListener("click", () => {
+      searchInput.value = "";
+      updateClearButton();
+      aplicarFiltros();
+      searchInput.focus();
+    });
   }
 
-  filtersContainer.addEventListener("input", aplicarFiltros);
-
-  listarMiembros();
-});
-
-document.getElementById("limpiarM").addEventListener("click", function () {
-  document.querySelectorAll(".filter input").forEach((input) => {
-    input.value = "";
+  // --- Toggle dropdown ---
+  btnToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    filterDropdown.classList.toggle("open");
   });
 
-  aplicarFiltros();
-});
-
-document.querySelectorAll(".filter").forEach((filter) => {
-  filter.addEventListener("click", function (event) {
-    let isActive = this.classList.contains("active");
-
-    document.querySelectorAll(".filter").forEach((otherFilter) => {
-      otherFilter.classList.remove("active");
-      let inputs = otherFilter.querySelectorAll("input, select");
-      inputs.forEach((input) => {
-        input.classList.add("hidden");
-        input.value = "";
-      });
-    });
-
-    if (!isActive) {
-      this.classList.add("active");
-      let input = this.querySelector("input, select");
-      if (input) input.classList.remove("hidden");
+  // --- Close dropdown on outside click ---
+  document.addEventListener("click", (e) => {
+    if (!filterDropdown.contains(e.target)) {
+      filterDropdown.classList.remove("open");
     }
   });
-});
 
-document.querySelectorAll(".filter input").forEach((input) => {
-  input.addEventListener("click", function (event) {
-    event.stopPropagation();
-  });
-});
+  // --- Filter option selection ---
+  const filterOptions = filterMenu.querySelectorAll(".filter-option");
+  filterOptions.forEach((option) => {
+    option.addEventListener("click", () => {
+      // Remove active from all, set on this one
+      filterOptions.forEach((o) => o.classList.remove("active"));
+      option.classList.add("active");
 
-document.querySelectorAll(".filter .close").forEach((button) => {
-  button.addEventListener("click", function (event) {
-    event.stopPropagation();
-    let filter = this.parentElement;
-    filter.classList.remove("active");
+      // Update search input
+      const key = option.dataset.key;
+      const placeholder = option.dataset.placeholder;
+      searchInput.dataset.filterKey = key;
+      searchInput.placeholder = placeholder;
+      searchInput.value = "";
+      searchInput.focus();
+      updateClearButton();
 
-    let inputs = filter.querySelectorAll("input, select");
-    inputs.forEach((input) => {
-      input.classList.add("hidden");
-      input.value = "";
+      // Close dropdown
+      filterDropdown.classList.remove("open");
+
+      aplicarFiltros();
     });
   });
-});
 
-document.getElementById("limpiarM").addEventListener("click", function () {
-  document.querySelectorAll(".filter").forEach((filter) => {
-    let input = filter.querySelector("input");
-    input.classList.add("hidden");
-    input.value = "";
-    filter.classList.remove("active");
+  // --- Status toggle ---
+  const statusButtons = document.querySelectorAll("#statusToggle .status-btn");
+  statusButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      statusButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      aplicarFiltros();
+    });
   });
-});
+
+  // --- Clear all ---
+  if (clearAllButton) {
+    clearAllButton.addEventListener("click", () => {
+      searchInput.value = "";
+      searchInput.dataset.filterKey = "Nombre";
+      searchInput.placeholder = "Buscar por nombre...";
+      updateClearButton();
+
+      // Reset filter option selection
+      filterOptions.forEach((o) => o.classList.remove("active"));
+      const defaultOption = filterMenu.querySelector('[data-key="Nombre"]');
+      if (defaultOption) defaultOption.classList.add("active");
+
+      // Reset status
+      statusButtons.forEach((b) => b.classList.remove("active"));
+      const todosBtn = document.querySelector('#statusToggle [data-status="todos"]');
+      if (todosBtn) todosBtn.classList.add("active");
+
+      // Reset Sort
+      sortSeleccionado = null;
+      ordenColumnaActual = "ID_Usuario";
+      ordenDireccionActual = "DESC";
+      updateSortButtons();
+
+      // Reset Privacy (optional, but cleaner)
+      ocultarDatosSensibles = false;
+      if (privacyBtn) {
+        privacyBtn.classList.remove("active");
+        const pIcon = privacyBtn.querySelector("i");
+        const pLabel = privacyBtn.querySelector("span");
+        if (pIcon) pIcon.className = "bi bi-eye-slash";
+        if (pLabel) pLabel.textContent = "Ocultar datos";
+      }
+
+      aplicarFiltros();
+    });
+  }
+
+  function updateClearButton() {
+    if (!searchClear) return;
+    const hasValue = searchInput.value.trim().length > 0;
+    searchClear.style.opacity = hasValue ? "1" : "0";
+    searchClear.style.pointerEvents = hasValue ? "auto" : "none";
+  }
+
+  updateClearButton();
+
+  // --- Privacy toggle ---
+  const privacyBtn = document.getElementById("btnPrivacyToggle");
+  if (privacyBtn) {
+    privacyBtn.addEventListener("click", () => {
+      ocultarDatosSensibles = !ocultarDatosSensibles;
+      privacyBtn.classList.toggle("active", ocultarDatosSensibles);
+      const icon = privacyBtn.querySelector("i");
+      const label = privacyBtn.querySelector("span");
+      if (icon) {
+        icon.className = ocultarDatosSensibles ? "bi bi-eye" : "bi bi-eye-slash";
+      }
+      if (label) {
+        label.textContent = ocultarDatosSensibles ? "Mostrar datos" : "Ocultar datos";
+      }
+      // Re-render with stored data
+      if (ultimaListaRenderizada.length > 0) {
+        renderizarMiembros(ultimaListaRenderizada, ultimoTotalRegistros);
+      }
+    });
+  }
+
+  // --- Sort toggles ---
+  const btnSortAz = document.getElementById("btnSortAz");
+  const btnSortNum = document.getElementById("btnSortNum");
+  
+  // El estado inicial es el default del sistema
+  let sortSeleccionado = null; // null | 'az' | 'num'
+
+  if (btnSortAz) {
+    btnSortAz.addEventListener("click", () => {
+      if (sortSeleccionado === "az" && ordenDireccionActual === "ASC") {
+        ordenDireccionActual = "DESC";
+      } else if (sortSeleccionado === "az" && ordenDireccionActual === "DESC") {
+        // 3er click: Apagar
+        sortSeleccionado = null;
+        ordenColumnaActual = "ID_Usuario";
+        ordenDireccionActual = "DESC";
+      } else {
+        // 1er click
+        sortSeleccionado = "az";
+        ordenColumnaActual = "Nombre";
+        ordenDireccionActual = "ASC";
+      }
+      updateSortButtons();
+      paginaActual = 1;
+      listarMiembros();
+    });
+  }
+
+  if (btnSortNum) {
+    btnSortNum.addEventListener("click", () => {
+      if (sortSeleccionado === "num" && ordenDireccionActual === "ASC") {
+        ordenDireccionActual = "DESC";
+      } else if (sortSeleccionado === "num" && ordenDireccionActual === "DESC") {
+        // 3er click: Apagar
+        sortSeleccionado = null;
+        ordenColumnaActual = "ID_Usuario";
+        ordenDireccionActual = "DESC";
+      } else {
+        // 1er click
+        sortSeleccionado = "num";
+        ordenColumnaActual = "ID_Usuario";
+        ordenDireccionActual = "ASC";
+      }
+      updateSortButtons();
+      paginaActual = 1;
+      listarMiembros();
+    });
+  }
+
+  function updateSortButtons() {
+    if (btnSortAz) {
+      const icon = btnSortAz.querySelector("i");
+      const isActive = sortSeleccionado === "az";
+      btnSortAz.classList.toggle("active", isActive);
+      if (icon) {
+        icon.className = (isActive && ordenDireccionActual === "DESC") 
+          ? "bi bi-sort-alpha-up" 
+          : "bi bi-sort-alpha-down";
+      }
+    }
+    if (btnSortNum) {
+      const icon = btnSortNum.querySelector("i");
+      const isActive = sortSeleccionado === "num";
+      btnSortNum.classList.toggle("active", isActive);
+      if (icon) {
+        icon.className = (isActive && ordenDireccionActual === "DESC") 
+          ? "bi bi-sort-numeric-up" 
+          : "bi bi-sort-numeric-down";
+      }
+    }
+  }
+
+  // Llamada inicial para reflejar estado
+  updateSortButtons();
+}
 
 function agregarUsuario() {
   const form = document.querySelector("#formAgregar");

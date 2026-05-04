@@ -6,18 +6,36 @@
     
     
     <?php
+    require_once("config.php");
+    $conexion = dbConectar();
+
+    // Obtener contadores reales
+    $resNegocios = $conexion->query("SELECT count(*) FROM negocios");
+    $totalNegocios = $resNegocios ? $resNegocios->fetch_row()[0] : 0;
+
+    $resPromos = $conexion->query("SELECT count(*) FROM promociones");
+    $totalPromos = $resPromos ? $resPromos->fetch_row()[0] : 0;
+
+    $resUsuarios = $conexion->query("SELECT count(*) FROM usuarios");
+    $totalUsuarios = $resUsuarios ? $resUsuarios->fetch_row()[0] : 0;
+
+    // Obtener visitas
+    $archivoVisitas = __DIR__ . '/../../visitas.txt';
+    $visitasTotales = file_exists($archivoVisitas) ? (int)file_get_contents($archivoVisitas) : 0;
+    
+    // M&eacute;trica: Clientes Satisfechos = Usuarios registrados + Visitas (o como convenga)
+    $clientesSatisfechos = $totalUsuarios + $visitasTotales;
+
+    $adminCssFiles = ["assets/css/principal.css"];
     include_once("head.php");
     ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://kit.fontawesome.com/726544f644.js" crossorigin="anonymous"></script>
-  
-    <link href="../assets/img/LogoYolocal.png" rel="icon" />
-    <link rel="stylesheet" href="../assets/css/principal.css">
 </head>
 
 <body>
     <!-- =============== Barra de navegacion ================ -->
-    <div class="navigation">
+    <div class="navigation admin-sidebar">
         <?php
         include_once("encabezado.php")
         ?>
@@ -27,9 +45,7 @@
     <div class="main">
         <div class="topbar">
             <div class="toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
+                <i class="ri-menu-2-line admin-menu-icon" aria-hidden="true"></i>
             </div>
 
             
@@ -42,7 +58,7 @@
                     </svg>
                 </div>
                 <div class="usuario">
-                    <img src="../assets/img/descarga.gif" alt="">
+                    <img src="assets/img/descarga.gif" alt="">
                 </div>
                 <div class="notifi-box" id="box">
                     <p class="calendario"></p>
@@ -62,10 +78,10 @@
                                         <li>Dom</li>
                                         <li>Lun</li>
                                         <li>Mar</li>
-                                        <li>Mié</li>
+                                        <li>Mi&eacute;</li>
                                         <li>Jue</li>
                                         <li>Vie</li>
-                                        <li>Sáb</li>
+                                        <li>S&aacute;b</li>
                                     </ul>
                                     <ul class="dates"></ul>
                                 </div>
@@ -100,38 +116,38 @@
            
         </div>
 
-        <!-- Tarjetas de estadísticas -->
+        <!-- Tarjetas de estad&iacute;sticas -->
         <div class="stats-container">
             <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="bi bi-hand-thumbs-up"></i>
+                <div class="stat-icon bg-purple-solid">
+                    <i class="bi bi-building"></i>
                 </div>
-                <div class="stat-number">100</div>
+                <div class="stat-number" data-target="<?= $totalNegocios ?>">0</div>
                 <div class="stat-label">Negocios Registrados</div>
                 <div class="stat-bar">
-                    <div class="stat-progress" style="width: 100%"></div>
+                    <div class="stat-progress bg-purple-solid" style="width: 100%"></div>
                 </div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="bi bi-gift"></i>
+                <div class="stat-icon bg-yellow-solid">
+                    <i class="bi bi-ticket-perforated"></i>
                 </div>
-                <div class="stat-number">150</div>
+                <div class="stat-number" data-target="<?= $totalPromos ?>">0</div>
                 <div class="stat-label">Promociones Activas</div>
                 <div class="stat-bar">
-                    <div class="stat-progress" style="width: 100%"></div>
+                    <div class="stat-progress bg-yellow-solid" style="width: 100%"></div>
                 </div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="bi bi-emoji-smile"></i>
+                <div class="stat-icon bg-green-solid">
+                    <i class="bi bi-person-check"></i>
                 </div>
-                <div class="stat-number">250</div>
-                <div class="stat-label">Clientes satisfechos</div>
+                <div class="stat-number" data-target="<?= $clientesSatisfechos ?>">0</div>
+                <div class="stat-label">Clientes Satisfechos</div>
                 <div class="stat-bar">
-                    <div class="stat-progress" style="width: 100%"></div>
+                    <div class="stat-progress bg-green-solid" style="width: 100%"></div>
                 </div>
             </div>
         </div>
@@ -140,9 +156,29 @@
     <div id="modalOverlay" class="window-overlay"></div>
 
 
-    <script src="../assets/js/notificaciones.js"></script>
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/calendario.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // Animaci&oacute;n de los n&uacute;meros del dashboard
+        const counters = document.querySelectorAll('.stat-number');
+        const speed = 200; // a menor n&uacute;mero, m&aacute;s r&aacute;pida la animaci?n
+
+        counters.forEach(counter => {
+            const animate = () => {
+                const value = +counter.getAttribute('data-target');
+                const data = +counter.innerText;
+                
+                const time = value / speed;
+                if(data < value) {
+                    counter.innerText = Math.ceil(data + time);
+                    setTimeout(animate, 20);
+                } else {
+                    counter.innerText = value;
+                }
+            }
+            animate();
+        });
+    </script>
 
 </body>
 

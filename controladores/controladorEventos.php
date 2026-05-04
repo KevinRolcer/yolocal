@@ -25,7 +25,7 @@ switch ($operacion) {
         break;
 
     case 'LISTAR':
-        $respuesta['lista'] = $modeloEventos->listarEventos();
+        $respuesta['lista'] = $modeloEventos->listarEventos(trim($_POST['buscar'] ?? ''));
         $respuesta['success'] = true;
         break;
 

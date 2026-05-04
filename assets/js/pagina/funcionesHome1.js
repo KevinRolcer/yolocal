@@ -134,9 +134,9 @@
                    alt="${miembro.nombre_negocio}">
             </div>
             <div class="slide-info">
-              <span class="discount-badge">Recomendado en ${miembro.nombre_categoria|| "Categoría desconocida"}</span>
+              <span class="discount-badge">Recomendado en ${(miembro.nombre_categoria && miembro.nombre_categoria !== "null") ? miembro.nombre_categoria : "Categoría desconocida"}</span>
               <h2 class="slide-title">${miembro.nombre_negocio}</h2>
-              <p class="slide-description">${miembro.DescripcionN || "Negocio destacado"}</p>
+              <p class="slide-description">${(miembro.DescripcionN && miembro.DescripcionN !== "null") ? miembro.DescripcionN : "Negocio destacado"}</p>
               <a href="controladores/DetalleNegocioControlador.php?id=${miembro.ID_Negocio}">
                 <button class="slide-button">Ver negocio</button>
               </a>

@@ -1,48 +1,70 @@
-document.addEventListener("DOMContentLoaded", () => {
+// Expose functions to window
+window.listarEventosEnTarjetas = listarEventosEnTarjetas;
+window.filtrarEventos = (val) => {
+    listarEventosEnTarjetas(val);
+};
+
+function iniciarModuloEventos() {
     cargarCategorias();
     listarEventosEnTarjetas();
 
-    // Asignar el evento de envío al formulario de AGREGAR
-    document.getElementById('formEvento').addEventListener('submit', (e) => {
-        e.preventDefault();
-        agregarEvento();
-    });
+    // Form AGREGAR
+    const formEv = document.getElementById('formEvento');
+    if (formEv) {
+        formEv.addEventListener('submit', (e) => {
+            e.preventDefault();
+            agregarEvento();
+        });
+    }
 
-    // Asignar el evento de envío al formulario de EDITAR
-    document.getElementById('formEditar').addEventListener('submit', (e) => {
-        e.preventDefault();
-        editarEvento();
-    });
+    // Form EDITAR
+    const formEdEv = document.getElementById('formEditarEvento');
+    if (formEdEv) {
+        formEdEv.addEventListener('submit', (e) => {
+            e.preventDefault();
+            editarEvento();
+        });
+    }
 
-    // Delegación de eventos para los botones de editar y eliminar
-    const contenedor = document.getElementById('contenedor');
-    contenedor.addEventListener('click', (e) => {
-        if (e.target.matches('.btn-edit, .btn-edit *')) {
-            const button = e.target.closest('.btn-edit');
-            const id = button.dataset.id;
-            abrirModalEditar(id);
-        }
-        if (e.target.matches('.btn-delete, .btn-delete *')) {
-            const button = e.target.closest('.btn-delete');
-            const id = button.dataset.id;
-            eliminarEvento(id);
-        }
-    });
-});
+    // Delegation
+    const contenedorEv = document.getElementById('contenedorEventos');
+    if (contenedorEv) {
+        contenedorEv.addEventListener('click', (e) => {
+            const btnEdit = e.target.closest('.btn-edit');
+            const btnDelete = e.target.closest('.btn-delete');
+            const linkDetalles = e.target.closest('.ev-action-link');
+            
+            if (btnEdit) abrirModalEditarEvento(btnEdit.dataset.id);
+            if (btnDelete) eliminarEvento(btnDelete.dataset.id);
+            if (linkDetalles) abrirModalDetallesEvento(linkDetalles.dataset.id);
+        });
+    }
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciarModuloEventos, { once: true });
+} else {
+    iniciarModuloEventos();
+}
+
+window.cargarCategorias = cargarCategorias;
 
 /**
  * Carga las categorías en los selectores de los modales.
  */
 function cargarCategorias() {
+    const selectAgregar = document.getElementById("ID_Categoria");
+    const selectEditar = document.getElementById("EditID_Categoria");
+    
+    if (!selectAgregar || !selectEditar) return; // Guard clause
+
     const formData = new FormData();
     formData.append("ope", "CARGAR_CATEGORIAS");
 
-    fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
+    fetch("controladores/controladorEventos.php", { method: "POST", body: formData })
     .then(response => response.json())
     .then(data => {
         if (!data.success) { return; }
-        const selectAgregar = document.getElementById("ID_Categoria");
-        const selectEditar = document.getElementById("EditID_Categoria");
         selectAgregar.innerHTML = '<option value="">Seleccione una categoría...</option>';
         selectEditar.innerHTML = '<option value="">Seleccione una categoría...</option>';
         data.lista.forEach(cat => {
@@ -57,14 +79,16 @@ function cargarCategorias() {
 /**
  * Obtiene y muestra los eventos como tarjetas.
  */
-function listarEventosEnTarjetas() {
+function listarEventosEnTarjetas(filtro = '') {
     const formData = new FormData();
     formData.append("ope", "LISTAR");
+    if (filtro) formData.append("buscar", filtro);
     
-    fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
+    fetch("controladores/controladorEventos.php", { method: "POST", body: formData })
     .then(response => response.json())
     .then(data => {
-        const contenedor = document.getElementById("contenedor");
+        const contenedor = document.getElementById("contenedorEventos");
+        if (!contenedor) return;
         contenedor.innerHTML = "";
 
         if (!data.success || !data.lista || data.lista.length === 0) {
@@ -73,31 +97,47 @@ function listarEventosEnTarjetas() {
         }
 
         data.lista.forEach(evento => {
+            const precio = evento.PrecioE ? `$${evento.PrecioE}` : 'Gratis';
+            const imagen = evento.RutaImagenE ? `imagenes/${evento.RutaImagenE}` : 'assets/img/banner-yolocal.png';
             const tarjeta = `
-                <div class="promo-card">
-                    <div class="promo-card-image">
-                        <img src="${evento.RutaImagenE ? '../imagenes/' + evento.RutaImagenE : '../assets/img/default-event.png'}" alt="${evento.TituloE}">
+                <article class="ev-stylized-card">
+                    <div class="ev-image-wrapper">
+                        <img src="${imagen}" alt="${evento.TituloE}">
+                        <div class="ev-price-badge">${precio}</div>
+                        <div class="ev-footer-promo">Evento Especial • YoLocal</div>
                     </div>
-                    <div class="promo-card-content">
-                        <span class="badge bg-secondary mb-2">${evento.NombreCategoria}</span>
-                        <h5 class="promo-card-title">${evento.TituloE}</h5>
-                        <p class="promo-card-description">${evento.DescripcionE}</p>
-                        <p class="promo-card-info">
-                            <strong>📅 Fecha:</strong> ${evento.FechaE}<br>
-                            <strong>⏰ Hora:</strong> ${evento.HoraE}<br>
-                            <strong>📍 Lugar:</strong> ${evento.UbicacionE}<br>
-                            <strong>💰 Precio:</strong> ${evento.PrecioE || 'Gratis'}
-                        </p>
-                        <div class="promo-card-actions">
-                            <button class="btn-edit" data-id="${evento.ID_Evento}">
-                                <i class="bi bi-pencil-square"></i> 
-                            </button>
-                            <button class="btn-delete" data-id="${evento.ID_Evento}">
-                                <i class="bi bi-trash3-fill"></i> 
-                            </button>
+                    
+                    <div class="ev-content">
+                        <div class="ev-header-row">
+                            <div>
+                                <span class="ev-kicker">${evento.NombreCategoria}</span>
+                                <h3 class="ev-title">${evento.TituloE}</h3>
+                            </div>
+                            <span class="ev-action-link" data-id="${evento.ID_Evento}">Detalles <i class="ri-arrow-right-up-line"></i></span>
                         </div>
+                        
+                        <div class="ev-info-grid">
+                            <div class="ev-info-item">
+                                <i class="ri-calendar-event-line"></i>
+                                <span>${evento.FechaE}</span>
+                            </div>
+                            <div class="ev-info-item">
+                                <i class="ri-map-pin-line"></i>
+                                <span>${evento.UbicacionE}</span>
+                            </div>
+                        </div>
+                        <p class="ev-description">${evento.DescripcionE || ''}</p>
                     </div>
-                </div>
+
+                    <div class="ev-admin-actions">
+                        <button class="btn-ev-admin btn-edit" data-id="${evento.ID_Evento}">
+                            <i class="ri-pencil-line"></i>
+                        </button>
+                        <button class="btn-ev-admin btn-delete" data-id="${evento.ID_Evento}">
+                            <i class="ri-delete-bin-line"></i>
+                        </button>
+                    </div>
+                </article>
             `;
             contenedor.innerHTML += tarjeta;
         });
@@ -116,7 +156,7 @@ function agregarEvento() {
     const formData = new FormData(form);
     formData.append("ope", "AGREGAR");
 
-    fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
+    fetch("controladores/controladorEventos.php", { method: "POST", body: formData })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
@@ -150,12 +190,12 @@ function agregarEvento() {
 /**
  * Obtiene los datos de un evento y abre el modal de edición.
  */
-function abrirModalEditar(id) {
+function abrirModalEditarEvento(id) {
     const formData = new FormData();
     formData.append("ope", "OBTENER");
     formData.append("ID_Evento", id);
 
-    fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
+    fetch("controladores/controladorEventos.php", { method: "POST", body: formData })
     .then(response => response.json())
     .then(data => {
         if (!data.success) {
@@ -173,7 +213,7 @@ function abrirModalEditar(id) {
         document.getElementById("EditUbicacionE").value = evento.UbicacionE;
         document.getElementById("EditID_Categoria").value = evento.ID_Categoria;
 
-        new bootstrap.Modal(document.getElementById('modalEditar')).show();
+        new bootstrap.Modal(document.getElementById('modalEditarEvento')).show();
     });
 }
 
@@ -181,16 +221,16 @@ function abrirModalEditar(id) {
  * Envía los datos actualizados de un evento con SweetAlert.
  */
 function editarEvento() {
-    const form = document.getElementById("formEditar");
+    const form = document.getElementById("formEditarEvento");
     const formData = new FormData(form);
     formData.append("ope", "EDITAR");
     formData.append("ID_Evento", document.getElementById("ID_Evento_Editar").value);
 
-    fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
+    fetch("controladores/controladorEventos.php", { method: "POST", body: formData })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            bootstrap.Modal.getInstance(document.getElementById('modalEditar')).hide();
+            bootstrap.Modal.getInstance(document.getElementById('modalEditarEvento')).hide();
             Swal.fire({
                 icon: 'success',
                 title: '¡Actualizado!',
@@ -237,7 +277,7 @@ function eliminarEvento(id) {
             formData.append("ope", "ELIMINAR");
             formData.append("ID_Evento", id);
 
-            fetch("../controladores/controladorEventos.php", { method: "POST", body: formData })
+            fetch("controladores/controladorEventos.php", { method: "POST", body: formData })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {

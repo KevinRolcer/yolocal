@@ -1,4 +1,12 @@
-var map = L.map("map", { attributionControl: false }).setView(
+const esPantallaMovil = window.matchMedia("(max-width: 768px)").matches;
+
+var map = L.map("map", {
+  attributionControl: false,
+  scrollWheelZoom: false,
+  dragging: !esPantallaMovil,
+  tap: true,
+  touchZoom: !esPantallaMovil,
+}).setView(
   [19.2822, -98.4359],
   17
 );
@@ -17,8 +25,24 @@ var purpleIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
+function escaparHtml(valor) {
+  return String(valor ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function obtenerUrlNegocio(coordenada) {
+  const id = Number(coordenada.ID_Negocio);
+  return Number.isFinite(id) && id > 0
+    ? `controladores/DetalleNegocioControlador.php?id=${id}`
+    : "controladores/NegocioLControlador.php";
+}
+
 function cargarMapas() {
-  fetch("../controladores/controladorNegocios.php", {
+  fetch("controladores/controladorNegocios.php", {
     method: "POST",
     body: new URLSearchParams({ ope: "OBTENERCOORDENADAS" }),
   })
@@ -26,15 +50,30 @@ function cargarMapas() {
     .then((data) => {
       if (data.success) {
         data.coordenadas.forEach((coordenada) => {
-          L.marker([coordenada.Latitud, coordenada.Longitud], {
+          const nombreNegocio = escaparHtml(coordenada.nombre_negocio || "Negocio local");
+          const urlNegocio = obtenerUrlNegocio(coordenada);
+          const marcador = L.marker([coordenada.Latitud, coordenada.Longitud], {
             icon: purpleIcon,
           })
             .addTo(map)
-            .bindTooltip("<b>" + coordenada.nombre_negocio + "</b>", {
+            .bindTooltip(`<span>${nombreNegocio}</span>`, {
               permanent: true, 
               direction: "top",
               offset: [0, -35],
+              className: "yolocal-map-label",
             });
+
+          marcador.bindPopup(
+            `<div class="yolocal-map-popup">
+              <strong>${nombreNegocio}</strong>
+              <a href="${urlNegocio}" class="yolocal-map-more">Ver mas</a>
+            </div>`,
+            {
+              closeButton: false,
+              autoPan: true,
+              className: "yolocal-map-popup-shell",
+            }
+          );
         });
       } else {
         Swal.fire("Error", "No se pudieron cargar los negocios", "error");

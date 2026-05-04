@@ -3,12 +3,12 @@ class Negocios
 {
 
 
-    public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = [], $usuarioId, $usuarioTipo)
+    public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = [], $usuarioId, $usuarioTipo, $ordenColumna = 'ID_Negocio', $ordenDireccion = 'DESC')
 {
     $enlace = dbConectar();
     $offset = ($pagina - 1) * $registrosPorPagina;
 
-    $sql = "SELECT negocios.*, usuarios.*, categorias.*
+    $sql = "SELECT negocios.*, usuarios.*, categorias.Descripcion AS CategoriaNombre
             FROM negocios 
             LEFT JOIN usuarios ON negocios.ID_Usuario = usuarios.ID_Usuario 
             LEFT JOIN categorias ON negocios.ID_Categoria = categorias.ID_Categoria 
@@ -19,15 +19,56 @@ class Negocios
 
     // Filtros dinámicos
     if (!empty($filtros['Correo'])) {
-        $sql .= " AND usuarios.Correo LIKE ?";
+        $sql .= " AND (usuarios.Correo LIKE ? OR usuarios.nombre LIKE ?)";
         $values[] = "%" . $filtros['Correo'] . "%";
-        $tipos .= "s";
+        $values[] = "%" . $filtros['Correo'] . "%";
+        $tipos .= "ss";
     }
 
     if (!empty($filtros['Nombre'])) {
         $sql .= " AND negocios.nombre_negocio LIKE ?";
         $values[] = "%" . $filtros['Nombre'] . "%";
         $tipos .= "s";
+    }
+
+    if (isset($filtros['Estatus']) && $filtros['Estatus'] !== 'todos') {
+        $sql .= " AND negocios.estado = ?";
+        $values[] = intval($filtros['Estatus']);
+        $tipos .= "i";
+    }
+
+    if (isset($filtros['Categorias']) && !empty($filtros['Categorias'])) {
+        $cats = $filtros['Categorias'];
+        if (!is_array($cats)) $cats = explode(',', $cats);
+        
+        $placeholders = [];
+        $hasZero = false;
+        $validCats = [];
+
+        foreach ($cats as $c) {
+            if ($c == "0") {
+                $hasZero = true;
+            } else {
+                $validCats[] = intval($c);
+            }
+        }
+
+        $catConditions = [];
+        if (!empty($validCats)) {
+            $placeholders = array_fill(0, count($validCats), '?');
+            $catConditions[] = "negocios.ID_Categoria IN (" . implode(',', $placeholders) . ")";
+            foreach ($validCats as $vc) {
+                $values[] = $vc;
+                $tipos .= "i";
+            }
+        }
+        if ($hasZero) {
+            $catConditions[] = "(negocios.ID_Categoria IS NULL OR negocios.ID_Categoria = 0)";
+        }
+
+        if (!empty($catConditions)) {
+            $sql .= " AND (" . implode(' OR ', $catConditions) . ")";
+        }
     }
 
     // Si el usuario es tipo negocio, filtrar por su propio ID
@@ -37,13 +78,26 @@ class Negocios
         $tipos .= "i";
     }
 
+    // Validar columna de orden y asignar prefijo de tabla correcto
+    $columnasPermitidas = ['ID_Negocio', 'nombre_negocio', 'Correo'];
+    if (!in_array($ordenColumna, $columnasPermitidas)) {
+        $ordenColumna = 'ID_Negocio';
+    }
+
+    $prefix = ($ordenColumna === 'Correo') ? 'usuarios' : 'negocios';
+    $ordenDireccion = (strtoupper($ordenDireccion) === 'ASC') ? 'ASC' : 'DESC';
+
+    // Para orden alfabético, usamos LOWER para evitar problemas de capitalización
+    $orderSql = ($ordenColumna === 'nombre_negocio') 
+        ? "LOWER($prefix.$ordenColumna)" 
+        : "$prefix.$ordenColumna";
+
     // Orden y paginación
-    $sql .= " ORDER BY negocios.ID_Negocio DESC LIMIT ?, ?";
+    $sql .= " ORDER BY $orderSql $ordenDireccion LIMIT ?, ?";
     $values[] = $offset;
     $values[] = $registrosPorPagina;
-    $tipos .= "ii"; // offset y limit son enteros
+    $tipos .= "ii";
 
-    // Preparar y ejecutar
     $consulta = $enlace->prepare($sql);
     if (!$consulta) {
         throw new Exception("Error en la preparación de la consulta: " . $enlace->error);
@@ -58,7 +112,7 @@ class Negocios
         $miembros[] = $row;
     }
 
-    // Total de registros (con los mismos filtros)
+    // Total de registros
     $countSql = "SELECT COUNT(*) as total 
                  FROM negocios 
                  LEFT JOIN usuarios ON negocios.ID_Usuario = usuarios.ID_Usuario 
@@ -68,15 +122,48 @@ class Negocios
     $countTipos = "";
 
     if (!empty($filtros['Correo'])) {
-        $countSql .= " AND usuarios.Correo LIKE ?";
+        $countSql .= " AND (usuarios.Correo LIKE ? OR usuarios.nombre LIKE ?)";
         $countValues[] = "%" . $filtros['Correo'] . "%";
-        $countTipos .= "s";
+        $countValues[] = "%" . $filtros['Correo'] . "%";
+        $countTipos .= "ss";
     }
 
     if (!empty($filtros['Nombre'])) {
         $countSql .= " AND negocios.nombre_negocio LIKE ?";
         $countValues[] = "%" . $filtros['Nombre'] . "%";
         $countTipos .= "s";
+    }
+
+    if (isset($filtros['Estatus']) && $filtros['Estatus'] !== 'todos') {
+        $countSql .= " AND negocios.estado = ?";
+        $countValues[] = intval($filtros['Estatus']);
+        $countTipos .= "i";
+    }
+
+    if (isset($filtros['Categorias']) && !empty($filtros['Categorias'])) {
+        $cats = $filtros['Categorias'];
+        if (!is_array($cats)) $cats = explode(',', $cats);
+        $hasZero = false;
+        $validCats = [];
+        foreach ($cats as $c) {
+            if ($c == "0") $hasZero = true;
+            else $validCats[] = intval($c);
+        }
+        $catConditions = [];
+        if (!empty($validCats)) {
+            $placeholders = array_fill(0, count($validCats), '?');
+            $catConditions[] = "negocios.ID_Categoria IN (" . implode(',', $placeholders) . ")";
+            foreach ($validCats as $vc) {
+                $countValues[] = $vc;
+                $countTipos .= "i";
+            }
+        }
+        if ($hasZero) {
+            $catConditions[] = "(negocios.ID_Categoria IS NULL OR negocios.ID_Categoria = 0)";
+        }
+        if (!empty($catConditions)) {
+            $countSql .= " AND (" . implode(' OR ', $catConditions) . ")";
+        }
     }
 
     if ($usuarioTipo === "negocio") {
@@ -99,7 +186,6 @@ class Negocios
     $totalRegistros = $countResult->fetch_assoc()["total"];
     $totalPaginas = ceil($totalRegistros / $registrosPorPagina);
 
-    // Cerrar conexiones
     $consulta->close();
     $countConsulta->close();
     $enlace->close();
@@ -108,6 +194,7 @@ class Negocios
         "miembros" => $miembros,
         "totalPaginas" => $totalPaginas,
         "paginaActual" => $pagina,
+        "totalRegistros" => $totalRegistros
     ];
 }
 
@@ -259,16 +346,16 @@ class Negocios
     {
         $enlace = dbConectar();
 
-        $sql = "INSERT INTO negocios (ID_Usuario, nombre_negocio, ID_Categoria) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO negocios (ID_Usuario, nombre_negocio, ID_Categoria, codigo_canje, estado, fecha_registro, Relevancia) VALUES (?, ?, ?, ?, 1, NOW(), 1)";
         $consulta = $enlace->prepare($sql);
 
 
         $consulta->bind_param(
-            "isi",
+            "isis",
             $datos["ID_Usuario"],
-            $datos["nombre_negocio"],
-            $datos["ID_Categoria"]
-           
+            $datos["Nombre"],
+            $datos["ID_Categoria"],
+            $datos["CodigoCanje"]
         );
 
         return $consulta->execute();
@@ -306,26 +393,28 @@ class Negocios
                 Latitud        = ?,
                 Longitud       = ?,
                 Relevancia     = ?,
+                codigo_canje   = ?,
                 Rutaicono      = ?
             WHERE ID_Negocio = ?";
 
     $consulta = $enlace->prepare($sql);
 
     $consulta->bind_param(
-        "ssssssssssssisi",
-        $datos["nombre_negocio"],
-        $datos["DescripcionN"],
-        $datos["Direccion"],
-        $datos["Telefono"],
-        $datos["CorreoN"],
-        $datos["SitioWeb"],
-        $datos["Facebook"],
-        $datos["Instagram"],
-        $datos["TikTok"],
-        $datos["GoogleMaps"],
-        $datos["Latitud"],
-        $datos["Longitud"],
-        $datos["Relevancia"],
+        "ssssssssssssissi",
+        $datos["nombre_negocioEdit"],
+        $datos["DescripcionNEdit"],
+        $datos["DireccionEdit"],
+        $datos["TelefonoEdit"],
+        $datos["CorreoNEdit"],
+        $datos["SitioWebEdit"],
+        $datos["FacebookEdit"],
+        $datos["InstagramEdit"],
+        $datos["TikTokEdit"],
+        $datos["GoogleMapsEdit"],
+        $datos["LatitudEdit"],
+        $datos["LongitudEdit"],
+        $datos["RelevanciaEdit"],
+        $datos["codigo_canjeEdit"],
         $rutaIconoFinal,
         $datos["ID_Negocio"]
     );
@@ -395,7 +484,7 @@ class Negocios
 public function ObtenerCoordenadas()
 {
     $enlace = dbConectar();
-    $sql = "SELECT nombre_negocio, Latitud, Longitud FROM negocios";  // Tabla correcta
+    $sql = "SELECT ID_Negocio, nombre_negocio, Latitud, Longitud FROM negocios";  // Tabla correcta
     $consulta = $enlace->prepare($sql);
     $consulta->execute();
     $result = $consulta->get_result();
@@ -416,14 +505,42 @@ public function CambiarEstatus($ID_Negocio, $estatus)
 
     return $consulta->execute();
 }
-public function PagarCuota($ID_Negocio)
-{
-    $enlace = dbConectar();
-    $sql = "UPDATE negocios SET fecha_ultimo_pago = CURDATE() WHERE ID_Negocio = ?";
-    $consulta = $enlace->prepare($sql);
-    $consulta->bind_param("i", $ID_Negocio);
+    public function PagarCuota($ID_Negocio)
+    {
+        $enlace = dbConectar();
+        $sql = "UPDATE negocios SET fecha_ultimo_pago = CURDATE() WHERE ID_Negocio = ?";
+        $consulta = $enlace->prepare($sql);
+        $consulta->bind_param("i", $ID_Negocio);
 
 
-    return $consulta->execute();
-}
+        return $consulta->execute();
+    }
+
+    public function ObtenerPorCategoria($idCategoria)
+    {
+        $enlace = dbConectar();
+        $sql = "SELECT ID_Negocio, nombre_negocio FROM negocios WHERE ID_Categoria = ? ORDER BY nombre_negocio ASC";
+        $consulta = $enlace->prepare($sql);
+        $consulta->bind_param("i", $idCategoria);
+        $consulta->execute();
+        $result = $consulta->get_result();
+
+        $negocios = [];
+        while ($row = $result->fetch_assoc()) {
+            $negocios[] = $row;
+        }
+        $enlace->close();
+        return $negocios;
+    }
+
+    public function MoverDeCategoria($idNegocio, $nuevaCategoriaId)
+    {
+        $enlace = dbConectar();
+        $sql = "UPDATE negocios SET ID_Categoria = ? WHERE ID_Negocio = ?";
+        $consulta = $enlace->prepare($sql);
+        $consulta->bind_param("ii", $nuevaCategoriaId, $idNegocio);
+        $resultado = $consulta->execute();
+        $enlace->close();
+        return $resultado;
+    }
 }

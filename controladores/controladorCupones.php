@@ -57,7 +57,8 @@ if (isset($_POST["ope"])) {
     $filtros = [
         "titulo"        => $_POST["titulo"] ?? null,
         "descripcion"   => $_POST["descripcion"] ?? null,
-        "NombreNegocio" => $_POST["negocio"] ?? null
+        "NombreNegocio" => $_POST["negocio"] ?? null,
+        "estado"        => $_POST["estado"] ?? null
     ];
 
    
@@ -65,10 +66,11 @@ if (isset($_POST["ope"])) {
     $lista = $usu->ListarTODOS($pagina, $registrosPorPagina, $filtros,  $usuarioId, $usuarioTipo);
 
     echo json_encode([
-        "success"      => true,
-        "lista"        => $lista["promociones"],
-        "totalPaginas" => $lista["totalPaginas"],
-        "paginaActual" => $lista["paginaActual"]
+        "success"       => true,
+        "lista"         => $lista["promociones"],
+        "totalPaginas"  => $lista["totalPaginas"],
+        "paginaActual"  => $lista["paginaActual"],
+        "totalRegistros" => $lista["totalRegistros"]
     ]);
 }
  if ($ope == "LISTARPROMOCIONESPagina") {

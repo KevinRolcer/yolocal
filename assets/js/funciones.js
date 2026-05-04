@@ -1,26 +1,27 @@
 import { validaCorreo, validaLargo, validaContrasena } from "./validaciones.js?v=3.8.3";
-document.addEventListener("DOMContentLoaded", (event)=>
-    {
-        //Formulario de Login
-        if(document.querySelector("#login"))
-        {
-            const login = document.querySelector("#login");
-        
-            login.addEventListener ("submit", (event) => {
-                event.preventDefault();
-                let errores = 0; 
-                
-                let correo = document.querySelector("#nombre");
-               
-                if(errores==0)
-                {                    
-                    let info = new FormData(login);
-                    info.append("ope","LOGIN");
 
-                    fetch('../../controladores/controladorLogin.php', {
-                        method: 'POST',
-                        body: info 
-                    })
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.querySelector("#login")) {
+        const login = document.querySelector("#login");
+
+        const swalClasses = {
+            popup: "login-swal-popup",
+            title: "login-swal-title",
+            htmlContainer: "login-swal-text"
+        };
+
+        login.addEventListener("submit", (event) => {
+            event.preventDefault();
+            let errores = 0;
+
+            if (errores == 0) {
+                let info = new FormData(login);
+                info.append("ope", "LOGIN");
+
+                fetch("../../controladores/controladorLogin.php", {
+                    method: "POST",
+                    body: info
+                })
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`Error: ${response.status}`);
@@ -28,53 +29,53 @@ document.addEventListener("DOMContentLoaded", (event)=>
                         return response.json();
                     })
                     .then(data => {
-                        if(data.success)
-                        {
+                        if (data.success) {
                             localStorage.setItem("tipo_usuario", data.tipo);
                             Swal.fire({
-                                title: "¡Bienvenid@! a Yo local",
-                                text: "La página se actualizará automáticamente, favor de esperar...",
-                                imageUrl: "../../assets/img/LogoYolocal.png", 
-                                imageWidth: 100,
-                                imageHeight: 100,
+                                title: "Acceso confirmado",
+                                text: "Estamos preparando tu panel administrativo...",
+                                imageUrl: "../../assets/img/LogoYolocal.png",
+                                imageWidth: 96,
+                                imageHeight: 96,
+                                heightAuto: false,
+                                scrollbarPadding: false,
                                 allowOutsideClick: false,
-                                showConfirmButton: false, 
+                                showConfirmButton: false,
+                                customClass: swalClasses,
                                 didOpen: () => {
-                                  setTimeout(() => {
-                                    window.location.href = data.ruta;
-                                  }, 1000);
+                                    setTimeout(() => {
+                                        window.location.href = data.ruta;
+                                    }, 1000);
                                 }
-                              });
-                              
-                            
-                        }
-                        else
-                        {
+                            });
+                        } else {
                             Swal.fire({
-                                title: "Error!",
+                                title: "Error",
                                 text: data.msg,
-                                icon: "error"
-                              });
+                                icon: "error",
+                                heightAuto: false,
+                                scrollbarPadding: false,
+                                customClass: swalClasses
+                            });
                         }
                     })
-                    .catch(error => {
+                    .catch(() => {
                         Swal.fire({
                             title: "Error",
-                            text: "El Servidor ha presentado un error interno, favor de intentarlo más tarde o informar! ",
-                            icon: "error"
-                          });
+                            text: "El servidor presento un error interno. Intenta de nuevo mas tarde.",
+                            icon: "error",
+                            heightAuto: false,
+                            scrollbarPadding: false,
+                            customClass: swalClasses
+                        });
                     });
-                }
-                
-                //Evento de Limpieza
-                login.addEventListener("keydown", (event) => {
-                    let elemento = event.target;
-                    elemento.classList.remove("is-valid");
-                    elemento.classList.remove("is-invalid");
-                });        
-            });
-        }
+            }
+        });
 
-        
-    });
-    
+        login.addEventListener("keydown", (event) => {
+            let elemento = event.target;
+            elemento.classList.remove("is-valid");
+            elemento.classList.remove("is-invalid");
+        });
+    }
+});

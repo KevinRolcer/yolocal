@@ -362,7 +362,8 @@ CREATE TABLE `usuarios` (
   `tipo_usuario` enum('admin','negocio') NOT NULL,
   `Nombre` varchar(25) NOT NULL,
   `ApellidoP` varchar(25) NOT NULL,
-  `ApellidoM` varchar(25) NOT NULL
+  `ApellidoM` varchar(25) NOT NULL,
+  `RutaPerfil` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

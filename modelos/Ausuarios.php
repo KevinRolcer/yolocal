@@ -2,48 +2,101 @@
 class Usuarios
 {
 
+    private function asegurarColumnaRutaPerfil($enlace)
+    {
+        $resultado = $enlace->query("SHOW COLUMNS FROM usuarios LIKE 'RutaPerfil'");
+        if ($resultado && $resultado->num_rows === 0) {
+            $enlace->query("ALTER TABLE usuarios ADD COLUMN RutaPerfil VARCHAR(255) NULL AFTER ApellidoM");
+        }
+    }
 
-    public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = [])
+    private function asegurarColumnaEstatus($enlace)
+    {
+        $resultado = $enlace->query("SHOW COLUMNS FROM usuarios LIKE 'Estatus'");
+        if ($resultado && $resultado->num_rows === 0) {
+            $enlace->query("ALTER TABLE usuarios ADD COLUMN Estatus VARCHAR(20) NOT NULL DEFAULT 'activo' AFTER tipo_usuario");
+        }
+    }
+
+    public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = [], $ordenColumna = 'ID_Usuario', $ordenDireccion = 'DESC')
 {
     $enlace = dbConectar();
+    $this->asegurarColumnaEstatus($enlace);
     $offset = ($pagina - 1) * $registrosPorPagina;
 
     $sql = "SELECT * FROM usuarios WHERE 1=1";
+    $countSql = "SELECT COUNT(*) as total FROM usuarios WHERE 1=1";
     $values = [];
+    $countValues = [];
     $tipos = "";
+    $countTipos = "";
 
     // Filtros dinámicos
     if (!empty($filtros['ID_Usuario'])) {
         $sql .= " AND ID_Usuario LIKE ?";
+        $countSql .= " AND ID_Usuario LIKE ?";
         $values[] = "%" . $filtros['ID_Usuario'] . "%";
+        $countValues[] = "%" . $filtros['ID_Usuario'] . "%";
         $tipos .= "s";
+        $countTipos .= "s";
     }
 
     if (!empty($filtros['Nombre'])) {
         $sql .= " AND Nombre LIKE ?";
+        $countSql .= " AND Nombre LIKE ?";
         $values[] = "%" . $filtros['Nombre'] . "%";
+        $countValues[] = "%" . $filtros['Nombre'] . "%";
         $tipos .= "s";
+        $countTipos .= "s";
     }
 
     if (!empty($filtros['Apellidos'])) {
         $sql .= " AND CONCAT(ApellidoP, ' ', ApellidoM) LIKE ?";
+        $countSql .= " AND CONCAT(ApellidoP, ' ', ApellidoM) LIKE ?";
         $values[] = "%" . $filtros['Apellidos'] . "%";
+        $countValues[] = "%" . $filtros['Apellidos'] . "%";
         $tipos .= "s";
+        $countTipos .= "s";
     }
 
     if (!empty($filtros['Correo'])) {
         $sql .= " AND Correo LIKE ?";
+        $countSql .= " AND Correo LIKE ?";
         $values[] = "%" . $filtros['Correo'] . "%";
+        $countValues[] = "%" . $filtros['Correo'] . "%";
         $tipos .= "s";
+        $countTipos .= "s";
     }
 
+    // Filtro de estatus
+    if (!empty($filtros['Estatus']) && $filtros['Estatus'] !== 'todos') {
+        $sql .= " AND Estatus = ?";
+        $countSql .= " AND Estatus = ?";
+        $values[] = $filtros['Estatus'];
+        $countValues[] = $filtros['Estatus'];
+        $tipos .= "s";
+        $countTipos .= "s";
+    }
+
+    // Validar orden dinámico (whitelist)
+    $columnasValidas = ['ID_Usuario', 'Nombre', 'ApellidoP', 'Correo', 'Estatus'];
+    $direccionValida = ['ASC', 'DESC'];
+    
+    if (!in_array($ordenColumna, $columnasValidas)) $ordenColumna = 'ID_Usuario';
+    if (!in_array(strtoupper($ordenDireccion), $direccionValida)) $ordenDireccion = 'DESC';
+
+    // Si el orden es por Nombre, usamos el nombre completo para que sea más natural
+    $orderExpr = ($ordenColumna === 'Nombre') 
+        ? "TRIM(CONCAT_WS(' ', Nombre, ApellidoP, ApellidoM))" 
+        : "$ordenColumna";
+
     // Orden y paginación
-    $sql .= " ORDER BY ID_Usuario DESC LIMIT ?, ?";
+    $sql .= " ORDER BY $orderExpr $ordenDireccion LIMIT ?, ?";
     $values[] = $offset;
     $values[] = $registrosPorPagina;
-    $tipos .= "ii"; // offset y limit son enteros
+    $tipos .= "ii";
 
-    // Preparar y ejecutar
+    // Preparar y ejecutar consulta principal
     $consulta = $enlace->prepare($sql);
     if (!$consulta) {
         throw new Exception("Error en la preparación de la consulta: " . $enlace->error);
@@ -58,11 +111,11 @@ class Usuarios
         $miembros[] = $row;
     }
 
-    // Total de registros para calcular total de páginas (sin filtros opcional)
-    $countSql = "SELECT COUNT(*) as total FROM usuarios WHERE 1=1";
-
-    // Si quieres contar con los mismos filtros, repite los mismos pasos aquí
+    // Total de registros con los mismos filtros
     $countConsulta = $enlace->prepare($countSql);
+    if ($countTipos && count($countValues) > 0) {
+        $countConsulta->bind_param($countTipos, ...$countValues);
+    }
     $countConsulta->execute();
     $countResult = $countConsulta->get_result();
     $totalRegistros = $countResult->fetch_assoc()["total"];
@@ -76,6 +129,7 @@ class Usuarios
     return [
         "miembros" => $miembros,
         "totalPaginas" => $totalPaginas,
+        "totalRegistros" => $totalRegistros,
         "paginaActual" => $pagina,
     ];
 }
@@ -184,7 +238,8 @@ class Usuarios
     public function ObtenerUsuario($ID_usuario)
     {
         $enlace = dbConectar();
-        $sql = "SELECT ID_Usuario, Nombre, ApellidoP, ApellidoM, Correo, tipo_usuario FROM usuarios WHERE ID_Usuario=?";
+        $this->asegurarColumnaRutaPerfil($enlace);
+        $sql = "SELECT ID_Usuario, Nombre, ApellidoP, ApellidoM, Correo, tipo_usuario, RutaPerfil FROM usuarios WHERE ID_Usuario=?";
         $consulta = $enlace->prepare($sql);
         $consulta->bind_param("i", $ID_usuario);
         $consulta->execute();
@@ -195,5 +250,108 @@ class Usuarios
         } else {
             return null;
         }
+    }
+
+    public function guardarFotoPerfil($idUsuario, $archivo)
+    {
+        $enlace = dbConectar();
+        $this->asegurarColumnaRutaPerfil($enlace);
+
+        if (!isset($archivo["error"]) || $archivo["error"] !== UPLOAD_ERR_OK) {
+            $enlace->close();
+            return [
+                "success" => false,
+                "storage" => "local",
+                "msg" => "No se pudo cargar la imagen en el servidor."
+            ];
+        }
+
+        if (!isset($archivo["type"]) || strpos($archivo["type"], "image/") !== 0) {
+            $enlace->close();
+            return [
+                "success" => false,
+                "storage" => "local",
+                "msg" => "El archivo seleccionado no es una imagen valida."
+            ];
+        }
+
+        $directorioBase = dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . "perfiles";
+        if (!is_dir($directorioBase) && !@mkdir($directorioBase, 0777, true)) {
+            $enlace->close();
+            return [
+                "success" => false,
+                "storage" => "local",
+                "msg" => "La carpeta de perfiles no esta disponible."
+            ];
+        }
+
+        if (!is_writable($directorioBase)) {
+            $enlace->close();
+            return [
+                "success" => false,
+                "storage" => "local",
+                "msg" => "La carpeta de perfiles no tiene permisos de escritura."
+            ];
+        }
+
+        $extension = strtolower(pathinfo($archivo["name"], PATHINFO_EXTENSION));
+        $extensionesPermitidas = ["jpg", "jpeg", "png", "webp", "gif"];
+        if (!in_array($extension, $extensionesPermitidas, true)) {
+            $enlace->close();
+            return [
+                "success" => false,
+                "storage" => "local",
+                "msg" => "Formato de imagen no permitido."
+            ];
+        }
+
+        $nombreArchivo = "perfil_" . intval($idUsuario) . "_" . uniqid() . "." . $extension;
+        $rutaServidor = $directorioBase . DIRECTORY_SEPARATOR . $nombreArchivo;
+        $rutaRelativa = "assets/uploads/perfiles/" . $nombreArchivo;
+
+        if (!move_uploaded_file($archivo["tmp_name"], $rutaServidor)) {
+            $enlace->close();
+            return [
+                "success" => false,
+                "storage" => "local",
+                "msg" => "No fue posible mover la imagen al servidor."
+            ];
+        }
+
+        $sql = "UPDATE usuarios SET RutaPerfil = ? WHERE ID_Usuario = ?";
+        $consulta = $enlace->prepare($sql);
+        if (!$consulta) {
+            @unlink($rutaServidor);
+            $enlace->close();
+            return [
+                "success" => false,
+                "storage" => "local",
+                "msg" => "No se pudo actualizar la foto de perfil."
+            ];
+        }
+
+        $consulta->bind_param("si", $rutaRelativa, $idUsuario);
+        $status = $consulta->execute();
+        $consulta->close();
+        $enlace->close();
+
+        if (!$status) {
+            @unlink($rutaServidor);
+            return [
+                "success" => false,
+                "storage" => "local",
+                "msg" => "No se pudo guardar la ruta de la foto de perfil."
+            ];
+        }
+
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            $_SESSION["foto_perfil"] = $rutaRelativa;
+        }
+
+        return [
+            "success" => true,
+            "storage" => "server",
+            "ruta" => $rutaRelativa
+        ];
     }
 }

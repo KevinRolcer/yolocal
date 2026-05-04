@@ -14,6 +14,15 @@ function esFechaExpirada(fechaFin) {
 
   return finStr < hoyStr; // se desactiva solo si fue ANTES de hoy
 }
+
+function escaparHtml(valor) {
+  return String(valor ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 // Función para listar usuarios
 let paginaActual = 1;
 const registrosPorPagina = 20;

@@ -2,24 +2,74 @@
 <html lang="es">
 
 <head>
-    <title>Cupones - Yo Local</title>
+    <title>Trabajos y Eventos - Yo Local</title>
     <?php
+    $adminCssFiles = ["assets/css/bolsaTrabajoAdmon.css", "assets/css/eventosModern.css", "assets/css/paginacion.css", "assets/css/pildora.css", "assets/css/modal-detalles-evento.css", "assets/css/adminFormal.css"];
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesTrabajos.js"></script>
-    <link rel="stylesheet" href="../assets/css/bolsaTrabajoAdmin.css">
-    <link rel="stylesheet" href="../assets/css/paginacion.css">
-    <link rel="stylesheet" href="../assets/css/pildora.css">
-    <link href="../assets/img/LogoYolocal.png" rel="icon" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
     <script>
-        const usuarioId = <?= json_encode($_SESSION["ID_Usuario"]) ?>;
-        const usuarioTipo = <?= json_encode($_SESSION["tipo"]) ?>;
+        if (typeof usuarioId === 'undefined') {
+            var usuarioId = <?= json_encode($_SESSION["ID_Usuario"]) ?>;
+        }
+        if (typeof usuarioTipo === 'undefined') {
+            var usuarioTipo = <?= json_encode($_SESSION["tipo"]) ?>;
+        }
+
+        // SPA Navigation Logic
+        function switchView(view) {
+            const jobsView = document.getElementById('jobs-content-area');
+            const eventsView = document.getElementById('events-content-area');
+            const pillTrabajos = document.getElementById('opcion1');
+            const pillEventos = document.getElementById('opcion2');
+            const jobsActions = document.getElementById('jobs-actions');
+            const eventsActions = document.getElementById('events-actions');
+
+            if (view === 'jobs') {
+                if(jobsView) jobsView.classList.remove('d-none');
+                if(eventsView) eventsView.classList.add('d-none');
+                if(pillTrabajos) pillTrabajos.classList.add('active');
+                if(pillEventos) pillEventos.classList.remove('active');
+                if(jobsActions) jobsActions.classList.remove('d-none');
+                if(eventsActions) eventsActions.classList.add('d-none');
+                
+                if (typeof window.listarPromociones === 'function') window.listarPromociones();
+                window.history.pushState({view: 'jobs'}, '', 'index.php?pag=bolsa_trabajo&vista=trabajos');
+            } else {
+                if(jobsView) jobsView.classList.add('d-none');
+                if(eventsView) eventsView.classList.remove('d-none');
+                if(pillTrabajos) pillTrabajos.classList.remove('active');
+                if(pillEventos) pillEventos.classList.add('active');
+                if(jobsActions) jobsActions.classList.add('d-none');
+                if(eventsActions) eventsActions.classList.remove('d-none');
+                
+                // Ensure categories and list are loaded
+                if (typeof window.cargarCategorias === 'function') window.cargarCategorias();
+                if (typeof window.listarEventosEnTarjetas === 'function') window.listarEventosEnTarjetas();
+                
+                window.history.pushState({view: 'events'}, '', 'index.php?pag=bolsa_trabajo&vista=eventos');
+            }
+        }
+
+        window.onpopstate = function(event) {
+            if (event.state && event.state.view) {
+                switchView(event.state.view === 'jobs' ? 'jobs' : 'events');
+            }
+        };
+
+        function handleGlobalSearch(val) {
+            const isJobs = !document.getElementById('jobs-content-area').classList.contains('d-none');
+            if (isJobs) {
+                if (typeof window.buscarTrabajos === 'function') window.buscarTrabajos(val);
+            } else {
+                if (typeof window.filtrarEventos === 'function') window.filtrarEventos(val);
+            }
+        }
     </script>
 </head>
 
-<body class="bg-light">
-    <div class="navigation">
+<body class="bolsa-trabajo-page">
+    <div class="navigation admin-sidebar">
         <?php
         include_once("encabezado.php")
         ?>
@@ -27,208 +77,126 @@
     <div class="main">
         <div class="topbar">
             <div class="toggle">
-                <svg class="svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
+                <i class="ri-menu-2-line admin-menu-icon" aria-hidden="true"></i>
             </div>
-
 
             <div class="contenedor">
                 <div class="notificacion" onclick="toggleNotifi()">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
-                    </svg>
+                    <i class="ri-notification-3-line"></i>
                 </div>
                 <div class="usuario">
-                    <img src="../assets/img/descarga.gif"  alt="">
+                    <img src="assets/img/descarga.gif"  alt="">
                 </div>
-               
             </div>
         </div>
-        <div class="pill-selector-container">
-        <div class="pill-selector">
-            <a href="index.php?pag=bolsa_trabajo" class="pill-option active" id="opcion1">
-                Trabajos
-            </a>
-            <?php if ($_SESSION["tipo"] === "admin"): ?>
-            <a href="index.php?pag=eventos" class="pill-option" id="opcion2">
-                Eventos
-            </a>
-            <?php endif; ?>
+
+        <div id="spa-content-container">
+            <!-- COMMON HEADER AREA -->
+            <div class="container-fluid job-admin-shell">
+                <div class="job-board-header">
+                    <div class="job-search-row">
+                        <i class="ri-search-line"></i>
+                        <input type="text" id="globalSearchInput" placeholder="Buscar..." onkeyup="handleGlobalSearch(this.value)">
+                    </div>
+
+                    <div class="job-header-actions">
+                        <div class="pill-selector">
+                            <button onclick="switchView('jobs')" class="pill-option active" id="opcion1">
+                                Trabajos
+                            </button>
+                            <?php if ($_SESSION["tipo"] === "admin"): ?>
+                            <button onclick="switchView('events')" class="pill-option" id="opcion2">
+                                Eventos
+                            </button>
+                            <?php endif; ?>
+                        </div>
+
+                        <div id="jobs-actions" class="job-primary-action">
+                            <?php if ($_SESSION["tipo"] === "admin" || $_SESSION["tipo"] === "negocio"): ?>
+                                <button type="button" class="btn btn-primary px-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#modalPromocion">
+                                    <i class="ri-add-line me-1"></i> Publicar
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                        <div id="events-actions" class="job-primary-action d-none">
+                            <?php if ($_SESSION["tipo"] === "admin"): ?>
+                                <button type="button" class="btn btn-primary px-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#modalEvento">
+                                    <i class="ri-add-line me-1"></i> Cargar
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JOBS CONTENT -->
+            <div id="jobs-content-area">
+                <div class="container-fluid job-admin-shell">
+                    <div class="job-toolbar-minimal">
+                        <div class="job-pills-container" id="jobFilterPills">
+                            <button class="job-pill active" data-filter="all">Todos</button>
+                            <button class="job-pill" data-filter="Turno Completo">Tiempo completo</button>
+                            <button class="job-pill" data-filter="Matutino">Matutino</button>
+                            <button class="job-pill" data-filter="Vespertino">Vespertino</button>
+                            <button class="job-pill" data-filter="Horas">Por horas</button>
+                            <button class="job-pill" data-filter="__SIN_TURNO__">Sin turno</button>
+                            <button class="job-pill" id="limpiarFiltros">Limpiar filtros</button>
+                        </div>
+                    </div>
+
+                    <div class="job-split-container">
+                        <div class="job-list-panel">
+                            <div class="job-list-heading">
+                                <div>
+                                    <h2>Vacantes publicadas</h2>
+                                </div>
+                                <span class="job-results-count" id="jobsContador">Cargando...</span>
+                            </div>
+                            <div class="job-cards-list" id="contenedor"></div>
+                        </div>
+                        <div class="job-detail-panel" id="jobDetailPanel">
+                            <div class="text-center p-5 text-muted">
+                                <i class="ri-information-line ri-3x mb-3 d-block"></i>
+                                <p>Selecciona un trabajo para ver los detalles aquí.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EVENTS CONTENT -->
+            <div id="events-content-area" class="d-none">
+                <div class="container-fluid job-admin-shell">
+                    <div class="job-toolbar-minimal">
+                        <div class="job-pills-container" id="eventFilterPills">
+                            <button class="job-pill active" data-filter="all">Todos</button>
+                            <button class="job-pill" id="limpiarFiltrosEventos">Limpiar filtros</button>
+                        </div>
+                    </div>
+                    <div class="eventos-grid" id="contenedorEventos"></div>
+                </div>
+            </div>
         </div>
+
+        <!-- MODALS -->
+        <?php include_once("modales_trabajos_eventos.php"); ?>
     </div>
-        <div class="container mt-5">
-            <h1 class="text-start fw-bold">Bolsa de trabajo</h1>
-            <h4 class="text-start text-secondary">Sección para administrar la bolsa de trabajo de YoLocal.</h4>
-        </div>
-        <div class="container mt-5">
-            <div class="filter-container">
 
-                <div class="filter" data-filter="titulo">
-                    <span>Título</span>
-                    <input type="text" id="filtroTitulo" class="hidden" placeholder="Escribe aquí..">
-                    <button class="close">✖</button>
-                </div>
-
-                <div class="filter" data-filter="descripcion">
-                    <span>Descripción</span>
-                    <input type="text" id="filtroDescripcion" class="hidden" placeholder="Escribe aquí..">
-                    <button class="close">✖</button>
-                </div>
-                <?php if ($_SESSION["tipo"] === "admin"): ?>
-                <div class="filter" data-filter="negocio">
-                    <span>Negocio</span>
-                    <input type="text" id="filtroNegocio" class="hidden" placeholder="Escribe aquí..">
-                    <button class="close">✖</button>
-                </div>
-                <?php endif; ?>
-
-
-                <div class="filter-promociones">
-                    <button id="limpiarFiltros" class="btn btn-secondary">Limpiar Filtros</button>
-                </div>
-
-            </div>
-            <?php if ($_SESSION["tipo"] === "admin" || $_SESSION["tipo"] === "negocio"): ?>
-                <div class="d-flex justify-content-end gap-2 mb-3">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPromocion">
-                        Cargar trabajo
-                    </button>
-                    
-                </div>
-            <?php endif; ?>
-
-
-            <!-- Modal AGREGAR -->
-            <div class="modal fade" id="modalPromocion" tabindex="-1" aria-labelledby="modalPromocionLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalPromocionLabel">Cargar Trabajo</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="formPromocion">
-                                <div class="row g-3">
-
-                                    <div class="col-md-12">
-                                        <label for="Titulo" class="form-label">Título</label>
-                                        <input type="text" class="form-control" id="Titulo" name="Titulo" maxlength="100" required>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <label for="Descripcion" class="form-label">Descripción</label>
-                                        <textarea class="form-control" id="Descripcion" name="Descripcion" rows="3" required></textarea>
-                                    </div>
-
-
-                                    <div class="col-md-12">
-                                        <label for="Horario" class="form-label">Tipo de Horario</label>
-                                        <select class="form-control" id="Horario" name="Horario" required>
-                                            <option value="Turno Completo">Tiempo completo</option>
-                                            <option value="Matutino">Matutino</option>
-                                            <option value="Vespertino">Vespertino</option>
-                                            <option value="Horas">Por horas</option>
-                                           
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="Salario" class="form-label">Salario</label>
-                                        <input type="number" class="form-control" id="Salario" name="Salario" maxlength="6" >
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="PerRequeridas" class="form-label">Personas Requeridas</label>
-                                        <input type="number" class="form-control" id="PerRequeridas" name="PerRequeridas" maxlength="6" >
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="ID_Negocio" class="form-label">Negocio</label>
-                                        <select class="form-control" id="ID_Negocio" name="ID_Negocio" required>
-                                        </select>
-                                    </div>
-
-                                </div>
-
-                                <div class="text-end mt-3">
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Modal EDITAR -->
-            <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalEditarLabel">Editar informacion</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="formEditar">
-                                <input type="hidden" id="ID_Promocion" name="ID_Promocion">
-                                <div class="col-md-12">
-                                    <label for="Titulo" class="form-label">Título</label>
-                                    <input type="text" class="form-control" id="EditTitulo" name="EditTitulo" maxlength="100" required>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="Descripcion" class="form-label">Descripción</label>
-                                    <textarea class="form-control" id="EditDescripcion" name="EditDescripcion" rows="3" required></textarea>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="EditHorario" class="form-label">Tipo de Horario</label>
-                                    <select class="form-control" id="EditHorario" name="EditHorario" required>
-                                        <option value="Turno Completo">Tiempo completo</option>
-                                        <option value="Matutino">Matutino</option>
-                                        <option value="Vespertino">Vespertino</option>
-                                        <option value="Horas">Por horas</option>
-                                       
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="Salario" class="form-label">Salario</label>
-                                    <input type="number" class="form-control" id="EditSalario" name="EditSalario" maxlength="6" >
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="EditPerRequeridas" class="form-label">Personas Requeridas</label>
-                                    <input type="number" class="form-control" id="EditPerRequeridas" name="EditPerRequeridas" maxlength="6" >
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="ID_NegocioEdit" class="form-label">Negocio</label>
-                                    <select class="form-control" id="ID_NegocioEdit" name="ID_NegocioEdit" required>
-                                    </select>
-                                </div>
-                                <div class="text-end mt-3">
-                                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-          
-
-            <!-- Tabla de Usuarios -->
-            <div class="mt-3">
-
-                <div id="ListaMiembros">
-                    <div id="contenedor" class="promo-grid"></div>
-
-                </div>
-                <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
-            </div>
-
-        </div>
-
-
-        <script src="../assets/js/main.js"></script>
-        
+    <script src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/funcionesTrabajos.js"></script>
+    <script type="module" src="assets/js/funcionesEventos.js"></script>
+    <script src="assets/js/modal-detalles-evento.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pag = urlParams.get('pag');
+            const vista = urlParams.get('vista');
+            if (pag === 'eventos' || vista === 'eventos') {
+                switchView('events');
+            } else if (vista === 'trabajos') {
+                switchView('jobs');
+            }
+        });
+    </script>
 </body>
-
 </html>

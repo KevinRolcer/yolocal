@@ -1,284 +1,418 @@
-import {
-  validaCorreo,
-  validaLargo,
-  validaSoloLetras,
-  validaContrasena,
-} from "./validaciones.js?v=3.8.2";
-document.addEventListener("DOMContentLoaded", () => {
-  // agregar usuario
-  const formUsuario = document.querySelector("#formAgregar");
-  if (formUsuario) {
-    formUsuario.addEventListener("submit", (event) => {
-      event.preventDefault();
-      let errores = 0;
+// --- State Variables ---
+let paginaActual = 1;
+const registrosPorPagina = 9;
+let filtrosActuales = {};
+let filtroDebounceTimer = null;
+let searchKey = "Nombre"; // Por defecto buscar por nombre
+let ordenAz = "ASC";
+let ordenNum = ""; // Filtro 1-9 (vacío por defecto)
+let datosOcultos = false;
 
-      let nombre = document.querySelector("#Nombre");
-
-      if (!validaSoloLetras(nombre)) errores++;
-
-      if (errores == 0) agregarUsuario();
+function iniciarModuloCategorias() {
+  // --- Modals & Forms ---
+  const formAgregar = document.querySelector("#formAgregar");
+  if (formAgregar) {
+    formAgregar.addEventListener("submit", (e) => {
+      e.preventDefault();
+      agregarCategoria();
     });
   }
 
-  //  editar y eliminar
-  const listaUsuarios = document.querySelector("#ListaMiembros");
-  if (listaUsuarios) {
-    listaUsuarios.addEventListener("click", (event) => {
-      event.preventDefault();
-      const target = event.target.closest("button"); // busca el botón aunque pulses en el <i>
+  const formEditar = document.querySelector("#formEditar");
+  if (formEditar) {
+    formEditar.addEventListener("submit", (e) => {
+      e.preventDefault();
+      editarCategoria();
+    });
+  }
+
+  // --- Card Actions (Delegation) ---
+  const contenedor = document.querySelector("#ListaMiembros");
+  if (contenedor) {
+    contenedor.addEventListener("click", (e) => {
+      const target = e.target.closest("button");
       if (!target) return;
 
+      const id = target.dataset.id;
       if (target.classList.contains("btn-editar")) {
-        cargarUsuario(target.dataset.id);
+        cargarCategoria(id);
       } else if (target.classList.contains("btn-eliminar")) {
-        eliminarUsuario(target.dataset.id);
-      } else if (event.target.classList.contains("btn-clave")) {
-        let userId = event.target.dataset.id;
-        document.querySelector("#ID_UsuarioClave").value = userId;
+        eliminarCategoria(id);
       }
     });
-    
-  }
 
-  const formEditarUsuario = document.querySelector("#formEditar");
-  if (formEditarUsuario) {
-    formEditarUsuario.addEventListener("submit", (event) => {
-      event.preventDefault();
-      let erroresE = 0;
-      let nombreE = document.querySelector("#NombreEdit");
-     
-
-      if (!validaSoloLetras(nombreE)) erroresE++;
-      
-
-      if (erroresE == 0) editarUsuario();
+    // Delegación para "Ver negocios"
+    contenedor.addEventListener("click", (e) => {
+      const target = e.target.closest(".btn-card-action");
+      if (!target) return;
+      e.preventDefault();
+      const id = target.dataset.id;
+      const nombre = target.dataset.nombre;
+      verNegocios(id, nombre);
     });
   }
 
-  listarMiembros();
-});
+  // --- Toolbar Logic ---
+  const searchInput = document.getElementById("searchInput");
+  const searchClear = document.getElementById("searchClear");
+  const btnLimpiar = document.getElementById("limpiarM");
+  const btnSortAz = document.getElementById("btnSortAz");
+  const btnSortNum = document.getElementById("btnSortNum"); // Nuevo ID
+  const btnPrivacy = document.getElementById("btnPrivacyToggle");
+  const filterBtn = document.getElementById("filterDropdownBtn");
+  const filterMenu = document.getElementById("filterMenu");
+  const filterOptions = document.querySelectorAll(".filter-option");
 
-// Función para listar usuarios
-let paginaActual = 1;
-const registrosPorPagina = 5;
-let filtrosActuales = {};
+  // --- Dropdown Logic ---
+  if (filterBtn && filterMenu) {
+    filterBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      filterBtn.parentElement.classList.toggle("show");
+    });
 
-export function listarMiembros(filtros = filtrosActuales) {
-  filtrosActuales = filtros; 
+    document.addEventListener("click", (e) => {
+      if (!filterMenu.contains(e.target) && !filterBtn.contains(e.target)) {
+        filterBtn.parentElement.classList.remove("show");
+      }
+    });
+
+    filterOptions.forEach(opt => {
+      opt.addEventListener("click", () => {
+        filterOptions.forEach(o => o.classList.remove("active"));
+        opt.classList.add("active");
+        searchKey = opt.dataset.key;
+        if (searchInput) {
+          searchInput.placeholder = opt.dataset.placeholder;
+          searchInput.value = "";
+        }
+        filterBtn.parentElement.classList.remove("show");
+        aplicarFiltros();
+      });
+    });
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      if (searchClear) searchClear.style.display = searchInput.value ? "block" : "none";
+      clearTimeout(filtroDebounceTimer);
+      filtroDebounceTimer = setTimeout(aplicarFiltros, 400);
+    });
+  }
+
+  if (searchClear) {
+    searchClear.addEventListener("click", () => {
+      searchInput.value = "";
+      searchClear.style.display = "none";
+      aplicarFiltros();
+    });
+  }
+
+  if (btnLimpiar) {
+    btnLimpiar.addEventListener("click", () => {
+      if (searchInput) {
+        searchInput.value = "";
+        searchInput.placeholder = "Buscar categor&iacute;a...";
+        if (searchClear) searchClear.style.display = "none";
+      }
+      searchKey = "Nombre";
+      filterOptions.forEach(o => o.classList.toggle("active", o.dataset.key === "Nombre"));
+      ordenAz = "ASC";
+      ordenNum = "";
+      if (btnSortAz) btnSortAz.classList.remove("active");
+      if (btnSortNum) btnSortNum.classList.remove("active");
+      aplicarFiltros();
+    });
+  }
+
+  if (btnSortAz) {
+    btnSortAz.addEventListener("click", () => {
+      ordenNum = ""; // Desactivar el otro
+      if (btnSortNum) btnSortNum.classList.remove("active");
+      
+      ordenAz = (ordenAz === "ASC") ? "DESC" : "ASC";
+      btnSortAz.classList.toggle("active", ordenAz === "DESC");
+      aplicarFiltros();
+    });
+  }
+
+  if (btnSortNum) {
+    btnSortNum.addEventListener("click", () => {
+      ordenAz = "ASC"; // Reset el otro
+      if (btnSortAz) btnSortAz.classList.remove("active");
+
+      ordenNum = (ordenNum === "" || ordenNum === "DESC") ? "ASC" : "DESC";
+      btnSortNum.classList.toggle("active", ordenNum !== "");
+      aplicarFiltros();
+    });
+  }
+
+  if (btnPrivacy) {
+    btnPrivacy.addEventListener("click", () => {
+      datosOcultos = !datosOcultos;
+      btnPrivacy.classList.toggle("active", datosOcultos);
+      document.querySelectorAll(".categoria-id").forEach(el => {
+        el.style.display = datosOcultos ? "none" : "block";
+      });
+    });
+  }
+
+  // --- Image Previews ---
+  handleImagePreview("#Imagen", "#previewAgregar");
+  handleImagePreview("#ImagenEdit", "#previewEditar");
+
+  listarCategorias();
+}
+
+function handleImagePreview(inputSelector, previewSelector) {
+  const input = document.querySelector(inputSelector);
+  const preview = document.querySelector(previewSelector);
+  if (input && preview) {
+    input.addEventListener("change", () => {
+      const file = input.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+}
+
+export function listarCategorias(filtros = null) {
+  if (!filtros) {
+    const searchInput = document.getElementById("searchInput");
+    const val = searchInput ? searchInput.value.trim() : "";
+    filtros = { Nombre: val };
+  }
+  filtrosActuales = filtros;
 
   let params = new URLSearchParams();
-  params.append("ope", "LISTAUSUARIOS"); 
+  params.append("ope", "LISTAUSUARIOS");
   params.append("pagina", paginaActual);
   params.append("registrosPorPagina", registrosPorPagina);
-
-  if (filtros.ID_Miembro) params.append("id", filtros.ID_Miembro);
+  params.append("orden", ordenAz);
+  params.append("ordenNum", ordenNum);
+  params.append("searchKey", searchKey); // Enviamos qué campo estamos buscando
   if (filtros.Nombre) params.append("nombre", filtros.Nombre);
-  if (filtros.Apellidos) params.append("apellidos", filtros.Apellidos);
-  if (filtros.Telefono) params.append("telefono", filtros.Telefono);
 
   fetch("controladores/controladorCategorias.php", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: params.toString(),
   })
-    .then((response) => response.json())
-    .then((data) => {
-      if (!data.success) {
-        console.error("Error al cargar categorias:", data.msg);
-        renderizarError("No se pudieron cargar los categorias.");
-        return;
-      }
-      renderizarMiembros(data.lista);
-      actualizarPaginacion(data.totalPaginas);
+    .then((r) => {
+      if (!r.ok) throw new Error("Error HTTP: " + r.status);
+      return r.text(); // Get as text first to debug
     })
-    .catch((error) => {
-      console.error("Error en la solicitud:", error);
-      renderizarError("Error al conectarse con el servidor.");
+    .then((text) => {
+      try {
+        const data = JSON.parse(text);
+        if (!data.success) {
+          renderizarError(data.msg || "No se pudieron cargar las categorías.");
+          return;
+        }
+        renderizarCategorias(data.lista);
+        actualizarPaginacion(data.totalPaginas);
+      } catch (err) {
+        console.error("Error parseando JSON:", err, "Texto recibido:", text);
+        renderizarError("Error en el formato de datos del servidor.");
+      }
+    })
+    .catch((err) => {
+      console.error("Error en fetch:", err);
+      renderizarError("Error de conexión: " + err.message);
     });
 }
 
-function renderizarMiembros(lista) {
+function renderizarCategorias(lista) {
   const contenedor = document.querySelector("#ListaMiembros");
+  if (!contenedor) return;
   contenedor.innerHTML = "";
 
   if (!lista || lista.length === 0) {
     contenedor.innerHTML = `
-            <div class="no-results">
-                <p>No se encuentra ningún miembro con los filtros aplicados.</p>
-            </div>
-        `;
+      <div class="no-results">
+        <i class="bi bi-folder-x"></i>
+        <p>No se encontraron categor&iacute;as.</p>
+      </div>
+    `;
     return;
   }
 
-  lista.forEach((miembro) => {
+  lista.forEach((cat) => {
+    const color = cat.Color || "#5e0a9e";
+    const colorSoft = color + "15"; // Add 15 for ~8% opacity
+    
+    const imgHtml = cat.Imagen 
+      ? `<img src="${cat.Imagen}" class="folder-thumb">` 
+      : `<i class="ri-price-tag-3-line folder-thumb-placeholder"></i>`;
+
     contenedor.innerHTML += `
-        <div class="categoria-card d-flex justify-content-between align-items-center p-3 mb-3 rounded">
-            <h3 class="mb-0 ">${miembro.Descripcion}</h3>
-            <div class="card-buttons d-flex gap-2">
-                <button class="btn btn-warning btn-editar" data-id="${miembro.ID_Categoria}" data-bs-toggle="modal" data-bs-target="#modalEditar">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-danger btn-eliminar" data-id="${miembro.ID_Categoria}">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </div>
+      <article class="categoria-folder-card" style="--category-color: ${color}; --category-color-soft: ${colorSoft}">
+        <div class="folder-header">
+          <div class="folder-icon-wrapper">
+            ${imgHtml}
+          </div>
+          <div class="folder-actions-dropdown">
+            <button class="btn-folder-actions" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="ri-more-2-fill"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+              <li><button class="dropdown-item btn-editar" data-id="${cat.ID_Categoria}" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="ri-pencil-line me-2"></i> Editar</button></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><button class="dropdown-item text-danger btn-eliminar" data-id="${cat.ID_Categoria}"><i class="ri-delete-bin-line me-2"></i> Eliminar</button></li>
+            </ul>
+          </div>
         </div>
+        
+        <div class="folder-title-area">
+          <span class="categoria-id" style="display: ${datosOcultos ? 'none' : 'block'}">ID: #${cat.ID_Categoria}</span>
+          <h3 class="categoria-name">${escapeHTML(cat.Descripcion)}</h3>
+        </div>
+
+        <div class="folder-footer">
+          <button type="button" class="btn-card-action" data-id="${cat.ID_Categoria}" data-nombre="${escapeHTML(cat.Descripcion)}">
+            Ver negocios <i class="ri-arrow-right-s-line ms-1"></i>
+          </button>
+        </div>
+      </article>
     `;
   });
 }
 
-function renderizarError(mensaje) {
-  const contenedor = document.querySelector("#ListaMiembros");
-  contenedor.innerHTML = `
-        <div class="error-message">
-            <p>${mensaje}</p>
-        </div>
-    `;
+// --- Business Management Functions ---
+async function verNegocios(idCategoria, nombreCategoria) {
+  const modal = new bootstrap.Modal(document.getElementById('modalVerNegocios'));
+  const contenedor = document.getElementById('listaNegociosCategoria');
+  const titulo = document.getElementById('tituloModalNegocios');
+  
+  titulo.innerText = `Negocios en: ${nombreCategoria}`;
+  contenedor.innerHTML = '<div class="text-center p-4"><div class="spinner-border text-primary spinner-border-sm"></div></div>';
+  
+  modal.show();
+
+  const formData = new FormData();
+  formData.append("ope", "LISTARNEGOCIOS");
+  formData.append("ID_Categoria", idCategoria);
+
+  try {
+    const res = await fetch("controladores/controladorCategorias.php", { method: "POST", body: formData });
+    const data = await res.json();
+
+    if (data.success) {
+      if (data.lista.length === 0) {
+        contenedor.innerHTML = '<div class="text-center p-4 text-muted small">No hay negocios asignados.</div>';
+      } else {
+        contenedor.innerHTML = data.lista.map(neg => `
+          <div class="business-list-item">
+            <span class="business-name-modal">${escapeHTML(neg.nombre_negocio)}</span>
+            <button type="button" class="btn-move-business" onclick="abrirMoverNegocio(${neg.ID_Negocio}, '${escapeHTML(neg.nombre_negocio)}', ${idCategoria})">
+              Mover
+            </button>
+          </div>
+        `).join('');
+      }
+    }
+  } catch (error) {
+    contenedor.innerHTML = '<div class="alert alert-danger p-2 small">Error al cargar negocios.</div>';
+  }
 }
 
-function actualizarPaginacion(totalPaginas) {
-  const paginacion = document.querySelector("#paginacion");
+let categoriasCargadas = []; // Cache para el selector
 
-  if (!paginacion) {
-    console.error("Error: No se encontró el contenedor #paginacion.");
+async function abrirMoverNegocio(idNegocio, nombreNegocio, idCatActual) {
+  const modalElem = document.getElementById('modalMoverNegocio');
+  const modal = new bootstrap.Modal(modalElem);
+  document.getElementById('moverNegocioId').value = idNegocio;
+  const select = document.getElementById('selectNuevaCategoria');
+  
+  // Mostrar qué negocio estamos moviendo
+  modalElem.querySelector('.modal-title').innerText = `Mover: ${nombreNegocio}`;
+  
+  select.innerHTML = '<option value="">Cargando categorías...</option>';
+  modal.show();
+
+  // Si ya tenemos las categorías en cache, usarlas
+  if (categoriasCargadas.length === 0) {
+    const formData = new FormData();
+    formData.append("ope", "LISTAUSUARIOS");
+    formData.append("registrosPorPagina", 100);
+    const res = await fetch("controladores/controladorCategorias.php", { method: "POST", body: formData });
+    const data = await res.json();
+    if (data.success) {
+      categoriasCargadas = data.lista;
+    }
+  }
+
+  select.innerHTML = categoriasCargadas
+    .filter(c => c.ID_Categoria != idCatActual)
+    .map(c => `<option value="${c.ID_Categoria}">${escapeHTML(c.Descripcion)}</option>`)
+    .join('');
+}
+
+async function finalizarMoverNegocio() {
+  const idNegocio = document.getElementById('moverNegocioId').value;
+  const idNuevaCat = document.getElementById('selectNuevaCategoria').value;
+
+  if (!idNuevaCat) {
+    alert("Selecciona una categoría.");
     return;
   }
 
-  paginacion.innerHTML = "";
+  const formData = new FormData();
+  formData.append("ope", "MOVERNEGOCIO");
+  formData.append("ID_Negocio", idNegocio);
+  formData.append("ID_Categoria", idNuevaCat);
 
-  // Botón anterior
-  let btnAnterior = document.createElement("button");
-  btnAnterior.classList.add("btn", "btn-outline-primary");
-  btnAnterior.innerHTML = "&laquo;"; // «
-  btnAnterior.disabled = paginaActual === 1;
-  btnAnterior.addEventListener("click", () => {
-    if (paginaActual > 1) {
-      paginaActual--;
-      listarMiembros(filtrosActuales);
+  try {
+    const res = await fetch("controladores/controladorCategorias.php", { method: "POST", body: formData });
+    const data = await res.json();
+
+    if (data.success) {
+      // Cerrar modales y refrescar
+      bootstrap.Modal.getInstance(document.getElementById('modalMoverNegocio')).hide();
+      bootstrap.Modal.getInstance(document.getElementById('modalVerNegocios')).hide();
+      listarCategorias();
+      Swal.fire({ icon: 'success', title: '¡Movido!', text: 'El negocio ha cambiado de categoría.', timer: 1500 });
     }
-  });
-  paginacion.appendChild(btnAnterior);
-
-  // Botones de páginas
-  let maxVisible = 5;
-  let inicio = Math.max(1, paginaActual - Math.floor(maxVisible / 2));
-  let fin = Math.min(totalPaginas, inicio + maxVisible - 1);
-
-  if (fin - inicio + 1 < maxVisible) {
-    inicio = Math.max(1, fin - maxVisible + 1);
+  } catch (error) {
+    Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo mover el negocio.' });
   }
-
-  for (let i = inicio; i <= fin; i++) {
-    let boton = document.createElement("button");
-    boton.classList.add(
-      "btn",
-      i === paginaActual ? "btn-primary" : "btn-outline-primary",
-      "mx-1"
-    );
-    boton.textContent = i;
-    boton.addEventListener("click", () => {
-      paginaActual = i;
-      listarMiembros(filtrosActuales);
-    });
-    paginacion.appendChild(boton);
-  }
-
-  // Botón siguiente
-  let btnSiguiente = document.createElement("button");
-  btnSiguiente.classList.add("btn", "btn-outline-primary");
-  btnSiguiente.innerHTML = "&raquo;"; // »
-  btnSiguiente.disabled = paginaActual === totalPaginas;
-  btnSiguiente.addEventListener("click", () => {
-    if (paginaActual < totalPaginas) {
-      paginaActual++;
-      listarMiembros(filtrosActuales);
-    }
-  });
-  paginacion.appendChild(btnSiguiente);
 }
+
+// Attach to window to fix ReferenceError from onclick
+window.verNegocios = verNegocios;
+window.abrirMoverNegocio = abrirMoverNegocio;
+window.finalizarMoverNegocio = finalizarMoverNegocio;
+
+
+/**
+ * Determina si el texto debe ser blanco o negro según el fondo
+ * @param {string} hexcolor 
+ * @returns {string} #ffffff o #1e293b
+ */
+function getContrastYIQ(hexcolor) {
+  if (!hexcolor || hexcolor === "null" || hexcolor === "undefined") return "#1e293b";
+  hexcolor = hexcolor.replace("#", "");
+  if (hexcolor.length === 3) {
+    hexcolor = hexcolor.split('').map(s => s + s).join('');
+  }
+  const r = parseInt(hexcolor.substr(0, 2), 16);
+  const g = parseInt(hexcolor.substr(2, 2), 16);
+  const b = parseInt(hexcolor.substr(4, 2), 16);
+  const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+  return yiq >= 128 ? "#1e293b" : "#ffffff";
+}
+
 
 function aplicarFiltros() {
-  const filtros = {
-    //ID_Miembro: document.getElementById("idM").value.trim(),
-    Nombre: document.getElementById("nombreM").value.trim(),
-  };
-
   paginaActual = 1;
-  listarMiembros(filtros);
+  listarCategorias();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const filtersContainer = document.querySelector(".filter-container");
-
-  if (!filtersContainer) {
-    console.error("Error: No se encontró el contenedor de filtros.");
-    return;
-  }
-
-  filtersContainer.addEventListener("input", aplicarFiltros);
-
-  listarMiembros();
-});
-
-document.getElementById("limpiarM").addEventListener("click", function () {
-  document.querySelectorAll(".filter input").forEach((input) => {
-    input.value = "";
-  });
-
-  aplicarFiltros();
-});
-
-document.querySelectorAll(".filter").forEach((filter) => {
-  filter.addEventListener("click", function (event) {
-    let isActive = this.classList.contains("active");
-
-    document.querySelectorAll(".filter").forEach((otherFilter) => {
-      otherFilter.classList.remove("active");
-      let inputs = otherFilter.querySelectorAll("input, select");
-      inputs.forEach((input) => {
-        input.classList.add("hidden");
-        input.value = "";
-      });
-    });
-
-    if (!isActive) {
-      this.classList.add("active");
-      let input = this.querySelector("input, select");
-      if (input) input.classList.remove("hidden");
-    }
-  });
-});
-
-document.querySelectorAll(".filter input").forEach((input) => {
-  input.addEventListener("click", function (event) {
-    event.stopPropagation();
-  });
-});
-
-document.querySelectorAll(".filter .close").forEach((button) => {
-  button.addEventListener("click", function (event) {
-    event.stopPropagation();
-    let filter = this.parentElement;
-    filter.classList.remove("active");
-
-    let inputs = filter.querySelectorAll("input, select");
-    inputs.forEach((input) => {
-      input.classList.add("hidden");
-      input.value = "";
-    });
-  });
-});
-
-document.getElementById("limpiarM").addEventListener("click", function () {
-  document.querySelectorAll(".filter").forEach((filter) => {
-    let input = filter.querySelector("input");
-    input.classList.add("hidden");
-    input.value = "";
-    filter.classList.remove("active");
-  });
-});
-
-function agregarUsuario() {
+function agregarCategoria() {
   const form = document.querySelector("#formAgregar");
   const datos = new FormData(form);
   datos.append("ope", "AGREGAR");
@@ -287,56 +421,44 @@ function agregarUsuario() {
     method: "POST",
     body: datos,
   })
-    .then((response) => response.json())
+    .then((r) => r.json())
     .then((data) => {
-      console.log(data);
       if (data.success) {
-        Swal.fire("Éxito", "Categoria agregado correctamente", "success");
+        Swal.fire("¡Éxito!", "Categoría agregada correctamente.", "success");
         form.reset();
-        document.querySelector("#modalAgregar .btn-close").click();
-        listarMiembros();
+        document.querySelector("#previewAgregar").innerHTML = '<i class="bi bi-image text-muted" style="font-size: 2rem;"></i>';
+        bootstrap.Modal.getInstance(document.querySelector("#modalAgregar")).hide();
+        listarCategorias();
       } else {
-        Swal.fire("Error", data.msg, "error");
+        Swal.fire("Error", data.msg || "No se pudo agregar la categoría.", "error");
       }
-    })
-    .catch((error) => {
-      Swal.fire(
-        "Error",
-        "No se pudo agregar el usuario: " + error.message,
-        "error"
-      );
     });
 }
 
-function cargarUsuario(id) {
+function cargarCategoria(id) {
   fetch("controladores/controladorCategorias.php", {
     method: "POST",
-    body: new URLSearchParams({ ope: "OBTENER", ID_Usuario: id }),
+    body: new URLSearchParams({ ope: "OBTENER", ID_Categoria: id }),
   })
-    .then((response) => response.json())
+    .then((r) => r.json())
     .then((data) => {
       if (data.success) {
-        document.querySelector("#ID_Usuario").value = data.usuario.ID_Categoria;
+        document.querySelector("#formEditar #ID_Categoria").value = data.usuario.ID_Categoria;
         document.querySelector("#NombreEdit").value = data.usuario.Descripcion;
-     
-      } else {
-        Swal.fire(
-          "Error",
-          "No se pudo obtener la información de la categoria",
-          "error"
-        );
+        document.querySelector("#ColorEdit").value = data.usuario.Color || "#7b68ee";
+        document.querySelector("#RutaImagenActual").value = data.usuario.Imagen || "";
+        
+        const preview = document.querySelector("#previewEditar");
+        if (data.usuario.Imagen) {
+          preview.innerHTML = `<img src="${data.usuario.Imagen}" alt="Current">`;
+        } else {
+          preview.innerHTML = '<i class="bi bi-image text-muted" style="font-size: 2rem;"></i>';
+        }
       }
-    })
-    .catch((error) => {
-      Swal.fire(
-        "Error",
-        "No se pudo obtener la información de la categoria: " + error.message,
-        "error"
-      );
     });
 }
 
-function editarUsuario() {
+function editarCategoria() {
   const form = document.querySelector("#formEditar");
   const datos = new FormData(form);
   datos.append("ope", "EDITAR");
@@ -345,29 +467,22 @@ function editarUsuario() {
     method: "POST",
     body: datos,
   })
-    .then((response) => response.json())
+    .then((r) => r.json())
     .then((data) => {
       if (data.success) {
-        Swal.fire("Éxito", "Dato actualizado correctamente", "success");
-        document.querySelector("#modalEditar .btn-close").click();
-        listarMiembros();
+        Swal.fire("¡Actualizado!", "Categoría actualizada correctamente.", "success");
+        bootstrap.Modal.getInstance(document.querySelector("#modalEditar")).hide();
+        listarCategorias();
       } else {
-        Swal.fire("Error", data.msg, "error");
+        Swal.fire("Error", data.msg || "No se pudo actualizar.", "error");
       }
-    })
-    .catch((error) => {
-      Swal.fire(
-        "Error",
-        "No se pudo actualizar la categoria: " + error.message,
-        "error"
-      );
     });
 }
 
-function eliminarUsuario(id) {
+function eliminarCategoria(id) {
   Swal.fire({
     title: "¿Estás seguro?",
-    text: "¡Esta acción no se puede deshacer!",
+    text: "Los negocios en esta categoría se quedarán sin clasificación.",
     icon: "warning",
     showCancelButton: true,
     confirmButtonText: "Sí, eliminar",
@@ -376,28 +491,75 @@ function eliminarUsuario(id) {
     if (result.isConfirmed) {
       fetch("controladores/controladorCategorias.php", {
         method: "POST",
-        body: new URLSearchParams({ ope: "ELIMINAR", ID_Usuario: id }),
+        body: new URLSearchParams({ ope: "ELIMINAR", ID_Categoria: id }),
       })
-        .then((response) => response.json())
+        .then((r) => r.json())
         .then((data) => {
           if (data.success) {
-            Swal.fire(
-              "Eliminado",
-              "Categoria eliminada correctamente",
-              "success"
-            );
-            listarMiembros();
+            Swal.fire("Eliminada", "La categoría ha sido eliminada.", "success");
+            listarCategorias();
           } else {
-            Swal.fire("Error", data.msg, "error");
+            Swal.fire("Error", data.msg || "No se pudo eliminar.", "error");
           }
-        })
-        .catch((error) => {
-          Swal.fire(
-            "Error",
-            "No se pudo eliminar el usuario: " + error.message,
-            "error"
-          );
         });
     }
   });
+}
+
+function renderizarError(msg) {
+  const contenedor = document.querySelector("#ListaMiembros");
+  if (contenedor) {
+    contenedor.innerHTML = `<div class="col-12 text-center text-danger p-5"><i class="bi bi-exclamation-circle me-2"></i> ${msg}</div>`;
+  }
+}
+
+function actualizarPaginacion(totalPaginas) {
+  const paginacion = document.querySelector("#paginacion");
+  if (!paginacion) return;
+  paginacion.innerHTML = "";
+
+  const createBtn = (content, disabled, onClick, active = false) => {
+    const btn = document.createElement("button");
+    btn.className = `btn ${active ? 'btn-primary' : 'btn-outline-primary'} mx-1`;
+    btn.innerHTML = content;
+    btn.disabled = disabled;
+    btn.addEventListener("click", onClick);
+    return btn;
+  };
+
+  paginacion.appendChild(createBtn("&laquo;", paginaActual === 1, () => {
+    paginaActual--;
+    listarCategorias();
+  }));
+
+  for (let i = 1; i <= totalPaginas; i++) {
+    if (i === 1 || i === totalPaginas || (i >= paginaActual - 1 && i <= paginaActual + 1)) {
+      paginacion.appendChild(createBtn(i, false, () => {
+        paginaActual = i;
+        listarCategorias();
+      }, i === paginaActual));
+    }
+  }
+
+  paginacion.appendChild(createBtn("&raquo;", paginaActual === totalPaginas, () => {
+    paginaActual++;
+    listarCategorias();
+  }));
+}
+
+function escapeHTML(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// Auto-init
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciarModuloCategorias, { once: true });
+} else {
+  iniciarModuloCategorias();
 }

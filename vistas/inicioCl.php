@@ -1,3 +1,15 @@
+<?php
+$archivoVisitas = __DIR__ . '/../visitas.txt';
+if (!file_exists($archivoVisitas)) {
+    file_put_contents($archivoVisitas, "0");
+}
+if (!isset($_SESSION['visitado'])) {
+    $visitas = (int)file_get_contents($archivoVisitas);
+    $visitas++;
+    file_put_contents($archivoVisitas, (string)$visitas);
+    $_SESSION['visitado'] = true;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -16,7 +28,7 @@
     <meta name="twitter:description" content="Conectamos, empoderamos y visibilizamos todo lo bueno de Texmelucan. Desde emprendedores hasta artistas, deportistas y creadores culturales.">
     <meta name="twitter:image" content="https://www.yolocaltexmelucan.com/assets/img/LogoYolocal.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link href="../assets/img/LogoYolocal.png" rel="icon" />
+    <link href="assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="assets/css/inicioCl.css">
     <link rel="stylesheet" href="assets/css/footer.css">
     <script type="module" src="assets/js/pagina/funcionesHome1.js"></script>
@@ -280,17 +292,21 @@
         </div>
 
 
-        <div class="descripcionC" >
-            <h2>Mapa de Negocios
-
-            </h2>
-            <p>Negocios que apoyan lo local en
-                <span>Texme <span id="span2">lucan</span></span>
-            </p>
-
-        </div>
-
-        <div id="map"></div>
+        <section class="mapa-negocios-section" aria-labelledby="mapa-negocios-title">
+            <div class="descripcionC mapa-negocios-copy">
+                <span class="mapa-kicker">Explora cerca de ti</span>
+                <h2 id="mapa-negocios-title" aria-label="Mapa de Negocios">
+                    Map<i class="fa-solid fa-location-dot mapa-title-pin" aria-hidden="true"></i>
+                    <span>de Negocios</span>
+                </h2>
+                <p>Negocios que apoyan lo local en
+                    <span>Texme <span id="span2">lucan</span></span>
+                </p>
+            </div>
+            <div class="mapa-negocios-map">
+                <div id="map"></div>
+            </div>
+        </section>
 
         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <script src="assets/js/pagina/funcionesMapa.js"></script>
@@ -459,7 +475,7 @@
                         <li><a href="controladores/controladorEvento.php">Eventos</a></li>
                         <li><a href="https://wa.me/+522482694278">Contacto</a></li>
                         <li><a href="vistas/sistemaAdmin/login.php">Inicia Sesión</a></li>
-                        <li><a href="vistas/mapa.php">Mapa</a></li>
+                        <li><a href="vistas/mapa.php" class="footer-map-link"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>Mapa</span></a></li>
 
                     </ul>
                 </div>

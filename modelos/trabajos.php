@@ -16,9 +16,10 @@ public function ListarTODOS($pagina = 1, $registrosPorPagina = 10, $filtros = []
     p.Tipo_Horario,
     p.Salario,
     p.PerRequeridas,
-   p.Estatus,
+    p.Estatus,
     n.nombre_negocio AS nombre_negocio,
     n.Direccion AS direccion_negocio,
+    n.GoogleMaps AS google_maps_negocio,
     c.Descripcion AS categoria
 FROM trabajos p
 INNER JOIN negocios n 
@@ -46,6 +47,14 @@ WHERE 1=1";
     if (!empty($filtros['NombreNegocio'])) {
         $sql .= " AND n.nombre_negocio LIKE ?";
         $values[] = "%" . $filtros['NombreNegocio'] . "%";
+        $tipos .= "s";
+    }
+
+    if (($filtros['horario'] ?? null) === "__SIN_TURNO__") {
+        $sql .= " AND (p.Tipo_Horario IS NULL OR TRIM(p.Tipo_Horario) = '')";
+    } elseif (!empty($filtros['horario'])) {
+        $sql .= " AND p.Tipo_Horario = ?";
+        $values[] = $filtros['horario'];
         $tipos .= "s";
     }
 
@@ -84,13 +93,44 @@ WHERE 1=1";
                  INNER JOIN negocios n ON p.ID_Negocio = n.ID_Negocio
                  WHERE 1=1";
 
+    $countValues = [];
+    $countTipos = "";
+
+    if (!empty($filtros['titulo'])) {
+        $countSql .= " AND p.titulo LIKE ?";
+        $countValues[] = "%" . $filtros['titulo'] . "%";
+        $countTipos .= "s";
+    }
+
+    if (!empty($filtros['descripcion'])) {
+        $countSql .= " AND p.descripcion LIKE ?";
+        $countValues[] = "%" . $filtros['descripcion'] . "%";
+        $countTipos .= "s";
+    }
+
+    if (!empty($filtros['NombreNegocio'])) {
+        $countSql .= " AND n.nombre_negocio LIKE ?";
+        $countValues[] = "%" . $filtros['NombreNegocio'] . "%";
+        $countTipos .= "s";
+    }
+
+    if (($filtros['horario'] ?? null) === "__SIN_TURNO__") {
+        $countSql .= " AND (p.Tipo_Horario IS NULL OR TRIM(p.Tipo_Horario) = '')";
+    } elseif (!empty($filtros['horario'])) {
+        $countSql .= " AND p.Tipo_Horario = ?";
+        $countValues[] = $filtros['horario'];
+        $countTipos .= "s";
+    }
+
     if ($usuarioTipo === "negocio") {
         $countSql .= " AND n.ID_Usuario = ?";
+        $countValues[] = $usuarioId;
+        $countTipos .= "i";
     }
 
     $countConsulta = $enlace->prepare($countSql);
-    if ($usuarioTipo === "negocio") {
-        $countConsulta->bind_param("i", $usuarioId);
+    if (!empty($countValues)) {
+        $countConsulta->bind_param($countTipos, ...$countValues);
     }
     $countConsulta->execute();
     $countResult = $countConsulta->get_result();
@@ -105,6 +145,7 @@ WHERE 1=1";
         "promociones" => $promociones,
         "totalPaginas" => $totalPaginas,
         "paginaActual" => $pagina,
+        "totalRegistros" => $totalRegistros
     ];
 }
 

@@ -1,13 +1,16 @@
 class JobPlatform {
     constructor() {
-        this.jobDetails = {}; 
+        this.jobs = [];
+        this.filteredJobs = [];
+        this.jobDetails = {};
+        this.selectedJobId = null;
         this.init();
     }
 
     async init() {
-        await this.fetchJobs(); 
+        await this.fetchJobs();
         this.setupEventListeners();
-        this.setupSearch();
+        this.applyFilters();
         this.setupModalEvents();
     }
 
@@ -21,7 +24,8 @@ class JobPlatform {
             const data = await response.json();
 
             if (data.success) {
-                this.renderJobs(data.trabajos);
+                this.jobs = Array.isArray(data.trabajos) ? data.trabajos : [];
+                this.filteredJobs = [...this.jobs];
             } else {
                 console.error("Error al traer trabajos:", data.msg);
             }
@@ -30,109 +34,194 @@ class JobPlatform {
         }
     }
 
-renderJobs(trabajos) {
-    const jobsList = document.querySelector(".jobs-list");
-    if (!jobsList) return;
+    normalize(value) {
+        return String(value ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
 
-    const header = jobsList.querySelector(".jobs-header");
-    jobsList.innerHTML = "";
-    jobsList.appendChild(header);
+    escapeHtml(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
 
+    getJobId(job) {
+        return `job-${job.ID_Trabajo}`;
+    }
 
-    trabajos.forEach((job) => {
-        const jobId = `job-${job.ID_Trabajo}`;
+    getSalaryNumber(job) {
+        const value = Number(String(job.Salario ?? "0").replace(/[^\d.-]/g, ""));
+        return Number.isFinite(value) ? value : 0;
+    }
 
-        this.jobDetails[jobId] = {
-            title: job.Titulo,
-            company: job.nombre_negocio,
-            logo: job.Rutaicono ? "" : job.nombre_negocio.charAt(0),
-            logoPath: job.Rutaicono,
-            logoColor: "linear-gradient(45deg, #6366f1, #8b5cf6)",
-            description: job.Descripcion,
-            tipoHorario: job.Tipo_Horario,
-            Salario: job.Salario,
+    normalizeAssetPath(path) {
+        const cleanPath = String(path ?? "").trim();
+        if (!cleanPath) return "";
+        if (/^(https?:)?\/\//i.test(cleanPath) || cleanPath.startsWith("../") || cleanPath.startsWith("/")) {
+            return cleanPath;
+        }
+        if (cleanPath.startsWith("assets/")) return `../${cleanPath}`;
+        return cleanPath;
+    }
+
+    buildJobDetail(job) {
+        const company = job.nombre_negocio || "Negocio local";
+        return {
+            id: this.getJobId(job),
+            title: job.Titulo || "Vacante disponible",
+            company,
+            logo: company.charAt(0).toUpperCase(),
+            logoPath: this.normalizeAssetPath(job.Rutaicono),
+            logoColor: "linear-gradient(45deg, #613f9b, #7c5cff)",
+            description: job.Descripcion || "Sin descripción disponible.",
+            tipoHorario: job.Tipo_Horario || "",
+            salario: job.Salario,
             personasRequeridas: job.PerRequeridas,
             correo: job.CorreoN,
             telefono: job.Telefono,
             direccion: job.Direccion
         };
-
-        const jobItem = document.createElement("div");
-        jobItem.classList.add("job-item");
-        jobItem.setAttribute("onclick", `selectJob(this, '${jobId}')`);
-        jobItem.innerHTML = `
-            <div class="job-header">
-                <div class="company-logo" style="background: ${this.jobDetails[jobId].logoColor};">
-                    ${job.Rutaicono 
-                        ? `<img src="${job.Rutaicono}" alt="logo" style="width:100%;height:100%;border-radius:50%;">` 
-                        : this.jobDetails[jobId].logo}
-                </div>
-                <div class="job-info">
-                    <h3>${job.Titulo}</h3>
-                    <div class="job-description">${job.Descripcion}</div>
-                    <div class="company-name">${job.nombre_negocio}</div>
-                    <div class="job-description">${job.Direccion}</div>
-                </div>
-            </div>
-            <div class="job-meta">
-                <span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />
-                    </svg>
-                    ${job.CorreoN}
-                </span>
-                <span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
-                    </svg>
-                    Personas Requeridas: ${job.PerRequeridas}
-                </span>
-                <span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                    </svg>
-                    Tipo de horario: ${job.Tipo_Horario}
-                </span>
-            </div>
-        `;
-        jobsList.appendChild(jobItem);
-    });
-
-    const firstJob = document.querySelector(".job-item");
-    if (firstJob) {
-        this.selectJob(firstJob, firstJob.getAttribute("onclick").match(/'([^']+)'/)[1]);
     }
 
-    this.updateJobCount();
-}
+    applyFilters() {
+        const searchTerm = this.normalize(document.getElementById("searchInput")?.value || "");
+        const schedule = document.getElementById("filterSchedule")?.value || "";
+        const salary = document.getElementById("filterSalary")?.value || "";
+        const sortValue = document.getElementById("sortJobs")?.value || "recent";
 
+        this.filteredJobs = this.jobs.filter((job) => {
+            const haystack = this.normalize([
+                job.Titulo,
+                job.Descripcion,
+                job.nombre_negocio,
+                job.Direccion
+            ].join(" "));
+            const jobSchedule = String(job.Tipo_Horario ?? "").trim();
+            const salaryNumber = this.getSalaryNumber(job);
+
+            const matchesSearch = !searchTerm || haystack.includes(searchTerm);
+            const matchesSchedule = !schedule ||
+                (schedule === "__SIN_TURNO__"
+                    ? !jobSchedule
+                    : this.normalize(jobSchedule) === this.normalize(schedule));
+            const matchesSalary = !salary ||
+                (salary === "paid" ? salaryNumber > 0 : salaryNumber <= 0);
+
+            return matchesSearch && matchesSchedule && matchesSalary;
+        });
+
+        this.sortJobs(sortValue);
+        this.renderJobs(this.filteredJobs);
+    }
+
+    sortJobs(sortValue) {
+        const compareTitle = (a, b) => String(a.Titulo ?? "").localeCompare(String(b.Titulo ?? ""), "es");
+        const compareSalary = (a, b) => this.getSalaryNumber(a) - this.getSalaryNumber(b);
+
+        if (sortValue === "title") this.filteredJobs.sort(compareTitle);
+        if (sortValue === "salary-desc") this.filteredJobs.sort((a, b) => compareSalary(b, a));
+        if (sortValue === "salary-asc") this.filteredJobs.sort(compareSalary);
+        if (sortValue === "recent") this.filteredJobs.sort((a, b) => Number(b.ID_Trabajo) - Number(a.ID_Trabajo));
+    }
+
+    renderJobs(trabajos) {
+        const jobsList = document.querySelector(".jobs-list");
+        if (!jobsList) return;
+
+        const header = jobsList.querySelector(".jobs-header");
+        jobsList.innerHTML = "";
+        if (header) jobsList.appendChild(header);
+
+        this.jobDetails = {};
+
+        if (!trabajos.length) {
+            const emptyState = document.createElement("div");
+            emptyState.className = "jobs-empty-state";
+            emptyState.innerHTML = `
+                <strong>No encontramos vacantes</strong>
+                <span>Prueba con otros filtros o una búsqueda más amplia.</span>
+            `;
+            jobsList.appendChild(emptyState);
+            this.updateJobCount();
+            this.clearJobDetails();
+            return;
+        }
+
+        trabajos.forEach((job) => {
+            const detail = this.buildJobDetail(job);
+            this.jobDetails[detail.id] = detail;
+
+            const scheduleText = detail.tipoHorario || "Sin turno";
+            const salaryText = this.getSalaryNumber(job) > 0 ? `$${this.escapeHtml(job.Salario)}` : "Salario no especificado";
+            const logo = detail.logoPath
+                ? `<img src="${this.escapeHtml(detail.logoPath)}" alt="Logo de ${this.escapeHtml(detail.company)}">`
+                : this.escapeHtml(detail.logo);
+
+            const jobItem = document.createElement("article");
+            jobItem.classList.add("job-item");
+            jobItem.dataset.jobId = detail.id;
+            jobItem.innerHTML = `
+                <div class="job-header">
+                    <div class="company-logo" style="background: ${detail.logoColor};">${logo}</div>
+                    <div class="job-info">
+                        <div class="job-title-row">
+                            <h3>${this.escapeHtml(detail.title)}</h3>
+                            <span class="job-salary-chip">${salaryText}</span>
+                        </div>
+                        <div class="company-name">${this.escapeHtml(detail.company)}</div>
+                        <p class="job-description">${this.escapeHtml(detail.description)}</p>
+                        <div class="job-location">${this.escapeHtml(detail.direccion || "Ubicación no especificada")}</div>
+                    </div>
+                </div>
+                <div class="job-meta">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Z" />
+                        </svg>
+                        ${this.escapeHtml(detail.personasRequeridas || "1")} vacante${Number(detail.personasRequeridas) === 1 ? "" : "s"}
+                    </span>
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                        ${this.escapeHtml(scheduleText)}
+                    </span>
+                </div>
+            `;
+            jobsList.appendChild(jobItem);
+        });
+
+        const selectedStillVisible = this.selectedJobId && this.jobDetails[this.selectedJobId];
+        const nextSelectedId = selectedStillVisible ? this.selectedJobId : this.getJobId(trabajos[0]);
+        const nextElement = jobsList.querySelector(`[data-job-id="${nextSelectedId}"]`);
+        if (nextElement) this.selectJob(nextElement, nextSelectedId, false);
+
+        this.updateJobCount();
+    }
 
     setupEventListeners() {
         document.addEventListener("click", (e) => {
-            if (e.target.closest(".job-item")) {
-                const jobItem = e.target.closest(".job-item");
-                const onclickAttr = jobItem.getAttribute("onclick");
-                let jobId = null;
-
-                if (onclickAttr) {
-                    const match = onclickAttr.match(/selectJob\(this,\s*['"]([^'"]+)['"]\)/);
-                    if (match && match[1]) {
-                        jobId = match[1];
-                    }
-                }
-
-                if (jobId) this.selectJob(jobItem, jobId);
-            }
+            const jobItem = e.target.closest(".job-item");
+            if (jobItem?.dataset.jobId) this.selectJob(jobItem, jobItem.dataset.jobId);
         });
-    }
 
-    setupSearch() {
-        const searchInput = document.getElementById("searchInput");
-        if (searchInput) {
-            searchInput.addEventListener("input", (e) => {
-                this.handleSearch(e.target.value);
-            });
-        }
+        ["searchInput", "filterSchedule", "filterSalary", "sortJobs"].forEach((id) => {
+            document.getElementById(id)?.addEventListener(id === "searchInput" ? "input" : "change", () => this.applyFilters());
+        });
+
+        document.getElementById("clearJobFilters")?.addEventListener("click", () => {
+            const search = document.getElementById("searchInput");
+            const schedule = document.getElementById("filterSchedule");
+            const salary = document.getElementById("filterSalary");
+            const sort = document.getElementById("sortJobs");
+            if (search) search.value = "";
+            if (schedule) schedule.value = "";
+            if (salary) salary.value = "";
+            if (sort) sort.value = "recent";
+            this.applyFilters();
+        });
     }
 
     setupModalEvents() {
@@ -148,69 +237,73 @@ renderJobs(trabajos) {
         }
     }
 
-    selectJob(element, jobId) {
-        document.querySelectorAll(".job-item").forEach((item) => {
-            item.classList.remove("active");
-        });
-
+    selectJob(element, jobId, openOnMobile = true) {
+        document.querySelectorAll(".job-item").forEach((item) => item.classList.remove("active"));
         element.classList.add("active");
+        this.selectedJobId = jobId;
         this.updateJobDetails(jobId);
 
-        if (window.innerWidth <= 768) {
-            this.openJobModal();
-        }
+        if (openOnMobile && window.innerWidth <= 768) this.openJobModal();
+    }
+
+    renderLogo(target, job) {
+        if (!target || !job) return;
+        target.style.background = job.logoColor;
+        target.innerHTML = job.logoPath
+            ? `<img src="${this.escapeHtml(job.logoPath)}" alt="Logo de ${this.escapeHtml(job.company)}">`
+            : this.escapeHtml(job.logo);
     }
 
     updateJobDetails(jobId) {
         const job = this.jobDetails[jobId];
         if (!job) return;
 
-        const desktopTitle = document.querySelector(".job-details h2");
-        const desktopCompany = document.querySelector(".job-details .company");
-        const desktopLogo = document.querySelector(".job-details .detail-company-logo");
-        const desktopDescription = document.querySelector(".job-details .detail-section p");
-        const desktopSalario = document.querySelector(".job-details .detail-item .detail-value");
-        const desktopHorarios = document.querySelector(".job-details .detail-item .detail-Horario");
-        const desktopPhone = document.querySelector(".job-details .number-section a");
+        const salaryText = this.getSalaryNumber({ Salario: job.salario }) > 0 ? `$${job.salario}` : "No especificado";
+        const scheduleText = job.tipoHorario || "No especificado";
+        const phoneText = job.telefono || job.correo || "Contacto no disponible";
 
+        [
+            { root: ".job-details", content: ".job-details-content" },
+            { root: "#jobModal", content: "#modalJobContent" }
+        ].forEach((scope) => {
+            const root = document.querySelector(scope.root);
+            if (!root) return;
 
-        if (desktopTitle) desktopTitle.textContent = job.title;
-        if (desktopCompany) desktopCompany.textContent = job.company;
-        if (desktopLogo) {
-            if (job.logoPath) {
-                desktopLogo.innerHTML = `<img src="${job.logoPath}" alt="logo" style="width:100%;height:100%;border-radius:50%;">`;
-            } else {
-                desktopLogo.textContent = job.logo;
+            const title = root.querySelector("h2");
+            const company = root.querySelector(".company");
+            const logo = root.querySelector(".detail-company-logo");
+            const description = root.querySelector(".detail-section p");
+            const salary = root.querySelector(".detail-value");
+            const schedule = root.querySelector(".detail-Horario");
+            const phone = root.querySelector(".number-section a, .detail-section a");
+            const apply = root.querySelector(".apply-btn");
+
+            if (title) title.textContent = job.title;
+            if (company) company.textContent = job.company;
+            this.renderLogo(logo, job);
+            if (description) description.textContent = job.description;
+            if (salary) salary.textContent = `Salario: ${salaryText}`;
+            if (schedule) schedule.textContent = `Tipo de horario: ${scheduleText}`;
+            if (phone) {
+                phone.textContent = phoneText;
+                phone.href = job.telefono ? `tel:${job.telefono}` : (job.correo ? `mailto:${job.correo}` : "#");
             }
-            desktopLogo.style.background = job.logoColor;
-        }
-        if (desktopDescription) desktopDescription.textContent = job.description;
-        if (desktopPhone) desktopPhone.textContent = job.telefono;
-        if (desktopSalario) desktopSalario.textContent = "Salario: " + (job.Salario ? job.Salario : "No especificado");
-        if (desktopHorarios) desktopHorarios.textContent = "Tipo de horario: " + (job.tipoHorario ? job.tipoHorario : "No especificado");
-
-        const modalTitle = document.querySelector("#modalJobHeader h2");
-        const modalCompany = document.querySelector("#modalJobHeader .company");
-        const modalLogo = document.querySelector("#modalJobHeader .detail-company-logo");
-        const modalDescription = document.querySelector("#modalJobContent .detail-section p");
-        const modalSalario = document.querySelector("#modalJobContent .detail-item .detail-value");
-        const modalHorarios = document.querySelector("#modalJobContent .detail-item .detail-Horario");
-        const modalPhone = document.querySelector("#modalJobContent .detail-section a");
-
-        if (modalTitle) modalTitle.textContent = job.title;
-        if (modalCompany) modalCompany.textContent = job.company;
-        if (modalLogo) {
-            if (job.logoPath) {
-                modalLogo.innerHTML = `<img src="${job.logoPath}" alt="logo" style="width:100%;height:100%;border-radius:50%;">`;
-            } else {
-                modalLogo.textContent = job.logo;
+            if (apply) {
+                apply.onclick = () => {
+                    if (job.telefono) window.location.href = `tel:${job.telefono}`;
+                    else if (job.correo) window.location.href = `mailto:${job.correo}`;
+                };
             }
-            modalLogo.style.background = job.logoColor;
-        }
-        if (modalDescription) modalDescription.textContent = job.description;
-        if (modalSalario) modalSalario.textContent = "Salario: " + (job.Salario ? job.Salario : "No especificado");
-        if (modalHorarios) modalHorarios.textContent = "Tipo de horario: " + (job.tipoHorario ? job.tipoHorario : "No especificado");
-        if (modalPhone) modalPhone.textContent = job.telefono;
+        });
+    }
+
+    clearJobDetails() {
+        const title = document.querySelector(".job-details h2");
+        const company = document.querySelector(".job-details .company");
+        const description = document.querySelector(".job-details .detail-section p");
+        if (title) title.textContent = "Sin vacantes";
+        if (company) company.textContent = "Ajusta tus filtros";
+        if (description) description.textContent = "No hay empleos que coincidan con la búsqueda actual.";
     }
 
     openJobModal() {
@@ -225,45 +318,23 @@ renderJobs(trabajos) {
         const modal = document.getElementById("jobModal");
         if (modal) {
             modal.classList.remove("active");
-            document.body.style.overflow = "auto";
+            document.body.style.overflow = "";
         }
-    }
-
-    handleSearch(searchTerm) {
-        const jobItems = document.querySelectorAll(".job-item");
-        const normalizedSearch = searchTerm.toLowerCase();
-
-        jobItems.forEach((item) => {
-            const title = item.querySelector("h3")?.textContent.toLowerCase() || "";
-            const description = item.querySelector(".job-description")?.textContent.toLowerCase() || "";
-            const companyName = item.querySelector(".company-name")?.textContent.toLowerCase() || "";
-
-            const isVisible =
-                title.includes(normalizedSearch) ||
-                description.includes(normalizedSearch) ||
-                companyName.includes(normalizedSearch);
-
-            item.style.display = isVisible ? "block" : "none";
-        });
-
-        this.updateJobCount();
     }
 
     updateJobCount() {
-        const visibleJobs = document.querySelectorAll('.job-item:not([style*="display: none"])').length;
         const jobsCount = document.querySelector(".jobs-count");
-        if (jobsCount) {
-            jobsCount.textContent = `${visibleJobs} empleo${visibleJobs !== 1 ? "s" : ""} activo${visibleJobs !== 1 ? "s" : ""}`;
-        }
+        const total = this.filteredJobs.length;
+        if (jobsCount) jobsCount.textContent = `${total} empleo${total !== 1 ? "s" : ""} activo${total !== 1 ? "s" : ""}`;
     }
-}
-
-function selectJob(element, jobId) {
-    if (window.jobPlatformInstance) window.jobPlatformInstance.selectJob(element, jobId);
 }
 
 function closeJobModal() {
     if (window.jobPlatformInstance) window.jobPlatformInstance.closeJobModal();
+}
+
+function toggleFilters() {
+    document.getElementById("jobFiltersPanel")?.classList.toggle("active");
 }
 
 document.addEventListener("DOMContentLoaded", () => {

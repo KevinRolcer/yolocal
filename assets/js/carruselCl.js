@@ -69,9 +69,9 @@ class ImageCarousel {
                 <img src="${slideData.Rutaicono || "assets/img/default.jpg"}" alt="${slideData.nombre_negocio}">
               </div>
               <div class="slide-info">
-                <span class="discount-badge">Recomendado en ${slideData.nombre_categoria || "Categoría"}</span>
+                <span class="discount-badge">Recomendado en ${(slideData.nombre_categoria && slideData.nombre_categoria !== "null") ? slideData.nombre_categoria : "Categoría"}</span>
                 <h2 class="slide-title">${slideData.nombre_negocio}</h2>
-                <p class="slide-description">${slideData.DescripcionN || "Negocio destacado"}</p>
+                <p class="slide-description">${(slideData.DescripcionN && slideData.DescripcionN !== "null") ? slideData.DescripcionN : "Negocio destacado"}</p>
                 <a href="controladores/DetalleNegocioControlador.php?id=${slideData.ID_Negocio}">
                   <button class="slide-button">Ver negocio</button>
                 </a>
@@ -215,7 +215,7 @@ document.head.appendChild(style);
 
 // Carga de datos e instanciación del carrusel
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("../controladores/controladorNegocios.php", {
+  fetch("controladores/controladorNegocios.php", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({ ope: "LISTAICONOSBanner" }).toString(),

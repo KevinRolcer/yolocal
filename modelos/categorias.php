@@ -8,23 +8,35 @@ class Categoria
     $enlace = dbConectar();
     $offset = ($pagina - 1) * $registrosPorPagina;
 
-    $sql = "SELECT * FROM categorias WHERE 1=1";
+    $sql = "SELECT ID_Categoria, Descripcion, Color, Imagen FROM categorias WHERE 1=1";
     $values = [];
     $tipos = "";
 
     // Filtros dinámicos
-   
-
+    $searchKey = $filtros['SearchKey'] ?? 'Nombre';
     if (!empty($filtros['Nombre'])) {
-        $sql .= " AND Descripcion LIKE ?";
-        $values[] = "%" . $filtros['Nombre'] . "%";
-        $tipos .= "s";
+        if ($searchKey === 'ID') {
+            $sql .= " AND ID_Categoria = ?";
+            $values[] = intval($filtros['Nombre']);
+            $tipos .= "i";
+        } else {
+            $sql .= " AND Descripcion LIKE ?";
+            $values[] = "%" . $filtros['Nombre'] . "%";
+            $tipos .= "s";
+        }
     }
 
-    
-
     // Orden y paginación
-    $sql .= " ORDER BY Descripcion DESC LIMIT ?, ?";
+    $ordenAz = (isset($filtros["Orden"]) && strtoupper($filtros["Orden"]) === "DESC") ? "DESC" : "ASC";
+    $ordenNum = (isset($filtros["OrdenNum"]) && !empty($filtros["OrdenNum"])) ? strtoupper($filtros["OrdenNum"]) : null;
+    
+    if ($ordenNum) {
+        $sql .= " ORDER BY ID_Categoria $ordenNum";
+    } else {
+        $sql .= " ORDER BY Descripcion $ordenAz";
+    }
+    
+    $sql .= " LIMIT ?, ?";
     $values[] = $offset;
     $values[] = $registrosPorPagina;
     $tipos .= "ii"; 
@@ -57,7 +69,6 @@ class Categoria
     // Cerrar conexiones
     $consulta->close();
     $countConsulta->close();
-    $enlace->close();
 
     return [
         "miembros" => $miembros,
@@ -72,15 +83,14 @@ class Categoria
     {
         $enlace = dbConectar();
 
-        $sql = "INSERT INTO Categorias (Descripcion) VALUES (?)";
+        $sql = "INSERT INTO categorias (Descripcion, Color, Imagen) VALUES (?, ?, ?)";
         $consulta = $enlace->prepare($sql);
 
-
-
         $consulta->bind_param(
-            "s",
-            $datos["Nombre"]
-           
+            "sss",
+            $datos["Nombre"],
+            $datos["Color"],
+            $datos["Imagen"]
         );
 
         return $consulta->execute();
@@ -90,12 +100,13 @@ class Categoria
         $enlace = dbConectar();
 
        
-            $sql = "UPDATE categorias SET Descripcion=? WHERE ID_Categoria=?";
+            $sql = "UPDATE categorias SET Descripcion=?, Color=?, Imagen=? WHERE ID_Categoria=?";
             $consulta = $enlace->prepare($sql);
             $consulta->bind_param(
-                "si",
+                "sssi",
                 $datos["Descripcion"],
-              
+                $datos["Color"],
+                $datos["Imagen"],
                 $datos["ID_Categoria"]
             );
         
@@ -106,7 +117,7 @@ class Categoria
     public function ObtenerUsuario($ID_usuario)
     {
         $enlace = dbConectar();
-        $sql = "SELECT ID_Categoria, Descripcion FROM categorias WHERE ID_Categoria=?";
+        $sql = "SELECT ID_Categoria, Descripcion, Color, Imagen FROM categorias WHERE ID_Categoria=?";
         $consulta = $enlace->prepare($sql);
         $consulta->bind_param("i", $ID_usuario);
         $consulta->execute();

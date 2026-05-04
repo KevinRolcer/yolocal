@@ -19,10 +19,8 @@ document.addEventListener("click", (e) => {
   const estaOculto = contenedorHorarios.classList.contains("oculto"); // Cambiar aquí
 
   // Alternar visibilidad
-  contenedorHorarios.classList.toggle("oculto"); // Y aquí
-
-  // Si ESTABA oculto (ahora se muestra), rotar ícono
-  icono.classList.toggle("rotate-180", estaOculto);
+  contenedorHorarios.classList.toggle("oculto");
+  btn.classList.toggle("active", estaOculto);
 
   // Cargar horarios solo una vez cuando se muestre
   if (estaOculto && !contenedorHorarios.dataset.loaded) {
@@ -30,83 +28,231 @@ document.addEventListener("click", (e) => {
     contenedorHorarios.dataset.loaded = "true";
   }
 });
-document.addEventListener("DOMContentLoaded", () => {
+
+// --- State Variables ---
+let paginaActual = 1;
+const registrosPorPagina = 10;
+let filtrosActuales = {};
+let filtroDebounceTimer = null;
+let ocultarDatosSensibles = false;
+let ultimaListaRenderizada = [];
+let ultimoTotalRegistros = 0;
+let ordenColumnaActual = 'ID_Negocio';
+let ordenDireccionActual = 'DESC';
+let sortSeleccionado = null; // null | 'az' | 'num'
+
+function iniciarModuloNegocios() {
   buscarMiembroModal();
-
   cargarMembresias();
+  cargarCategoriasFiltro();
+  
   // agregar usuario
-
   const formUsuario = document.querySelector("#formAgregar");
   if (formUsuario) {
     formUsuario.addEventListener("submit", (event) => {
       event.preventDefault();
       let errores = 0;
-
       if (errores == 0) agregarUsuario();
     });
   }
 
   //  editar y eliminar
   const listaUsuarios = document.querySelector("#ListaMiembros");
-
   if (listaUsuarios) {
     listaUsuarios.addEventListener("click", (event) => {
-      // Busca el botón más cercano que tenga alguna de las clases de acción
       const target = event.target.closest(
-        ".btn-editar-imagen, .btn-eliminar, .btn-crear-horario, .btn-editar, .btn-pagar"
+        ".btn-editar-imagen, .btn-eliminar, .btn-crear-horario, .btn-editar, .btn-pagar, .btn-ver-galeria"
       );
-      if (!target) return; // si no hay botón válido, salir
+      if (!target) return;
 
-      if (target.classList.contains("btn-editar-imagen")) {
-        let userIdI = target.dataset.id;
-        document.querySelector("#ID_NegocioImagenes").value = userIdI;
+      const id = target.dataset.id;
+      if (target.classList.contains("btn-ver-galeria")) {
+        abrirGaleria(id);
+      } else if (target.classList.contains("btn-editar-imagen")) {
+        document.querySelector("#ID_NegocioImagenes").value = id;
       } else if (target.classList.contains("btn-eliminar")) {
-        eliminarUsuario(target.dataset.id);
+        eliminarUsuario(id);
       } else if (target.classList.contains("btn-crear-horario")) {
-        let userId = target.dataset.id;
-        document.querySelector("#ID_NegocioHorario").value = userId;
+        document.querySelector("#ID_NegocioHorario").value = id;
       } else if (target.classList.contains("btn-editar")) {
-        cargarUsuario(target.dataset.id);
-        let userIde = target.dataset.id;
-        document.querySelector("#ID_Negocio").value = userIde;
+        cargarUsuario(id);
+        document.querySelector("#ID_Negocio").value = id;
       }
     });
   }
 
   const formHorario = document.querySelector("#formHorario");
-
   if (formHorario) {
     formHorario.addEventListener("submit", (event) => {
       event.preventDefault();
-      let errores = 0;
-
-      if (errores === 0) {
-        agregarHorario();
-      } else {
-        alert("Por favor completa todos los campos.");
-      }
+      if (agregarHorario) agregarHorario();
     });
   }
+
   const formEditarUsuario = document.querySelector("#formEditar");
   if (formEditarUsuario) {
     formEditarUsuario.addEventListener("submit", (event) => {
       event.preventDefault();
-      let erroresE = 0;
-      let nombreE = document.querySelector("#nombre_negocioEdit");
+      editarUsuario();
+    });
+  }
 
-      if (erroresE == 0) editarUsuario();
+  // --- Filtros ---
+  const searchInput = document.getElementById("searchInput");
+  const filterOptions = document.querySelectorAll(".filter-option");
+  const statusButtons = document.querySelectorAll(".status-btn");
+  const clearAllButton = document.getElementById("limpiarM");
+
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      updateClearButton();
+      clearTimeout(filtroDebounceTimer);
+      filtroDebounceTimer = setTimeout(aplicarFiltros, 400);
+    });
+  }
+
+  const filterDropdownBtn = document.getElementById("filterDropdownBtn");
+  const filterDropdown = document.querySelector(".filter-dropdown");
+  if (filterDropdownBtn && filterDropdown) {
+    filterDropdownBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      filterDropdown.classList.toggle("show");
+    });
+    document.addEventListener("click", (e) => {
+      if (!filterDropdown.contains(e.target)) {
+        filterDropdown.classList.remove("show");
+      }
+    });
+  }
+
+  filterOptions.forEach((opt) => {
+    opt.addEventListener("click", () => {
+      const key = opt.dataset.key;
+      const placeholder = opt.dataset.placeholder;
+      filterOptions.forEach((o) => o.classList.remove("active"));
+      opt.classList.add("active");
+      if (searchInput) {
+        searchInput.dataset.filterKey = key;
+        searchInput.placeholder = placeholder;
+      }
+      aplicarFiltros();
+    });
+  });
+
+  statusButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      statusButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      aplicarFiltros();
+    });
+  });
+
+  if (clearAllButton) {
+    clearAllButton.addEventListener("click", () => {
+      if (searchInput) {
+        searchInput.value = "";
+        searchInput.dataset.filterKey = "Nombre";
+        searchInput.placeholder = "Buscar por nombre...";
+      }
+      updateClearButton();
+      filterOptions.forEach((o) => o.classList.remove("active"));
+      const defOpt = document.querySelector('.filter-option[data-key="Nombre"]');
+      if (defOpt) defOpt.classList.add("active");
+      statusButtons.forEach((b) => b.classList.remove("active"));
+      const todosBtn = document.querySelector('.status-btn[data-status="todos"]');
+      if (todosBtn) todosBtn.classList.add("active");
+      const catCheckboxes = document.querySelectorAll(".cat-checkbox");
+      catCheckboxes.forEach(cb => cb.checked = false);
+      sortSeleccionado = null;
+      ordenColumnaActual = "ID_Negocio";
+      ordenDireccionActual = "DESC";
+      updateSortButtons();
+      aplicarFiltros();
+    });
+  }
+
+  const btnSortAz = document.getElementById("btnSortAz");
+  const btnSortNum = document.getElementById("btnSortNum");
+  if (btnSortAz) {
+    btnSortAz.addEventListener("click", () => {
+      if (sortSeleccionado === "az" && ordenDireccionActual === "ASC") {
+        ordenDireccionActual = "DESC";
+      } else if (sortSeleccionado === "az" && ordenDireccionActual === "DESC") {
+        sortSeleccionado = null;
+        ordenColumnaActual = "ID_Negocio";
+        ordenDireccionActual = "DESC";
+      } else {
+        sortSeleccionado = "az";
+        ordenColumnaActual = "Nombre";
+        ordenDireccionActual = "ASC";
+      }
+      updateSortButtons();
+      paginaActual = 1;
+      listarMiembros();
+    });
+  }
+  if (btnSortNum) {
+    btnSortNum.addEventListener("click", () => {
+      if (sortSeleccionado === "num" && ordenDireccionActual === "ASC") {
+        ordenDireccionActual = "DESC";
+      } else if (sortSeleccionado === "num" && ordenDireccionActual === "DESC") {
+        sortSeleccionado = null;
+        ordenColumnaActual = "ID_Negocio";
+        ordenDireccionActual = "DESC";
+      } else {
+        sortSeleccionado = "num";
+        ordenColumnaActual = "id";
+        ordenDireccionActual = "ASC";
+      }
+      updateSortButtons();
+      paginaActual = 1;
+      listarMiembros();
     });
   }
 
   listarMiembros();
-});
+}
 
-// Función para listar usuarios
-let paginaActual = 1;
-const registrosPorPagina = 10;
-let filtrosActuales = {};
+// Expose functions to window for SPA navigation
+window.listarMiembros = listarMiembros;
+
+// Auto-init for AJAX or full load
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciarModuloNegocios, { once: true });
+} else {
+  iniciarModuloNegocios();
+}
+
+function escapeHTML(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function enmascararCorreo(correo) {
+  if (!correo || !correo.includes("@")) return correo;
+  const [local, dominio] = correo.split("@");
+  if (local.length <= 2) return "**@" + dominio;
+  return local[0] + local[1] + "***@" + dominio;
+}
+
+function enmascararTelefono(tel) {
+  if (!tel || tel.length < 4) return tel;
+  return tel.substring(0, 2) + "****" + tel.substring(tel.length - 2);
+}
 
 export function listarMiembros(filtros = filtrosActuales) {
+  // Ensure global variables are available (for AJAX navigation safety)
+  if (typeof window.usuarioId === 'undefined' || window.usuarioId === null || window.usuarioId === '') {
+    console.warn("usuarioId not available yet, scheduling retry");
+    setTimeout(() => listarMiembros(filtros), 100);
+    return;
+  }
+
   filtrosActuales = filtros;
   let params = new URLSearchParams();
   params.append("ope", "LISTAUSUARIOS");
@@ -117,8 +263,19 @@ export function listarMiembros(filtros = filtrosActuales) {
   if (filtros.Nombre) params.append("nombre", filtros.Nombre);
   if (filtros.Apellidos) params.append("apellidos", filtros.Apellidos);
   if (filtros.Telefono) params.append("telefono", filtros.Telefono);
-  params.append("usuarioId", usuarioId);
-  params.append("usuarioTipo", usuarioTipo);
+  if (filtros.Estatus && filtros.Estatus !== "todos") params.append("estatus", filtros.Estatus);
+  
+  if (filtros.Categorias && filtros.Categorias.length > 0) {
+    params.append("categorias", filtros.Categorias.join(","));
+  }
+
+  // Sorting params
+  params.append("ordenColumna", ordenColumnaActual);
+  params.append("ordenDireccion", ordenDireccionActual);
+
+  params.append("usuarioId", window.usuarioId);
+  params.append("usuarioTipo", window.usuarioTipo);
+
   fetch("controladores/controladorNegocios.php", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -131,7 +288,9 @@ export function listarMiembros(filtros = filtrosActuales) {
         renderizarError("No se pudieron cargar los negocios.");
         return;
       }
-      renderizarMiembros(data.lista);
+      ultimaListaRenderizada = data.lista;
+      ultimoTotalRegistros = data.totalRegistros;
+      renderizarMiembros(data.lista, data.totalRegistros);
       actualizarPaginacion(data.totalPaginas);
     })
     .catch((error) => {
@@ -140,13 +299,20 @@ export function listarMiembros(filtros = filtrosActuales) {
     });
 }
 
-function renderizarMiembros(lista) {
+function renderizarMiembros(lista, total = 0) {
   const contenedor = document.querySelector("#ListaMiembros");
+  const contador = document.getElementById("negociosContador");
+  
+  if (contador) {
+    contador.textContent = `${total} negocios`;
+  }
+
   contenedor.innerHTML = "";
 
   if (!lista || lista.length === 0) {
     contenedor.innerHTML = `
             <div class="no-results">
+                <i class="bi bi-folder-x"></i>
                 <p>No se encuentra ningún negocio con los filtros aplicados.</p>
             </div>
         `;
@@ -155,137 +321,96 @@ function renderizarMiembros(lista) {
   let htmlCompleto = "";
 
   lista.forEach((miembro) => {
+    const id = miembro.ID_Negocio;
+    const nombreNegocio = escapeHTML(miembro.nombre_negocio);
+    const propietario = escapeHTML(`${miembro.Nombre} ${miembro.ApellidoP} ${miembro.ApellidoM}`);
+    let correo = escapeHTML(miembro.CorreoN || "");
+    let telefono = escapeHTML(miembro.Telefono || "");
+    const categoria = escapeHTML(miembro.CategoriaNombre || "Sin categoría");
+    const estado = miembro.estado == 1;
+
+    // Privacy masking
+    if (ocultarDatosSensibles) {
+      correo = enmascararCorreo(correo);
+      telefono = enmascararTelefono(telefono);
+    }
+
+    const estadoClase = estado ? "status-activo" : "status-inactivo";
+    const estadoTexto = estado ? "Activo" : "Inactivo";
+    const estadoIcono = estado ? "bi-check-circle-fill" : "bi-x-circle-fill";
+
     htmlCompleto += `
-    <div class="negocio-card shadow-lg rounded-3 p-4 mb-4 bg-white">
+    <article class="negocio-folder-card">
+      <div class="folder-header">
+        <div class="folder-icon-wrapper">
+          <i class="bi bi-folder-fill folder-icon"></i>
+          ${miembro.Rutaicono ? `<img src="${miembro.Rutaicono}" class="folder-thumb">` : `<i class="bi bi-building folder-thumb-placeholder"></i>`}
+        </div>
+        <div class="folder-title-area">
+          <span class="negocio-id">#${id}</span>
+          <h3 class="negocio-name">${nombreNegocio}</h3>
+          <span class="negocio-category-pill">${categoria}</span>
+        </div>
+        <div class="folder-actions-dropdown">
+          <button class="btn-folder-actions" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+            <li><h6 class="dropdown-header">Acciones</h6></li>
+            <li><button class="dropdown-item btn-ver-galeria" data-id="${id}" data-bs-toggle="modal" data-bs-target="#modalGaleria"><i class="bi bi-images me-2"></i> Ver Galería</button></li>
+            <li><button class="dropdown-item btn-editar" data-id="${id}" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="bi bi-pencil me-2"></i> Editar Datos</button></li>
+            <li><button class="dropdown-item btn-editar-imagen" data-id="${id}" data-bs-toggle="modal" data-bs-target="#modalImagenes"><i class="bi bi-camera me-2"></i> Gestionar Imágenes</button></li>
+            <li><button class="dropdown-item btn-crear-horario" data-id="${id}" data-bs-toggle="modal" data-bs-target="#modalHorario"><i class="bi bi-clock me-2"></i> Horarios</button></li>
+            <div class="dropdown-divider"></div>
+            ${window.usuarioTipo === "admin" ? `
+            <li><button class="dropdown-item btn-pagar" data-id="${id}"><i class="bi bi-cash me-2"></i> Registrar Pago</button></li>
+            <li><button class="dropdown-item btn-toggle-status" data-id="${id}" data-status="${miembro.estado}"><i class="bi bi-power me-2"></i> ${estado ? 'Desactivar' : 'Activar'}</button></li>
+            ` : ""}
+            <li><button class="dropdown-item text-danger btn-eliminar" data-id="${id}"><i class="bi bi-trash me-2"></i> Eliminar</button></li>
+          </ul>
+        </div>
+      </div>
       
-      <!-- Encabezado -->
- 
-  <div class="d-flex align-items-center mb-4">
-  ${
-    miembro.Rutaicono
-      ? `<img src="${miembro.Rutaicono}" alt="icono ${miembro.nombre_negocio}" 
-           class="me-3 rounded-circle" style="width: 60px; height: 60px;" />`
-      : `<i class="bi bi-building fs-2 me-3"></i>`
-  }
-  <h3 class="h4 fw-bold text-dark mb-0">${miembro.nombre_negocio}</h3>
-</div>
+      <div class="folder-body">
+        <div class="info-row">
+          <i class="bi bi-person"></i>
+          <span>${propietario}</span>
+        </div>
+        <div class="info-row">
+          <i class="bi bi-telephone"></i>
+          <span>${telefono}</span>
+        </div>
+        <div class="info-row">
+          <i class="bi bi-envelope"></i>
+          <span>${correo}</span>
+        </div>
+        
+        <div class="folder-footer">
+          <div class="status-indicator ${estadoClase}">
+            <i class="bi ${estadoIcono}"></i>
+            <span>${estadoTexto}</span>
+          </div>
+          <button class="btn-view-hours toggle-horarios" data-id="${id}">
+            <i class="bi bi-chevron-down"></i>
+            Horarios
+          </button>
+        </div>
 
-
-
-      <!-- Información -->
-      <div class="negocio-info text-sm text-gray-700 space-y-2 mb-4">
-        <p><strong>Propietario:</strong> ${miembro.Nombre} ${
-      miembro.ApellidoP
-    } ${miembro.ApellidoM}</p>
-        <p>${miembro.DescripcionN}</p>
-        <p><strong>Teléfono:</strong> <a href="tel:${
-          miembro.Telefono
-        }" class="text-blue-600 hover:underline">${miembro.Telefono}</a></p>
-        <p><a href="mailto:${
-          miembro.Correo
-        }" class="text-blue-600 hover:underline">${miembro.CorreoN}</a></p>
-        <p><strong>Categoría:</strong> ${miembro.Descripcion}</p>
+        <!-- Contenedor de horarios (mantiene funcionalidad original) -->
+        <div class="negocio-horarios oculto mt-2" id="horarios-${id}"></div>
       </div>
-
-      <!-- Redes Sociales -->
-      <div class="negocio-social">
-        ${
-          miembro.SitioWeb
-            ? `<a href="${miembro.SitioWeb}" target="_blank" class="social-btn"><i class="bi bi-globe"></i></a>`
-            : ""
-        }
-        ${
-          miembro.Facebook
-            ? `<a href="${miembro.Facebook}" target="_blank" class="social-btn"><i class="bi bi-facebook"></i></a>`
-            : ""
-        }
-        ${
-          miembro.Instagram
-            ? `<a href="${miembro.Instagram}" target="_blank" class="social-btn"><i class="bi bi-instagram"></i></a>`
-            : ""
-        }
-        ${
-          miembro.TikTok
-            ? `<a href="${miembro.TikTok}" target="_blank" class="social-btn"><i class="bi bi-tiktok"></i></a>`
-            : ""
-        }
-      </div>
-
-      <!-- Carrusel de imágenes -->
-      <div class="negocio-imagenes mt-3 text-center" id="imagenes-${
-        miembro.ID_Negocio
-      }"></div>
-      
-      <!-- Botón Horarios -->
-      <div class="toggle-horarios" data-id="${miembro.ID_Negocio}">
-          <span> Ver horarios</span>
-          <i class="bi bi-chevron-down"></i>
-      </div>
-
-      <!-- Contenedor de horarios -->
-      <div class="negocio-horarios oculto mt-2" id="horarios-${
-        miembro.ID_Negocio
-      }"></div>
-      
-      <!-- Acciones -->
-      <div class="negocio-actions flex justify-center gap-4">
-        <button class="circle-btn bg-yellow-400 hover:bg-yellow-500 text-white btn-editar" 
-                title="Editar"
-                data-id="${miembro.ID_Negocio}" 
-                data-bs-toggle="modal" 
-                data-bs-target="#modalEditar">
-          <i class="bi bi-pencil"></i>
-        </button>
-        <button class="circle-btn bg-blue-400 hover:bg-blue-500 text-white btn-editar-imagen" 
-                title="Subir Imagen"
-                data-id="${miembro.ID_Negocio}" 
-                data-bs-toggle="modal" 
-                data-bs-target="#modalImagenes">
-          <i class="bi bi-camera"></i>
-        </button>
-        <button class="circle-btn text-white btn-crear-horario" 
-        style="background-color: #c084fc; border: none;" 
-        title="Crear Horario"
-        data-id="${miembro.ID_Negocio}" 
-        data-bs-toggle="modal" 
-        data-bs-target="#modalHorario">
-          <i class="bi bi-clock"></i>
-        </button>
-
-        ${
-          usuarioTipo === "admin"
-            ? `
-        <button class="circle-btn btn-toggle ${
-          miembro.estado == 1 ? "btn-green" : "btn-red"
-        }" 
-            data-id="${miembro.ID_Negocio}" 
-            data-status="${miembro.estado}">
-            <i class="bi bi-power"></i>
-        </button>
-        <button class="circle-btn btn-pagar" style="background-color: #faa45aff; border: none; color: #ffffffff;" data-id="${miembro.ID_Negocio}">
-  <i class="bi bi-cash"></i>
-</button>
-
-        `
-            : ""
-        }
-      </div>
-    </div>
+    </article>
     `;
   });
 
-  // Segundo: insertar todo el HTML de una vez
   contenedor.innerHTML = htmlCompleto;
-
-  // Tercero: cargar las imágenes para todos los negocios
-  lista.forEach((miembro) => {
-    listarImagenes(miembro.ID_Negocio);
-  });
 }
+
 function renderizarError(mensaje) {
   const contenedor = document.querySelector("#ListaMiembros");
   contenedor.innerHTML = `
         <div class="error-message">
+            <i class="bi bi-exclamation-triangle"></i>
             <p>${mensaje}</p>
         </div>
     `;
@@ -293,148 +418,100 @@ function renderizarError(mensaje) {
 
 function actualizarPaginacion(totalPaginas) {
   const paginacion = document.querySelector("#paginacion");
-
-  if (!paginacion) {
-    console.error("Error: No se encontró el contenedor #paginacion.");
-    return;
-  }
-
+  if (!paginacion) return;
   paginacion.innerHTML = "";
 
-  // Botón anterior
-  let btnAnterior = document.createElement("button");
-  btnAnterior.classList.add("btn", "btn-outline-primary");
-  btnAnterior.innerHTML = "&laquo;"; // «
-  btnAnterior.disabled = paginaActual === 1;
-  btnAnterior.addEventListener("click", () => {
-    if (paginaActual > 1) {
-      paginaActual--;
-      listarMiembros(filtrosActuales);
+  const createBtn = (content, disabled, onClick, active = false) => {
+    const btn = document.createElement("button");
+    btn.className = `btn ${active ? 'btn-primary' : 'btn-outline-primary'} mx-1`;
+    btn.innerHTML = content;
+    btn.disabled = disabled;
+    btn.addEventListener("click", onClick);
+    return btn;
+  };
+
+  paginacion.appendChild(createBtn("&laquo;", paginaActual === 1, () => {
+    paginaActual--;
+    listarMiembros();
+  }));
+
+  for (let i = 1; i <= totalPaginas; i++) {
+    if (i === 1 || i === totalPaginas || (i >= paginaActual - 1 && i <= paginaActual + 1)) {
+      paginacion.appendChild(createBtn(i, false, () => {
+        paginaActual = i;
+        listarMiembros();
+      }, i === paginaActual));
     }
-  });
-  paginacion.appendChild(btnAnterior);
-
-  // Botones de páginas
-  let maxVisible = 5;
-  let inicio = Math.max(1, paginaActual - Math.floor(maxVisible / 2));
-  let fin = Math.min(totalPaginas, inicio + maxVisible - 1);
-
-  // Ajuste si estamos cerca del final
-  if (fin - inicio + 1 < maxVisible) {
-    inicio = Math.max(1, fin - maxVisible + 1);
   }
 
-  for (let i = inicio; i <= fin; i++) {
-    let boton = document.createElement("button");
-    boton.classList.add(
-      "btn",
-      i === paginaActual ? "btn-primary" : "btn-outline-primary",
-      "mx-1"
-    );
-    boton.textContent = i;
-    boton.addEventListener("click", () => {
-      paginaActual = i;
-      listarMiembros(filtrosActuales);
-    });
-    paginacion.appendChild(boton);
-  }
-
-  // Botón siguiente
-  let btnSiguiente = document.createElement("button");
-  btnSiguiente.classList.add("btn", "btn-outline-primary");
-  btnSiguiente.innerHTML = "&raquo;"; // »
-  btnSiguiente.disabled = paginaActual === totalPaginas;
-  btnSiguiente.addEventListener("click", () => {
-    if (paginaActual < totalPaginas) {
-      paginaActual++;
-      listarMiembros(filtrosActuales);
-    }
-  });
-  paginacion.appendChild(btnSiguiente);
+  paginacion.appendChild(createBtn("&raquo;", paginaActual === totalPaginas, () => {
+    paginaActual++;
+    listarMiembros();
+  }));
 }
 
 function aplicarFiltros() {
-  const filtros = {
-    //ID_Miembro: document.getElementById("idM").value.trim(),
-    Nombre: document.getElementById("nombreM").value.trim(),
+  const searchInput = document.getElementById("searchInput");
+  const filterKey = searchInput ? searchInput.dataset.filterKey : "Nombre";
+  const searchValue = searchInput ? searchInput.value.trim() : "";
 
-    Telefono: document.getElementById("numM").value.trim(),
+  const activeStatusBtn = document.querySelector(".status-btn.active");
+  const status = activeStatusBtn ? activeStatusBtn.dataset.status : "todos";
+
+  const filtros = {
+    Estatus: status,
+    Categorias: []
   };
+
+  const checkedCats = document.querySelectorAll(".cat-checkbox:checked");
+  checkedCats.forEach(cb => {
+    filtros.Categorias.push(cb.value);
+  });
+
+  if (searchValue) {
+    // Mapeamos las llaves de la UI a las que espera el controlador
+    const mapKeys = {
+      "Nombre": "Nombre",
+      "Telefono": "Telefono", // En negocios este es el propietario (segun el HTML viejo)
+      "ID_Miembro": "ID_Miembro"
+    };
+    filtros[mapKeys[filterKey] || filterKey] = searchValue;
+  }
 
   paginaActual = 1;
   listarMiembros(filtros);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const filtersContainer = document.querySelector(".filter-container");
+function updateClearButton() {
+  const searchInput = document.getElementById("searchInput");
+  const searchClear = document.getElementById("searchClear");
+  if (!searchClear || !searchInput) return;
+  const hasValue = searchInput.value.trim().length > 0;
+  searchClear.style.opacity = hasValue ? "1" : "0";
+  searchClear.style.pointerEvents = hasValue ? "auto" : "none";
+}
 
-  if (!filtersContainer) {
-    console.error("Error: No se encontró el contenedor de filtros.");
-    return;
-  }
-
-  filtersContainer.addEventListener("input", aplicarFiltros);
-
-  listarMiembros();
-});
-
-document.getElementById("limpiarM").addEventListener("click", function () {
-  document.querySelectorAll(".filter input").forEach((input) => {
-    input.value = "";
-  });
-
-  aplicarFiltros();
-});
-
-document.querySelectorAll(".filter").forEach((filter) => {
-  filter.addEventListener("click", function (event) {
-    let isActive = this.classList.contains("active");
-
-    document.querySelectorAll(".filter").forEach((otherFilter) => {
-      otherFilter.classList.remove("active");
-      let inputs = otherFilter.querySelectorAll("input, select");
-      inputs.forEach((input) => {
-        input.classList.add("hidden");
-        input.value = "";
-      });
-    });
-
-    if (!isActive) {
-      this.classList.add("active");
-      let input = this.querySelector("input, select");
-      if (input) input.classList.remove("hidden");
+function updateSortButtons() {
+  const btnSortAz = document.getElementById("btnSortAz");
+  const btnSortNum = document.getElementById("btnSortNum");
+  if (btnSortAz) {
+    const icon = btnSortAz.querySelector("i");
+    const isActive = sortSeleccionado === "az";
+    btnSortAz.classList.toggle("active", isActive);
+    if (icon) {
+      icon.className = (isActive && ordenDireccionActual === "DESC") ? "bi bi-sort-alpha-up" : "bi bi-sort-alpha-down";
     }
-  });
-});
+  }
+  if (btnSortNum) {
+    const icon = btnSortNum.querySelector("i");
+    const isActive = sortSeleccionado === "num";
+    btnSortNum.classList.toggle("active", isActive);
+    if (icon) {
+      icon.className = (isActive && ordenDireccionActual === "DESC") ? "bi bi-sort-numeric-up" : "bi bi-sort-numeric-down";
+    }
+  }
+}
 
-document.querySelectorAll(".filter input").forEach((input) => {
-  input.addEventListener("click", function (event) {
-    event.stopPropagation();
-  });
-});
-
-document.querySelectorAll(".filter .close").forEach((button) => {
-  button.addEventListener("click", function (event) {
-    event.stopPropagation();
-    let filter = this.parentElement;
-    filter.classList.remove("active");
-
-    let inputs = filter.querySelectorAll("input, select");
-    inputs.forEach((input) => {
-      input.classList.add("hidden");
-      input.value = "";
-    });
-  });
-});
-
-document.getElementById("limpiarM").addEventListener("click", function () {
-  document.querySelectorAll(".filter").forEach((filter) => {
-    let input = filter.querySelector("input");
-    input.classList.add("hidden");
-    input.value = "";
-    filter.classList.remove("active");
-  });
-});
 
 function agregarUsuario() {
   const form = document.querySelector("#formAgregar");
@@ -776,11 +853,18 @@ document.getElementById("formImagenes").addEventListener("submit", (e) => {
     });
 });
 
-// Función para listar imágenes
-function listarImagenes(idNegocio) {
+function abrirGaleria(id) {
+  const contenedor = document.getElementById("contenedorGaleria");
+  contenedor.innerHTML = `
+    <div class="text-white text-center">
+      <div class="spinner-border text-primary mb-2" role="status"></div>
+      <p>Cargando galería...</p>
+    </div>
+  `;
+
   const formData = new FormData();
   formData.append("ope", "LISTAR_IMAGENES");
-  formData.append("ID_Negocio", idNegocio);
+  formData.append("ID_Negocio", id);
 
   fetch("controladores/controladorImagenes.php", {
     method: "POST",
@@ -789,26 +873,26 @@ function listarImagenes(idNegocio) {
     .then((res) => res.json())
     .then((data) => {
       if (data.success && data.imagenes.length > 0) {
-        const contenedor = document.getElementById(`imagenes-${idNegocio}`);
-        contenedor.innerHTML = "";
-
-        const carouselId = `carousel-${idNegocio}`;
+        const carouselId = `carousel-galeria-${id}`;
         let carouselHtml = `
-        <div id="${carouselId}" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-inner">
+        <div id="${carouselId}" class="carousel slide w-100 h-100" data-bs-ride="carousel">
+          <div class="carousel-inner h-100">
             ${data.imagenes
               .map(
                 (ruta, index) => `
-              <div class="carousel-item ${index === 0 ? "active" : ""}">
-  <img src="${ruta}" 
-       class="d-block w-100" 
-       style="height:300px; object-fit:contain; background-color:#f0f0f0;" 
-       alt="Imagen negocio">
-</div>
+              <div class="carousel-item h-100 ${index === 0 ? "active" : ""}">
+                <div class="d-flex align-items-center justify-content-center h-100" style="min-height: 400px; background: #000;">
+                  <img src="${ruta}" 
+                       class="d-block mw-100 mh-100" 
+                       style="object-fit: contain;" 
+                       alt="Imagen negocio">
+                </div>
+              </div>
             `
               )
               .join("")}
           </div>
+          ${data.imagenes.length > 1 ? `
           <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true" ></span>
             <span class="visually-hidden">Anterior</span>
@@ -817,10 +901,28 @@ function listarImagenes(idNegocio) {
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Siguiente</span>
           </button>
+          ` : ""}
         </div>
       `;
         contenedor.innerHTML = carouselHtml;
+        
+        // Inicializar el carousel manualmente si es necesario
+        const carouselElem = document.getElementById(carouselId);
+        if (window.bootstrap && window.bootstrap.Carousel) {
+          new bootstrap.Carousel(carouselElem);
+        }
+      } else {
+        contenedor.innerHTML = `
+          <div class="text-white text-center">
+            <i class="bi bi-image-fill fs-1 mb-3 opacity-50"></i>
+            <p>Este negocio aún no tiene imágenes en su galería.</p>
+          </div>
+        `;
       }
+    })
+    .catch(err => {
+      contenedor.innerHTML = `<div class="text-danger">Error al cargar imágenes</div>`;
+      console.error(err);
     });
 }
 function listarHorarios(idNegocio) {
@@ -955,4 +1057,51 @@ document.addEventListener("click", (e) => {
     }
   });
 });
+
+function cargarCategoriasFiltro() {
+  const container = document.getElementById("categoryFilterList");
+  if (!container) return;
+
+  const params = new URLSearchParams();
+  params.append("ope", "LISTAUSUARIOS");
+  params.append("registrosPorPagina", 100);
+
+  fetch("controladores/controladorCategorias.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: params.toString(),
+  })
+    .then((r) => r.json())
+    .then((data) => {
+      if (data.success) {
+        let html = `
+          <label class="category-filter-item">
+            <input type="checkbox" class="cat-checkbox" value="0">
+            <span>Sin categor&iacute;a</span>
+          </label>
+        `;
+        data.lista.forEach((cat) => {
+          html += `
+            <label class="category-filter-item">
+              <input type="checkbox" class="cat-checkbox" value="${cat.ID_Categoria}">
+              <span>${escapeHTML(cat.Descripcion)}</span>
+            </label>
+          `;
+        });
+        container.innerHTML = html;
+
+        // Agregar listeners
+        container.querySelectorAll(".cat-checkbox").forEach((cb) => {
+          cb.addEventListener("change", () => {
+            aplicarFiltros();
+          });
+        });
+      } else {
+        container.innerHTML = '<div class="filter-category-loading text-danger">Error al cargar</div>';
+      }
+    })
+    .catch(() => {
+      container.innerHTML = '<div class="filter-category-loading text-danger">Error de red</div>';
+    });
+}
 

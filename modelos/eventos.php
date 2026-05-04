@@ -18,12 +18,26 @@ class ModeloEventos {
     /**
      * Obtiene todos los eventos, uniendo la información de la categoría.
      */
-    public function listarEventos() {
+    public function listarEventos($buscar = '') {
         $sql = "SELECT e.*, c.Descripcion AS NombreCategoria 
                 FROM eventos e
                 JOIN categorias c ON e.ID_Categoria = c.ID_Categoria
-                ORDER BY e.FechaE DESC";
-        $resultado = $this->conexion->query($sql);
+                WHERE 1=1";
+
+        if ($buscar !== '') {
+            $sql .= " AND (e.TituloE LIKE ? OR e.DescripcionE LIKE ? OR e.UbicacionE LIKE ? OR c.Descripcion LIKE ?)";
+        }
+
+        $sql .= " ORDER BY e.FechaE DESC";
+
+        $stmt = $this->conexion->prepare($sql);
+        if ($buscar !== '') {
+            $termino = "%" . $buscar . "%";
+            $stmt->bind_param("ssss", $termino, $termino, $termino, $termino);
+        }
+
+        $stmt->execute();
+        $resultado = $stmt->get_result();
         return $resultado->fetch_all(MYSQLI_ASSOC);
     }
 

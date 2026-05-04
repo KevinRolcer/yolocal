@@ -2,225 +2,225 @@
 <html lang="es">
 
 <head>
-    <title>Categorias -Yo Local</title>
+    <title>Categor&iacute;as - Yo Local</title>
     <?php
+    $adminCssFiles = ["assets/css/categorias.css", "assets/css/paginacion.css", "assets/css/adminFormal.css"];
     include_once("head.php");
     ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
     <script type="module" src="assets/js/funcionesCategorias.js"></script>
-    <link rel="stylesheet" href="../assets/css/categorias.css">
-    <link rel="stylesheet" href="../assets/css/paginacion.css">
-    <link href="../assets/img/LogoYolocal.png" rel="icon" />
 </head>
-    
-<body class="bg-light">
-    <div class="navigation">
-        <?php
-        include_once("encabezado.php")
-        ?>
+
+<body>
+    <div class="navigation admin-sidebar">
+        <?php include_once("encabezado.php") ?>
     </div>
+
     <div class="main">
         <div class="topbar">
             <div class="toggle">
-                <svg class="svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
+                <i class="ri-menu-2-line admin-menu-icon" aria-hidden="true"></i>
             </div>
-
-
             <div class="contenedor">
-                <div class="notificacion" onclick="toggleNotifi()">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
-                    </svg>
-                </div>
+                <!-- Perfil / Notificaciones -->
                 <div class="usuario">
-                    <img src="../assets/img/descarga.gif"   alt="">
-                </div>
-                <div class="notifi-box" id="box">
-                    <p class="calendario"></p>
-                    <div class="notifi-item">
-                        <div class="text">
-                            <h4>Notificaciones</h4>
-                        </div>
-                        <div class="calend">
-                            <div class="calend">
-                                <div class="calendar">
-                                    <div class="calendar-header">
-                                        <button id="prev">&lt;</button>
-                                        <h3></h3>
-                                        <button id="next">&gt;</button>
-                                    </div>
-                                    <ul class="weekdays">
-                                        <li>Dom</li>
-                                        <li>Lun</li>
-                                        <li>Mar</li>
-                                        <li>Mié</li>
-                                        <li>Jue</li>
-                                        <li>Vie</li>
-                                        <li>Sáb</li>
-                                    </ul>
-                                    <ul class="dates"></ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="noti">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <h4>Sin notificaciones...<br></h4>
-                                    </td>
-                                </tr>
-
-
-                            </table>
-                        </div>
-                    </div>
+                    <img src="assets/img/descarga.gif" alt="Usuario">
                 </div>
             </div>
         </div>
-        <div class="container mt-5">
-            <h1 class="text-start fw-bold">Categorias</h1>
-            <h4 class="text-start text-secondary">Aquí puedes administrar las categorías de los negocios.</h4>
-        </div>
-        <div class="container mt-5">
-            <div class="filter-container">
-                <!--
-            <div class="filter" data-filter="id">
-                <span>ID</span><input type="number" id="idM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
-            </div>
-            -->
-                <div class="filter" data-filter="nombre">
-                    <span>Buscar Categoria</span> <input type="text" id="nombreM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
+
+        <main class="admin-users-page">
+            <section class="users-hero">
+                <div>
+                    <span class="eyebrow">Administraci&oacute;n</span>
+                    <h1 class="admin-page-title">Categor&iacute;as</h1>
                 </div>
-                
-                <div class="filter-miembros">
-                    <button id="limpiarM" class="btn btn-secondary">Limpiar Filtros</button>
+                <div class="hero-actions">
+                    <button type="button" class="btn-new-business" data-bs-toggle="modal" data-bs-target="#modalAgregar">
+                        <i class="ri-plus-line"></i> Nueva Categor&iacute;a
+                    </button>
                 </div>
-            </div>
+            </section>
 
-            <div class="gB d-flex justify-content-end">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregar">
-                    Nueva Categoria
-                    
-                </button>
-            </div>
+            <section class="users-toolbar">
+                <div class="search-filter-row">
+                    <div class="search-input-wrapper">
+                        <i class="ri-search-line search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Buscar categor&iacute;a..." data-filter-key="Nombre">
+                        <button id="searchClear" class="search-clear" type="button">&times;</button>
+                    </div>
 
-
-
-            <!-- Modal AGREGAR -->
-            <div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalAgregarLabel">Nueva Categoria</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <div class="filter-dropdown">
+                        <button class="btn-filter-toggle" type="button" id="filterDropdownBtn">
+                            <i class="ri-filter-3-line"></i>
+                            <span>Filtrar</span>
+                        </button>
+                        <div class="filter-dropdown-menu" id="filterMenu">
+                            <div class="filter-menu-title">Buscar por</div>
+                            <button class="filter-option active" data-key="Nombre" data-placeholder="Buscar categor&iacute;a..." type="button">
+                                <i class="ri-font-size"></i> Nombre de Categor&iacute;a
+                                <i class="ri-check-line check-icon"></i>
+                            </button>
+                            <button class="filter-option" data-key="ID" data-placeholder="Buscar por ID (ej: 25)..." type="button">
+                                <i class="ri-hashtag"></i> ID de Categor&iacute;a
+                                <i class="ri-check-line check-icon"></i>
+                            </button>
                         </div>
-                        <div class="modal-body">
-                            <form id="formAgregar">
-                                <div class="row g-3">
-                                    <div class="col-md-12">
-                                        <label for="Nombre" class="form-label">Nombre de categoria</label>
-                                        <input type="text" class="form-control" id="Nombre" name="Nombre" maxlength="30" required>
-                                        <div class="invalid-feedback"></div>
-                                        <div class="valid-feedback"></div>
-                                    </div>
-                                </div>
-                                <div class="text-end mt-3">
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
-                                </div>
-                            </form>
+                    </div>
+
+                    <button class="btn-privacy-toggle" type="button" id="btnPrivacyToggle">
+                        <i class="ri-eye-off-line"></i>
+                        <span>Ocultar datos</span>
+                    </button>
+
+                    <button class="btn-sort-toggle" type="button" id="btnSortAz" data-sort="nombre">
+                        <i class="ri-sort-alphabet-asc"></i>
+                        <span>Az</span>
+                    </button>
+
+                    <button class="btn-sort-toggle" type="button" id="btnSortNum" data-sort="id">
+                        <i class="ri-sort-number-asc"></i>
+                        <span>1-9</span>
+                    </button>
+
+                    <button id="limpiarM" class="btn-clear-filters" type="button">
+                        <i class="ri-refresh-line"></i> Limpiar
+                    </button>
+                </div>
+            </section>
+
+            <section class="users-list-panel">
+                <div id="ListaMiembros" class="row g-4">
+                    <!-- Tarjetas de categorías se cargan aquí -->
+                    <div class="col-12 text-center p-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Modal EDITAR -->
-            <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalEditarLabel">Editar Usuario</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="formEditar">
-                                <input type="hidden" id="ID_Usuario" name="ID_Usuario">
-                                <div class="row g-3">
-                                    <div class="col-md-12">
-                                        <label for="NombreEdit" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="NombreEdit" name="NombreEdit" maxlength="30" required>
-                                        <div class="invalid-feedback">
-                                            Password is required
-                                        </div>
-                                        <div class="valid-feedback">
-                                            Looks good!
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                                <div class="text-end mt-3">
-                                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal para cambiar contraseña -->
-            <div class="modal fade" id="modalEditarClave" tabindex="-1" aria-labelledby="modalEditarClaveLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalEditarClaveLabel">Cambiar Contraseña</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="formEditarClave">
-                                <input type="hidden" id="ID_UsuarioClave" name="ID_Usuario">
-
-                                <div class="mb-3">
-                                    <label for="ClaveNueva" class="form-label">Nueva Contraseña</label>
-                                    <input type="password" class="form-control" id="ClaveNueva" name="ClaveNueva" maxlength="16" required>
-                                    <div class="invalid-feedback">
-                                        Password is required
-                                    </div>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="ConfirmarClave" class="form-label">Confirmar Contraseña</label>
-                                    <input type="password" class="form-control" id="ConfirmarClave" name="ConfirmarClave" maxlength="16" required>
-                                    <div class="invalid-feedback">
-                                        Password is required
-                                    </div>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tabla de Usuarios -->
-
-            <h4 class="text-center">Listado de Categorias</h4>
-            <div class="row text-center" id="ListaMiembros">
-            </div>
-            <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
-
-        </div>
+                <div id="paginacion" class="mt-5 d-flex justify-content-center"></div>
+            </section>
+        </main>
 
     </div>
 
+    <!-- Modal AGREGAR -->
+    <div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAgregarLabel">Nueva Categor&iacute;a</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAgregar" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="Nombre" class="form-label">Nombre de categor&iacute;a</label>
+                            <input type="text" class="form-control" id="Nombre" name="Nombre" maxlength="50" required placeholder="Ej: Restaurantes">
+                        </div>
+                        <div class="mb-3">
+                            <label for="Color" class="form-label">Color Distintivo</label>
+                            <div class="color-input-group">
+                                <input type="color" class="form-control form-control-color" id="Color" name="Color" value="#7b68ee" title="Elige un color">
+                                <span class="text-muted small">Este color aparecer&aacute; en la tarjeta.</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="Imagen" class="form-label">Icono / Imagen</label>
+                            <input type="file" class="form-control" id="Imagen" name="Imagen" accept="image/*">
+                            <div id="previewAgregar" class="preview-container">
+                                <i class="bi bi-image text-muted" style="font-size: 2rem;"></i>
+                            </div>
+                        </div>
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn-new-business w-100 justify-content-center">Guardar Categor&iacute;a</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script src="../assets/js/main.js"></script>
+    <!-- Modal EDITAR -->
+    <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditarLabel">Editar Categor&iacute;a</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditar" enctype="multipart/form-data">
+                        <input type="hidden" id="ID_Categoria" name="ID_Categoria">
+                        <input type="hidden" id="RutaImagenActual" name="RutaImagenActual">
+                        
+                        <div class="mb-3">
+                            <label for="NombreEdit" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="NombreEdit" name="NombreEdit" maxlength="50" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ColorEdit" class="form-label">Color Distintivo</label>
+                            <div class="color-input-group">
+                                <input type="color" class="form-control form-control-color" id="ColorEdit" name="ColorEdit" value="#7b68ee">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ImagenEdit" class="form-label">Cambiar Icono / Imagen</label>
+                            <input type="file" class="form-control" id="ImagenEdit" name="ImagenEdit" accept="image/*">
+                            <div id="previewEditar" class="preview-container">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+                        </div>
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn-new-business w-100 justify-content-center">Actualizar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal VER NEGOCIOS -->
+    <div class="modal fade" id="modalVerNegocios" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0" style="border-radius: 1.5rem;">
+                <div class="modal-header border-0 px-4 pt-4">
+                    <h5 class="modal-title fw-bold" id="tituloModalNegocios" style="font-size: 1.3rem;">Negocios en Categor&iacute;a</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body px-4 pb-4">
+                    <div id="listaNegociosCategoria" class="d-flex flex-column gap-2">
+                        <!-- Se llena dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal MOVER NEGOCIO -->
+    <div class="modal fade" id="modalMoverNegocio" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 1.25rem;">
+                <div class="modal-header border-0 px-4 pt-4 pb-0">
+                    <h5 class="modal-title fw-bold">Mover Categor&iacute;a</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <input type="hidden" id="moverNegocioId">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted mb-2">Nueva Categor&iacute;a</label>
+                        <select id="selectNuevaCategoria" class="form-select rounded-3">
+                            <!-- Se llena dinámicamente -->
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary w-100 rounded-3 py-2 fw-bold" onclick="finalizarMoverNegocio()">Confirmar Movimiento</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
 </body>
 
 </html>

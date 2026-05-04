@@ -5,21 +5,23 @@
 <head>
     <title>Negocios - Yo Local</title>
     <?php
+    $adminCssFiles = ["assets/css/negociosAdmin.css", "assets/css/paginacion.css", "assets/css/adminFormal.css"];
     include_once("head.php");
     ?>
-    <script type="module" src="../assets/js/funcionesNegocio.js"></script>
-    <link rel="stylesheet" href="../assets/css/negociosAdmin.css">
-    <link rel="stylesheet" href="../assets/css/paginacion.css">
-    <script src="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.js"></script>
-    <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <script>
-        const usuarioId = <?= json_encode($_SESSION["ID_Usuario"]) ?>;
-        const usuarioTipo = <?= json_encode($_SESSION["tipo"]) ?>;
+        if (typeof usuarioId === 'undefined') {
+            var usuarioId = <?= json_encode($_SESSION["ID_Usuario"]) ?>;
+        }
+        if (typeof usuarioTipo === 'undefined') {
+            var usuarioTipo = <?= json_encode($_SESSION["tipo"]) ?>;
+        }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.js"></script>
+    <script type="module" src="assets/js/funcionesNegocio.js"></script>
 </head>
 
-<body class="bg-light">
-    <div class="navigation">
+<body>
+    <div class="navigation admin-sidebar">
         <?php
         include_once("encabezado.php")
         ?>
@@ -27,9 +29,7 @@
     <div class="main">
         <div class="topbar">
             <div class="toggle">
-                <svg class="svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
+                <i class="ri-menu-2-line admin-menu-icon" aria-hidden="true"></i>
             </div>
 
             <div class="contenedor">
@@ -39,7 +39,7 @@
                     </svg>
                 </div>
                 <div class="usuario">
-                    <img src="../assets/img/descarga.gif"  alt="">
+                    <img src="assets/img/descarga.gif"  alt="">
                 </div>
                 <div class="notifi-box" id="box">
                     <p class="calendario"></p>
@@ -59,10 +59,10 @@
                                         <li>Dom</li>
                                         <li>Lun</li>
                                         <li>Mar</li>
-                                        <li>Mié</li>
+                                        <li>Mi&eacute;</li>
                                         <li>Jue</li>
                                         <li>Vie</li>
-                                        <li>Sáb</li>
+                                        <li>S&aacute;b</li>
                                     </ul>
                                     <ul class="dates"></ul>
                                 </div>
@@ -83,39 +83,100 @@
                 </div>
             </div>
         </div>
-        <div class="container mt-5">
-            <h1 class="text-start fw-bold">Negocios</h1>
-            <h4 class="text-start text-secondary">Sección para administrar negocios aliados de YoLocal.</h4>
-        </div>
-        <div class="container mt-5">
-            <div class="filter-container">
-                <!--
-            <div class="filter" data-filter="id">
-                <span>ID</span><input type="number" id="idM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
-            </div>
-            -->
-                <div class="filter" data-filter="nombre">
-                    <span>Nombre Negocio</span> <input type="text" id="nombreM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
+        <main class="admin-users-page">
+            <section class="users-hero">
+                <div>
+                    <span class="eyebrow">Administraci&oacute;n</span>
+                    <h1 class="admin-page-title">Negocios</h1>
                 </div>
                 <?php if ($_SESSION["tipo"] === "admin"): ?>
-                    <div class="filter" data-filter="numero">
-                        <span>Propietario</span> <input type="text" id="numM" class="hidden" placeholder="Escribe aquí.."> <button class="close"></button> <button class="close">✖</button>
+                    <div class="hero-actions">
+                        <button type="button" class="btn-new-business" data-bs-toggle="modal" data-bs-target="#modalAgregar">
+                            <i class="bi bi-plus-lg"></i> Nuevo Negocio
+                        </button>
+                        <a href="controladores/ReporteNegocios.php" class="btn-reporte" target="_blank">
+                            <i class="bi bi-file-earmark-spreadsheet"></i> Reporte
+                        </a>
                     </div>
                 <?php endif; ?>
-                <div class="filter-miembros">
-                    <button id="limpiarM" class="btn btn-secondary">Limpiar Filtros</button>
-                </div>
-            </div>
-            <?php if ($_SESSION["tipo"] === "admin"): ?>
-                <div class="d-flex justify-content-end gap-2 mb-3">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregar">
-                        Nuevo Negocio
+            </section>
+
+            <section class="users-toolbar">
+                <div class="search-filter-row">
+                    <div class="search-input-wrapper">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Buscar por nombre..." data-filter-key="Nombre">
+                        <button id="searchClear" class="search-clear" type="button">&times;</button>
+                    </div>
+
+                    <div class="filter-dropdown">
+                        <button class="btn-filter-toggle" type="button" id="filterDropdownBtn">
+                            <i class="bi bi-funnel"></i>
+                            Filtrar
+                        </button>
+                        <div class="filter-dropdown-menu" id="filterMenu">
+                            <div class="filter-menu-title">Filtrar por</div>
+                            <button class="filter-option active" data-key="Nombre" data-placeholder="Buscar por nombre..." type="button">
+                                <i class="bi bi-shop"></i> Nombre Negocio
+                                <i class="bi bi-check2 check-icon"></i>
+                            </button>
+                            <button class="filter-option" data-key="Telefono" data-placeholder="Buscar por propietario..." type="button">
+                                <i class="bi bi-person"></i> Propietario
+                                <i class="bi bi-check2 check-icon"></i>
+                            </button>
+                            
+                            <div class="filter-divider"></div>
+                            
+                            <div class="filter-menu-title">Categor&iacute;as</div>
+                            <div class="filter-category-container" id="categoryFilterList">
+                                <!-- Se llena dinámicamente con JS -->
+                                <div class="filter-category-loading">Cargando...</div>
+                            </div>
+
+                            <div class="filter-divider"></div>
+                            <div class="filter-status-group">
+                                <span class="filter-status-label"><i class="bi bi-shield-check"></i> Estado</span>
+                                <div class="status-toggle-group" id="statusToggle">
+                                    <button class="status-btn active" data-status="todos" type="button">Todos</button>
+                                    <button class="status-btn" data-status="1" type="button">Activo</button>
+                                    <button class="status-btn" data-status="0" type="button">Inactivo</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-privacy-toggle" type="button" id="btnPrivacyToggle">
+                        <i class="bi bi-eye-slash"></i>
+                        <span>Ocultar datos</span>
                     </button>
-                    <a href="../controladores/ReporteNegocios.php" class="btn btn-success" target="_blank">
-                        Descargar Reporte
-                    </a>
+
+                    <button class="btn-sort-toggle" type="button" id="btnSortAz" title="Az">
+                        <i class="bi bi-sort-alpha-down"></i>
+                        <span>Az</span>
+                    </button>
+                    <button class="btn-sort-toggle" type="button" id="btnSortNum" title="1-9">
+                        <i class="bi bi-sort-numeric-down"></i>
+                        <span>1-9</span>
+                    </button>
+
+                    <button id="limpiarM" class="btn-clear-filters" type="button">
+                        <i class="bi bi-x-circle"></i>
+                        Limpiar
+                    </button>
                 </div>
-            <?php endif; ?>
+            </section>
+
+            <section class="users-list-panel">
+                <div class="users-list-header">
+                    <h2 class="admin-section-title">Directorio</h2>
+                    <span class="results-counter" id="negociosContador">Cargando...</span>
+                </div>
+                <div id="ListaMiembros" class="users-grid"></div>
+                <div class="pagination-footer">
+                    <div id="paginacion" class="mt-4"></div>
+                </div>
+            </section>
+        </main>
 
 
             <!-- Modal AGREGAR -->
@@ -132,7 +193,7 @@
                                     <div class="mb-3 d-flex align-items-center">
                                         <div class="me-3 flex-grow-1">
                                             <label for="ID_Usuario" class="form-label"># Usuario</label>
-                                            <input type="number" class="form-control" id="ID_Usuario" name="ID_Usuario" placeholder="Escriba el número" required>
+                                            <input type="number" class="form-control" id="ID_Usuario" name="ID_Usuario" placeholder="Escriba el n&uacute;mero" required>
                                         </div>
                                         <div class="flex-grow-2">
                                             <label for="nombreMiembro" class="form-label">Nombre del Usuario</label>
@@ -148,8 +209,12 @@
                                     <div class="mb-3">
                                         <label for="ID_Categoria" class="form-label">Tipo de Negocio</label>
                                         <select class="form-control" id="ID_Categoria" name="ID_Categoria" required>
-
                                         </select>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="CodigoCanje" class="form-label">C&oacute;digo de Canje (Secret)</label>
+                                        <input type="text" class="form-control" id="CodigoCanje" name="CodigoCanje" maxlength="20" value="1234" required>
+                                        <div class="form-text text-secondary">C&oacute;digo para validar cupones (Admin solo).</div>
                                     </div>
                                 </div>
                                 <div class="text-end mt-3">
@@ -183,21 +248,21 @@
                                         <input type="text" class="form-control" id="nombre_negocioEdit" name="nombre_negocioEdit" maxlength="50" required>
                                     </div>
 
-                                    <!-- Teléfono -->
+                                    <!-- Tel&eacute;fono -->
                                     <div class="col-md-6">
-                                        <label for="TelefonoEdit" class="form-label">Teléfono</label>
+                                        <label for="TelefonoEdit" class="form-label">Tel&eacute;fono</label>
                                         <input type="tel" class="form-control" id="TelefonoEdit" name="TelefonoEdit" maxlength="15">
                                     </div>
-                                    <!-- Dirección -->
+                                    <!-- Direcci&oacute;n -->
                                     <div class="col-12">
-                                        <label for="DireccionEdit" class="form-label">Dirección</label>
+                                        <label for="DireccionEdit" class="form-label">Direcci&oacute;n</label>
                                         <input type="text" class="form-control" id="DireccionEdit" name="DireccionEdit" maxlength="150">
                                     </div>
 
-                                    <!-- Descripción (textarea grande) -->
+                                    <!-- Descripci&oacute;n (textarea grande) -->
                                     <div class="col-12">
-                                        <label for="DescripcionNEdit" class="form-label">Descripción</label>
-                                        <textarea class="form-control" id="DescripcionNEdit" name="DescripcionNEdit" rows="4" maxlength="500" placeholder="Ingrese la descripción del negocio"></textarea>
+                                        <label for="DescripcionNEdit" class="form-label">Descripci&oacute;n</label>
+                                        <textarea class="form-control" id="DescripcionNEdit" name="DescripcionNEdit" rows="4" maxlength="500" placeholder="Ingrese la descripci&oacute;n del negocio"></textarea>
                                     </div>
                                     <!-- Correo -->
                                     <div class="col-md-6">
@@ -247,7 +312,7 @@
                                         <div class="col-12">
                                             <label for="RelevanciaEdit" class="form-label">Relevancia</label>
                                             <select name="RelevanciaEdit" id="RelevanciaEdit" class="form-select" required>
-                                                <option value="">Seleccione una categoría...</option>
+                                                <option value="">Seleccione una categor&iacute;a...</option>
                                                 <option value="1">Normal</option>
                                                 <option value="2">Destacado</option>
                                                 <option value="3">Super Destacado</option>
@@ -255,6 +320,11 @@
                                             </select>
                                         </div>
                                     <?php endif; ?>
+                                    <div class="col-md-12">
+                                        <label for="codigo_canjeEdit" class="form-label">C&oacute;digo de Canje (Secret)</label>
+                                        <input type="text" class="form-control" id="codigo_canjeEdit" name="codigo_canjeEdit" maxlength="20" required>
+                                        <div class="form-text text-secondary">C&oacute;digo para validar cupones (Admin solo).</div>
+                                    </div>
 
                                 </div>
 
@@ -290,30 +360,30 @@
                                 <div class="row g-3">
 
                                     <div class="col-md-6">
-                                        <label for="dia_semana" class="form-label">Día de la Semana</label>
+                                        <label for="dia_semana" class="form-label">D&iacute;a de la Semana</label>
                                         <select class="form-select" id="dia_semana" name="dia_semana" required>
                                             <option value="">Seleccione...</option>
                                             <option value="Lunes">Lunes</option>
                                             <option value="Martes">Martes</option>
-                                            <option value="Miércoles">Miércoles</option>
+                                            <option value="Mi&eacute;rcoles">Mi&eacute;rcoles</option>
                                             <option value="Jueves">Jueves</option>
                                             <option value="Viernes">Viernes</option>
-                                            <option value="Sábado">Sábado</option>
+                                            <option value="S&aacute;bado">S&aacute;bado</option>
                                             <option value="Domingo">Domingo</option>
                                         </select>
-                                        <div class="invalid-feedback">Seleccione un día válido</div>
+                                        <div class="invalid-feedback">Seleccione un d&iacute;a v&aacute;lido</div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label for="hora_apertura" class="form-label">Hora de Apertura</label>
                                         <input type="time" class="form-control" id="hora_apertura" name="hora_apertura" required>
-                                        <div class="invalid-feedback">Ingrese una hora válida</div>
+                                        <div class="invalid-feedback">Ingrese una hora v&aacute;lida</div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label for="hora_cierre" class="form-label">Hora de Cierre</label>
                                         <input type="time" class="form-control" id="hora_cierre" name="hora_cierre" required>
-                                        <div class="invalid-feedback">Ingrese una hora válida</div>
+                                        <div class="invalid-feedback">Ingrese una hora v&aacute;lida</div>
                                     </div>
                                 </div>
 
@@ -327,13 +397,13 @@
                 </div>
             </div>
 
-            <!-- Modal Subir Imágenes -->
+            <!-- Modal Subir Im&aacute;genes -->
             <div class="modal fade" id="modalImagenes" tabindex="-1" aria-labelledby="modalImagenesLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
 
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalImagenesLabel">Subir Imágenes del Negocio</h5>
+                            <h5 class="modal-title" id="modalImagenesLabel">Subir Im&aacute;genes del Negocio</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
 
@@ -342,7 +412,7 @@
                                 <input type="hidden" id="ID_NegocioImagenes" name="ID_NegocioImagenes">
 
                                 <div id="dropzone" class="dropzone">
-                                    <p>Arrastra tus imágenes aquí o haz clic para seleccionarlas (máx. 4)</p>
+                                    <p>Arrastra tus im&aacute;genes aqu&iacute; o haz clic para seleccionarlas (m&aacute;x. 4)</p>
                                     <input type="file" id="fileInput" name="imagenes[]" accept="image/*" multiple hidden>
                                 </div>
 
@@ -361,21 +431,33 @@
 
 
 
-            <!-- Tabla de Usuarios -->
-            <div class="mt-3">
-                <h4 class="text-center">Lista de Negocios</h4>
-                <div class="row" id="ListaMiembros">
-
+            <!-- Modal Galería de Imágenes -->
+            <div class="modal fade" id="modalGaleria" tabindex="-1" aria-labelledby="modalGaleriaLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content border-0 shadow-lg">
+                        <div class="modal-header bg-light">
+                            <h5 class="modal-title fw-bold" id="modalGaleriaLabel"><i class="bi bi-images me-2 text-primary"></i> Galería del Negocio</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body p-0">
+                            <div id="contenedorGaleria" class="min-vh-50 d-flex align-items-center justify-content-center bg-dark" style="min-height: 400px;">
+                                <div class="text-white text-center">
+                                    <div class="spinner-border text-primary mb-2" role="status"></div>
+                                    <p>Cargando imágenes...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <script>
-
-                </script>
-                <div id="paginacion" class="mt-3"></div>
             </div>
 
+            <!-- List Container -->
+            <div class="container-fluid px-4 mt-4">
+                <div id="ListaMiembros"></div>
+                <div id="paginacion" class="mt-4"></div>
+            </div>
         </div>
-
-        <script src="../assets/js/main.js"></script>
+        <script src="assets/js/main.js"></script>
 </body>
 
 </html>
