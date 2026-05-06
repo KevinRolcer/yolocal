@@ -138,8 +138,8 @@
                                         <input type="file" class="form-control" id="RutaImagenE" name="RutaImagenE" accept="image/*">
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="ID_Categor&iacute;a" class="form-label">Categor&iacute;a</label>
-                                        <select class="form-control" id="ID_Categor&iacute;a" name="ID_Categor&iacute;a" required>
+                                        <label for="ID_Categoria" class="form-label">Categor&iacute;a</label>
+                                        <select class="form-control" id="ID_Categoria" name="ID_Categoria" required>
                                             </select>
                                     </div>
                                 </div>
@@ -153,13 +153,13 @@
             </div>
 
             <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalEditarLabel">Editar Evento</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body pb-2">
                             <form id="formEditar" enctype="multipart/form-data">
                                 <input type="hidden" id="ID_Evento_Editar" name="ID_Evento">
                                 <div class="row g-3">
@@ -201,10 +201,10 @@
                                             </select>
                                     </div>
                                 </div>
-                                <div class="text-end mt-3">
-                                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                                </div>
                             </form>
+                        </div>
+                        <div class="modal-footer border-top flex-shrink-0">
+                            <button type="submit" class="btn btn-primary" form="formEditar">Actualizar</button>
                         </div>
                     </div>
                 </div>

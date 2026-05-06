@@ -6,7 +6,12 @@ function abrirModalDetallesEvento(id) {
     formData.append("ope", "OBTENER");
     formData.append("ID_Evento", id);
 
-    fetch("controladores/controladorEventos.php", { method: "POST", body: formData })
+    fetch(
+        typeof window.YL_controladorEventosUrl === "function"
+            ? window.YL_controladorEventosUrl()
+            : "/controladores/controladorEventos.php",
+        { method: "POST", body: formData }
+    )
     .then(response => response.json())
     .then(data => {
         if (!data.success || !data.evento) {

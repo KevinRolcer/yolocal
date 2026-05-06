@@ -154,14 +154,14 @@
 
 <!-- Modal EDITAR EVENTO -->
 <div class="modal fade" id="modalEditarEvento" tabindex="-1" aria-labelledby="modalEditarEventoLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalEditarEventoLabel">Editar Evento</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
-            <div class="modal-body">
-                <form id="formEditarEvento">
+            <div class="modal-body pb-2">
+                <form id="formEditarEvento" enctype="multipart/form-data">
                     <input type="hidden" id="ID_Evento_Editar" name="ID_Evento">
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -193,14 +193,18 @@
                             <input type="text" class="form-control" id="EditUbicacionE" name="UbicacionE" required>
                         </div>
                         <div class="col-md-12">
+                            <label for="EditTelefono" class="form-label">Tel&eacute;fono de contacto (opcional)</label>
+                            <input type="tel" class="form-control" id="EditTelefono" name="Telefono" maxlength="15" placeholder="Ej: 2481234567">
+                        </div>
+                        <div class="col-md-12">
                             <label for="EditRutaImagenE" class="form-label">Imagen del Evento (Opcional)</label>
                             <input type="file" class="form-control" id="EditRutaImagenE" name="RutaImagenE" accept="image/*">
                         </div>
                     </div>
-                    <div class="mt-3 text-end">
-                        <button type="submit" class="btn btn-primary">Actualizar Evento</button>
-                    </div>
                 </form>
+            </div>
+            <div class="modal-footer border-top flex-shrink-0">
+                <button type="submit" class="btn btn-primary" form="formEditarEvento">Actualizar Evento</button>
             </div>
         </div>
     </div>

@@ -27,6 +27,17 @@ foreach ($adminCssToLoad as $cssFile):
 <?php endforeach; ?>
 
 <?php
+if (!defined("RUTA")) {
+    $ylAdminConfig = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . "config.php";
+    if (is_file($ylAdminConfig)) {
+        include_once $ylAdminConfig;
+    }
+}
+$ylBasePublic = "";
+if (defined("RUTA")) {
+    $ylBasePublic = rtrim((string) RUTA, "/");
+}
+
 $adminSession = (isset($_SESSION) && is_array($_SESSION)) ? $_SESSION : [];
 $adminTopbarUser = [
 	"id" => $adminSession["ID_Usuario"] ?? "0",
@@ -38,6 +49,20 @@ $adminTopbarUser = [
 ?>
 <script>
 window.adminTopbarUser = <?= json_encode($adminTopbarUser, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
+window.YL_BASE_PATH = <?= json_encode($ylBasePublic, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
+window.YL_controladorEventosUrl = function () {
+	var suf = "/controladores/controladorEventos.php";
+	if (typeof window.YL_BASE_PATH === "string") {
+		var b = window.YL_BASE_PATH;
+		return b === "" ? suf : b + suf;
+	}
+	try {
+		var abs = new URL("../../controladores/controladorEventos.php", window.location.href);
+		return abs.pathname || suf;
+	} catch (err) {
+		return suf;
+	}
+};
 </script>
 <script defer src="assets/js/notificaciones.js"></script>
 <script defer src="assets/js/admin-navigation.js"></script>

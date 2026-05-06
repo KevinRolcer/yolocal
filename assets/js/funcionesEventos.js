@@ -1,3 +1,53 @@
+function fetchControladorEventosJson(formData) {
+    var url =
+        typeof window.YL_controladorEventosUrl === "function"
+            ? window.YL_controladorEventosUrl()
+            : "/controladores/controladorEventos.php";
+    return fetch(url, {
+        method: "POST",
+        body: formData,
+        credentials: "same-origin",
+    }).then(async (response) => {
+        const textRaw = await response.text();
+        const text = textRaw.replace(/^\uFEFF/, "").trim();
+        if (!response.ok) {
+            console.error(
+                "[eventos] HTTP",
+                response.status,
+                response.statusText,
+                "URL:",
+                url,
+                "Cuerpo:",
+                text.substring(0, 800)
+            );
+            throw new Error(
+                `HTTP ${response.status} al contactar el servidor. Revisa la URL o la sesión (${url}).`
+            );
+        }
+        if (!text.length) {
+            console.error("[eventos] Respuesta vacía. URL:", url);
+            throw new Error(
+                "El servidor devolvió respuesta vacía. Revisa errores PHP del controlador de eventos."
+            );
+        }
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            console.error(
+                "[eventos] Respuesta no JSON. URL:",
+                url,
+                "\n",
+                text.substring(0, 1200)
+            );
+            const plain = text.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+            throw new Error(
+                plain.slice(0, 240) ||
+                    "El servidor no devolvió JSON válido. Comprueba la ruta y la consola de red."
+            );
+        }
+    });
+}
+
 // Expose functions to window
 window.listarEventosEnTarjetas = listarEventosEnTarjetas;
 window.filtrarEventos = (val) => {
@@ -17,10 +67,11 @@ function iniciarModuloEventos() {
         });
     }
 
-    // Form EDITAR
-    const formEdEv = document.getElementById('formEditarEvento');
+    const formEdEv =
+        document.getElementById("formEditarEvento") ||
+        document.getElementById("formEditar");
     if (formEdEv) {
-        formEdEv.addEventListener('submit', (e) => {
+        formEdEv.addEventListener("submit", (e) => {
             e.preventDefault();
             editarEvento();
         });
@@ -55,22 +106,21 @@ window.cargarCategorias = cargarCategorias;
 function cargarCategorias() {
     const selectAgregar = document.getElementById("ID_Categoria");
     const selectEditar = document.getElementById("EditID_Categoria");
-    
-    if (!selectAgregar || !selectEditar) return; // Guard clause
+    if (!selectAgregar && !selectEditar) return;
 
     const formData = new FormData();
     formData.append("ope", "CARGAR_CATEGORIAS");
 
-    fetch("controladores/controladorEventos.php", { method: "POST", body: formData })
-    .then(response => response.json())
+    fetchControladorEventosJson(formData)
     .then(data => {
         if (!data.success) { return; }
-        selectAgregar.innerHTML = '<option value="">Seleccione una categoría...</option>';
-        selectEditar.innerHTML = '<option value="">Seleccione una categoría...</option>';
+        const optBase = '<option value="">Seleccione una categoría...</option>';
+        if (selectAgregar) selectAgregar.innerHTML = optBase;
+        if (selectEditar) selectEditar.innerHTML = optBase;
         data.lista.forEach(cat => {
             const option = `<option value="${cat.ID_Categoria}">${cat.Descripcion}</option>`;
-            selectAgregar.innerHTML += option;
-            selectEditar.innerHTML += option;
+            if (selectAgregar) selectAgregar.innerHTML += option;
+            if (selectEditar) selectEditar.innerHTML += option;
         });
     })
     .catch(error => console.error("Error al cargar categorías:", error));
@@ -83,9 +133,7 @@ function listarEventosEnTarjetas(filtro = '') {
     const formData = new FormData();
     formData.append("ope", "LISTAR");
     if (filtro) formData.append("buscar", filtro);
-    // Usar la ruta relativa correcta según el contexto
-    fetch("controladores/controladorEventos.php", { method: "POST", body: formData })
-    .then(response => response.json())
+    fetchControladorEventosJson(formData)
     .then(data => {
         const contenedor = document.getElementById("contenedorEventos");
         if (!contenedor) return;
@@ -99,7 +147,6 @@ function listarEventosEnTarjetas(filtro = '') {
         data.lista.forEach(evento => {
             const precio = evento.PrecioE ? `$${evento.PrecioE}` : 'Gratis';
             const imagen = evento.RutaImagenE ? `imagenes/${evento.RutaImagenE}` : 'assets/img/banner-yolocal.png';
-            // Lógica condicional para mostrar el teléfono solo si no está vacío
             const telefonoInfo = evento.Telefono ? `<strong>📞 Teléfono:</strong> ${evento.Telefono}<br>` : '';
             const tarjeta = `
                 <article class="ev-stylized-card">
@@ -108,8 +155,6 @@ function listarEventosEnTarjetas(filtro = '') {
                         <div class="ev-price-badge">${precio}</div>
                         <div class="ev-footer-promo">Evento Especial • YoLocal</div>
                     </div>
-<<<<<<< HEAD
-                    
                     <div class="ev-content">
                         <div class="ev-header-row">
                             <div>
@@ -117,27 +162,7 @@ function listarEventosEnTarjetas(filtro = '') {
                                 <h3 class="ev-title">${evento.TituloE}</h3>
                             </div>
                             <span class="ev-action-link" data-id="${evento.ID_Evento}">Detalles <i class="ri-arrow-right-up-line"></i></span>
-=======
-                    <div class="promo-card-content">
-                        <span class="badge bg-secondary mb-2">${evento.NombreCategoria}</span>
-                        <h5 class="promo-card-title">${evento.TituloE}</h5>
-                        <p class="promo-card-description">${evento.DescripcionE}</p>
-                        <p class="promo-card-info">
-                            <strong>📅 Fecha:</strong> ${evento.FechaE}<br>
-                            <strong>⏰ Hora:</strong> ${evento.HoraE}<br>
-                            <strong>📍 Lugar:</strong> ${evento.UbicacionE}<br>
-                            ${telefonoInfo} <strong>💰 Precio:</strong> ${evento.PrecioE || 'Gratis'}
-                        </p>
-                        <div class="promo-card-actions">
-                            <button class="btn-edit" data-id="${evento.ID_Evento}" title="Editar Evento">
-                                <i class="bi bi-pencil-square"></i>
-                            </button>
-                            <button class="btn-delete" data-id="${evento.ID_Evento}" title="Eliminar Evento">
-                                <i class="bi bi-trash3-fill"></i>
-                            </button>
->>>>>>> origin/becario
                         </div>
-                        
                         <div class="ev-info-grid">
                             <div class="ev-info-item">
                                 <i class="ri-calendar-event-line"></i>
@@ -149,8 +174,8 @@ function listarEventosEnTarjetas(filtro = '') {
                             </div>
                         </div>
                         <p class="ev-description">${evento.DescripcionE || ''}</p>
+                        <p class="ev-telefono">${telefonoInfo}</p>
                     </div>
-
                     <div class="ev-admin-actions">
                         <button class="btn-ev-admin btn-edit" data-id="${evento.ID_Evento}">
                             <i class="ri-pencil-line"></i>
@@ -164,59 +189,33 @@ function listarEventosEnTarjetas(filtro = '') {
             contenedor.innerHTML += tarjeta;
         });
     })
-                const tarjeta = `
-                    <article class="ev-stylized-card">
-                        <div class="ev-image-wrapper">
-                            <img src="${imagen}" alt="${evento.TituloE}">
-                            <div class="ev-price-badge">${precio}</div>
-                            <div class="ev-footer-promo">Evento Especial • YoLocal</div>
-                        </div>
-                        <div class="ev-content">
-                            <div class="ev-header-row">
-                                <div>
-                                    <span class="ev-kicker">${evento.NombreCategoria}</span>
-                                    <h3 class="ev-title">${evento.TituloE}</h3>
-                                </div>
-                                <span class="ev-action-link" data-id="${evento.ID_Evento}">Detalles <i class="ri-arrow-right-up-line"></i></span>
-                            </div>
-                            <div class="ev-info-grid">
-                                <div class="ev-info-item">
-                                    <i class="ri-calendar-event-line"></i>
-                                    <span>${evento.FechaE}</span>
-                                </div>
-                                <div class="ev-info-item">
-                                    <i class="ri-map-pin-line"></i>
-                                    <span>${evento.UbicacionE}</span>
-                                </div>
-                            </div>
-                            <p class="ev-description">${evento.DescripcionE || ''}</p>
-                            <p class="ev-telefono">${telefonoInfo}</p>
-                        </div>
-                        <div class="ev-admin-actions">
-                            <button class="btn-ev-admin btn-edit" data-id="${evento.ID_Evento}">
-                                <i class="ri-pencil-line"></i>
-                            </button>
-                            <button class="btn-ev-admin btn-delete" data-id="${evento.ID_Evento}">
-                                <i class="ri-delete-bin-line"></i>
-                            </button>
-                        </div>
-                    </article>
-                `;
-                contenedor.innerHTML += tarjeta;
-            });
-        })
         .catch(error => {
             console.error("Error al listar eventos:", error);
-            contenedor.innerHTML = "<p class='text-center text-danger'>Ocurrió un error al cargar los eventos.</p>";
+            const contenedorErr = document.getElementById("contenedorEventos");
+            if (contenedorErr) {
+                contenedorErr.innerHTML = "<p class='text-center text-danger'>Ocurrió un error al cargar los eventos.</p>";
+            }
         });
-    }
+}
+function setInputValueIfPresent(id, value) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = value != null && value !== undefined ? String(value) : "";
+}
+
+function getModalEditarEventoEl() {
+    return (
+        document.getElementById("modalEditarEvento") ||
+        document.getElementById("modalEditar")
+    );
+}
+
 function abrirModalEditarEvento(id) {
     const formData = new FormData();
     formData.append("ope", "OBTENER");
     formData.append("ID_Evento", id);
 
-    fetch("controladores/controladorEventos.php", { method: "POST", body: formData })
-    .then(response => response.json())
+    fetchControladorEventosJson(formData)
     .then(data => {
         if (!data.success) {
             Swal.fire("Error", "No se encontró el evento.", "error");
@@ -224,17 +223,22 @@ function abrirModalEditarEvento(id) {
         }
 
         const evento = data.evento;
-        document.getElementById("ID_Evento_Editar").value = evento.ID_Evento;
-        document.getElementById("EditTituloE").value = evento.TituloE;
-        document.getElementById("EditDescripcionE").value = evento.DescripcionE;
-        document.getElementById("EditPrecioE").value = evento.PrecioE;
-        document.getElementById("EditFechaE").value = evento.FechaE;
-        document.getElementById("EditHoraE").value = evento.HoraE;
-        document.getElementById("EditUbicacionE").value = evento.UbicacionE;
-        document.getElementById("EditTelefono").value = evento.Telefono; // <-- Pone el valor del teléfono en el input
-        document.getElementById("EditID_Categoria").value = evento.ID_Categoria;
+        setInputValueIfPresent("ID_Evento_Editar", evento.ID_Evento);
+        setInputValueIfPresent("EditTituloE", evento.TituloE);
+        setInputValueIfPresent("EditDescripcionE", evento.DescripcionE);
+        setInputValueIfPresent("EditPrecioE", evento.PrecioE);
+        setInputValueIfPresent("EditFechaE", evento.FechaE);
+        setInputValueIfPresent("EditHoraE", evento.HoraE);
+        setInputValueIfPresent("EditUbicacionE", evento.UbicacionE);
+        setInputValueIfPresent("EditTelefono", evento.Telefono);
+        setInputValueIfPresent("EditID_Categoria", evento.ID_Categoria);
 
-        new bootstrap.Modal(document.getElementById('modalEditarEvento')).show();
+        const modalEl = getModalEditarEventoEl();
+        if (!modalEl) {
+            Swal.fire("Error", "No se encontró el modal de edición en esta página.", "error");
+            return;
+        }
+        new bootstrap.Modal(modalEl).show();
     });
 }
 
@@ -242,16 +246,22 @@ function abrirModalEditarEvento(id) {
  * Envía los datos actualizados de un evento con SweetAlert.
  */
 function editarEvento() {
-    const form = document.getElementById("formEditar");
-    const formData = new FormData(form); // Recoge automáticamente el campo Telefono
+    const form =
+        document.getElementById("formEditarEvento") ||
+        document.getElementById("formEditar");
+    if (!form) {
+        console.error("No se encontró el formulario de edición (formEditarEvento / formEditar).");
+        return;
+    }
+    const formData = new FormData(form);
     formData.append("ope", "EDITAR");
-    formData.append("ID_Evento", document.getElementById("ID_Evento_Editar").value);
 
-    fetch("controladores/controladorEventos.php", { method: "POST", body: formData })
-    .then(response => response.json())
+    fetchControladorEventosJson(formData)
     .then(data => {
         if (data.success) {
-            bootstrap.Modal.getInstance(document.getElementById('modalEditarEvento')).hide();
+            const modalEl = getModalEditarEventoEl();
+            const inst = modalEl && bootstrap.Modal.getInstance(modalEl);
+            if (inst) inst.hide();
             Swal.fire({
                 icon: 'success',
                 title: '¡Actualizado!',
@@ -272,8 +282,8 @@ function editarEvento() {
         console.error("Error en editarEvento:", error);
         Swal.fire({
             icon: 'error',
-            title: 'Error de Conexión',
-            text: 'No se pudo comunicar con el servidor.'
+            title: 'Error',
+            text: error.message || 'No se pudo comunicar con el servidor.'
         });
     });
 }
@@ -298,8 +308,7 @@ function eliminarEvento(id) {
             formData.append("ope", "ELIMINAR");
             formData.append("ID_Evento", id);
 
-            fetch("controladores/controladorEventos.php", { method: "POST", body: formData })
-            .then(response => response.json())
+            fetchControladorEventosJson(formData)
             .then(data => {
                 if (data.success) {
                     Swal.fire(

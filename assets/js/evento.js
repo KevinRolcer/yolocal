@@ -1,108 +1,46 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const modal = document.getElementById("modal-evento");
-  if (!modal) return;
-
-  const modalCerrar = modal.querySelector(".modal-cerrar");
-  const modalImg = document.getElementById("modal-img");
-  const modalTitulo = document.getElementById("modal-titulo");
-  const modalCategoria = document.getElementById("modal-categoria");
-  const modalPrecio = document.getElementById("modal-precio");
-  const modalDescripcion = document.getElementById("modal-descripcion");
-  const modalFecha = document.getElementById("modal-fecha");
-  const modalHora = document.getElementById("modal-hora");
-  const modalUbicacion = document.getElementById("modal-ubicacion");
-
-  function abrirModal(tarjeta) {
-    if (!tarjeta) return;
-
-    const eventoId = tarjeta.dataset.eventoId;
-
-    modalImg.src = tarjeta.querySelector(".card-image").src;
-    modalTitulo.textContent = tarjeta.querySelector("h3").textContent;
-    modalCategoria.textContent = tarjeta.querySelector(".card-tag").textContent;
-    modalPrecio.textContent = tarjeta.querySelector(".card-price").textContent;
-    modalDescripcion.textContent =
-      tarjeta.querySelector(".card-description").textContent;
-    modalFecha.innerHTML = tarjeta.querySelector(
-      ".card-details .detail-item:nth-child(1)"
-    ).innerHTML;
-    modalHora.innerHTML = tarjeta.querySelector(
-      ".card-details .detail-item:nth-child(2)"
-    ).innerHTML;
-    modalUbicacion.innerHTML = tarjeta.querySelector(
-      ".card-details .detail-item:nth-child(3)"
-    ).innerHTML;
-
-    modal.style.display = "flex";
-
-    if (eventoId) {
-      window.location.hash = "evento-" + eventoId;
-    }
-  }
-
-  function cerrarModal() {
-    modal.style.display = "none";
-
-    history.pushState(
-      "",
-      document.title,
-      window.location.pathname + window.location.search
-    );
-  }
-
-  function abrirModalDesdeURL() {
-    // Usamos URLSearchParams para leer los parámetros de la URL
+  function irAEventoDesdeURL() {
     const params = new URLSearchParams(window.location.search);
-    const eventoId = params.get('evento'); // Buscamos el parámetro 'evento'
-
-    if (eventoId) {
-        const tarjeta = document.querySelector(`.event-card[data-evento-id="${eventoId}"]`);
-        if (tarjeta) {
-            abrirModal(tarjeta); // La función abrirModal que ya tienes
-        }
+    const eventoId = params.get("evento");
+    if (!eventoId) return;
+    const safeId =
+      typeof CSS !== "undefined" && CSS.escape
+        ? CSS.escape(eventoId)
+        : eventoId.replace(/["\\]/g, "");
+    const tarjeta = document.querySelector(
+      `.event-card[data-evento-id="${safeId}"]`
+    );
+    if (!tarjeta) return;
+    tarjeta.scrollIntoView({ behavior: "smooth", block: "center" });
+    try {
+      tarjeta.focus({ preventScroll: true });
+    } catch (_) {
+      /* sin foco programático en algunos entornos */
     }
-}
+  }
 
-  const botonesInfo = document.querySelectorAll(".btn-primary");
-  botonesInfo.forEach((boton) => {
-    boton.addEventListener("click", function () {
+  document.querySelectorAll(".btn-share").forEach((boton) => {
+    boton.addEventListener("click", function (event) {
+      event.stopPropagation();
       const tarjeta = this.closest(".event-card");
-      abrirModal(tarjeta); 
-    });
-  });
+      if (!tarjeta) return;
+      const eventoId = tarjeta.dataset.eventoId;
+      if (!eventoId) return;
 
-  // Lógica para el botón de compartir (esta parte estaba bien)
-  const botonesCompartir = document.querySelectorAll('.btn-share');
-botonesCompartir.forEach(boton => {
-    boton.addEventListener('click', function(event) {
-        event.stopPropagation();
-        const tarjeta = this.closest('.event-card');
-        const eventoId = tarjeta.dataset.eventoId;
-        if (!eventoId) return;
+      const urlParaCompartir = `${window.location.origin}${window.location.pathname}?evento=${encodeURIComponent(eventoId)}`;
 
-        // **CAMBIO CLAVE:** Creamos la URL con un parámetro, no con un hash
-        const urlParaCompartir = `${window.location.origin}${window.location.pathname}?evento=${eventoId}`;
-
-        navigator.clipboard.writeText(urlParaCompartir).then(() => {
-            Swal.fire({
-              icon: 'success',
-              title: '¡Enlace Copiado!',
-              text: 'Ya puedes compartirlo donde quieras.',
-              timer: 2500
-            });
-        }).catch(err => {
-            console.error('Error al copiar el enlace: ', err);
+      navigator.clipboard.writeText(urlParaCompartir).then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "¡Enlace copiado!",
+          text: "Ya puedes compartirlo donde quieras.",
+          timer: 2500,
         });
+      }).catch((err) => {
+        console.error("Error al copiar el enlace: ", err);
+      });
     });
-});
-
-  // Eventos para cerrar el modal
-  modalCerrar.addEventListener("click", cerrarModal);
-  modal.addEventListener("click", function (event) {
-    if (event.target === modal) {
-      cerrarModal();
-    }
   });
 
-  abrirModalDesdeURL();
+  irAEventoDesdeURL();
 });

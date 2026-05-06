@@ -23,7 +23,7 @@ date_default_timezone_set('America/Mexico_City');
 </head>
 
 
-<body>
+<body class="eventos-page events-menu-hidden">
 
     <header class="encabezado">
 
@@ -94,47 +94,74 @@ date_default_timezone_set('America/Mexico_City');
         </nav>
 
     </header>
+    <button id="eventsMenuToggle" class="events-menu-toggle" type="button" aria-expanded="false" aria-label="Mostrar u ocultar menú">
+        <span class="events-menu-arrow">▾</span>
+    </button>
 
-    <main class="container">
-        <div class="event-section">
-            <header class="section-header">
-                <h1>Próximos Eventos</h1>
-                <p>Descubre los mejores eventos en Texmelucan</p>
-            </header>
+    <main class="events-story">
+        <section class="snap-section events-hero">
+            <div class="hero-content">
+                <h1 class="hero-title-poster" aria-label="Eventos Yo Local">
+                    <span class="hero-visually-hidden">Eventos Yo Local</span>
+                    <span class="hero-title-lines" aria-hidden="true">
+                        <span class="hero-line hero-line-events">
+                            <span class="hero-char">E</span><span class="hero-char">V</span><span class="hero-char">E</span><span class="hero-char">N</span><span class="hero-char">T</span><span class="hero-char">O</span><span class="hero-char">S</span>
+                        </span>
+                        <span class="hero-line hero-line-brand">
+                            <span class="hero-char">Y</span><span class="hero-char">O</span><span class="hero-char hero-space">&nbsp;</span><span class="hero-char">L</span><span class="hero-char hero-o-slot"><span class="hero-o-layer hero-o-disc" aria-hidden="true"></span><img class="hero-o-layer hero-o-logo" src="../assets/img/LogoYolocal.png" alt="" width="140" height="140" decoding="async"><span class="hero-o-layer hero-o-glyph" aria-hidden="true">O</span></span><span class="hero-char">C</span><span class="hero-char">A</span><span class="hero-char">L</span>
+                        </span>
+                    </span>
+                </h1>
+            </div>
+            <p class="hero-scroll-hint">
+                <span class="hero-scroll-hint-text">Desplaza para ver más</span>
+                <span class="hero-scroll-hint-arrow" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+                </span>
+            </p>
+        </section>
 
-            <div class="event-grid">
-
-                <?php if (!empty($eventos)): ?>
-                    <?php foreach ($eventos as $evento): ?>
-                        <div class="event-card" data-evento-id="<?php echo htmlspecialchars($evento['ID_Evento']); ?>">
-                            <div class="card-image-container">
-                                <img src="../imagenes/<?php echo htmlspecialchars($evento['RutaImagenE']); ?>" alt="<?php echo htmlspecialchars($evento['TituloE']); ?>" class="card-image">
-                                <div class="card-tag categoria-default">Evento</div>
-                                <div class="card-price">$<?php echo htmlspecialchars($evento['PrecioE']); ?> MXN</div>
+        <?php if (!empty($eventos)): ?>
+            <?php
+            $ylColors = ["#5B3CA5", "#7C5ED8", "#4C2A85", "#6A4DBA", "#3F246E"];
+            foreach ($eventos as $idx => $evento):
+                $ylAccent = $ylColors[$idx % count($ylColors)];
+            ?>
+                <section class="snap-section event-spotlight" style="--event-accent: <?php echo htmlspecialchars($ylAccent); ?>">
+                    <div class="spotlight-inner<?php echo ($idx % 2 === 1) ? ' spotlight-inner--reverse' : ''; ?>">
+                            <div class="spotlight-photo">
+                                <img src="../imagenes/<?php echo htmlspecialchars($evento['RutaImagenE']); ?>" alt="<?php echo htmlspecialchars($evento['TituloE']); ?>" class="card-image spotlight-image" decoding="async" loading="lazy">
                             </div>
-                            <div class="card-content">
-                                <h3><?php echo htmlspecialchars($evento['TituloE']); ?></h3>
+                        <article
+                            class="event-card spotlight-card spotlight-card-split"
+                            data-evento-id="<?php echo htmlspecialchars($evento['ID_Evento']); ?>"
+                            aria-labelledby="evento-heading-<?php echo htmlspecialchars($evento['ID_Evento']); ?>"
+                        >
+                            <div class="spotlight-info card-content">
+                                <div class="spotlight-date-lead" data-meta="fecha">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M8 2v4" />
+                                        <path d="M16 2v4" />
+                                        <rect width="18" height="18" x="3" y="4" rx="2" />
+                                        <path d="M3 10h18" />
+                                    </svg>
+                                    <span><?php echo strftime("%e de %B de %Y", strtotime($evento['FechaE'])); ?></span>
+                                </div>
+                                <h2 id="evento-heading-<?php echo htmlspecialchars($evento['ID_Evento']); ?>" class="spotlight-heading"><?php echo htmlspecialchars($evento['TituloE']); ?></h2>
                                 <p class="card-description"><?php echo htmlspecialchars($evento['DescripcionE']); ?></p>
-                                <div class="card-details">
-                                    <div class="detail-item">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-blue">
-                                            <path d="M8 2v4" />
-                                            <path d="M16 2v4" />
-                                            <rect width="18" height="18" x="3" y="4" rx="2" />
-                                            <path d="M3 10h18" />
-                                        </svg>
-                                        <span><?php echo strftime("%e de %B de %Y", strtotime($evento['FechaE'])); ?></span>
-
-
+                                <div class="card-details spotlight-meta-details">
+                                    <div class="detail-item" data-meta="precio">
+                                        <span class="spotlight-price-glyph" aria-hidden="true">$</span>
+                                        <span class="card-price spotlight-info-price">$<?php echo htmlspecialchars($evento['PrecioE']); ?> MXN</span>
                                     </div>
-                                    <div class="detail-item">
+                                    <div class="detail-item" data-meta="hora">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-green">
                                             <circle cx="12" cy="12" r="10" />
                                             <polyline points="12 6 12 12 16 14" />
                                         </svg>
                                         <span><?php echo date("g:i A", strtotime($evento['HoraE'])); ?></span>
                                     </div>
-                                    <div class="detail-item">
+                                    <div class="detail-item" data-meta="ubicacion">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-red">
                                             <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
                                             <circle cx="12" cy="10" r="3" />
@@ -142,47 +169,33 @@ date_default_timezone_set('America/Mexico_City');
                                         <span><?php echo htmlspecialchars($evento['UbicacionE']); ?></span>
                                     </div>
                                 </div>
-                                <div class="card-actions">
-                                    <button class="btn btn-primary">Mas información</button>
-                                    <button class="btn btn-secondary btn-share" title="Compartir evento">
+                                <div class="card-actions spotlight-card-actions">
+                                    <button type="button" class="btn btn-share btn-share-spotlight" title="Compartir enlace del evento">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <polyline points="15 14 20 9 15 4"></polyline>
                                             <path d="M4 20v-7a4 4 0 0 1 4-4h12"></path>
                                         </svg>
+                                        <span>Compartir</span>
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>No se encontraron eventos próximos. ¡Vuelve pronto!</p>
-                <?php endif; ?>
-
-            </div>
-        </div>
+                        </article>
+                    </div>
+                </section>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <section class="snap-section events-empty">
+                <p>No se encontraron eventos próximos. ¡Vuelve pronto!</p>
+            </section>
+        <?php endif; ?>
     </main>
 
-    <div id="modal-evento" class="modal-overlay">
-        <div class="modal-contenido">
-            <span class="modal-cerrar">&times;</span>
-            <img id="modal-img" src="" alt="Imagen del evento">
-            <div class="modal-info">
-                <h2 id="modal-titulo"></h2>
-                <div id="modal-tags">
-                    <span id="modal-categoria" class="card-tag"></span>
-                    <span id="modal-precio" class="card-price" style="background-color: #f1f1f1; color: #333; font-weight: bold;"></span>
-                </div>
-                <p id="modal-descripcion"></p>
-                <div class="modal-details">
-                    <div class="detail-item" id="modal-fecha"></div>
-                    <div class="detail-item" id="modal-hora"></div>
-                    <div class="detail-item" id="modal-ubicacion"></div>
-                </div>
-            </div>
-        </div>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../assets/js/evento.js?version=1.3"></script>
+    <script src="../node_modules/matter-js/build/matter.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/matter-js@0.20.0/build/matter.min.js"></script>
+    <script src="../assets/js/eventosPhysics.js"></script>
+    <script src="../assets/js/eventosHeroTitle.js"></script>
+    <script src="../assets/js/evento.js?version=2.0"></script>
     <script src="../assets/js/menuCl.js"></script>
 
 </body>
