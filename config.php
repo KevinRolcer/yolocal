@@ -1,24 +1,44 @@
 <?php
-    define("RUTA","");
-    date_default_timezone_set('America/Mexico_City');
-//s
-    function dbConectar()
-    {
-        static $conexion;
+define("RUTA", "/yolocal/");
+date_default_timezone_set('America/Mexico_City');
 
-        if(!isset($conexion)) 
-        {
-            $config = parse_ini_file('config.ini'); 
-            $conexion = mysqli_connect($config['servidor'],$config['usuario'],$config['pass'],$config['bbdd']);
-            $query="set CHARSET 'utf8'";
-			$conexion->query($query);
-        }
-        if($conexion === false) 
-        {
-            return mysqli_connect_error(); 
-        }
-        return $conexion;
-
+function iniciarSesionYoLocal()
+{
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        return;
     }
+
+    $rutaSesion = rtrim(RUTA, "/");
+    if ($rutaSesion === "") {
+        $rutaSesion = "/";
+    }
+
+    session_set_cookie_params([
+        "lifetime" => 0,
+        "path" => $rutaSesion,
+        "httponly" => true,
+        "samesite" => "Lax"
+    ]);
+
+    session_start();
+}
+
+function dbConectar()
+{
+    static $conexion;
+
+    if (!isset($conexion)) {
+        $config = parse_ini_file('config.ini');
+        $conexion = mysqli_connect($config['servidor'], $config['usuario'], $config['pass'], $config['bbdd']);
+        $query = "set CHARSET 'utf8'";
+        $conexion->query($query);
+    }
+
+    if ($conexion === false) {
+        return mysqli_connect_error();
+    }
+
+    return $conexion;
+}
 
 ?>

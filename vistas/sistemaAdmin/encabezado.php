@@ -62,10 +62,10 @@ $menus = [
     <div class="sidebar-bottom">
         <a href="#" class="logo-bottom">
             <span class="icon">
-                <img src="../assets/img/LogoYolocal.png" alt="Logo" class="logo">
+                <img src="<?= RUTA ?>assets/img/LogoYolocal.png" alt="Logo" class="logo">
             </span>
         </a>
-        <a href="salir.php" class="exit-button">
+        <a href="<?= RUTA ?>salir.php" class="exit-button">
             <span class="icon"><i class="bi bi-box-arrow-right"></i></span>
             <span class="title">Salir</span>
         </a>

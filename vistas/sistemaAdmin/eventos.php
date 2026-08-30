@@ -7,15 +7,15 @@
     // Asegúrate de que este archivo inicie la sesión y contenga las configuraciones necesarias
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesEventos.js"></script>
+    <script type="module" src="<?= RUTA ?>assets/js/funcionesEventos.js"></script>
      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="../assets/css/bolsaTrabajoAdmin.css">
-    <link rel="stylesheet" href="../assets/css/paginacion.css">
-    <link rel="stylesheet" href="../assets/css/pildora.css">
-    <link href="../assets/img/LogoYolocal.png" rel="icon" />
+    <link rel="stylesheet" href="<?= RUTA ?>assets/css/bolsaTrabajoAdmin.css">
+    <link rel="stylesheet" href="<?= RUTA ?>assets/css/paginacion.css">
+    <link rel="stylesheet" href="<?= RUTA ?>assets/css/pildora.css">
+    <link href="<?= RUTA ?>assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-   <link rel="stylesheet" href="../assets/css/eventosL.css">
-    <link rel="stylesheet" href="../assets/css/eventos2.css">
+   <link rel="stylesheet" href="<?= RUTA ?>assets/css/eventosL.css">
+    <link rel="stylesheet" href="<?= RUTA ?>assets/css/eventos2.css">
     <script>
     
    

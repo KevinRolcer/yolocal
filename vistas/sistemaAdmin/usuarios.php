@@ -7,9 +7,9 @@
     include_once("head.php");
     ?>
     <script type="module" src="assets/js/funcionesUsu.js"></script>
-    <link rel="stylesheet" href="../assets/css/usuarios.css">
-    <link rel="stylesheet" href="../assets/css/paginacion.css">
-    <link href="../assets/img/LogoYolocal.png" rel="icon" />
+    <link rel="stylesheet" href="<?= RUTA ?>assets/css/usuarios.css">
+    <link rel="stylesheet" href="<?= RUTA ?>assets/css/paginacion.css">
+    <link href="<?= RUTA ?>assets/img/LogoYolocal.png" rel="icon" />
 </head>
 
 <body class="bg-light">
@@ -34,7 +34,7 @@
                     </svg>
                 </div>
                 <div class="usuario">
-                    <img src="../assets/img/descarga.gif"  alt="">
+                    <img src="<?= RUTA ?>assets/img/descarga.gif"  alt="">
                 </div>
                 <div class="notifi-box" id="box">
                     <p class="calendario"></p>
@@ -298,7 +298,7 @@
         </div>
 
 
-        <script src="../assets/js/main.js"></script>
+        <script src="<?= RUTA ?>assets/js/main.js"></script>
 </body>
 
 </html>

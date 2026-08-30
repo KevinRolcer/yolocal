@@ -6,10 +6,10 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesCupones.js"></script>
-    <link rel="stylesheet" href="../assets/css/cupones.css">
-    <link rel="stylesheet" href="../assets/css/paginacion.css">
-    <link href="../assets/img/LogoYolocal.png" rel="icon" />
+    <script type="module" src="<?= RUTA ?>assets/js/funcionesCupones.js"></script>
+    <link rel="stylesheet" href="<?= RUTA ?>assets/css/cupones.css">
+    <link rel="stylesheet" href="<?= RUTA ?>assets/css/paginacion.css">
+    <link href="<?= RUTA ?>assets/img/LogoYolocal.png" rel="icon" />
     <script>
         const usuarioId = <?= json_encode($_SESSION["ID_Usuario"]) ?>;
         const usuarioTipo = <?= json_encode($_SESSION["tipo"]) ?>;

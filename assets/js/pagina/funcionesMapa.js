@@ -18,7 +18,7 @@ var purpleIcon = new L.Icon({
 });
 
 function cargarMapas() {
-  fetch("../controladores/controladorNegocios.php", {
+  fetch("controladores/controladorNegocios.php", {
     method: "POST",
     body: new URLSearchParams({ ope: "OBTENERCOORDENADAS" }),
   })

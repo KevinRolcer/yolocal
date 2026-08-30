@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://kit.fontawesome.com/726544f644.js" crossorigin="anonymous"></script>
   
-    <link href="../assets/img/LogoYolocal.png" rel="icon" />
-    <link rel="stylesheet" href="../assets/css/principal.css">
+    <link href="<?= RUTA ?>assets/img/LogoYolocal.png" rel="icon" />
+    <link rel="stylesheet" href="<?= RUTA ?>assets/css/principal.css">
 </head>
 
 <body>
@@ -42,7 +42,7 @@
                     </svg>
                 </div>
                 <div class="usuario">
-                    <img src="../assets/img/descarga.gif" alt="">
+                    <img src="<?= RUTA ?>assets/img/descarga.gif" alt="">
                 </div>
                 <div class="notifi-box" id="box">
                     <p class="calendario"></p>
@@ -140,9 +140,9 @@
     <div id="modalOverlay" class="window-overlay"></div>
 
 
-    <script src="../assets/js/notificaciones.js"></script>
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/calendario.js"></script>
+    <script src="<?= RUTA ?>assets/js/notificaciones.js"></script>
+    <script src="<?= RUTA ?>assets/js/main.js"></script>
+    <script src="<?= RUTA ?>assets/js/calendario.js"></script>
 
 </body>
 

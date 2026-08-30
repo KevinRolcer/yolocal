@@ -6,11 +6,11 @@
     <?php
     include_once("head.php");
     ?>
-    <script type="module" src="assets/js/funcionesTrabajos.js"></script>
-    <link rel="stylesheet" href="../assets/css/bolsaTrabajoAdmin.css">
-    <link rel="stylesheet" href="../assets/css/paginacion.css">
-    <link rel="stylesheet" href="../assets/css/pildora.css">
-    <link href="../assets/img/LogoYolocal.png" rel="icon" />
+    <script type="module" src="<?= RUTA ?>assets/js/funcionesTrabajos.js"></script>
+    <link rel="stylesheet" href="<?= RUTA ?>assets/css/bolsaTrabajoAdmin.css">
+    <link rel="stylesheet" href="<?= RUTA ?>assets/css/paginacion.css">
+    <link rel="stylesheet" href="<?= RUTA ?>assets/css/pildora.css">
+    <link href="<?= RUTA ?>assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script>
         const usuarioId = <?= json_encode($_SESSION["ID_Usuario"]) ?>;
