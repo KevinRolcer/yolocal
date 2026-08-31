@@ -466,12 +466,27 @@ class Negocios
     $rutaIconoFinal = $datos["Icono"]; // valor por defecto, mantiene el anterior
 
     if ($archivoIcono && $archivoIcono["error"] === UPLOAD_ERR_OK) {
+        $tiposPermitidos = [
+            "image/jpeg" => "jpg",
+            "image/png" => "png",
+            "image/webp" => "webp",
+            "image/gif" => "gif"
+        ];
+        $detectorMime = new finfo(FILEINFO_MIME_TYPE);
+        $tipoMime = $detectorMime->file($archivoIcono["tmp_name"]);
+
+        if (!isset($tiposPermitidos[$tipoMime])) {
+            return false;
+        }
+
         $directorio = __DIR__ . "/../assets/uploads/iconos/";
         if (!is_dir($directorio)) {
             mkdir($directorio, 0777, true);
         }
 
-        $nombreArchivo = uniqid("icono_") . "_" . basename($archivoIcono["name"]);
+        $nombreBase = pathinfo($archivoIcono["name"], PATHINFO_FILENAME);
+        $nombreBase = preg_replace('/[^a-zA-Z0-9_-]+/', '_', $nombreBase);
+        $nombreArchivo = uniqid("icono_") . "_" . trim($nombreBase, "_") . "." . $tiposPermitidos[$tipoMime];
         $rutaServidor  = $directorio . $nombreArchivo;
 
         if (move_uploaded_file($archivoIcono["tmp_name"], $rutaServidor)) {

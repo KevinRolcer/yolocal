@@ -52,7 +52,7 @@ $menus = [
 <div class="sidebar">
     <div class="logo-top">
         <span class="icon">
-            <img src="assets/img/LogoYolocal.png" alt="Logo" class="logo">
+            <img src="<?= htmlspecialchars(ylAssetUrl("assets/img/LogoYolocal.png"), ENT_QUOTES, "UTF-8") ?>" alt="Logo" class="logo">
         </span>
         <span class="title">Yo Local</span>
     </div>

@@ -27,7 +27,7 @@
         window.__YL_PUBLIC_ROOT__ = <?= json_encode($ylPublicRoot, JSON_UNESCAPED_SLASHES) ?>;
         window.__YL_PUBLIC_ORIGIN__ = <?= json_encode(defined("YL_ORIGEN_PUBLICO") ? YL_ORIGEN_PUBLICO : "", JSON_UNESCAPED_SLASHES) ?>;
     </script>
-    <script type="module" src="assets/js/funcionesCupones.js"></script>
+    <script type="module" src="<?= htmlspecialchars(ylAssetUrl("assets/js/funcionesCupones.js"), ENT_QUOTES, "UTF-8") ?>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 

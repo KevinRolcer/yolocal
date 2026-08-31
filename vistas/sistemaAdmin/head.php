@@ -1,3 +1,29 @@
+<?php
+if (!defined("RUTA")) {
+    $ylAdminConfig = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . "config.php";
+    if (is_file($ylAdminConfig)) {
+        require_once $ylAdminConfig;
+    }
+}
+
+if (!function_exists("ylAssetUrl")) {
+    function ylAssetUrl($relativePath)
+    {
+        $relativePath = ltrim(str_replace("\\", "/", (string) $relativePath), "/");
+        $basePath = defined("RUTA") ? rtrim((string) RUTA, "/") : "";
+        $url = $basePath . "/" . $relativePath;
+        $localPath = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $relativePath);
+
+        if (is_file($localPath)) {
+            $url .= "?v=" . filemtime($localPath);
+        }
+
+        return $url;
+    }
+}
+
+$ylBasePublic = defined("RUTA") ? rtrim((string) RUTA, "/") : "";
+?>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yo local</title>
@@ -6,7 +32,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
-<link href="assets/img/LogoYolocal.png" rel="icon" />
+<link href="<?= htmlspecialchars(ylAssetUrl("assets/img/LogoYolocal.png"), ENT_QUOTES, "UTF-8") ?>" rel="icon" />
 
 <?php
 $adminCssBase = [
@@ -21,23 +47,12 @@ foreach ($adminCssToLoad as $cssFile):
 ?>
 <link
 	rel="stylesheet"
-	href="<?= htmlspecialchars($cssFile, ENT_QUOTES, 'UTF-8') ?>"
+	href="<?= htmlspecialchars(ylAssetUrl($cssFile), ENT_QUOTES, 'UTF-8') ?>"
 	data-admin-css="<?= $isSharedAdminCss ? 'shared' : 'page' ?>"
 >
 <?php endforeach; ?>
 
 <?php
-if (!defined("RUTA")) {
-    $ylAdminConfig = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . "config.php";
-    if (is_file($ylAdminConfig)) {
-        include_once $ylAdminConfig;
-    }
-}
-$ylBasePublic = "";
-if (defined("RUTA")) {
-    $ylBasePublic = rtrim((string) RUTA, "/");
-}
-
 $adminSession = (isset($_SESSION) && is_array($_SESSION)) ? $_SESSION : [];
 $adminTopbarUser = [
 	"id" => $adminSession["ID_Usuario"] ?? "0",
@@ -64,5 +79,5 @@ window.YL_controladorEventosUrl = function () {
 	}
 };
 </script>
-<script defer src="assets/js/notificaciones.js"></script>
-<script defer src="assets/js/admin-navigation.js"></script>
+<script defer src="<?= htmlspecialchars(ylAssetUrl("assets/js/notificaciones.js"), ENT_QUOTES, "UTF-8") ?>"></script>
+<script defer src="<?= htmlspecialchars(ylAssetUrl("assets/js/admin-navigation.js"), ENT_QUOTES, "UTF-8") ?>"></script>

@@ -17,7 +17,7 @@
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.js"></script>
-    <script type="module" src="assets/js/funcionesNegocio.js"></script>
+    <script type="module" src="<?= htmlspecialchars(ylAssetUrl("assets/js/funcionesNegocio.js"), ENT_QUOTES, "UTF-8") ?>"></script>
 </head>
 
 <body>
@@ -293,7 +293,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="IconoNegocioEdit" class="form-label">Logo del Negocio</label>
-                                        <input type="file" class="form-control" id="IconoNegocioEdit" name="IconoNegocioEdit" maxlength="100">
+                                        <input type="file" class="form-control" id="IconoNegocioEdit" name="IconoNegocioEdit" accept="image/jpeg,image/png,image/webp,image/gif">
                                     </div>
                                     <input type="hidden" id="RutaiconoEdit" name="RutaiconoEdit">
                                     <div class="col-md-12">

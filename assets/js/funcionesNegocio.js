@@ -233,6 +233,21 @@ function escapeHTML(str) {
     .replace(/'/g, "&#39;");
 }
 
+function resolverRutaPublica(ruta) {
+  const valor = String(ruta || "").trim().replace(/\\/g, "/");
+  if (!valor || /^(?:data:|https?:\/\/|\/\/)/i.test(valor)) return valor;
+
+  const indiceAssets = valor.indexOf("assets/");
+  if (indiceAssets !== -1) {
+    const base = typeof window.YL_BASE_PATH === "string"
+      ? window.YL_BASE_PATH.replace(/\/$/, "")
+      : "";
+    return `${base}/${valor.slice(indiceAssets)}`;
+  }
+
+  return valor;
+}
+
 function enmascararCorreo(correo) {
   if (!correo || !correo.includes("@")) return correo;
   const [local, dominio] = correo.split("@");
@@ -339,12 +354,18 @@ function renderizarMiembros(lista, total = 0) {
     const estadoTexto = estado ? "Activo" : "Inactivo";
     const estadoIcono = estado ? "bi-check-circle-fill" : "bi-x-circle-fill";
 
+    const rutaIcono = resolverRutaPublica(miembro.Rutaicono);
+    const rutaIconoEsImagen = /\.(?:avif|gif|jpe?g|png|svg|webp)(?:[?#].*)?$/i.test(rutaIcono);
+    const iconoNegocio = rutaIconoEsImagen
+      ? `<img src="${escapeHTML(rutaIcono)}" class="folder-thumb" alt="Logo de ${nombreNegocio}" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><i class="bi bi-building folder-thumb-placeholder" hidden></i>`
+      : `<i class="bi bi-building folder-thumb-placeholder"></i>`;
+
     htmlCompleto += `
     <article class="negocio-folder-card">
       <div class="folder-header">
         <div class="folder-icon-wrapper">
           <i class="bi bi-folder-fill folder-icon"></i>
-          ${miembro.Rutaicono ? `<img src="${miembro.Rutaicono}" class="folder-thumb">` : `<i class="bi bi-building folder-thumb-placeholder"></i>`}
+          ${iconoNegocio}
         </div>
         <div class="folder-title-area">
           <span class="negocio-id">#${id}</span>
