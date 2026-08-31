@@ -4,7 +4,7 @@ class Usuarios
     public function Login($correo, $clave)
 {
     $enlace = dbConectar();
-    session_start();
+    iniciarSesionYoLocal();
 
     $sql = "SELECT * FROM usuarios WHERE Correo=?";
     $consulta = $enlace->prepare($sql);
@@ -18,6 +18,7 @@ class Usuarios
   
 
         if (password_verify($clave, $usuario["contra"])) {
+            session_regenerate_id(true);
             $_SESSION["sistema"] = "YoLocal";
             $_SESSION["correo"] = $correo;
             $_SESSION["nombre"] = "{$usuario['Nombre']} {$usuario['ApellidoP']} {$usuario['ApellidoM']}";
@@ -25,14 +26,15 @@ class Usuarios
             $_SESSION["ID_Usuario"] = "{$usuario['ID_Usuario']}";
             $_SESSION["foto_perfil"] = $usuario["RutaPerfil"] ?? "";
             $_SESSION["LAST_ACTIVITY"] = time();
+            session_write_close();
             return array(true, $usuario['tipo_usuario']);
         } else {
-            session_unset();
+            $_SESSION = [];
             session_destroy();
             return array(false, "Contraseña incorrecta");
         }
     } else {
-        session_unset();
+        $_SESSION = [];
         session_destroy();
         return array(false, "Usuario no encontrado");
     }

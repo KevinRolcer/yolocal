@@ -1,8 +1,6 @@
 <?php 
-//puto agustin
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+include_once("config.php");
+iniciarSesionYoLocal();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 

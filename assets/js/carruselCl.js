@@ -1,18 +1,18 @@
 const predefinedBanners = [
   {
     type: "banner",
-    srcDesktop: "../assets/img/banners/1.png",
-    srcMobile: "../assets/img/banners/1_mobile.png",
+    srcDesktop: "assets/img/banners/1.png",
+    srcMobile: "assets/img/banners/1_mobile.png",
   },
   {
     type: "banner",
-    srcDesktop: "../assets/img/banners/2.png",
-    srcMobile: "../assets/img/banners/2_mobile.png",
+    srcDesktop: "assets/img/banners/2.png",
+    srcMobile: "assets/img/banners/2_mobile.png",
   },
   {
     type: "banner",
-    srcDesktop: "../assets/img/banners/3.png",
-    srcMobile: "../assets/img/banners/3_mobile.png",
+    srcDesktop: "assets/img/banners/3.png",
+    srcMobile: "assets/img/banners/3_mobile.png",
   },
 ];
 

@@ -27,6 +27,27 @@ if ($__yl_ruta_explicit !== null) {
 
 define("YL_ORIGEN_PUBLICO", $__yl_origen);
 
+function iniciarSesionYoLocal()
+{
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        return;
+    }
+
+    $rutaSesion = rtrim(RUTA, "/");
+    if ($rutaSesion === "") {
+        $rutaSesion = "/";
+    }
+
+    session_set_cookie_params([
+        "lifetime" => 0,
+        "path" => $rutaSesion,
+        "httponly" => true,
+        "samesite" => "Lax"
+    ]);
+
+    session_start();
+}
+
 function dbConectar()
 {
     static $conexion;
