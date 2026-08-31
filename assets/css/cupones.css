@@ -1424,3 +1424,22 @@ hr.ticket-divider {
   .admin-users-page #contenedor .ticket-actions,
   .admin-users-page #contenedor .action-btn { transition-duration: 1ms; }
 }
+
+.admin-users-page .modal .form-select {
+  min-height: 48px;
+  border: 1px solid #d7dce5;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #232734;
+  font-size: 0.95rem;
+}
+
+.admin-users-page .modal .form-select:focus {
+  border-color: #6f17ad;
+  box-shadow: 0 0 0 4px rgba(111, 23, 173, 0.12);
+}
+
+.admin-users-page .modal .form-select option {
+  background: #fff;
+  color: #232734;
+}

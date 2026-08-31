@@ -2,6 +2,14 @@ let paginaActual = 1;
 const registrosPorPagina = 10;
 let filtrosActuales = {};
 let filtroDebounceTimer = null;
+let cargaNegociosEnCurso = null;
+
+function urlControladorAdmin(ruta) {
+  const base = typeof window.YL_BASE_PATH === "string"
+    ? window.YL_BASE_PATH.replace(/\/$/, "")
+    : "";
+  return `${base}/${String(ruta).replace(/^\//, "")}`;
+}
 
 function iniciarModuloCupones() {
   const formUsuario = document.querySelector("#formPromocion");
@@ -135,6 +143,14 @@ function iniciarModuloCupones() {
           btn.classList.add("active");
           aplicarFiltros();
       });
+  });
+
+  ["modalPromocion", "modalEditar"].forEach((modalId) => {
+    const modal = document.getElementById(modalId);
+    if (modal && !modal.dataset.negociosListener) {
+      modal.dataset.negociosListener = "1";
+      modal.addEventListener("show.bs.modal", () => cargarNegocios(true));
+    }
   });
 
   cargarNegocios();
@@ -437,8 +453,10 @@ function cargarUsuario(id) {
         document.querySelector("#EditDescripcion").value = data.usuario.descripcion;
         document.querySelector("#EditFechaFin").value = data.usuario.fecha_fin;
         document.querySelector("#EditCantidad").value = data.usuario.cantidad;
-        const selEdit = document.querySelector("#ID_NegocioEdit");
-        selEdit.value = data.usuario.ID_Negocio;
+        cargarNegocios().then(() => {
+          const selEdit = document.querySelector("#ID_NegocioEdit");
+          if (selEdit) selEdit.value = String(data.usuario.ID_Negocio);
+        });
       }
     });
 }
@@ -515,30 +533,76 @@ if (formCupon) {
   });
 }
 
-function cargarNegocios() {
-  fetch("controladores/controladorNegocios.php", {
+function cargarNegocios(forzar = false) {
+  const selects = [
+    document.getElementById("ID_Negocio"),
+    document.getElementById("ID_NegocioEdit"),
+  ].filter(Boolean);
+
+  if (!selects.length) return Promise.resolve([]);
+  if (cargaNegociosEnCurso && !forzar) return cargaNegociosEnCurso;
+
+  selects.forEach((select) => {
+    const valorActual = select.value;
+    select.disabled = true;
+    select.innerHTML = "<option value=''>Cargando negocios...</option>";
+    select.dataset.valorActual = valorActual;
+  });
+
+  cargaNegociosEnCurso = fetch(urlControladorAdmin("controladores/controladorNegocios.php"), {
     method: "POST",
     body: new URLSearchParams({ ope: "OBTENERMEMBRESIAS" }),
+    credentials: "same-origin",
   })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        const selects = [
-          document.getElementById("ID_Negocio"),
-          document.getElementById("ID_NegocioEdit"),
-        ];
-        selects.forEach((select) => {
-          if (!select) return;
-          select.innerHTML = "<option value=''>Seleccione un negocio</option>";
-          data.negocios.forEach((negocio) => {
-            const option = document.createElement("option");
-            option.value = negocio.ID_Negocio;
-            option.textContent = negocio.nombre_negocio;
-            select.appendChild(option);
-          });
-        });
+    .then(async (response) => {
+      const texto = await response.text();
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${texto.slice(0, 160)}`);
       }
+      try {
+        return JSON.parse(texto);
+      } catch (_error) {
+        throw new Error(`Respuesta inválida del servidor: ${texto.slice(0, 160)}`);
+      }
+    })
+    .then((data) => {
+      const negocios = data && data.success && Array.isArray(data.negocios) ? data.negocios : [];
+      if (!data || !data.success) {
+        throw new Error(data && data.msg ? data.msg : "No se recibió la lista de negocios.");
+      }
+
+      selects.forEach((select) => {
+        const valorAnterior = select.dataset.valorActual || "";
+        select.innerHTML = negocios.length
+          ? "<option value=''>Seleccione un negocio</option>"
+          : "<option value=''>No hay negocios disponibles</option>";
+        negocios.forEach((negocio) => {
+          const option = document.createElement("option");
+          option.value = String(negocio.ID_Negocio);
+          option.textContent = negocio.nombre_negocio || `Negocio #${negocio.ID_Negocio}`;
+          select.appendChild(option);
+        });
+        select.disabled = negocios.length === 0;
+        if (valorAnterior && Array.from(select.options).some((opt) => opt.value === valorAnterior)) {
+          select.value = valorAnterior;
+        }
+        delete select.dataset.valorActual;
+      });
+      return negocios;
+    })
+    .catch((error) => {
+      console.error("No se pudieron cargar los negocios:", error);
+      selects.forEach((select) => {
+        select.innerHTML = "<option value=''>Error al cargar negocios</option>";
+        select.disabled = true;
+      });
+      return [];
+    })
+    .finally(() => {
+      cargaNegociosEnCurso = null;
     });
+
+  return cargaNegociosEnCurso;
 }
 
 function cambiarEstatusCupon(id, estatus) {

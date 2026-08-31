@@ -222,8 +222,8 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label for="ID_Negocio" class="form-label">Negocio</label>
-                                        <select class="form-control" id="ID_Negocio" name="ID_Negocio" required>
-                                            <!-- Se llena dinámicamente -->
+                                        <select class="form-select" id="ID_Negocio" name="ID_Negocio" required>
+                                            <option value="">Cargando negocios...</option>
                                         </select>
                                     </div>
                                 </div>
@@ -271,8 +271,8 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label for="ID_NegocioEdit" class="form-label">Negocio</label>
-                                        <select class="form-control" id="ID_NegocioEdit" name="ID_NegocioEdit" required>
-                                            <!-- Se llena dinámicamente -->
+                                        <select class="form-select" id="ID_NegocioEdit" name="ID_NegocioEdit" required>
+                                            <option value="">Cargando negocios...</option>
                                         </select>
                                     </div>
                                 </div>

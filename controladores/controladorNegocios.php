@@ -1,15 +1,17 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-include_once("../config.php");
+require_once __DIR__ . "/../config.php";
 
-if (session_status() === PHP_SESSION_NONE) {
+if (function_exists("iniciarSesionYoLocal")) {
+    iniciarSesionYoLocal();
+} elseif (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 try {
 if (isset($_POST["ope"])) {
     $ope = $_POST["ope"];
-    include_once("../modelos/negocios.php");
+    require_once __DIR__ . "/../modelos/negocios.php";
     $usu = new Negocios();
 
     // Operación de Login
