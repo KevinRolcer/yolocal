@@ -17,17 +17,19 @@
 }
 body {
   background: linear-gradient(145deg, #f5f6fa, #dfe4ea);
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
 }
 
 .container {
   background: var(--blanco);
   display: flex;
   width: 900px;
-  height: 500px;
+  max-width: 100%;
+  min-height: 500px;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -57,6 +59,12 @@ body {
   justify-content: center;
 }
 
+.login-form {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
 .login-form h2 {
   margin-bottom: 10px;
   color: #333;
@@ -80,7 +88,8 @@ body {
 }
 
 .input-group input {
-  padding: 10px;
+  width: 100%;
+  padding: 12px 14px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
@@ -96,6 +105,7 @@ body {
   position: relative;
   overflow: hidden;
   color: white;
+  width: 100%;
   padding: 12px;
   border: none;
   border-radius: 8px;
@@ -152,8 +162,8 @@ body {
 }
 
 .logo-icon {
-    width: 450px;
-    height: 450px;
+    width: 240px;
+    height: 240px;
   
     border-radius: 50%;
     display: flex;
@@ -165,7 +175,7 @@ body {
 }
 @media (max-width: 1024px) {
     .container {
-        max-width: 900px;
+        max-width: 500px;
     }
     
     .left-section {
@@ -173,8 +183,8 @@ body {
     }
     
     .logo-icon {
-        max-width: 200px;
-        max-height: 200px;
+        width: 220px;
+        height: 220px;
     }
     
     .right-section {
@@ -186,22 +196,24 @@ body {
 @media (max-width: 968px) {
     body {
         padding: 15px;
+        align-items: stretch;
     }
     
     .container {
         flex-direction: column;
         max-width: 500px;
         min-height: auto;
+        margin: auto;
     }
 
     .left-section {
-        min-height: 200px;
-        padding: 30px;
+        min-height: 120px;
+        padding: 16px;
     }
 
     .logo-icon {
-        max-width: 150px;
-        max-height: 150px;
+        width: 120px;
+        height: 120px;
     }
 
     .right-section {
@@ -214,15 +226,15 @@ body {
 }
 
 /* Tablets pequeñas y móviles grandes */
-@media (max-width: 768px) {
+@media (max-width: 508px) {
     .left-section {
-        min-height: 180px;
-        padding: 25px;
+        min-height: 88px;
+        padding: 10px 14px;
     }
     
     .logo-icon {
-        max-width: 130px;
-        max-height: 130px;
+        width: 105px;
+        height: 105px;
     }
     
     .right-section {
@@ -235,7 +247,7 @@ body {
 }
 
 /* Móviles */
-@media (max-width: 600px) {
+@media (max-width: 300px) {
     body {
         padding: 10px;
     }
@@ -243,20 +255,25 @@ body {
     .container {
         border-radius: 15px;
         max-width: 100%;
+        min-height: calc(100vh - 20px);
     }
 
     .left-section {
-        min-height: 150px;
-        padding: 20px;
+        min-height: 76px;
+        padding: 8px 12px;
     }
 
     .logo-icon {
-        max-width: 120px;
-        max-height: 120px;
+        width: 78px;
+        height: 78px;
     }
 
     .right-section {
         padding: 30px 25px;
+    }
+
+    .login-form {
+        max-width: 100%;
     }
 
     .login-form h2 {
@@ -291,19 +308,19 @@ body {
 }
 
 /* Móviles pequeños */
-@media (max-width: 480px) {
+@media (max-width: 280px) {
     .container {
         border-radius: 12px;
     }
     
     .left-section {
-        min-height: 130px;
-        padding: 15px;
+        min-height: 68px;
+        padding: 6px 10px;
     }
     
     .logo-icon {
-        max-width: 100px;
-        max-height: 100px;
+        width: 70px;
+        height: 70px;
     }
     
     .right-section {
@@ -357,13 +374,13 @@ body {
     }
     
     .left-section {
-        min-height: 120px;
-        padding: 12px;
+        min-height: 62px;
+        padding: 6px 8px;
     }
     
     .logo-icon {
-        max-width: 90px;
-        max-height: 90px;
+        width: 64px;
+        height: 64px;
     }
     
     .right-section {
@@ -404,8 +421,8 @@ body {
     }
     
     .logo-icon {
-        max-width: 100px;
-        max-height: 100px;
+        width: 90px;
+        height: 90px;
     }
     
     .right-section {
