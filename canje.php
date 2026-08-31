@@ -10,6 +10,7 @@ $id_promocion = isset($_GET["id"]) ? (int) $_GET["id"] : 0;
 $codigo_precargado = isset($_GET["c"]) ? trim((string) $_GET["c"]) : "";
 $error = null;
 $success = null;
+$modalCanje = null;
 
 if (!empty($_SESSION["canje_ok"])) {
     $success = $_SESSION["canje_ok"];
@@ -18,6 +19,10 @@ if (!empty($_SESSION["canje_ok"])) {
 if (!empty($_SESSION["canje_err"])) {
     $error = $_SESSION["canje_err"];
     unset($_SESSION["canje_err"]);
+}
+if (!empty($_SESSION["canje_modal"])) {
+    $modalCanje = (string) $_SESSION["canje_modal"];
+    unset($_SESSION["canje_modal"]);
 }
 
 if ($id_promocion <= 0) {
@@ -52,6 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION["canje_ok"] = $res["msg"] ?? "¡Cupón canjeado con éxito!";
     } else {
         $_SESSION["canje_err"] = $res["msg"] ?? "No se pudo canjear el cupón.";
+        if (($res["reason"] ?? null) === "already_redeemed") {
+            $_SESSION["canje_modal"] = "already_redeemed";
+        }
     }
 
     header("Location: canje.php?id=" . $id_promocion, true, 303);
@@ -336,6 +344,72 @@ $logoSrc = rtrim($rutaBase, "/") . "/assets/img/LogoYolocal.png";
             background: rgba(76, 6, 130, 0.06);
             color: var(--yl-purple);
         }
+        .canje-dialog {
+            width: min(430px, calc(100vw - 32px));
+            padding: 0;
+            overflow: hidden;
+            border: 0;
+            border-radius: 16px;
+            background: #fff;
+            color: #1e1b2e;
+            box-shadow: 0 24px 70px rgba(35, 18, 57, 0.3);
+        }
+        .canje-dialog::backdrop {
+            background: rgba(24, 18, 31, 0.62);
+            backdrop-filter: blur(3px);
+        }
+        .canje-dialog-inner {
+            padding: 30px 28px 26px;
+            text-align: center;
+        }
+        .canje-dialog-icon {
+            width: 68px;
+            height: 68px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: #fff4d6;
+            color: #9a6700;
+            font-size: 1.8rem;
+        }
+        .canje-dialog h2 {
+            margin: 0 0 10px;
+            color: #261c30;
+            font-size: clamp(1.3rem, 4vw, 1.65rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .canje-dialog p {
+            margin: 0;
+            color: #62596c;
+            font-size: 0.94rem;
+            line-height: 1.55;
+        }
+        .canje-dialog-note {
+            display: block;
+            margin-top: 10px;
+            color: #766d80;
+            font-size: 0.8rem;
+        }
+        .canje-dialog-button {
+            width: 100%;
+            min-height: 46px;
+            margin-top: 24px;
+            border: 0;
+            border-radius: 12px;
+            background: var(--yl-purple);
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 160ms ease-out, transform 160ms ease-out;
+        }
+        .canje-dialog-button:hover { background: #3d0569; }
+        .canje-dialog-button:active { transform: scale(0.985); }
+        .canje-dialog-button:focus-visible {
+            outline: 3px solid rgba(76, 6, 130, 0.28);
+            outline-offset: 3px;
+        }
 
         @media (min-width: 769px) {
             html,
@@ -412,6 +486,20 @@ $logoSrc = rtrim($rutaBase, "/") . "/assets/img/LogoYolocal.png";
     </style>
 </head>
 <body>
+
+<?php if ($modalCanje === "already_redeemed"): ?>
+<dialog class="canje-dialog" id="modalCuponCanjeado" aria-labelledby="tituloCuponCanjeado" aria-describedby="mensajeCuponCanjeado">
+    <div class="canje-dialog-inner">
+        <div class="canje-dialog-icon" aria-hidden="true">
+            <i class="bi bi-exclamation-circle-fill"></i>
+        </div>
+        <h2 id="tituloCuponCanjeado">Este cupón ya fue canjeado</h2>
+        <p id="mensajeCuponCanjeado">El código ingresado ya se utilizó anteriormente y no puede volver a canjearse.</p>
+        <span class="canje-dialog-note">No se descontaron unidades adicionales.</span>
+        <button type="button" class="canje-dialog-button" id="cerrarModalCuponCanjeado">Entendido</button>
+    </div>
+</dialog>
+<?php endif; ?>
 
 <a class="canje-brand" href="<?= htmlspecialchars(rtrim($rutaBase, "/") . "/vistas/cuponesPagina.php") ?>" title="Ir a la cuponera">
     <img src="<?= htmlspecialchars($logoSrc) ?>" alt="Yo Local">
@@ -491,6 +579,25 @@ $logoSrc = rtrim($rutaBase, "/") . "/assets/img/LogoYolocal.png";
 
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <script>
+(function () {
+    var modal = document.getElementById("modalCuponCanjeado");
+    var cerrar = document.getElementById("cerrarModalCuponCanjeado");
+    if (!modal) return;
+
+    if (typeof modal.showModal === "function") {
+        modal.showModal();
+    } else {
+        modal.setAttribute("open", "open");
+    }
+
+    if (cerrar) {
+        cerrar.addEventListener("click", function () {
+            if (typeof modal.close === "function") modal.close();
+            else modal.removeAttribute("open");
+        });
+    }
+})();
+
 (function () {
     var card = document.getElementById("canjeCard");
     var wrap = document.getElementById("qrReaderWrap");

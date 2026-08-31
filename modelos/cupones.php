@@ -554,7 +554,11 @@ public function ListarCategoriasConCupones()
             }
             if ((int) $row["canjeado"] === 1) {
                 $enlace->rollback();
-                return ["ok" => false, "msg" => "Este cupón ya fue canjeado anteriormente."];
+                return [
+                    "ok" => false,
+                    "reason" => "already_redeemed",
+                    "msg" => "Este cupón ya fue canjeado anteriormente."
+                ];
             }
             $idCupon = (int) $row["ID_Cupon"];
             $up1 = $enlace->prepare("UPDATE promociones SET cantidad = cantidad - 1, Canjeados = Canjeados + 1 WHERE ID_Promocion = ? AND cantidad > 0");
