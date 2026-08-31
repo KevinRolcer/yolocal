@@ -1,11 +1,7 @@
 <?php
-require_once __DIR__ . '/../modelos/Carrucel.php';
-
-$negocio = null;
-if (isset($_GET['id'])) {
-    $idNegocio = intval($_GET['id']);
-    $carrucel = new Carrucel();
-    $negocio = $carrucel->obtenerNegocioPorId($idNegocio);
+if (!isset($negocio) || !$negocio) {
+    echo "<h1>Error 404: Negocio no encontrado</h1>";
+    exit();
 }
 ?>
 <!DOCTYPE html>
