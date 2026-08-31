@@ -7,6 +7,16 @@
     $adminCssFiles = ["assets/css/negociosAdmin.css", "assets/css/cupones.css", "assets/css/paginacion.css", "assets/css/adminFormal.css"];
     include_once("head.php");
     ?>
+    <?php
+    if (!defined('RUTA')) {
+        require_once dirname(dirname(__DIR__)) . '/config.php';
+    }
+    $ylScriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+    $ylPublicRoot = rtrim(str_replace('\\', '/', dirname(dirname(dirname($ylScriptName)))), '/');
+    if ($ylPublicRoot === '' || $ylPublicRoot === '.') {
+        $ylPublicRoot = rtrim(RUTA, '/');
+    }
+    ?>
     <script>
         if (typeof usuarioId === 'undefined') {
             var usuarioId = <?= json_encode($_SESSION["ID_Usuario"]) ?>;
@@ -14,6 +24,8 @@
         if (typeof usuarioTipo === 'undefined') {
             var usuarioTipo = <?= json_encode($_SESSION["tipo"]) ?>;
         }
+        window.__YL_PUBLIC_ROOT__ = <?= json_encode($ylPublicRoot, JSON_UNESCAPED_SLASHES) ?>;
+        window.__YL_PUBLIC_ORIGIN__ = <?= json_encode(defined("YL_ORIGEN_PUBLICO") ? YL_ORIGEN_PUBLICO : "", JSON_UNESCAPED_SLASHES) ?>;
     </script>
     <script type="module" src="assets/js/funcionesCupones.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -209,7 +221,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="Descripcion" class="form-label">Negocio</label>
+                                        <label for="ID_Negocio" class="form-label">Negocio</label>
                                         <select class="form-control" id="ID_Negocio" name="ID_Negocio" required>
                                             <!-- Se llena dinámicamente -->
                                         </select>

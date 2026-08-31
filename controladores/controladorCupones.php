@@ -87,9 +87,13 @@ if (isset($_POST["ope"])) {
 
     // Filtros disponibles
     $filtros = [
+        "busqueda"      => $_POST["busqueda"] ?? null,
         "titulo"        => $_POST["titulo"] ?? null,
         "descripcion"   => $_POST["descripcion"] ?? null,
-        "NombreNegocio" => $_POST["negocio"] ?? null
+        "NombreNegocio" => $_POST["negocio"] ?? null,
+        "categoria"     => $_POST["categoria"] ?? null,
+        "estado"        => $_POST["estado"] ?? "activos",
+        "orden"         => $_POST["orden"] ?? "recientes"
     ];
 
    
@@ -97,10 +101,19 @@ if (isset($_POST["ope"])) {
     $lista = $usu->ListarTODOSP($pagina, $registrosPorPagina, $filtros,  $usuarioId, $usuarioTipo);
 
     echo json_encode([
-        "success"      => true,
-        "lista"        => $lista["promociones"],
-        "totalPaginas" => $lista["totalPaginas"],
-        "paginaActual" => $lista["paginaActual"]
+        "success"        => true,
+        "lista"          => $lista["promociones"],
+        "totalPaginas"   => $lista["totalPaginas"],
+        "paginaActual"   => $lista["paginaActual"],
+        "totalRegistros" => $lista["totalRegistros"]
+    ]);
+}
+
+ if ($ope == "LISTAR_CATEGORIAS_CUPONES") {
+    header('Content-Type: application/json');
+    echo json_encode([
+        "success" => true,
+        "lista" => $usu->ListarCategoriasConCupones()
     ]);
 }
 
@@ -226,6 +239,16 @@ if (isset($_POST["ope"])) {
             "nuevaCantidad" => $nuevaCantidad
         );
         echo json_encode($info);
+    } elseif ($ope == "EMITIR_CUPON_PDF" && isset($_POST["ID_Promocion"])) {
+        header("Content-Type: application/json");
+        $idP = (int) $_POST["ID_Promocion"];
+        if ($usuarioTipoSesion === "negocio" && !cuponPerteneceAlUsuario($idP, (int) $usuarioIdSesion)) {
+            echo json_encode(["success" => false, "msg" => "No autorizado."]);
+            exit();
+        }
+        $out = $usu->emitirCuponDescargaPdf($idP);
+        echo json_encode($out);
+        exit();
     } elseif ($ope == "AGREGARCUPON" && isset($_POST["ID_PromocionC"]) && isset($_POST["cantidad"])) {
         if ($usuarioTipoSesion === "negocio" && !cuponPerteneceAlUsuario(intval($_POST["ID_PromocionC"]), intval($usuarioIdSesion))) {
             echo json_encode(["success" => false, "msg" => "No autorizado."]);

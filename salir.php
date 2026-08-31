@@ -1,6 +1,6 @@
 <?php
     include_once("config.php");
-    session_start();
+    iniciarSesionYoLocal();
     session_unset();
     session_destroy();
     header("Location:".RUTA."/");

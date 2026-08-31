@@ -1,4 +1,3 @@
-// --- State Variables ---
 let paginaActual = 1;
 const registrosPorPagina = 10;
 let filtrosActuales = {};
@@ -17,7 +16,6 @@ function iniciarModuloCupones() {
   if (formACupon) {
     formACupon.addEventListener("submit", (event) => {
       event.preventDefault();
-      // El submit se maneja abajo con un listener directo al form
     });
   }
 
@@ -50,7 +48,6 @@ function iniciarModuloCupones() {
     });
   }
 
-  // --- Toolbar & Filters Logic ---
   const searchInput = document.getElementById("searchInput");
   const searchClear = document.getElementById("searchClear");
   const filterDropdownBtn = document.getElementById("filterDropdownBtn");
@@ -155,6 +152,38 @@ if (document.readyState === "loading") {
   iniciarModuloCupones();
 }
 
+function textoSeguroCuponesAdmin(valor) {
+  return String(valor ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+/** URL pública de canje (misma lógica que cuponesPagina). */
+function urlPublicaCanjePorId(idPromo) {
+  let root = typeof window.__YL_PUBLIC_ROOT__ === "string" ? window.__YL_PUBLIC_ROOT__.trim() : "";
+  if (root && root !== ".") {
+    root = root.startsWith("/") ? root : `/${root}`;
+  } else {
+    root = "";
+    const path = window.location.pathname.replace(/\\/g, "/");
+    const v = path.indexOf("/vistas/");
+    if (v !== -1) {
+      root = path.slice(0, v) || "";
+    }
+  }
+  const o = typeof window.__YL_PUBLIC_ORIGIN__ === "string" ? window.__YL_PUBLIC_ORIGIN__.trim() : "";
+  const origin = o ? o.replace(/\/$/, "") : window.location.origin;
+  const suffix = `/canje.php?id=${encodeURIComponent(String(idPromo))}`;
+  return `${origin}${root}${suffix}`;
+}
+
+/** Logo admin (misma ruta relativa que encabezado.php en sistemaAdmin). */
+function srcLogoTicketAdmin() {
+  return new URL("assets/img/LogoYolocal.png", window.location.href).href;
+}
+
 function esFechaExpirada(fechaFin) {
   const hoy = new Date();
   const fin = new Date(fechaFin);
@@ -249,84 +278,65 @@ function renderizarPromociones(lista) {
 
   lista.forEach((promo) => {
     const expirado = esFechaExpirada(promo.fecha_fin);
-    const statusClass = expirado ? "status-expired" : (promo.Estatus == 1 ? "status-active" : "status-inactive");
-    const statusText = expirado ? "Expirado" : (promo.Estatus == 1 ? "Activo" : "Inactivo");
-    
+    const statusClass = expirado ? "status-expired" : promo.Estatus == 1 ? "status-active" : "status-inactive";
+    const statusText = expirado ? "Expirado" : promo.Estatus == 1 ? "Activo" : "Inactivo";
+    const hrefCanje = urlPublicaCanjePorId(promo.ID_Promocion);
+    const hrefEsc = textoSeguroCuponesAdmin(hrefCanje);
+
     const ticketHTML = `
     <article class="ticket" data-id="${promo.ID_Promocion}">
-      
       <div class="ticket-actions">
-        ${(window.usuarioTipo === "admin" || window.usuarioTipo === "negocio") ? `
-          <button class="action-btn add btn-agregar" title="Agregar Cupones" data-id="${promo.ID_Promocion}" data-bs-toggle="modal" data-bs-target="#modalAgregarC">
-            <i class="bi bi-plus"></i>
-          </button>
-          <button class="action-btn toggle btn-toggle" title="Alternar Estado" data-id="${promo.ID_Promocion}" data-status="${promo.Estatus}">
-            <i class="bi bi-power"></i>
-          </button>
-          <button class="action-btn edit btn-editar" title="Editar" data-id="${promo.ID_Promocion}" data-bs-toggle="modal" data-bs-target="#modalEditar">
-            <i class="bi bi-pencil-fill"></i>
-          </button>
+        ${window.usuarioTipo === "admin" || window.usuarioTipo === "negocio" ? `
+          <button type="button" class="action-btn add btn-agregar" title="Agregar cupones" aria-label="Agregar cupones" data-id="${promo.ID_Promocion}" data-bs-toggle="modal" data-bs-target="#modalAgregarC"><i class="bi bi-plus" aria-hidden="true"></i></button>
+          <button type="button" class="action-btn toggle btn-toggle" title="Alternar estado" aria-label="Alternar estado" data-id="${promo.ID_Promocion}" data-status="${promo.Estatus}"><i class="bi bi-power" aria-hidden="true"></i></button>
+          <button type="button" class="action-btn edit btn-editar" title="Editar cupón" aria-label="Editar cupón" data-id="${promo.ID_Promocion}" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="bi bi-pencil-fill" aria-hidden="true"></i></button>
         ` : ""}
-        <button class="action-btn delete btn-eliminar" title="Eliminar" data-id="${promo.ID_Promocion}">
-          <i class="bi bi-trash-fill"></i>
-        </button>
+        <button type="button" class="action-btn delete btn-eliminar" title="Eliminar cupón" aria-label="Eliminar cupón" data-id="${promo.ID_Promocion}"><i class="bi bi-trash-fill" aria-hidden="true"></i></button>
       </div>
 
       <div class="ticket-top">
         <div class="ticket-header">
           <div class="ticket-business">
-            <div class="business-icon"><i class="bi bi-shop"></i></div>
-            <div class="ticket-business-meta">
-              <span class="business-name">${promo.nombre_negocio}</span>
-              <div class="status-badge ${statusClass}">${statusText}</div>
-            </div>
+            <div class="business-icon"><i class="bi bi-shop" aria-hidden="true"></i></div>
+            <span class="business-name">${textoSeguroCuponesAdmin(promo.nombre_negocio)}</span>
           </div>
           <div class="ticket-header-right">
-            <div class="ticket-date">${promo.fecha_fin}</div>
+            <span class="status-badge ${statusClass}">${statusText}</span>
+            <time class="ticket-date" datetime="${textoSeguroCuponesAdmin(promo.fecha_fin)}">${textoSeguroCuponesAdmin(promo.fecha_fin)}</time>
           </div>
         </div>
-        
         <div class="ticket-body">
-          <h3 class="ticket-title">${promo.titulo}</h3>
-          <p class="ticket-desc">${promo.descripcion ?? "Disfruta de esta promoci&oacute;n exclusiva en nuestro local."}</p>
+          <h3 class="ticket-title">${textoSeguroCuponesAdmin(promo.titulo)}</h3>
+          <p class="ticket-desc">${textoSeguroCuponesAdmin(promo.descripcion ?? "Disfruta de esta promoción exclusiva en nuestro local.")}</p>
         </div>
       </div>
 
-      <div class="ticket-divider"></div>
+      <div class="ticket-divider" aria-hidden="true"></div>
 
       <div class="ticket-bottom">
         <div class="ticket-info">
           <div class="info-grid">
-            <div class="info-item">
-              <label>Cantidad</label>
-              <span>${promo.cantidad}</span>
-            </div>
-            <div class="info-item">
-              <label>Canjeados</label>
-              <span>${promo.Canjeados}</span>
-            </div>
+            <div class="info-item"><span class="info-label">Cantidad</span><strong>${promo.cantidad}</strong></div>
+            <div class="info-item"><span class="info-label">Canjeados</span><strong>${promo.Canjeados}</strong></div>
           </div>
         </div>
-        
         <div class="ticket-qr-container">
-          <div class="qr-code" id="qr-${promo.ID_Promocion}" data-id="${promo.ID_Promocion}" title="Escanear para canjear"></div>
-          <span class="qr-label">ESCANEAR</span>
+          <a class="qr-code" href="${hrefEsc}" target="_blank" rel="noopener noreferrer" title="Abrir página de canje" aria-label="Abrir página de canje"><span id="qr-${promo.ID_Promocion}" data-id="${promo.ID_Promocion}"></span></a>
+          <span class="qr-label">Escanear</span>
         </div>
       </div>
     </article>
     `;
+
     contenedor.insertAdjacentHTML("beforeend", ticketHTML);
 
-    const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '');
-    const qrUrl = `${baseUrl}/canje.php?id=${promo.ID_Promocion}`;
-    
     new QRCode(document.getElementById(`qr-${promo.ID_Promocion}`), {
-      text: qrUrl,
+      text: hrefCanje,
       width: 80,
       height: 80,
       colorDark: "#0f172a",
       colorLight: "#ffffff",
-      correctLevel: QRCode.CorrectLevel.H
+      correctLevel: QRCode.CorrectLevel.H,
     });
   });
 }
@@ -427,7 +437,8 @@ function cargarUsuario(id) {
         document.querySelector("#EditDescripcion").value = data.usuario.descripcion;
         document.querySelector("#EditFechaFin").value = data.usuario.fecha_fin;
         document.querySelector("#EditCantidad").value = data.usuario.cantidad;
-        document.querySelector("#ID_NegocioEdit").value = data.usuario.ID_Negocio;
+        const selEdit = document.querySelector("#ID_NegocioEdit");
+        selEdit.value = data.usuario.ID_Negocio;
       }
     });
 }
