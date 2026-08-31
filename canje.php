@@ -373,6 +373,16 @@ $logoSrc = rtrim($rutaBase, "/") . "/assets/img/LogoYolocal.png";
             color: #9a6700;
             font-size: 1.8rem;
         }
+        .canje-dialog--success .canje-dialog-icon {
+            background: #e9f9f0;
+            color: #087443;
+        }
+        .canje-dialog--success .canje-dialog-button {
+            background: #087443;
+        }
+        .canje-dialog--success .canje-dialog-button:hover {
+            background: #065f37;
+        }
         .canje-dialog h2 {
             margin: 0 0 10px;
             color: #261c30;
@@ -487,6 +497,20 @@ $logoSrc = rtrim($rutaBase, "/") . "/assets/img/LogoYolocal.png";
 </head>
 <body>
 
+<?php if ($success): ?>
+<dialog class="canje-dialog canje-dialog--success" id="modalCanjeExitoso" aria-labelledby="tituloCanjeExitoso" aria-describedby="mensajeCanjeExitoso">
+    <div class="canje-dialog-inner">
+        <div class="canje-dialog-icon" aria-hidden="true">
+            <i class="bi bi-check-circle-fill"></i>
+        </div>
+        <h2 id="tituloCanjeExitoso">Cupón canjeado correctamente</h2>
+        <p id="mensajeCanjeExitoso">El canje se registró y este código ya no puede volver a utilizarse.</p>
+        <span class="canje-dialog-note">Cupones disponibles: <?= (int) $promo["cantidad"] ?>.</span>
+        <button type="button" class="canje-dialog-button" data-close-canje-dialog>Entendido</button>
+    </div>
+</dialog>
+<?php endif; ?>
+
 <?php if ($modalCanje === "already_redeemed"): ?>
 <dialog class="canje-dialog" id="modalCuponCanjeado" aria-labelledby="tituloCuponCanjeado" aria-describedby="mensajeCuponCanjeado">
     <div class="canje-dialog-inner">
@@ -496,7 +520,7 @@ $logoSrc = rtrim($rutaBase, "/") . "/assets/img/LogoYolocal.png";
         <h2 id="tituloCuponCanjeado">Este cupón ya fue canjeado</h2>
         <p id="mensajeCuponCanjeado">El código ingresado ya se utilizó anteriormente y no puede volver a canjearse.</p>
         <span class="canje-dialog-note">No se descontaron unidades adicionales.</span>
-        <button type="button" class="canje-dialog-button" id="cerrarModalCuponCanjeado">Entendido</button>
+        <button type="button" class="canje-dialog-button" data-close-canje-dialog>Entendido</button>
     </div>
 </dialog>
 <?php endif; ?>
@@ -580,8 +604,7 @@ $logoSrc = rtrim($rutaBase, "/") . "/assets/img/LogoYolocal.png";
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <script>
 (function () {
-    var modal = document.getElementById("modalCuponCanjeado");
-    var cerrar = document.getElementById("cerrarModalCuponCanjeado");
+    var modal = document.getElementById("modalCanjeExitoso") || document.getElementById("modalCuponCanjeado");
     if (!modal) return;
 
     if (typeof modal.showModal === "function") {
@@ -590,6 +613,7 @@ $logoSrc = rtrim($rutaBase, "/") . "/assets/img/LogoYolocal.png";
         modal.setAttribute("open", "open");
     }
 
+    var cerrar = modal.querySelector("[data-close-canje-dialog]");
     if (cerrar) {
         cerrar.addEventListener("click", function () {
             if (typeof modal.close === "function") modal.close();
