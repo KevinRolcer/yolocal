@@ -568,7 +568,9 @@ function cargarNegocios(forzar = false) {
     .then((data) => {
       const negocios = data && data.success && Array.isArray(data.negocios) ? data.negocios : [];
       if (!data || !data.success) {
-        throw new Error(data && data.msg ? data.msg : "No se recibió la lista de negocios.");
+        const mensaje = data && data.msg ? data.msg : "No se recibió la lista de negocios.";
+        const detalle = data && data.error ? ` Detalle: ${data.error}` : "";
+        throw new Error(mensaje + detalle);
       }
 
       selects.forEach((select) => {

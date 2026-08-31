@@ -572,9 +572,8 @@ class Negocios
             return null;
         }
     }
-    public function ObtenerNegocios($idUsuario = null)
+public function ObtenerNegocios($idUsuario = null)
 {
-    $this->asegurarCodigosCanjeFaltantes();
     $enlace = dbConectar();
     $sql = "SELECT * FROM negocios";
     if ($idUsuario !== null) {
