@@ -213,8 +213,8 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label for="CodigoCanje" class="form-label">C&oacute;digo de Canje (Secret)</label>
-                                        <input type="text" class="form-control" id="CodigoCanje" name="CodigoCanje" maxlength="20" value="1234" required>
-                                        <div class="form-text text-secondary">C&oacute;digo para validar cupones (Admin solo).</div>
+                                        <input type="text" class="form-control" id="CodigoCanje" name="CodigoCanje" maxlength="20" value="" placeholder="Ej. CAFE2025 (opcional)" autocomplete="off">
+                                        <div class="form-text text-secondary">Si lo dejas vac&iacute;o, se genera uno al azar autom&aacute;ticamente. &Uacute;salo en <code>canje.php</code>.</div>
                                     </div>
                                 </div>
                                 <div class="text-end mt-3">
@@ -320,11 +320,6 @@
                                             </select>
                                         </div>
                                     <?php endif; ?>
-                                    <div class="col-md-12">
-                                        <label for="codigo_canjeEdit" class="form-label">C&oacute;digo de Canje (Secret)</label>
-                                        <input type="text" class="form-control" id="codigo_canjeEdit" name="codigo_canjeEdit" maxlength="20" required>
-                                        <div class="form-text text-secondary">C&oacute;digo para validar cupones (Admin solo).</div>
-                                    </div>
 
                                 </div>
 

@@ -6,6 +6,12 @@ if (!isset($negocio) && isset($_GET['id'])) {
     $negocio = $carrucel->obtenerNegocioPorId($idNegocio);
 }
 
+if (!isset($negocio) || !$negocio) {
+    http_response_code(404);
+    echo "<h1>Error 404: Negocio no encontrado</h1>";
+    exit();
+}
+
 $negocio = $negocio ?? [];
 $horarios = $horarios ?? [];
 $imagenes = $imagenes ?? [];

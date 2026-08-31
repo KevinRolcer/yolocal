@@ -9,8 +9,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cupones - Yolocal</title>
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
+    <?php
+    if (!defined("RUTA")) {
+        require_once dirname(__DIR__) . "/config.php";
+    }
+    $ylScriptName = $_SERVER["SCRIPT_NAME"] ?? "";
+    $ylPublicRoot = rtrim(str_replace("\\", "/", dirname(dirname($ylScriptName))), "/");
+    if ($ylPublicRoot === "" || $ylPublicRoot === ".") {
+        $ylPublicRoot = rtrim(RUTA, "/");
+    }
+    ?>
+    <script>
+        window.__YL_PUBLIC_ROOT__ = <?= json_encode($ylPublicRoot, JSON_UNESCAPED_SLASHES) ?>;
+        window.__YL_PUBLIC_ORIGIN__ = <?= json_encode(defined("YL_ORIGEN_PUBLICO") ? YL_ORIGEN_PUBLICO : "", JSON_UNESCAPED_SLASHES) ?>;
+    </script>
     <script type="module" src="../assets/js/pagina/funcionesCupones.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="stylesheet" href="../assets/css/cuponesCl.css">
     <link rel="stylesheet" href="../assets/css/paginacion.css">
     <script defer src="../assets/js/menuCl.js"></script>
@@ -118,13 +133,31 @@
     </header>
 
 
-    <div class="principal">
+    <main class="principal coupons-page">
 
-        <div class="filter-container">
+        <section class="coupons-hero">
+            <div class="hero-copy">
+                <h1>Promociones activas cerca de ti</h1>
+                <p>Encuentra un beneficio, descárgalo y presenta su código al momento de comprar.</p>
+            </div>
+            <div class="hero-card">
+                <div class="hero-ticket-minimal">
+                    <div class="hero-qr-frame" aria-hidden="true">
+                        <i class="bi bi-qr-code hero-qr-icon"></i>
+                        <span class="hero-qr-scan"></span>
+                    </div>
+                    <div class="hero-ticket-copy">
+                        <strong>Descarga tus cupones</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="filters-shell" aria-label="Filtros de cupones">
 
 
 
-            <div class="search-bar " data-filter="descripcion">
+            <div class="search-bar">
                 <input type="text" id="filtroDescripcion" placeholder="Buscar descripción" />
                 <button type="button">
                     <i class="bi bi-search"></i>
@@ -133,21 +166,61 @@
 
 
 
-        </div>
-        <div class="coupons-grid">
+            <div class="filters-grid">
+                <label class="filter-field">
+                    <span>Categoría</span>
+                    <select id="filtroCategoria">
+                        <option value="">Todas las categor&iacute;as</option>
+                    </select>
+                </label>
 
-        </div>
+                <label class="filter-field">
+                    <span>Ordenar</span>
+                    <select id="filtroOrden">
+                        <option value="recientes">M&aacute;s recientes</option>
+                        <option value="vencen_pronto">Vencen pronto</option>
+                        <option value="mas_disponibles">M&aacute;s disponibles</option>
+                        <option value="negocio">Negocio A-Z</option>
+                    </select>
+                </label>
 
-        <div id="paginacion" class="mt-3 d-flex justify-content-center"></div>
-        <div class="descripcionC">
+                <div class="filter-field status-field">
+                    <span>Estado</span>
+                    <div class="status-chips" id="filtroEstado">
+                        <button class="chip active" type="button" data-estado="activos">Activos</button>
+                        <button class="chip" type="button" data-estado="miercoles">PromoMi&eacute;rcoles</button>
+                        <button class="chip" type="button" data-estado="por_agotarse">Por agotarse</button>
+                    </div>
+                </div>
+
+                <button class="btn-clear-filters" type="button" id="limpiarFiltros">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                    Limpiar
+                </button>
+            </div>
+        </section>
+
+        <section class="coupon-results-header">
+            <div>
+                <span class="section-kicker">Resultados</span>
+            </div>
+            <span id="contadorCupones" class="results-pill">Cargando...</span>
+        </section>
+
+        <section class="coupons-grid" aria-live="polite">
+
+        </section>
+
+        <div id="paginacion" class="pagination-wrap"></div>
+        <section class="descripcionC">
 
             <p>Sumérgete en el mundo de los cupones y descuentos exclusivos para
                 <span>Yo <span id="span2">local</span></span>
             </p>
 
-        </div>
+        </section>
 
-    </div>
+    </main>
     
 
 </body>

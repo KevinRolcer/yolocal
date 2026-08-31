@@ -1,5 +1,6 @@
 <?php
     include_once("../config.php");
+    iniciarSesionYoLocal();
 
     if(isset($_POST["ope"]))
     {
@@ -19,7 +20,7 @@
                 $info = array(
                     "success"=>true,
                     "tipo" => $tipoUsuario,
-                    "ruta"=> RUTA."/?pag=".$status[1]
+                    "ruta"=> RUTA . "?pag=" . $status[1]
                 );
             }
             else
