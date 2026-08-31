@@ -1,10 +1,12 @@
 <?php
+header('Content-Type: application/json; charset=utf-8');
 include_once("../config.php");
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+try {
 if (isset($_POST["ope"])) {
     $ope = $_POST["ope"];
     include_once("../modelos/negocios.php");
@@ -15,7 +17,6 @@ if (isset($_POST["ope"])) {
 
     // listar 
     if ($ope == "LISTAUSUARIOS") {
-        header('Content-Type: application/json');
         $usuarioId = $_POST['usuarioId'] ?? null;
         $usuarioTipo = $_POST['usuarioTipo'] ?? null;
 
@@ -50,7 +51,7 @@ if (isset($_POST["ope"])) {
             "totalRegistros" => $lista["totalRegistros"]
         ]);
     }elseif ($ope == "LISTAICONOS") {
-        header('Content-Type: application/json'); // <-- esta línea es clave
+        // JSON header global definido al inicio del controlador
       
 
 
@@ -64,7 +65,7 @@ if (isset($_POST["ope"])) {
            
         ]);
     }elseif ($ope == "LISTAICONOSBanner") {
-        header('Content-Type: application/json'); // <-- esta línea es clave
+        // JSON header global definido al inicio del controlador
         $lista = $usu->ListarIconosBanner();
 
         echo json_encode([
@@ -74,7 +75,7 @@ if (isset($_POST["ope"])) {
         ]);
     }
     elseif ($ope == "LISTAICONOS2") {
-        header('Content-Type: application/json'); // <-- esta línea es clave
+        // JSON header global definido al inicio del controlador
       
 
         $lista = $usu->ListarIconos2();
@@ -104,8 +105,8 @@ if (isset($_POST["ope"])) {
         $datos = array(
             "ID_Usuario" => $_POST["ID_Usuario"],
             "nombre_negocio" => $_POST["Nombre"],
-            "ID_Categoria" => $_POST["ID_Categoria"]
-
+            "ID_Categoria" => $_POST["ID_Categoria"],
+            "CodigoCanje" => trim($_POST["CodigoCanje"] ?? ""),
         );
 
         $status = $usu->Agregar($datos);
@@ -124,7 +125,7 @@ if (isset($_POST["ope"])) {
 
     $datos = array(
         "ID_Negocio" => $_POST["ID_Negocio"],
-        "nombre_negocio" => $_POST["nombre_negocioEdit"] ?? '',
+        "nombre_negocioEdit" => $_POST["nombre_negocioEdit"] ?? '',
         "DescripcionN"   => $_POST["DescripcionNEdit"] ?? '',
         "Direccion"      => $_POST["DireccionEdit"] ?? '',
         "Telefono"       => $_POST["TelefonoEdit"] ?? '',
@@ -137,6 +138,7 @@ if (isset($_POST["ope"])) {
         "Longitud"       => $_POST["LongitudEdit"] ?? '',
         "TikTok"         => $_POST["TikTokEdit"] ?? '',
         "Relevancia"     => $_POST["RelevanciaEdit"] ?? '',
+        "codigo_canjeEdit" => trim($_POST["codigo_canjeEdit"] ?? ""),
         "Icono"          => $_POST["RutaiconoEdit"] ?? '' // para mantener el anterior si no se sube uno nuevo
     );
 
@@ -236,4 +238,11 @@ if (isset($_POST["ope"])) {
     }
 } else {
     echo json_encode(array("success" => false, "msg" => "Sin operación válida"));
+}
+} catch (Throwable $e) {
+    echo json_encode([
+        "success" => false,
+        "msg" => "No se pudo conectar a la base de datos o procesar la solicitud.",
+        "error" => $e->getMessage()
+    ]);
 }

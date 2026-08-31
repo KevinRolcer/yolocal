@@ -201,6 +201,9 @@ class Negocios
     public function ListarIconos()
     {
         $enlace = dbConectar();
+        if (!($enlace instanceof mysqli)) {
+            throw new Exception("No se pudo conectar a la base de datos.");
+        }
        
 
         $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, Direccion FROM negocios WHERE 1=1 ORDER BY RAND()";
@@ -209,6 +212,9 @@ class Negocios
         // Filtros dinámicos
         
         $consulta = $enlace->prepare($sql);
+        if (!$consulta) {
+            throw new Exception("Error al preparar LISTAICONOS: " . $enlace->error);
+        }
         
 
         $consulta->execute();
@@ -232,6 +238,9 @@ class Negocios
     public function ListarIconosBanner()
     {
         $enlace = dbConectar();
+        if (!($enlace instanceof mysqli)) {
+            throw new Exception("No se pudo conectar a la base de datos.");
+        }
        $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, DescripcionN, c.Descripcion AS nombre_categoria 
             FROM negocios n 
             INNER JOIN categorias c ON n.ID_Categoria = c.ID_Categoria 
@@ -241,6 +250,9 @@ class Negocios
         // Filtros dinámicos
         
         $consulta = $enlace->prepare($sql);
+        if (!$consulta) {
+            throw new Exception("Error al preparar LISTAICONOSBanner: " . $enlace->error);
+        }
         
 
         $consulta->execute();
@@ -264,6 +276,9 @@ class Negocios
     public function ListarIconos2()
     {
         $enlace = dbConectar();
+        if (!($enlace instanceof mysqli)) {
+            throw new Exception("No se pudo conectar a la base de datos.");
+        }
        
 
         $sql = "SELECT ID_Negocio, nombre_negocio, Rutaicono, Direccion FROM negocios WHERE 1=1 AND Relevancia IN (3, 2) ORDER BY RAND()";
@@ -272,6 +287,9 @@ class Negocios
         // Filtros dinámicos
         
         $consulta = $enlace->prepare($sql);
+        if (!$consulta) {
+            throw new Exception("Error al preparar LISTAICONOS2: " . $enlace->error);
+        }
         
 
         $consulta->execute();
@@ -342,20 +360,102 @@ class Negocios
 
         return $resultado['total2'] > 0;
     }
+
+    private static $codigosCanjeAseguradosEnPeticion = false;
+
+    /** Código alfanumérico único para canje de cupones (sin 0/O ni 1/I). */
+    private function generarCodigoCanjeUnico($enlace)
+    {
+        $chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        for ($attempt = 0; $attempt < 60; $attempt++) {
+            $code = "";
+            for ($i = 0; $i < 8; $i++) {
+                $code .= $chars[random_int(0, strlen($chars) - 1)];
+            }
+            $st = $enlace->prepare("SELECT 1 FROM negocios WHERE codigo_canje = ? LIMIT 1");
+            $st->bind_param("s", $code);
+            $st->execute();
+            if ($st->get_result()->num_rows === 0) {
+                return $code;
+            }
+        }
+        return strtoupper(substr(bin2hex(random_bytes(5)), 0, 8));
+    }
+
+    /** Asigna código de canje a negocios que no tienen uno (NULL o vacío). */
+    public function asegurarCodigosCanjeFaltantes()
+    {
+        if (self::$codigosCanjeAseguradosEnPeticion) {
+            return;
+        }
+        self::$codigosCanjeAseguradosEnPeticion = true;
+
+        $enlace = dbConectar();
+        $chk = $enlace->query("SELECT COUNT(*) AS n FROM negocios WHERE codigo_canje IS NULL OR TRIM(codigo_canje) = ''");
+        if (!$chk) {
+            return;
+        }
+        $n = (int) ($chk->fetch_assoc()["n"] ?? 0);
+        if ($n === 0) {
+            return;
+        }
+
+        $r = $enlace->query("SELECT ID_Negocio FROM negocios WHERE codigo_canje IS NULL OR TRIM(codigo_canje) = ''");
+        if (!$r) {
+            return;
+        }
+        while ($row = $r->fetch_assoc()) {
+            $id = (int) $row["ID_Negocio"];
+            $nuevo = $this->generarCodigoCanjeUnico($enlace);
+            $u = $enlace->prepare("UPDATE negocios SET codigo_canje = ? WHERE ID_Negocio = ?");
+            $u->bind_param("si", $nuevo, $id);
+            $u->execute();
+        }
+    }
+
+    /** Un solo negocio (p. ej. vista pública canje.php sin pasar por el admin). */
+    public function asegurarCodigoCanjeSiVacioPorNegocio($idNegocio)
+    {
+        $idNegocio = (int) $idNegocio;
+        if ($idNegocio <= 0) {
+            return;
+        }
+        $enlace = dbConectar();
+        $st = $enlace->prepare("SELECT codigo_canje FROM negocios WHERE ID_Negocio = ?");
+        $st->bind_param("i", $idNegocio);
+        $st->execute();
+        $row = $st->get_result()->fetch_assoc();
+        if (!$row) {
+            return;
+        }
+        if (trim((string) ($row["codigo_canje"] ?? "")) !== "") {
+            return;
+        }
+        $nuevo = $this->generarCodigoCanjeUnico($enlace);
+        $u = $enlace->prepare("UPDATE negocios SET codigo_canje = ? WHERE ID_Negocio = ?");
+        $u->bind_param("si", $nuevo, $idNegocio);
+        $u->execute();
+    }
+
     public function Agregar($datos)
     {
         $enlace = dbConectar();
 
+        $nombre = $datos["nombre_negocio"] ?? $datos["Nombre"] ?? "";
+        $cod = isset($datos["CodigoCanje"]) ? trim((string) $datos["CodigoCanje"]) : "";
+        if ($cod === "") {
+            $cod = $this->generarCodigoCanjeUnico($enlace);
+        }
+
         $sql = "INSERT INTO negocios (ID_Usuario, nombre_negocio, ID_Categoria, codigo_canje, estado, fecha_registro, Relevancia) VALUES (?, ?, ?, ?, 1, NOW(), 1)";
         $consulta = $enlace->prepare($sql);
-
 
         $consulta->bind_param(
             "isis",
             $datos["ID_Usuario"],
-            $datos["Nombre"],
+            $nombre,
             $datos["ID_Categoria"],
-            $datos["CodigoCanje"]
+            $cod
         );
 
         return $consulta->execute();
@@ -393,14 +493,13 @@ class Negocios
                 Latitud        = ?,
                 Longitud       = ?,
                 Relevancia     = ?,
-                codigo_canje   = ?,
                 Rutaicono      = ?
             WHERE ID_Negocio = ?";
 
     $consulta = $enlace->prepare($sql);
 
     $consulta->bind_param(
-        "ssssssssssssissi",
+        "sssssssssssssssi",
         $datos["nombre_negocioEdit"],
         $datos["DescripcionNEdit"],
         $datos["DireccionEdit"],
@@ -414,7 +513,6 @@ class Negocios
         $datos["LatitudEdit"],
         $datos["LongitudEdit"],
         $datos["RelevanciaEdit"],
-        $datos["codigo_canjeEdit"],
         $rutaIconoFinal,
         $datos["ID_Negocio"]
     );
@@ -461,6 +559,7 @@ class Negocios
     }
     public function ObtenerNegocios($idUsuario = null)
 {
+    $this->asegurarCodigosCanjeFaltantes();
     $enlace = dbConectar();
     $sql = "SELECT * FROM negocios";
     if ($idUsuario !== null) {

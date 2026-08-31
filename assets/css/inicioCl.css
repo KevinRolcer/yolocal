@@ -32,7 +32,6 @@ svg {
     color: var(--complementario);
 }
 
-/* Header */
 .encabezado {
     background-color: var(--blanco);
     border-bottom: 1px solid #e6e6e6;

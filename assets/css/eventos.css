@@ -114,7 +114,7 @@
 
 .events-hero {
     position: relative;
-    background: #4c0682;
+    background: rgb(76, 6, 130);
     display: grid;
     place-items: center;
     padding: clamp(1.2rem, 4vw, 3rem);

@@ -59,6 +59,7 @@
     Composite,
     Body,
     Common,
+    Events,
     Mouse,
     MouseConstraint,
     Query,
@@ -202,28 +203,84 @@
   const randomBetween = (min, max) => Math.random() * (max - min) + min;
 
   const fillPalette = ["#ffcd00", "#ffffff", "#ebaa04", "#613f9b"];
+  const confettiPalette = [
+    "#ff4d6d",
+    "#06d6a0",
+    "#4cc9f0",
+    "#f72585",
+    "#ffd166",
+    "#8338ec",
+  ];
+  const logoTexturePath = "../assets/img/LogoYolocal.png";
 
-  function makeShape(x, y, size) {
+  function makeColorCircle(x, y, size) {
+    const sizeRadius = size * 0.5;
     const fillStyle = Common.choose(fillPalette);
-    const render = {
-      fillStyle,
-      strokeStyle: "transparent",
-      lineWidth: 0,
-      opacity: 0.95,
-    };
-
-    return Bodies.circle(x, y, size * 0.5, {
+    return Bodies.circle(x, y, sizeRadius, {
       restitution: 0.9,
       friction: 0.02,
       frictionAir: 0.002,
       density: 0.001,
-      render,
+      render: {
+        fillStyle,
+        strokeStyle: "transparent",
+        lineWidth: 0,
+        opacity: 0.95,
+      },
     });
+  }
+
+  function makeLogoCircle(x, y, size) {
+    const sizeRadius = size * 0.5;
+    const logoDiameter = sizeRadius * 2;
+    // El sprite se deja más pequeño que el cuerpo para que visualmente sea un círculo con logo.
+    const logoScale = (logoDiameter * 0.7) / 140;
+    const logoBody = Bodies.circle(x, y, sizeRadius, {
+      restitution: 0.9,
+      friction: 0.02,
+      frictionAir: 0.0022,
+      density: 0.001,
+      render: {
+        fillStyle: "#ffcd00",
+        strokeStyle: "rgba(255,255,255,0.75)",
+        lineWidth: 2,
+        opacity: 0.96,
+        sprite: {
+          texture: logoTexturePath,
+          xScale: logoScale,
+          yScale: logoScale,
+          yOffset: -0.03,
+        },
+      },
+    });
+    logoBody.plugin = { ...(logoBody.plugin || {}), isLogoBody: true };
+    return logoBody;
+  }
+
+  function makeConfetti(x, y) {
+    const confettiColor = Common.choose(confettiPalette);
+    const confettiW = randomBetween(10, 22);
+    const confettiH = randomBetween(6, 13);
+    const piece = Bodies.rectangle(x, y, confettiW, confettiH, {
+      restitution: 0.86,
+      friction: 0.04,
+      frictionAir: 0.003,
+      density: 0.00085,
+      render: {
+        fillStyle: confettiColor,
+        strokeStyle: "transparent",
+        lineWidth: 0,
+        opacity: 0.96,
+      },
+    });
+    Body.setAngle(piece, randomBetween(0, Math.PI));
+    return piece;
   }
 
   function createBounds(world, width, height) {
     const wallThickness = 60;
-    const floorY = height;
+    // Subimos el piso para que las figuras no queden cortadas en el borde inferior.
+    const floorY = height - 34;
     const options = {
       isStatic: true,
       render: { visible: false },
@@ -298,20 +355,92 @@
 
     const boundsMeta = createBounds(world, width, height);
 
-    const count = isHero
+    const totalCount = isHero
       ? Math.max(34, Math.round(width / 52))
       : Math.max(20, Math.round(width / 70));
+    const logoCount = Math.floor(randomBetween(2, 5)); // 2, 3 o 4
+    const colorCount = Math.max(7, Math.round(totalCount * 0.4));
+    const confettiCount = Math.max(
+      14,
+      totalCount - logoCount - colorCount + 8
+    );
+
     const bodies = [];
-    for (let i = 0; i < count; i += 1) {
-      const size = randomBetween(20, 78);
-      const body = makeShape(
+
+    for (let i = 0; i < logoCount; i += 1) {
+      const body = makeLogoCircle(
         randomBetween(40, Math.max(40, width - 40)),
         randomBetween(-120, 20),
-        size
+        randomBetween(12, 20) // logos aún más pequeños
+      );
+      bodies.push(body);
+    }
+
+    for (let i = 0; i < colorCount; i += 1) {
+      const body = makeColorCircle(
+        randomBetween(40, Math.max(40, width - 40)),
+        randomBetween(-140, 20),
+        randomBetween(20, 78)
+      );
+      bodies.push(body);
+    }
+
+    for (let i = 0; i < confettiCount; i += 1) {
+      const body = makeConfetti(
+        randomBetween(40, Math.max(40, width - 40)),
+        randomBetween(-160, 20)
       );
       bodies.push(body);
     }
     Composite.add(world, bodies);
+
+    // Evita que los círculos con logo se salgan del viewport y se recorten en los bordes.
+    Events.on(engine, "beforeUpdate", () => {
+      const sceneWidth = render.options.width || width;
+      const sceneHeight = render.options.height || height;
+      const edgePadding = 8;
+
+      bodies.forEach((body) => {
+        if (!body.plugin?.isLogoBody || body.isStatic) return;
+        if (mouseConstraint.body === body) return;
+
+        const radius = body.circleRadius || 0;
+        const minX = radius + edgePadding;
+        const maxX = sceneWidth - radius - edgePadding;
+        const minY = radius + edgePadding;
+        const maxY = sceneHeight - radius - edgePadding - 22;
+        let { x, y } = body.position;
+        let vx = body.velocity.x;
+        let vy = body.velocity.y;
+        let needsClamp = false;
+
+        if (x < minX) {
+          x = minX;
+          vx = Math.abs(vx) * 0.72;
+          needsClamp = true;
+        } else if (x > maxX) {
+          x = maxX;
+          vx = -Math.abs(vx) * 0.72;
+          needsClamp = true;
+        }
+
+        if (y < minY) {
+          y = minY;
+          vy = Math.abs(vy) * 0.72;
+          needsClamp = true;
+        } else if (y > maxY) {
+          y = maxY;
+          vy = -Math.abs(vy) * 0.72;
+          needsClamp = true;
+        }
+
+        if (needsClamp) {
+          Body.setPosition(body, { x, y });
+          Body.setVelocity(body, { x: vx, y: vy });
+          Body.setAngularVelocity(body, body.angularVelocity * 0.35);
+        }
+      });
+    });
 
     return { section, engine, render, runner, bodies, boundsMeta };
   }
@@ -339,6 +468,10 @@
         x: randomBetween(-0.0065, 0.0065),
         y: randomBetween(-0.0075, 0.009),
       });
+      if (body.plugin?.isLogoBody) {
+        Body.setAngularVelocity(body, randomBetween(-0.015, 0.015));
+        return;
+      }
       Body.setAngularVelocity(body, randomBetween(-0.22, 0.22));
     });
   }
