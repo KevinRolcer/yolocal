@@ -1,0 +1,13 @@
+; Copia este archivo como "config.ini" y ajusta los valores para tu entorno.
+; config.ini NO se versiona (cada servidor tiene el suyo).
+
+[database]
+servidor  = 'localhost'
+usuario   = 'TU_USUARIO_BD'
+pass      = 'TU_PASSWORD_BD'
+bbdd      = 'TU_BASE_DE_DATOS'
+
+; [site] es opcional. Solo hace falta si el proyecto NO se sirve desde /yolocal/
+; (por ejemplo en un Laragon local servido desde /public_html).
+;[site]
+;ruta = '/public_html'

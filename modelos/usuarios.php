@@ -24,6 +24,8 @@ class Usuarios
             $_SESSION["nombre"] = "{$usuario['Nombre']} {$usuario['ApellidoP']} {$usuario['ApellidoM']}";
             $_SESSION["tipo"] = "{$usuario['tipo_usuario']}";
             $_SESSION["ID_Usuario"] = "{$usuario['ID_Usuario']}";
+            $_SESSION["id"] = "{$usuario['ID_Usuario']}";
+            $_SESSION["es_aliado"] = (strtolower((string)($usuario['es_aliado'] ?? 'no')) === 'si') ? 'si' : 'no';
             $_SESSION["foto_perfil"] = $usuario["RutaPerfil"] ?? "";
             $_SESSION["LAST_ACTIVITY"] = time();
             session_write_close();

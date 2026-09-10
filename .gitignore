@@ -1,2 +1,5 @@
 configS.ini
 node_modules/
+config.ini
+visitas.txt
+assets/uploads/mp_webhook.log
