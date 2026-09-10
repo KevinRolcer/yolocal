@@ -149,6 +149,25 @@
       styleLink.setAttribute("data-admin-css", "page");
       head.appendChild(styleLink);
     });
+
+    // Bloques <style> que las vistas colocan en su <head> (no llegan en el
+    // swap del contenido). Se re-inyectan marcados para poder quitarlos al
+    // navegar a otra seccion.
+    Array.prototype.slice
+      .call(head.querySelectorAll("style[data-admin-inline]"))
+      .forEach(function (styleNode) {
+        styleNode.remove();
+      });
+
+    var incomingHead = doc.head || doc;
+    Array.prototype.slice
+      .call(incomingHead.querySelectorAll("style"))
+      .forEach(function (styleNode) {
+        var clone = document.createElement("style");
+        clone.setAttribute("data-admin-inline", "1");
+        clone.textContent = styleNode.textContent || "";
+        head.appendChild(clone);
+      });
   }
 
   function loadScriptsFromDocument(doc) {

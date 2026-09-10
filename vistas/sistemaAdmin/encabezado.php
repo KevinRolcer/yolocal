@@ -91,16 +91,14 @@ $menus = [
         "icono"  => "bi-credit-card",
         "link"   => "index.php?pag=pagos",
         "pag"    => "pagos",
-        "roles"  => ["negocio"],
-        "soloAliado" => true
+        "roles"  => ["negocio"]
     ],
     [
         "titulo" => "Aliados Impulso",
         "icono"  => "bi-stars",
         "link"   => "index.php?pag=aportacion",
         "pag"    => "aportacion",
-        "roles"  => ["negocio"],
-        "soloAliado" => true
+        "roles"  => ["negocio"]
     ],
     [
         "titulo" => "Mis pagos",

@@ -31,12 +31,6 @@ $requierePago = $esDueno
     && !usuarioTienePagoActivo($usuarioId)
     && in_array($pag, $paginasRestringidasSinPago, true);
 
-// El flujo de "pago normal" solo aplica a negocios aliados.
-if ($esDueno && !$esAliadoSesion && in_array($pag, ['pagos'], true)) {
-    include_once("vistas/sistemaAdmin/acceso_denegado.php");
-    exit();
-}
-
 if ($requierePago) {
     header('Location: index.php?pag=home&bloqueo_pago=1');
     exit();
