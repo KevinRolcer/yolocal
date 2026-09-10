@@ -1,0 +1,105 @@
+/* ==========================================================================
+   Responsivo para el modulo de pagos (movil / menu deslizante)
+   Se carga despues de principal.css en las vistas de pago.
+   ========================================================================== */
+
+@media (max-width: 991px) {
+
+    html, body { overflow-x: hidden; max-width: 100vw; }
+
+    /* --- El sidebar es un drawer fijo; el contenido va a ancho completo --- */
+    .navigation.admin-sidebar { position: fixed; z-index: 1200; }
+
+    .main,
+    .main.active {
+        position: static !important;
+        left: auto !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        margin: 0 !important;
+        min-height: 100vh;
+    }
+
+    /* fondo oscuro cuando el drawer esta abierto (main.js agrega .active) */
+    .navigation.admin-sidebar.active::after {
+        content: "";
+        position: fixed;
+        top: 0; bottom: 0; right: 0; left: 280px;
+        background: rgba(17, 12, 34, 0.45);
+        z-index: -1;
+    }
+
+    .topbar { padding: 0 12px !important; }
+
+    .content,
+    .content.p-4 {
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+        padding: 12px !important;
+        box-sizing: border-box;
+    }
+
+    /* --- Tablas: scroll horizontal dentro de su tarjeta --- */
+    .seccion-pagos,
+    .pagos-table {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .table-responsive {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        box-sizing: border-box;
+    }
+    .table-responsive > table { width: max-content; min-width: 100%; margin: 0; }
+    .table-responsive th,
+    .table-responsive td { white-space: nowrap; }
+
+    /* tabla sin wrapper .table-responsive (p. ej. pagos_usuario) */
+    .card-resumen { max-width: 100%; }
+    .card-resumen > table.table,
+    .content > table.table {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+    }
+
+    /* --- Formulario de pago / aportacion --- */
+    .pago-layout { grid-template-columns: 1fr !important; }
+    .pago-card,
+    .pago-side-image,
+    .pago-side-image img {
+        max-width: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+    .pago-side-image { position: static !important; height: auto !important; }
+    .pago-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .pago-header h2 { font-size: 18px; line-height: 1.25; }
+    .pago-card .row.g-3 > [class^="col-"],
+    .pago-card .row.g-3 > [class*=" col-"] { flex: 0 0 100%; max-width: 100%; }
+    .btn-pagar { width: 100%; justify-content: center; }
+    .pago-aviso { align-items: flex-start; }
+
+    /* --- Confirmacion / gracias --- */
+    .confirmacion-wrap { padding: 20px 12px !important; }
+    .confirmacion-card { padding: 26px 18px !important; }
+    .confirmacion-title { font-size: 1.55rem !important; }
+    .confirmacion-beneficios { max-width: 100% !important; }
+}
+
+@media (max-width: 480px) {
+    .content,
+    .content.p-4 { padding: 10px !important; }
+    .pago-card { padding: 16px !important; }
+    .seccion-pagos h3 { font-size: 1.05rem; }
+    .table-responsive th,
+    .table-responsive td { padding-left: .5rem; padding-right: .5rem; font-size: 13px; }
+}
