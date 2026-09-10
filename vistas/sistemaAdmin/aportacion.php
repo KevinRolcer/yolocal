@@ -174,10 +174,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_aportacion'])) 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aliados Impulso - Yo Local</title>
-    <?php include_once(__DIR__ . '/head.php'); ?>
-    <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/principal.css">
-    <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/pagos-responsive.css">
-    <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/usuarios.css">
+    <?php
+    $adminCssFiles = ["assets/css/principal.css", "assets/css/pagos-responsive.css", "assets/css/usuarios.css"];
+    include_once(__DIR__ . '/head.php');
+    ?>
     <style>
         .pago-header {
             display: flex;
@@ -607,10 +607,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_aportacion'])) 
     <div id="lightboxBeneficiosAportacion" class="image-lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada de beneficios">
         <div class="image-lightbox-controls" aria-label="Controles de zoom">
             <button type="button" id="zoomOutAportacion" class="image-lightbox-btn" aria-label="Reducir imagen">-</button>
-            <button type="button" id="zoomResetAportacion" class="image-lightbox-btn" aria-label="Restablecer zoom">•</button>
+            <button type="button" id="zoomResetAportacion" class="image-lightbox-btn" aria-label="Restablecer zoom">锟�6锟�1</button>
             <button type="button" id="zoomInAportacion" class="image-lightbox-btn" aria-label="Aumentar imagen">+</button>
             <span id="zoomNivelAportacion" class="image-lightbox-zoom">100%</span>
-            <button type="button" id="zoomCloseAportacion" class="image-lightbox-btn" aria-label="Cerrar imagen">×</button>
+            <button type="button" id="zoomCloseAportacion" class="image-lightbox-btn" aria-label="Cerrar imagen">锟斤拷</button>
         </div>
         <img id="lightboxBeneficiosAportacionImg" src="" alt="Imagen ampliada de beneficios">
     </div>

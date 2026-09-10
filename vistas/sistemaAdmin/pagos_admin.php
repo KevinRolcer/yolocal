@@ -90,9 +90,11 @@ function renderFilaSinPagoAdmin(array $fila): void
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administración de pagos</title>
-    <?php $baseUrl = $baseUrl ?? ''; include_once(__DIR__ . '/head.php'); ?>
-    <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/principal.css">
-    <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/pagos-responsive.css">
+    <?php
+    $baseUrl = $baseUrl ?? '';
+    $adminCssFiles = ["assets/css/principal.css", "assets/css/pagos-responsive.css"];
+    include_once(__DIR__ . '/head.php');
+    ?>
     <style>
         .pagos-table { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,.08); }
         .badge-pagado { background: #28a745; color: #fff; padding: 6px 10px; border-radius: 999px; font-size: 12px; }

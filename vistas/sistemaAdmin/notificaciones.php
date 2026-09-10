@@ -23,10 +23,10 @@ $noLeidasCount = contarNotificacionesNoLeidas($usuarioId);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notificaciones - Yo Local</title>
-    <?php include_once(__DIR__ . '/head.php'); ?>
-    <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/principal.css">
-    <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/pagos-responsive.css">
-    <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/usuarios.css">
+    <?php
+    $adminCssFiles = ["assets/css/principal.css", "assets/css/pagos-responsive.css", "assets/css/usuarios.css"];
+    include_once(__DIR__ . '/head.php');
+    ?>
     <style>
         .notif-container {
             max-width: 800px;

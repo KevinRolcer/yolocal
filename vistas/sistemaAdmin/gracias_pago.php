@@ -145,9 +145,10 @@ if ($estado === 'approved' && $actualizacionOk) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($titulo) ?> - Yo Local</title>
-    <?php include_once(__DIR__ . '/head.php'); ?>
-    <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/principal.css">
-    <link rel="stylesheet" href="<?= $baseUrl ?>assets/css/pagos-responsive.css">
+    <?php
+    $adminCssFiles = ["assets/css/principal.css", "assets/css/pagos-responsive.css"];
+    include_once(__DIR__ . '/head.php');
+    ?>
     <style>
         .gracias-wrap { min-height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; padding: 32px 16px; }
         .gracias-card { max-width: 760px; width: 100%; background: #fff; border-radius: 22px; box-shadow: 0 18px 40px rgba(0,0,0,.12); padding: 32px; }
