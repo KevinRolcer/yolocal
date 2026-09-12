@@ -469,7 +469,7 @@ if (!isset($_SESSION['visitado'])) {
 
                 <div class="footer-column">
                     <ul>
-                        <li><a href="vistas/empleo.php">Rincón del chambeador</a></li>
+                        <li><a href="vistas/empleo.php">Bolsa de Trabajo</a></li>
                         <li><a href="controladores/controladorEvento.php">Eventos</a></li>
                         <li><a href="https://wa.me/+522482694278">Contacto</a></li>
                         <li><a href="vistas/sistemaAdmin/login.php">Inicia Sesión</a></li>
