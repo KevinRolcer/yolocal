@@ -12,7 +12,8 @@
 }
 
 /* Reset básico */
-* {
+.container,
+.container * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -22,170 +23,12 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f5f5f5;
     color: var(--texto);
-    line-height: 1.6;
 }
 
-/* Header - manteniendo consistencia con Yolocal */
-.encabezado {
-    background: var(--blanco);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.logo img {
-    height: 40px;
-}
-
-.menu {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-}
-
-.enlace {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    color: var(--texto);
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    font-weight: 500;
-}
-
-.enlace:hover {
-    color: var(--principal);
-    background-color: rgba(76, 6, 130, 0.1);
-}
-
-.enlace.active {
-    color: var(--principal);
-    background-color: rgba(76, 6, 130, 0.15);
-}
-
-.enlace svg {
-    width: 20px;
-    height: 20px;
-}
-
-.submenu {
-    position: relative;
-}
-
-.submenu-contenido {
-    position: absolute;
-    top: calc(100% + 10px);
-    left: 0;
-    background: var(--blanco);
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    padding: 1rem;
-    min-width: 200px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-}
-
-.submenu:hover .submenu-contenido {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.submenu-contenido a {
-    display: block;
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-    color: var(--texto);
-    border-radius: 4px;
-    transition: all 0.2s ease;
-}
-
-.submenu-contenido a:hover {
-    background-color: rgba(76, 6, 130, 0.1);
-    color: var(--principal);
-}
-
-.dropdown-arrow {
-    width: 16px;
-    height: 16px;
-    transition: transform 0.3s ease;
-}
-
-.submenu:hover .dropdown-arrow {
-    transform: rotate(180deg);
-}
-
-.sesion {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.btn-prueba, .btn-sesion {
-    padding: 0.75rem 1.5rem;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
-
-.btn-prueba {
-    background: var(--secundario);
-    color: var(--principal);
-}
-
-.btn-prueba:hover {
-    background: var(--complementario);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 205, 0, 0.3);
-}
-
-.btn-sesion {
-    color: var(--principal);
-    border-color: var(--principal);
-    background: transparent;
-}
-
-.btn-sesion:hover {
-    background: var(--principal);
-    color: var(--blanco);
-}
-
-/* Menú móvil */
-.menu-toggle {
-    display: none;
-    flex-direction: column;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-}
-
-.hamburger-line {
-    width: 25px;
-    height: 3px;
-    background-color: var(--texto);
-    margin: 3px 0;
-    transition: 0.3s;
-}
 
 /* Container principal */
 .container {
+    line-height: 1.6;
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 2rem;
@@ -563,42 +406,6 @@ body {
 
 /* Móviles grandes */
 @media (max-width: 768px) {
-    .navbar {
-        padding: 1rem;
-    }
-    
-    .menu-toggle {
-        display: flex;
-    }
-    
-    .menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: var(--blanco);
-        flex-direction: column;
-        padding: 1rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    
-    .menu.active {
-        display: flex;
-    }
-    
-    .sesion {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .btn-text-full {
-        display: none;
-    }
-    
-    .btn-text-short {
-        display: inline;
-    }
     
     .container {
         margin: 1rem auto;
@@ -727,9 +534,6 @@ body {
 }
 
 /* Estilos de foco para accesibilidad */
-.enlace:focus,
-.btn-prueba:focus,
-.btn-sesion:focus,
 .icon-container a:focus,
 .swiper-button-next:focus,
 .swiper-button-prev:focus {

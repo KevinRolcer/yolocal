@@ -3,15 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Negocios Yolocal</title>
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="../assets/css/negociosCl.css">
-    <link rel="stylesheet" href="../assets/css/negocioL.css">
+    <link rel="stylesheet" href="../assets/css/negocioL.css?v=<?= filemtime(__DIR__ . '/../assets/css/negocioL.css') ?>">
     <script defer src="../assets/js/menuCl.js"></script>
 </head>
 
-<body>
+<body class="catalogo-negocios">
     <header class="encabezado">
         <?php include_once("header.php"); ?>
     </header>
@@ -98,31 +98,64 @@
         </div>
 
         <?php if (!empty($negocios) && isset($total_paginas) && $total_paginas > 1): ?>
-            <div class="paginacion">
-                <?php
+            <?php
+            $paginaActual = (int) $pagina_actual;
+            $totalPaginas = (int) $total_paginas;
+            $parametrosPagina = array_intersect_key($_GET, array_flip(['categoria', 'busqueda']));
+            $enlacePagina = static function ($pagina) use ($parametrosPagina) {
+                return '?' . htmlspecialchars(http_build_query(array_merge($parametrosPagina, ['pagina' => $pagina])), ENT_QUOTES, 'UTF-8');
+            };
+            if ($totalPaginas <= 5) {
+                $paginasVisibles = range(1, $totalPaginas);
+            } else {
+                $inicioVentana = max(2, min($paginaActual - 1, $totalPaginas - 2));
+                $finVentana = min($totalPaginas - 1, max($paginaActual + 1, 3));
+                $paginasVisibles = array_merge([1], range($inicioVentana, $finVentana), [$totalPaginas]);
+            }
+            ?>
+            <nav class="paginacion" aria-label="Páginas de negocios">
+                <p class="paginacion-resumen">Página <strong><?= $paginaActual ?></strong> de <?= $totalPaginas ?></p>
+                <div class="paginacion-controles">
+                    <?php if ($paginaActual > 1): ?>
+                        <a class="paginacion-direccion" href="<?= $enlacePagina($paginaActual - 1) ?>" rel="prev">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m14 6-6 6 6 6" /></svg>
+                            <span>Anterior</span>
+                        </a>
+                    <?php else: ?>
+                        <span class="paginacion-direccion" aria-disabled="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m14 6-6 6 6 6" /></svg>
+                            <span>Anterior</span>
+                        </span>
+                    <?php endif; ?>
 
-                $parametros_url = [];
-                if (!empty($_GET['categoria'])) {
-                    $parametros_url['categoria'] = $_GET['categoria'];
-                }
-                ?>
-                <?php if ($pagina_actual > 1): ?>
-                    <?php $parametros_url['pagina'] = $pagina_actual - 1; ?>
-                    <a href="?<?php echo http_build_query($parametros_url); ?>">&laquo; Anterior</a>
-                <?php endif; ?>
+                    <div class="paginacion-numeros">
+                        <?php $paginaAnterior = 0; ?>
+                        <?php foreach ($paginasVisibles as $numeroPagina): ?>
+                            <?php if ($paginaAnterior && $numeroPagina > $paginaAnterior + 1): ?>
+                                <span class="paginacion-puntos" aria-hidden="true">&hellip;</span>
+                            <?php endif; ?>
+                            <?php if ($numeroPagina === $paginaActual): ?>
+                                <span class="paginacion-numero active" aria-current="page" aria-label="Página <?= $numeroPagina ?>, actual"><?= $numeroPagina ?></span>
+                            <?php else: ?>
+                                <a class="paginacion-numero" href="<?= $enlacePagina($numeroPagina) ?>" aria-label="Ir a la página <?= $numeroPagina ?>"><?= $numeroPagina ?></a>
+                            <?php endif; ?>
+                            <?php $paginaAnterior = $numeroPagina; ?>
+                        <?php endforeach; ?>
+                    </div>
 
-                <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
-                    <?php $parametros_url['pagina'] = $i; ?>
-                    <a href="?<?php echo http_build_query($parametros_url); ?>" class="<?php echo ($pagina_actual == $i) ? 'active' : ''; ?>">
-                        <?php echo $i; ?>
-                    </a>
-                <?php endfor; ?>
-
-                <?php if ($pagina_actual < $total_paginas): ?>
-                    <?php $parametros_url['pagina'] = $pagina_actual + 1; ?>
-                    <a href="?<?php echo http_build_query($parametros_url); ?>">Siguiente &raquo;</a>
-                <?php endif; ?>
-            </div>
+                    <?php if ($paginaActual < $totalPaginas): ?>
+                        <a class="paginacion-direccion" href="<?= $enlacePagina($paginaActual + 1) ?>" rel="next">
+                            <span>Siguiente</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m10 6 6 6-6 6" /></svg>
+                        </a>
+                    <?php else: ?>
+                        <span class="paginacion-direccion" aria-disabled="true">
+                            <span>Siguiente</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m10 6 6 6-6 6" /></svg>
+                        </span>
+                    <?php endif; ?>
+                </div>
+            </nav>
         <?php endif; ?>
     </div>
     

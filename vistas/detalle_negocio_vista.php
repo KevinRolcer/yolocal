@@ -25,7 +25,7 @@ $imagenes = $imagenes ?? [];
     <title><?php echo htmlspecialchars($negocio['nombre_negocio']); ?> - Yolocal</title>
     <link href="../assets/img/LogoYolocal.png" rel="icon" />
     <link rel="stylesheet" href="../assets/css/negociosCl.css">
-    <link rel="stylesheet" href="../assets/css/negocioD.css">
+    <link rel="stylesheet" href="../assets/css/negocioD.css?v=<?= filemtime(__DIR__ . '/../assets/css/negocioD.css') ?>">
     <script defer src="../assets/js/menuCl.js"></script>
 </head>
 
@@ -151,7 +151,6 @@ $imagenes = $imagenes ?? [];
 
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="../assets/js/pagina/negociosCl.js"></script>
-    <script src="../assets/js/menuCl.js"></script>
 
 
 
