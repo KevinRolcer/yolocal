@@ -728,7 +728,6 @@ if ($redirigirPago !== '') {
         <img id="lightboxBeneficiosPagosImg" src="" alt="Imagen ampliada de beneficios">
     </div>
 
-    <script src="<?= $baseUrl ?>assets/js/main.js"></script>
     <script>
     (function () {
         var imagenes = document.querySelectorAll('.js-expandible-beneficios');

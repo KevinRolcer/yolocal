@@ -226,12 +226,22 @@ class Usuarios
         return $resultado;
     }
 
-    public function Eliminar($ID_usuario)
+    public function Eliminar($idUsuario)
     {
         $enlace = dbConectar();
+        $consultaNegocios = $enlace->prepare("SELECT 1 FROM negocios WHERE ID_Usuario = ? LIMIT 1");
+        $consultaNegocios->bind_param("i", $idUsuario);
+        $consultaNegocios->execute();
+        $tieneNegocios = $consultaNegocios->get_result()->num_rows > 0;
+        $consultaNegocios->close();
+
+        if ($tieneNegocios) {
+            throw new DomainException("No se puede eliminar este usuario porque tiene uno o más negocios asignados.");
+        }
+
         $sql = "DELETE FROM usuarios WHERE ID_Usuario=?";
         $consulta = $enlace->prepare($sql);
-        $consulta->bind_param("i", $ID_usuario);
+        $consulta->bind_param("i", $idUsuario);
 
         return $consulta->execute();
     }

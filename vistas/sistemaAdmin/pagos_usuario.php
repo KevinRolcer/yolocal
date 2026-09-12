@@ -183,7 +183,6 @@ if ($usuarioId > 0) {
     </div>
 
 </div>
-<script src="<?= $baseUrl ?>assets/js/main.js"></script>
 
 <script>
 function regresarAlListado() {

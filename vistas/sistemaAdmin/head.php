@@ -79,5 +79,6 @@ window.YL_controladorEventosUrl = function () {
 	}
 };
 </script>
+<script defer src="<?= htmlspecialchars(ylAssetUrl("assets/js/main.js"), ENT_QUOTES, "UTF-8") ?>"></script>
 <script defer src="<?= htmlspecialchars(ylAssetUrl("assets/js/notificaciones.js"), ENT_QUOTES, "UTF-8") ?>"></script>
 <script defer src="<?= htmlspecialchars(ylAssetUrl("assets/js/admin-navigation.js"), ENT_QUOTES, "UTF-8") ?>"></script>

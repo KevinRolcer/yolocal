@@ -507,27 +507,27 @@ class Negocios
                 GoogleMaps     = ?,
                 Latitud        = ?,
                 Longitud       = ?,
-                Relevancia     = ?,
+                Relevancia     = COALESCE(?, Relevancia),
                 Rutaicono      = ?
             WHERE ID_Negocio = ?";
 
     $consulta = $enlace->prepare($sql);
 
     $consulta->bind_param(
-        "sssssssssssssssi",
+        "ssssssssssssssi",
         $datos["nombre_negocioEdit"],
-        $datos["DescripcionNEdit"],
-        $datos["DireccionEdit"],
-        $datos["TelefonoEdit"],
-        $datos["CorreoNEdit"],
-        $datos["SitioWebEdit"],
-        $datos["FacebookEdit"],
-        $datos["InstagramEdit"],
-        $datos["TikTokEdit"],
-        $datos["GoogleMapsEdit"],
-        $datos["LatitudEdit"],
-        $datos["LongitudEdit"],
-        $datos["RelevanciaEdit"],
+        $datos["DescripcionN"],
+        $datos["Direccion"],
+        $datos["Telefono"],
+        $datos["CorreoN"],
+        $datos["SitioWeb"],
+        $datos["Facebook"],
+        $datos["Instagram"],
+        $datos["TikTok"],
+        $datos["GoogleMaps"],
+        $datos["Latitud"],
+        $datos["Longitud"],
+        $datos["Relevancia"],
         $rutaIconoFinal,
         $datos["ID_Negocio"]
     );

@@ -597,7 +597,104 @@ body {
     border: 1px solid #efefef;
 }
 
+.admin-sidebar-close,
+.admin-sidebar-backdrop {
+    display: none;
+}
+
+.main > .topbar > button.toggle {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.main > .topbar > button.toggle svg {
+    width: 28px;
+    height: 28px;
+}
+
+.main > .topbar > button.toggle:focus-visible,
+.admin-sidebar-close:focus-visible {
+    outline: 3px solid #ffcc00;
+    outline-offset: 3px;
+}
+
 @media (max-width: 991px) {
+    .navigation.admin-sidebar,
+    .navigation.admin-sidebar.active {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1200;
+    }
+
+    .navigation.admin-sidebar ~ .main,
+    .navigation.admin-sidebar ~ .main.active {
+        position: static !important;
+        left: auto !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        margin: 0 !important;
+        min-height: 100vh;
+        box-sizing: border-box;
+    }
+
+    .navigation.admin-sidebar ~ .main > .topbar > .toggle {
+        position: relative;
+        inset: auto;
+        z-index: auto;
+        color: #2f3340;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .admin-sidebar .sidebar {
+        height: 100dvh;
+    }
+
+    .admin-sidebar .sidebar > .logo-top {
+        gap: 8px;
+    }
+
+    .admin-sidebar .sidebar > .logo-top .title {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .admin-sidebar .admin-sidebar-close {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 44px;
+        width: 44px;
+        height: 44px;
+        margin-left: auto;
+        padding: 0;
+        border: 0;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.12);
+        color: white;
+        cursor: pointer;
+    }
+
+    .admin-sidebar-close svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .admin-sidebar .admin-sidebar-backdrop:not([hidden]) {
+        display: block;
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100dvh;
+        border: 0;
+        padding: 0;
+        background: rgba(17, 12, 34, 0.45);
+        z-index: 999;
+    }
+
     .admin-sidebar.navigation,
     .admin-sidebar.navigation.active {
         width: 0;

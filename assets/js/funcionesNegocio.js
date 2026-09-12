@@ -611,10 +611,6 @@ function editarUsuario() {
   const fileInput = form.querySelector("#IconoNegocioEdit");
   if (fileInput && fileInput.files.length === 0) {
     datos.delete("IconoNegocioEdit");
-    const logoActual = document.querySelector("#RutaiconoEdit");
-    if (logoActual && logoActual.value) {
-      datos.append("Rutaicono", logoActual.value);
-    }
   }
 
   fetch("controladores/controladorNegocios.php", {
@@ -624,7 +620,7 @@ function editarUsuario() {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        Swal.fire("Éxito", "Usuario actualizado correctamente", "success");
+        Swal.fire("Éxito", "Negocio actualizado correctamente", "success");
         document.querySelector("#modalEditar .btn-close").click();
         listarMiembros();
       } else {
@@ -634,7 +630,7 @@ function editarUsuario() {
     .catch((error) => {
       Swal.fire(
         "Error",
-        "No se pudo actualizar el usuario: " + error.message,
+        "No se pudo actualizar el negocio: " + error.message,
         "error"
       );
     });

@@ -295,7 +295,6 @@ $noLeidasCount = contarNotificacionesNoLeidas($usuarioId);
         </div>
     </div>
 
-    <script src="<?= $baseUrl ?>assets/js/main.js"></script>
     <script>
         function marcarLeida(idNotificacion) {
             fetch('<?= $baseUrl ?>controladores/controladorNotificaciones.php', {

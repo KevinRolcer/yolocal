@@ -848,13 +848,13 @@ function eliminarUsuario(id) {
             );
             listarMiembros();
           } else {
-            Swal.fire("Error", data.msg, "error");
+            Swal.fire("No se puede eliminar", data.msg || "No se pudo eliminar el usuario. Inténtalo de nuevo.", "error");
           }
         })
-        .catch((error) => {
+        .catch(() => {
           Swal.fire(
             "Error",
-            "No se pudo eliminar el usuario: " + error.message,
+            "No se pudo completar la solicitud. Revisa tu conexión e inténtalo de nuevo.",
             "error"
           );
         });

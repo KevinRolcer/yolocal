@@ -29,8 +29,6 @@
     $adminCssFiles = ["assets/css/principal.css"];
     include_once("head.php");
     ?>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://kit.fontawesome.com/726544f644.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -122,7 +120,7 @@
                 <div class="stat-icon bg-purple-solid">
                     <i class="bi bi-building"></i>
                 </div>
-                <div class="stat-number" data-target="<?= $totalNegocios ?>">0</div>
+                <div class="stat-number" data-target="<?= $totalNegocios ?>"><?= (int) $totalNegocios ?></div>
                 <div class="stat-label">Negocios Registrados</div>
                 <div class="stat-bar">
                     <div class="stat-progress bg-purple-solid" style="width: 100%"></div>
@@ -133,7 +131,7 @@
                 <div class="stat-icon bg-yellow-solid">
                     <i class="bi bi-ticket-perforated"></i>
                 </div>
-                <div class="stat-number" data-target="<?= $totalPromos ?>">0</div>
+                <div class="stat-number" data-target="<?= $totalPromos ?>"><?= (int) $totalPromos ?></div>
                 <div class="stat-label">Promociones Activas</div>
                 <div class="stat-bar">
                     <div class="stat-progress bg-yellow-solid" style="width: 100%"></div>
@@ -144,7 +142,7 @@
                 <div class="stat-icon bg-green-solid">
                     <i class="bi bi-person-check"></i>
                 </div>
-                <div class="stat-number" data-target="<?= $clientesSatisfechos ?>">0</div>
+                <div class="stat-number" data-target="<?= $clientesSatisfechos ?>"><?= (int) $clientesSatisfechos ?></div>
                 <div class="stat-label">Clientes Satisfechos</div>
                 <div class="stat-bar">
                     <div class="stat-progress bg-green-solid" style="width: 100%"></div>
@@ -156,29 +154,7 @@
     <div id="modalOverlay" class="window-overlay"></div>
 
 
-    <script src="assets/js/main.js"></script>
 
-    <script>
-        // Animaci&oacute;n de los n&uacute;meros del dashboard
-        const counters = document.querySelectorAll('.stat-number');
-        const speed = 200; // a menor n&uacute;mero, m&aacute;s r&aacute;pida la animaci?n
-
-        counters.forEach(counter => {
-            const animate = () => {
-                const value = +counter.getAttribute('data-target');
-                const data = +counter.innerText;
-                
-                const time = value / speed;
-                if(data < value) {
-                    counter.innerText = Math.ceil(data + time);
-                    setTimeout(animate, 20);
-                } else {
-                    counter.innerText = value;
-                }
-            }
-            animate();
-        });
-    </script>
 
 </body>
 

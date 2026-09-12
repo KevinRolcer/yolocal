@@ -291,7 +291,6 @@ function renderFilaSinPagoAdmin(array $fila): void
         });
     }
 </script>
-<script src="<?= $baseUrl ?>assets/js/main.js"></script>
 </body>
 </html>
 

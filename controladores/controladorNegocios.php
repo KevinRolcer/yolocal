@@ -139,7 +139,9 @@ if (isset($_POST["ope"])) {
         "Latitud"        => $_POST["LatitudEdit"] ?? '',
         "Longitud"       => $_POST["LongitudEdit"] ?? '',
         "TikTok"         => $_POST["TikTokEdit"] ?? '',
-        "Relevancia"     => $_POST["RelevanciaEdit"] ?? '',
+        "Relevancia"     => ($_SESSION["tipo"] ?? null) === "admin"
+            ? ($_POST["RelevanciaEdit"] ?? null)
+            : null,
         "codigo_canjeEdit" => trim($_POST["codigo_canjeEdit"] ?? ""),
         "Icono"          => $_POST["RutaiconoEdit"] ?? '' // para mantener el anterior si no se sube uno nuevo
     );
@@ -150,6 +152,7 @@ if (isset($_POST["ope"])) {
 
     $info = array(
         "success" => $status,
+        "msg" => $status ? "Negocio actualizado correctamente." : "No se pudo actualizar el negocio. Revisa los datos y el formato del logo.",
         "usuario" => $datos  // opcional: enviar los datos de vuelta al JS
     );
 

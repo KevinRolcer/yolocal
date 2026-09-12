@@ -116,6 +116,9 @@ $menus = [
             <img src="<?= htmlspecialchars(ylAssetUrl("assets/img/LogoYolocal.png"), ENT_QUOTES, "UTF-8") ?>" alt="Logo" class="logo">
         </span>
         <span class="title">Yo Local</span>
+        <button type="button" class="admin-sidebar-close" aria-label="Cerrar menú de navegación">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+        </button>
     </div>
 
     <ul class="main-menu">

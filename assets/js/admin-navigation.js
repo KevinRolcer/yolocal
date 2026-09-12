@@ -122,55 +122,73 @@
       doc.querySelectorAll('link[rel="stylesheet"][data-admin-css="page"]')
     );
 
-    var incomingHrefs = incomingPageStyles.map(function (link) {
-      return new URL(link.getAttribute("href"), window.location.href).toString();
-    });
-
-    currentPageStyles.forEach(function (link) {
-      var href = new URL(link.getAttribute("href"), window.location.href).toString();
-      if (incomingHrefs.indexOf(href) === -1) {
-        link.remove();
-      }
-    });
-
-    incomingPageStyles.forEach(function (link) {
+    var stagedStyles = [];
+    var orderedStyles = [];
+    var loadingStyles = incomingPageStyles.map(function (link) {
       var absoluteHref = new URL(link.getAttribute("href"), window.location.href).toString();
       var existing = currentPageStyles.find(function (styleLink) {
         return new URL(styleLink.getAttribute("href"), window.location.href).toString() === absoluteHref;
       });
 
       if (existing) {
-        return;
+        orderedStyles.push({ link: existing, media: link.media });
+        return Promise.resolve();
       }
 
-      var styleLink = document.createElement("link");
-      styleLink.rel = "stylesheet";
+      var styleLink = link.cloneNode(true);
       styleLink.href = absoluteHref;
-      styleLink.setAttribute("data-admin-css", "page");
-      head.appendChild(styleLink);
+      styleLink.media = "not all";
+      styleLink.removeAttribute("data-admin-css");
+      stagedStyles.push(styleLink);
+      orderedStyles.push({ link: styleLink, media: link.media });
+      return new Promise(function (resolve, reject) {
+        var timeout = setTimeout(function () {
+          finish(new Error("Se agotó el tiempo de carga de los estilos"));
+        }, 15000);
+        function finish(error) {
+          clearTimeout(timeout);
+          styleLink.onload = null;
+          styleLink.onerror = null;
+          if (error) reject(error);
+          else resolve();
+        }
+        styleLink.onload = function () { finish(); };
+        styleLink.onerror = function () { finish(new Error("No se pudieron cargar los estilos")); };
+        head.appendChild(styleLink);
+      });
     });
 
-    // Bloques <style> que las vistas colocan en su <head> (no llegan en el
-    // swap del contenido). Se re-inyectan marcados para poder quitarlos al
-    // navegar a otra seccion.
-    Array.prototype.slice
-      .call(head.querySelectorAll("style[data-admin-inline]"))
-      .forEach(function (styleNode) {
-        styleNode.remove();
-      });
+    function discard() {
+      stagedStyles.forEach(function (link) { link.remove(); });
+    }
 
-    var incomingHead = doc.head || doc;
-    Array.prototype.slice
-      .call(incomingHead.querySelectorAll("style"))
-      .forEach(function (styleNode) {
-        var clone = document.createElement("style");
-        clone.setAttribute("data-admin-inline", "1");
-        clone.textContent = styleNode.textContent || "";
-        head.appendChild(clone);
-      });
+    return Promise.all(loadingStyles).then(function () {
+      return {
+        discard: discard,
+        apply: function () {
+          currentPageStyles.forEach(function (link) {
+            if (!orderedStyles.some(function (style) { return style.link === link; })) link.remove();
+          });
+          orderedStyles.forEach(function (style) {
+            style.link.media = style.media;
+            style.link.setAttribute("data-admin-css", "page");
+            head.appendChild(style.link);
+          });
+          head.querySelectorAll("style[data-admin-inline]").forEach(function (style) { style.remove(); });
+          doc.head.querySelectorAll("style").forEach(function (style) {
+            var clone = style.cloneNode(true);
+            clone.setAttribute("data-admin-inline", "1");
+            head.appendChild(clone);
+          });
+        }
+      };
+    }).catch(function (error) {
+      discard();
+      throw error;
+    });
   }
 
-  function loadScriptsFromDocument(doc) {
+  function loadScriptsFromDocument(doc, requestId) {
     cleanupDynamicScripts();
 
     var scripts = Array.prototype.slice.call(doc.querySelectorAll("script"));
@@ -185,16 +203,27 @@
         }
 
         sequence = sequence.then(function () {
+          if (requestId !== activeRequestId) return;
           return new Promise(function (resolve) {
             var script = document.createElement("script");
             var absoluteSrc = new URL(src, window.location.href);
-            absoluteSrc.searchParams.set("pjax", String(Date.now()));
+            var externalLibrary = absoluteSrc.origin !== window.location.origin;
+            if (externalLibrary && Array.prototype.some.call(document.scripts, function (loaded) {
+              return loaded.src === absoluteSrc.toString();
+            })) {
+              resolve();
+              return;
+            }
+            // Los módulos locales necesitan una nueva evaluación para enlazar el DOM reemplazado.
+            if (!externalLibrary && scriptNode.type === "module") {
+              absoluteSrc.searchParams.set("pjax", String(requestId));
+            }
             script.src = absoluteSrc.toString();
             script.async = false;
             if (scriptNode.type) {
               script.type = scriptNode.type;
             }
-            script.setAttribute(DYNAMIC_SCRIPT_ATTR, "1");
+            if (!externalLibrary) script.setAttribute(DYNAMIC_SCRIPT_ATTR, "1");
             script.onload = function () {
               resolve();
             };
@@ -213,6 +242,7 @@
       }
 
       sequence = sequence.then(function () {
+        if (requestId !== activeRequestId) return;
         var script = document.createElement("script");
         if (scriptNode.type) {
           script.type = scriptNode.type;
@@ -259,6 +289,7 @@
 
     return fetch(url.toString(), {
       method: "GET",
+      cache: "no-store",
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }
@@ -269,15 +300,24 @@
         }
         return response.text();
       })
-      .then(function (html) {
+      .then(async function (html) {
         if (requestId !== activeRequestId) {
           return;
         }
 
         var parser = new DOMParser();
         var doc = parser.parseFromString(html, "text/html");
+        if (!doc.querySelector(".main")) {
+          window.location.href = url.toString();
+          return;
+        }
+        var styles = await syncAdminStylesheets(doc);
+        if (requestId !== activeRequestId) {
+          styles.discard();
+          return;
+        }
+        styles.apply();
         syncBodyState(doc);
-        syncAdminStylesheets(doc);
         var swapped = replaceMainContentFromDocument(doc);
         if (!swapped) {
           window.location.href = url.toString();
@@ -291,10 +331,10 @@
           history.pushState({ adminPartial: true }, "", url.toString());
         }
 
-        return loadScriptsFromDocument(doc);
+        return loadScriptsFromDocument(doc, requestId);
       })
       .catch(function () {
-        window.location.href = url.toString();
+        if (requestId === activeRequestId) window.location.href = url.toString();
       });
   }
 
@@ -338,6 +378,9 @@
       return;
     }
 
+    document.head.querySelectorAll("style").forEach(function (style) {
+      style.setAttribute("data-admin-inline", "1");
+    });
     menu.addEventListener("click", onMenuClick);
     window.addEventListener("popstate", onPopState);
 

@@ -452,7 +452,6 @@
                 <div id="paginacion" class="mt-4"></div>
             </div>
         </div>
-        <script src="assets/js/main.js"></script>
 </body>
 
 </html>

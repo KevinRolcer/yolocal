@@ -182,7 +182,6 @@
         <?php include_once("modales_trabajos_eventos.php"); ?>
     </div>
 
-    <script src="assets/js/main.js"></script>
     <script type="module" src="assets/js/funcionesTrabajos.js"></script>
     <script type="module" src="assets/js/funcionesEventos.js"></script>
     <script src="assets/js/modal-detalles-evento.js"></script>

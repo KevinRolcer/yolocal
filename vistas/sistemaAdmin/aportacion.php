@@ -615,7 +615,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_aportacion'])) 
         <img id="lightboxBeneficiosAportacionImg" src="" alt="Imagen ampliada de beneficios">
     </div>
 
-    <script src="<?= $baseUrl ?>assets/js/main.js"></script>
     <script>
     (function () {
         var imagenes = document.querySelectorAll('.js-expandible-beneficios');

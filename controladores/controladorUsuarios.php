@@ -155,8 +155,23 @@ if (isset($_POST["ope"])) {
     
     // eliminar 
     elseif ($ope == "ELIMINAR" && isset($_POST["ID_Usuario"])) {
-        $status = $usu->Eliminar($_POST["ID_Usuario"]);
-        $info = array("success" => $status);
+        header('Content-Type: application/json; charset=utf-8');
+        try {
+            $status = $usu->Eliminar($_POST["ID_Usuario"]);
+            $info = [
+                "success" => $status,
+                "msg" => $status ? "Usuario eliminado correctamente." : "No se pudo eliminar el usuario. Inténtalo de nuevo."
+            ];
+        } catch (DomainException $error) {
+            $info = ["success" => false, "msg" => $error->getMessage()];
+        } catch (mysqli_sql_exception $error) {
+            $info = [
+                "success" => false,
+                "msg" => $error->getCode() === 1451
+                    ? "No se puede eliminar este usuario porque tiene información relacionada en el sistema."
+                    : "No se pudo eliminar el usuario. Inténtalo de nuevo más tarde."
+            ];
+        }
         echo json_encode($info);
     }
     
