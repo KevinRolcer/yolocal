@@ -14,6 +14,27 @@ const predefinedBanners = [
     srcDesktop: "assets/img/banners/3.png",
     srcMobile: "assets/img/banners/3_mobile.png",
   },
+  {
+    type: "banner",
+    srcDesktop: "assets/img/banners/4.png",
+    srcMobile: "assets/img/banners/4_mobile.png",
+  },
+  {
+    type: "banner",
+    srcDesktop: "assets/img/banners/5.png",
+    srcMobile: "assets/img/banners/5_mobile.png",
+  },
+  {
+    type: "banner",
+    srcDesktop: "assets/img/banners/6.png",
+    srcMobile: "assets/img/banners/6_mobile.png",
+  },
+  {
+    type: "banner",
+    srcDesktop: "assets/img/banners/7.png",
+    srcMobile: "assets/img/banners/7_mobile.png",
+  },
+
 ];
 
 class ImageCarousel {
@@ -226,9 +247,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const slidesFromDB = data.lista;
         let combinedData = [...slidesFromDB];
 
-        if (combinedData.length > 1) combinedData.splice(2, 0, predefinedBanners[0]);
-        if (combinedData.length > 5) combinedData.splice(6, 0, predefinedBanners[1]);
-        if (combinedData.length > 10) combinedData.splice(10, 0, predefinedBanners[2]);
+        if (combinedData.length > 1) combinedData.splice(2, 0, predefinedBanners[3]);
+        if (combinedData.length > 5) combinedData.splice(4, 0, predefinedBanners[4]);
+        if (combinedData.length > 10) combinedData.splice(6, 0, predefinedBanners[5]);
         
         new ImageCarousel(combinedData);
       } else {
