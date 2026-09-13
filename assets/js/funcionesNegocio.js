@@ -899,7 +899,7 @@ function abrirGaleria(id) {
                 (ruta, index) => `
               <div class="carousel-item h-100 ${index === 0 ? "active" : ""}">
                 <div class="d-flex align-items-center justify-content-center h-100" style="min-height: 400px; background: #000;">
-                  <img src="${ruta}" 
+                  <img src="${escapeHTML(resolverRutaPublica(ruta))}"
                        class="d-block mw-100 mh-100" 
                        style="object-fit: contain;" 
                        alt="Imagen negocio">
