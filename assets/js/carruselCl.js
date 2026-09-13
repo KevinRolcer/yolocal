@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
         new ImageCarousel(combinedData);
       } else {
         console.error("No se pudieron cargar los negocios:", data.msg);
-      }
+      }//
     })
     .catch((error) => console.error("Error al conectar con el servidor:", error));
 });
