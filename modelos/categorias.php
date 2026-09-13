@@ -129,12 +129,20 @@ class Categoria
             return null;
         }
     }
-    public function Eliminar($ID_usuario)
+    public function Eliminar($idCategoria)
     {
         $enlace = dbConectar();
+        $uso = $enlace->prepare("SELECT 1 FROM negocios WHERE ID_Categoria = ? UNION ALL SELECT 1 FROM eventos WHERE ID_Categoria = ? LIMIT 1");
+        $uso->bind_param("ii", $idCategoria, $idCategoria);
+        $uso->execute();
+        $enUso = $uso->get_result()->num_rows > 0;
+        $uso->close();
+        if ($enUso) {
+            throw new DomainException("Esta categoría está en uso por negocios o eventos y no se puede eliminar. Cambia primero su categoría.");
+        }
         $sql = "DELETE FROM categorias WHERE ID_Categoria=?";
         $consulta = $enlace->prepare($sql);
-        $consulta->bind_param("i", $ID_usuario);
+        $consulta->bind_param("i", $idCategoria);
 
         return $consulta->execute();
     }

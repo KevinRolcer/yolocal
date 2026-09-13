@@ -7,6 +7,12 @@ const { spawn } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 const home = fs.readFileSync(path.join(root, 'vistas/sistemaAdmin/home.php'), 'utf8');
 const navigation = fs.readFileSync(path.join(root, 'assets/js/admin-navigation.js'), 'utf8');
+const categories = fs.readFileSync(path.join(root, 'vistas/sistemaAdmin/categorias.php'), 'utf8')
+  .replace(/<\?php[\s\S]*?\?>/g, '')
+  .replace(/<script[\s\S]*?<\/script>/g, '')
+  .replace(/<link[^>]*>/g, '');
+const categoryStyles = ['menu.css', 'categorias.css', 'adminFormal.css']
+  .map(file => fs.readFileSync(path.join(root, 'assets/css', file), 'utf8').replace(/@import\s+url\([\s\S]*?\)\s*;/g, '')).join('\n');
 const counterMarkup = [...home.matchAll(/<div class="stat-number"[^>]*>[\s\S]*?<\/div>/g)].map(match => match[0]);
 const homeScripts = [...home.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(match => match[0]).join('');
 const requests = { home: 0 };
@@ -15,6 +21,7 @@ function shell(content, styles = '') {
   return `<!doctype html><html><head>${styles}</head><body><div class="navigation admin-sidebar"><ul class="main-menu">
     <li><a id="home-link" href="/page?pag=home">Inicio</a></li>
     <li><a id="section-link" href="/page?pag=section">Sección</a></li>
+    <li><a id="categories-link" href="/page?pag=categorias">Categorías</a></li>
     <li><a id="slow-link" href="/page?pag=slow">Lenta</a></li>
     <li><a id="late-link" href="/page?pag=late">Atrasada</a></li>
     </ul></div><div class="main"><div class="topbar">Barra</div>${content}</div></body></html>`;
@@ -85,6 +92,33 @@ const browserTests = `
       check(document.getElementById('content')?.textContent === 'Sección', 'La respuesta atrasada sustituyó la última sección');
       check(!document.querySelector('link[href$="late.css"]'), 'Quedaron estilos de una navegación descartada');
     });
+    await run('Carga los cuatro modales y campos de categorías en visitas repetidas', async () => {
+      for (let visit = 0; visit < 2; visit++) {
+        document.getElementById('categories-link').click();
+        await until(() => document.getElementById('ListaMiembros'));
+        for (const id of ['modalAgregar', 'modalEditar', 'modalVerNegocios', 'modalMoverNegocio']) {
+          check(document.querySelectorAll('.main #' + id).length === 1, 'Falta o se duplica el modal ' + id);
+        }
+        for (const id of ['ID_Categoria', 'NombreEdit', 'ColorEdit', 'RutaImagenActual']) {
+          const field = document.querySelector('#formEditar #' + id);
+          check(field, 'Falta el campo de edición ' + id);
+          field.value = id === 'ColorEdit' ? '#123456' : 'Prueba';
+        }
+        for (const id of ['modalAgregar', 'modalEditar']) {
+          const modal = document.getElementById(id);
+          modal.style.cssText = 'display:block;opacity:1;position:fixed;inset:0;z-index:1055';
+          const backdrop = document.createElement('div');
+          backdrop.style.cssText = 'position:fixed;inset:0;z-index:1050;background:rgba(0,0,0,.5)';
+          document.body.appendChild(backdrop);
+          check(modal.contains(document.elementFromPoint(innerWidth / 2, innerHeight / 2)), 'El fondo bloquea ' + id);
+          backdrop.remove();
+          modal.style.cssText = 'display:none';
+        }
+        document.getElementById('section-link').click();
+        await until(() => document.getElementById('content')?.textContent === 'Sección');
+        check(!document.getElementById('modalEditar'), 'Quedó un modal de categorías en otra sección');
+      }
+    });
     document.getElementById('result').textContent = JSON.stringify(results);
   });
 `;
@@ -104,6 +138,7 @@ const server = http.createServer((req, res) => {
   }
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   if (url.pathname === '/page') {
+    if (url.searchParams.get('pag') === 'categorias') return res.end(categories.replace('</head>', '<style>' + categoryStyles + '</style></head>'));
     if (url.searchParams.get('pag') === 'home') {
       requests.home++;
       const counters = counterMarkup.map((markup, index) => markup.replace(/<\?=[\s\S]*?\?>/g, String(10 + requests.home + index))).join('');

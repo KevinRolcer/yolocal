@@ -104,8 +104,17 @@ if (isset($_POST["ope"])) {
         echo json_encode(["success" => $status]);
     }
     elseif ($ope == "ELIMINAR" && isset($_POST["ID_Categoria"])) {
-        $status = $usu2->Eliminar($_POST["ID_Categoria"]);
-        echo json_encode(["success" => $status]);
+        try {
+            $status = $usu2->Eliminar($_POST["ID_Categoria"]);
+            echo json_encode(["success" => $status]);
+        } catch (DomainException $error) {
+            echo json_encode(["success" => false, "msg" => $error->getMessage()], JSON_UNESCAPED_UNICODE);
+        } catch (Throwable $error) {
+            $mensaje = (int) $error->getCode() === 1451
+                ? "Esta categoría está en uso y no se puede eliminar."
+                : "No se pudo eliminar la categoría. Inténtalo nuevamente.";
+            echo json_encode(["success" => false, "msg" => $mensaje], JSON_UNESCAPED_UNICODE);
+        }
     }
     elseif ($ope == "LISTARNEGOCIOS" && isset($_POST["ID_Categoria"])) {
         include_once("../modelos/negocios.php");

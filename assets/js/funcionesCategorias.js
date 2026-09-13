@@ -482,7 +482,7 @@ function editarCategoria() {
 function eliminarCategoria(id) {
   Swal.fire({
     title: "¿Estás seguro?",
-    text: "Los negocios en esta categoría se quedarán sin clasificación.",
+    text: "Solo puedes eliminar categorías que no estén en uso por negocios o eventos.",
     icon: "warning",
     showCancelButton: true,
     confirmButtonText: "Sí, eliminar",

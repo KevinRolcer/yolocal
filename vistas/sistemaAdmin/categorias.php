@@ -103,8 +103,6 @@
             </section>
         </main>
 
-    </div>
-
     <!-- Modal AGREGAR -->
     <div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -220,6 +218,7 @@
         </div>
     </div>
 
+    </div>
 </body>
 
 </html>

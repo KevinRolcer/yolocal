@@ -197,6 +197,45 @@ function listarEventosEnTarjetas(filtro = '') {
             }
         });
 }
+async function agregarEvento() {
+    const form = document.getElementById("formEvento");
+    if (!form) return;
+
+    const botonGuardar = form.querySelector('[type="submit"]');
+    if (botonGuardar?.disabled) return;
+    if (botonGuardar) botonGuardar.disabled = true;
+
+    try {
+        const formData = new FormData(form);
+        formData.set("ope", "AGREGAR");
+        const data = await fetchControladorEventosJson(formData);
+        if (!data.success) {
+            throw new Error(data.message || "No se pudo guardar el evento.");
+        }
+
+        const modal = document.getElementById("modalEvento");
+        const instancia = modal && bootstrap.Modal.getInstance(modal);
+        if (instancia) instancia.hide();
+        form.reset();
+        Swal.fire({
+            icon: "success",
+            title: "¡Evento agregado!",
+            text: data.message || "El evento se guardó correctamente.",
+            timer: 2000,
+            showConfirmButton: false,
+        });
+        listarEventosEnTarjetas();
+    } catch (error) {
+        Swal.fire({
+            icon: "error",
+            title: "No se pudo agregar el evento",
+            text: error.message || "No se pudo comunicar con el servidor.",
+        });
+    } finally {
+        if (botonGuardar) botonGuardar.disabled = false;
+    }
+}
+
 function setInputValueIfPresent(id, value) {
     const el = document.getElementById(id);
     if (!el) return;
