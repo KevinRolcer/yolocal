@@ -206,10 +206,29 @@ if (isset($_POST["ope"])) {
     }
 
     // eliminar 
-    elseif ($ope == "ELIMINAR" && isset($_POST["ID_Usuario"])) {
-        $status = $usu->Eliminar($_POST["ID_Usuario"]);
-        $info = array("success" => $status);
-        echo json_encode($info);
+    elseif ($ope == "ELIMINAR" && isset($_POST["ID_Promocion"])) {
+        header('Content-Type: application/json; charset=utf-8');
+        $idPromocion = (int) $_POST["ID_Promocion"];
+
+        if ($idPromocion < 1 || !in_array($usuarioTipoSesion, ["admin", "negocio"], true) || !$usuarioIdSesion) {
+            echo json_encode(["success" => false, "msg" => "No autorizado."]);
+            exit();
+        }
+
+        if ($usuarioTipoSesion === "negocio" && !cuponPerteneceAlUsuario($idPromocion, (int) $usuarioIdSesion)) {
+            echo json_encode(["success" => false, "msg" => "No autorizado."]);
+            exit();
+        }
+
+        try {
+            $status = $usu->EliminarPromocion($idPromocion);
+            echo json_encode([
+                "success" => $status,
+                "msg" => $status ? "Promoción eliminada." : "No se encontró la promoción."
+            ], JSON_UNESCAPED_UNICODE);
+        } catch (Throwable $error) {
+            echo json_encode(["success" => false, "msg" => "No se pudo eliminar la promoción."], JSON_UNESCAPED_UNICODE);
+        }
     } elseif ($ope == "RESTARCUPON" && isset($_POST["ID_Promocion"])) {
         if ($usuarioTipoSesion === "negocio" && !cuponPerteneceAlUsuario(intval($_POST["ID_Promocion"]), intval($usuarioIdSesion))) {
             echo json_encode(["success" => false, "msg" => "No autorizado."]);

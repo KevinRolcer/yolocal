@@ -386,8 +386,8 @@ function renderizarMiembros(lista, total = 0) {
             ${window.usuarioTipo === "admin" ? `
             <li><button class="dropdown-item btn-pagar" data-id="${id}"><i class="bi bi-cash me-2"></i> Registrar Pago</button></li>
             <li><button class="dropdown-item btn-toggle-status" data-id="${id}" data-status="${miembro.estado}"><i class="bi bi-power me-2"></i> ${estado ? 'Desactivar' : 'Activar'}</button></li>
-            ` : ""}
             <li><button class="dropdown-item text-danger btn-eliminar" data-id="${id}"><i class="bi bi-trash me-2"></i> Eliminar</button></li>
+            ` : ""}
           </ul>
         </div>
       </div>
@@ -765,7 +765,7 @@ function agregarHorario(id) {
             document.querySelector("#modalHorario .btn-close").click();
             listarMiembros();
           } else {
-            Swal.fire("Error", data.message, "error");
+            Swal.fire("Error", data.msg || data.message || "No se pudo guardar el horario.", "error");
           }
         })
         .catch((err) => {
@@ -998,7 +998,7 @@ function listarHorarios(idNegocio) {
     .catch((err) => console.error("Error cargando horarios:", err));
 }
 document.addEventListener("click", (e) => {
-  const btn = e.target.closest(".btn-toggle");
+  const btn = e.target.closest(".btn-toggle-status");
   if (!btn) return;
 
   const id = btn.dataset.id;

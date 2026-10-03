@@ -38,7 +38,7 @@ function iniciarModuloCupones() {
       if (target.classList.contains("btn-editar")) {
         cargarUsuario(id);
       } else if (target.classList.contains("btn-eliminar")) {
-        eliminarUsuario(id);
+        eliminarCupon(id);
       } else if (target.classList.contains("btn-agregar")) {
         cargarCupones(id);
       } else if (target.classList.contains("btn-toggle")) {
@@ -306,8 +306,8 @@ function renderizarPromociones(lista) {
           <button type="button" class="action-btn add btn-agregar" title="Agregar cupones" aria-label="Agregar cupones" data-id="${promo.ID_Promocion}" data-bs-toggle="modal" data-bs-target="#modalAgregarC"><i class="bi bi-plus" aria-hidden="true"></i></button>
           <button type="button" class="action-btn toggle btn-toggle" title="Alternar estado" aria-label="Alternar estado" data-id="${promo.ID_Promocion}" data-status="${promo.Estatus}"><i class="bi bi-power" aria-hidden="true"></i></button>
           <button type="button" class="action-btn edit btn-editar" title="Editar cupón" aria-label="Editar cupón" data-id="${promo.ID_Promocion}" data-bs-toggle="modal" data-bs-target="#modalEditar"><i class="bi bi-pencil-fill" aria-hidden="true"></i></button>
+          <button type="button" class="action-btn delete btn-eliminar" title="Eliminar cupón" aria-label="Eliminar cupón" data-id="${promo.ID_Promocion}"><i class="bi bi-trash-fill" aria-hidden="true"></i></button>
         ` : ""}
-        <button type="button" class="action-btn delete btn-eliminar" title="Eliminar cupón" aria-label="Eliminar cupón" data-id="${promo.ID_Promocion}"><i class="bi bi-trash-fill" aria-hidden="true"></i></button>
       </div>
 
       <div class="ticket-top">
@@ -482,7 +482,7 @@ function editarUsuario() {
     });
 }
 
-function eliminarUsuario(id) {
+function eliminarCupon(id) {
   Swal.fire({
     title: "&iquest;Est&aacute;s seguro?",
     text: "¡Esta acci&oacute;n no se puede deshacer!",
@@ -494,15 +494,22 @@ function eliminarUsuario(id) {
     if (result.isConfirmed) {
       fetch("controladores/controladorCupones.php", {
         method: "POST",
-        body: new URLSearchParams({ ope: "ELIMINAR", ID_Usuario: id }),
+        body: new URLSearchParams({ ope: "ELIMINAR", ID_Promocion: id }),
       })
-        .then((response) => response.json())
+        .then(async (response) => {
+          const data = await response.json();
+          if (!response.ok || !data.success) {
+            throw new Error(data.msg || "No se pudo eliminar la promoción.");
+          }
+          return data;
+        })
         .then((data) => {
           if (data.success) {
             Swal.fire("Eliminado", "Promoci&oacute;n eliminada", "success");
             listarPromociones();
           }
-        });
+        })
+        .catch((error) => Swal.fire("Error", error.message, "error"));
     }
   });
 }

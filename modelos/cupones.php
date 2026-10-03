@@ -390,14 +390,61 @@ public function ListarCategoriasConCupones()
         return $resultado;
     }
 
-    public function Eliminar($ID_usuario)
+    public function EliminarPromocion($idPromocion)
     {
         $enlace = dbConectar();
-        $sql = "DELETE FROM usuarios WHERE ID_Usuario=?";
-        $consulta = $enlace->prepare($sql);
-        $consulta->bind_param("i", $ID_usuario);
+        $idPromocion = (int) $idPromocion;
+        $transaccionIniciada = false;
 
-        return $consulta->execute();
+        try {
+            if (!$enlace->begin_transaction()) {
+                throw new RuntimeException("No se pudo iniciar la eliminación de la promoción.");
+            }
+            $transaccionIniciada = true;
+
+            if ($this->tieneTablaCuponesEmitidos($enlace)) {
+                $consultaEmitidos = $enlace->prepare("DELETE FROM cupones_emitidos WHERE ID_Promocion = ?");
+                if (!$consultaEmitidos) {
+                    throw new RuntimeException("No se pudo preparar la eliminación de cupones emitidos.");
+                }
+                $consultaEmitidos->bind_param("i", $idPromocion);
+                if (!$consultaEmitidos->execute()) {
+                    throw new RuntimeException("No se pudieron eliminar los cupones emitidos.");
+                }
+                $consultaEmitidos->close();
+            }
+
+            $consultaPromocion = $enlace->prepare("DELETE FROM promociones WHERE ID_Promocion = ?");
+            if (!$consultaPromocion) {
+                throw new RuntimeException("No se pudo preparar la eliminación de la promoción.");
+            }
+            $consultaPromocion->bind_param("i", $idPromocion);
+            if (!$consultaPromocion->execute()) {
+                throw new RuntimeException("No se pudo eliminar la promoción.");
+            }
+            $eliminada = $consultaPromocion->affected_rows > 0;
+            $consultaPromocion->close();
+
+            if (!$eliminada) {
+                $enlace->rollback();
+                $transaccionIniciada = false;
+                return false;
+            }
+
+            if (!$enlace->commit()) {
+                throw new RuntimeException("No se pudo confirmar la eliminación de la promoción.");
+            }
+            $transaccionIniciada = false;
+
+            return true;
+        } catch (Throwable $error) {
+            if ($transaccionIniciada) {
+                $enlace->rollback();
+            }
+            throw $error;
+        } finally {
+            $enlace->close();
+        }
     }
      public function RestarCupon($ID_usuario)
     {

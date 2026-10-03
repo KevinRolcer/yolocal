@@ -548,14 +548,64 @@ class Negocios
         return $resultado;
     }
 
-    public function Eliminar($ID_usuario)
+    public function Eliminar($ID_Negocio)
     {
         $enlace = dbConectar();
-        $sql = "DELETE FROM Negocios WHERE ID_Negocio=?";
-        $consulta = $enlace->prepare($sql);
-        $consulta->bind_param("i", $ID_usuario);
+        $ID_Negocio = (int) $ID_Negocio;
+        $transaccionIniciada = false;
 
-        return $consulta->execute();
+        try {
+            if (!$enlace->begin_transaction()) {
+                throw new RuntimeException("No se pudo iniciar la eliminación del negocio.");
+            }
+            $transaccionIniciada = true;
+
+            $eliminarPorNegocio = static function (string $sql) use ($enlace, $ID_Negocio): int {
+                $consulta = $enlace->prepare($sql);
+                if (!$consulta) {
+                    throw new RuntimeException("No se pudo preparar la eliminación de datos relacionados.");
+                }
+                $consulta->bind_param("i", $ID_Negocio);
+                if (!$consulta->execute()) {
+                    throw new RuntimeException("No se pudieron eliminar los datos relacionados.");
+                }
+                $afectados = $consulta->affected_rows;
+                $consulta->close();
+                return $afectados;
+            };
+
+            $eliminarPorNegocio("DELETE FROM horarios WHERE ID_Negocio = ?");
+            $eliminarPorNegocio("DELETE FROM trabajos WHERE ID_Negocio = ?");
+
+            $tablaCupones = $enlace->query("SHOW TABLES LIKE 'cupones_emitidos'");
+            if ($tablaCupones === false) {
+                throw new RuntimeException("No se pudo verificar la tabla de cupones emitidos.");
+            }
+            if ($tablaCupones->num_rows > 0) {
+                $eliminarPorNegocio("DELETE ce FROM cupones_emitidos ce INNER JOIN promociones p ON p.ID_Promocion = ce.ID_Promocion WHERE p.ID_Negocio = ?");
+            }
+
+            $eliminarPorNegocio("DELETE FROM promociones WHERE ID_Negocio = ?");
+            $negociosEliminados = $eliminarPorNegocio("DELETE FROM negocios WHERE ID_Negocio = ?");
+            if ($negociosEliminados === 0) {
+                $enlace->rollback();
+                $transaccionIniciada = false;
+                return false;
+            }
+
+            if (!$enlace->commit()) {
+                throw new RuntimeException("No se pudo confirmar la eliminación del negocio.");
+            }
+            $transaccionIniciada = false;
+            return true;
+        } catch (Throwable $error) {
+            if ($transaccionIniciada) {
+                $enlace->rollback();
+            }
+            throw $error;
+        } finally {
+            $enlace->close();
+        }
     }
     public function ObtenerUsuario($ID_usuario)
     {

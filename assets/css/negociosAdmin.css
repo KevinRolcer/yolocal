@@ -454,7 +454,7 @@ svg {
   background: #fff;
   border-radius: 1rem;
   border: 1px solid var(--ui-border-soft);
-  overflow: hidden;
+  overflow: visible;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
@@ -535,6 +535,7 @@ svg {
   align-items: center;
   border-bottom: 1px solid #f8f9fc;
   background: linear-gradient(to bottom, #ffffff, #fcfbff);
+  border-radius: 1rem 1rem 0 0;
 }
 
 .folder-icon-wrapper {

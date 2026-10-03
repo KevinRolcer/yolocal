@@ -217,19 +217,40 @@ if (isset($_POST["ope"])) {
 
     // eliminar 
     elseif ($ope == "ELIMINAR" && isset($_POST["ID_Negocio"])) {
-        $status = $usu->Eliminar($_POST["ID_Negocio"]);
-        $info = array("success" => $status);
-        echo json_encode($info);
+        if (($_SESSION["tipo"] ?? null) !== "admin") {
+            http_response_code(403);
+            echo json_encode(["success" => false, "msg" => "No autorizado."]);
+        } else {
+            $idNegocio = filter_var($_POST["ID_Negocio"], FILTER_VALIDATE_INT);
+            if (!$idNegocio || $idNegocio < 1) {
+                echo json_encode(["success" => false, "msg" => "Negocio no válido."]);
+            } else {
+                $status = $usu->Eliminar($idNegocio);
+                echo json_encode([
+                    "success" => $status,
+                    "msg" => $status ? "Negocio eliminado correctamente." : "No se encontró el negocio."
+                ], JSON_UNESCAPED_UNICODE);
+            }
+        }
     }
     elseif ($ope == "CAMBIARESTATUS" && isset($_POST["ID_Negocio"], $_POST["estado"])) {
-    $id = intval($_POST["ID_Negocio"]);
-    $estado = intval($_POST["estado"]);
+    if (($_SESSION["tipo"] ?? null) !== "admin") {
+        http_response_code(403);
+        echo json_encode(["success" => false, "msg" => "No autorizado."]);
+    } else {
+        $id = filter_var($_POST["ID_Negocio"], FILTER_VALIDATE_INT);
+        $estado = filter_var($_POST["estado"], FILTER_VALIDATE_INT);
 
-    $success = $usu->CambiarEstatus($id, $estado);
-
-    echo json_encode([
-        "success" => $success
-    ]);
+        if (!$id || $id < 1 || !in_array($estado, [0, 1], true)) {
+            echo json_encode(["success" => false, "msg" => "Datos de estado no válidos."]);
+        } else {
+            $success = $usu->CambiarEstatus($id, $estado);
+            echo json_encode([
+                "success" => $success,
+                "msg" => $success ? "Estatus actualizado." : "No se pudo actualizar el estatus."
+            ], JSON_UNESCAPED_UNICODE);
+        }
+    }
 } elseif ($ope == "PAGAR" && isset($_POST["ID_Negocio"])) {
     $id = intval($_POST["ID_Negocio"]);
 
