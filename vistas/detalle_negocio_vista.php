@@ -15,6 +15,8 @@ if (!isset($negocio) || !$negocio) {
 $negocio = $negocio ?? [];
 $horarios = $horarios ?? [];
 $imagenes = $imagenes ?? [];
+$rutaLogoNegocio = trim((string) ($negocio['Rutaicono'] ?? ''));
+$logoYolocal = $rutaLogoNegocio === '';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -42,6 +44,11 @@ $imagenes = $imagenes ?? [];
                     <h1 id="nombre-negocio"><?php echo htmlspecialchars($negocio['nombre_negocio']); ?></h1>
                     <p class="detalle-descripcion"><?php echo htmlspecialchars($negocio['DescripcionN']); ?></p>
                 </section>
+                <aside class="detalle-logo" aria-label="Logo del negocio">
+                    <img
+                        src="<?php echo htmlspecialchars($logoYolocal ? '../assets/img/LogoYolocal.png' : $rutaLogoNegocio); ?>"
+                        alt="<?php echo $logoYolocal ? 'Logo de Yolocal' : 'Logo de ' . htmlspecialchars($negocio['nombre_negocio']); ?>">
+                </aside>
 
                 <?php if (!empty($imagenes)): ?>
                     <div class="swiper miCarrusel">

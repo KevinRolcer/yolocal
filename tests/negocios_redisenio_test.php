@@ -67,7 +67,7 @@ try {
             'nombre_negocio' => 'Café del barrio',
             'nombre_categoria' => 'Cafeterías',
             'DescripcionN' => 'Café local',
-            'Rutaicono' => '',
+            'Rutaicono' => '../assets/uploads/iconos/cafe.webp',
             'SitioWeb' => 'https://cafedelbarrio.example',
             'Facebook' => '',
             'Instagram' => '',
@@ -83,8 +83,38 @@ try {
     if ($detalleXpath->query('//h1[normalize-space()="Café del barrio"]')->length !== 1) {
         throw new RuntimeException('El detalle debe conservar el nombre del negocio como título principal.');
     }
+    $logoNegocio = $detalleXpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " detalle-logo ")]/img');
+    if ($logoNegocio->length !== 1
+        || $logoNegocio->item(0)->getAttribute('src') !== '../assets/uploads/iconos/cafe.webp'
+        || $logoNegocio->item(0)->getAttribute('alt') !== 'Logo de Café del barrio') {
+        throw new RuntimeException('El encabezado del detalle debe mostrar el logo del negocio con texto alternativo.');
+    }
     if ($detalleXpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " imagen-fallback ") and @role="status"]')->length !== 1) {
         throw new RuntimeException('El carrusel debe incluir un estado accesible para imágenes no disponibles.');
+    }
+
+    $detalleSinLogo = renderizarVista('detalle_negocio_vista.php', [
+        'negocio' => [
+            'nombre_negocio' => 'Café del barrio',
+            'nombre_categoria' => 'Cafeterías',
+            'DescripcionN' => 'Café local',
+            'Rutaicono' => '',
+            'SitioWeb' => '',
+            'Facebook' => '',
+            'Instagram' => '',
+            'TikTok' => '',
+            'Direccion' => '',
+            'GoogleMaps' => '',
+            'Telefono' => '',
+        ],
+        'horarios' => [],
+        'imagenes' => [],
+    ]);
+    $detalleSinLogoXpath = obtenerDocumento($detalleSinLogo);
+    $logoFallback = $detalleSinLogoXpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " detalle-logo ")]/img');
+    if ($logoFallback->length !== 1
+        || $logoFallback->item(0)->getAttribute('src') !== '../assets/img/LogoYolocal.png') {
+        throw new RuntimeException('El encabezado debe mostrar el logo de Yolocal cuando el negocio no tiene logo.');
     }
     foreach (['Redes Sociales', 'Horarios', 'Contacto y Ubicación'] as $seccion) {
         if ($detalleXpath->query('//h2[normalize-space()="' . $seccion . '"]')->length !== 1) {
