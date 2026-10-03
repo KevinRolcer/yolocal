@@ -19,6 +19,7 @@
         <section class="catalogo-hero" aria-labelledby="catalogo-titulo">
             <h1 id="catalogo-titulo">Negocios locales</h1>
             <p>Explora el directorio y conoce lo que ofrecen sus negocios.</p>
+            <img class="catalogo-hero-logo" src="../assets/img/LogoYolocal.png" alt="Logo de Yolocal">
         </section>
 
         <div class="seccion-filtros" id="seccion-filtros">
@@ -50,52 +51,17 @@
             </div>
         </div>
 
+        <p class="catalogo-frase">
+            <span class="catalogo-frase-lectores">Conoce lo mejor de Texmelucan</span>
+            <span class="catalogo-frase-visual" aria-hidden="true">Conoce lo mejor de
+                <span class="texmelucan-animado"><?php foreach (str_split('Texmelucan') as $letra): ?><span class="texmelucan-letra"><?php echo htmlspecialchars($letra, ENT_QUOTES, 'UTF-8'); ?></span><?php endforeach; ?></span>
+            </span>
+        </p>
+
         <div class="negocios-container">
             <?php if (!empty($negocios)): ?>
                 <?php foreach ($negocios as $negocio): ?>
-                    <div class="negocio-card">
-
-                        <div class="categoria-tag <?php echo strtolower(str_replace(' ', '', $negocio['nombre_categoria'] ?? 'general')); ?>">
-                            <?php echo htmlspecialchars($negocio['nombre_categoria'] ?? 'General'); ?>
-                        </div>
-
-                        <div class="negocio-content">
-                            <div class="negocio-header">
-                                <span class="negocio-icono-marco">
-                                    <img src="<?php echo htmlspecialchars($negocio['Rutaicono']); ?>"
-                                        alt="Icono de <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>"
-                                        class="negocio-icono">
-                                    <span class="negocio-icono-fallback" role="status" hidden>Imagen no disponible</span>
-                                </span>
-
-                                <h3 class="negocio-nombre">
-                                    <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>
-                                </h3>
-                            </div>
-
-                            <?php if (!empty($negocio['DescripcionN'])): ?>
-                                <p class="negocio-descripcion">
-                                    <?php echo htmlspecialchars($negocio['DescripcionN']); ?>
-                                </p>
-                            <?php endif; ?>
-
-                            <?php if (!empty($negocio['Direccion'])): ?>
-                                <div class="negocio-direccion">
-                                    <?php if (!empty($negocio['GoogleMaps'])): ?>
-                                        <a href="<?php echo htmlspecialchars($negocio['GoogleMaps'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank">
-                                            <?php echo htmlspecialchars($negocio['Direccion'], ENT_QUOTES, 'UTF-8'); ?>
-                                        </a>
-                                    <?php else: ?>
-                                        <?php echo htmlspecialchars($negocio['Direccion'], ENT_QUOTES, 'UTF-8'); ?>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endif; ?>
-
-                            <button class="btn-conocer-mas" onclick="verDetalle(<?php echo $negocio['ID_Negocio']; ?>)">
-                                Conocer más
-                            </button>
-                        </div>
-                    </div>
+                    <?php include __DIR__ . '/partials/tarjeta_negocio.php'; ?>
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="empty-state">
