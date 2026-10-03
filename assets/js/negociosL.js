@@ -1,5 +1,23 @@
 
 let debounceTimer;
+
+function activarFallbackIconos(contenedor) {
+    contenedor.querySelectorAll('.negocio-icono').forEach((imagen) => {
+        const mostrarFallback = () => {
+            const fallback = imagen.parentElement.querySelector('.negocio-icono-fallback');
+            if (!fallback) return;
+            imagen.hidden = true;
+            fallback.hidden = false;
+        };
+
+        if (imagen.complete && imagen.naturalWidth === 0) {
+            mostrarFallback();
+        } else {
+            imagen.addEventListener('error', mostrarFallback, { once: true });
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', (event) => {
     const menuToggle = document.getElementById('menuToggle');
     if (menuToggle) {
@@ -8,6 +26,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             menu.classList.toggle('active');
         });
     }
+    activarFallbackIconos(document);
 });
 
 
@@ -50,6 +69,7 @@ function buscarEnTiempoReal() {
             .then(html => {
                
                 contenedorResultados.innerHTML = html;
+                activarFallbackIconos(contenedorResultados);
             })
             .catch(error => {
             

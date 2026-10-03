@@ -15,17 +15,22 @@
     <header class="encabezado">
         <?php include_once("header.php"); ?>
     </header>
-    <div class="principal">
-        <div class="seccion-filtros">
+    <main class="principal">
+        <section class="catalogo-hero" aria-labelledby="catalogo-titulo">
+            <h1 id="catalogo-titulo">Negocios locales</h1>
+            <p>Explora el directorio y conoce lo que ofrecen sus negocios.</p>
+        </section>
+
+        <div class="seccion-filtros" id="seccion-filtros">
             <div class="busqueda-seccion">
-                <label for="busqueda">Buscar negocio:</label>
+                <label for="busqueda">Buscar por nombre</label>
                 <input type="text" id="busqueda" name="busqueda" placeholder="Nombre del negocio..."
                     onkeyup="buscarEnTiempoReal()"
                     value="<?php echo htmlspecialchars($_GET['busqueda'] ?? ''); ?>">
             </div>
 
             <div class="filtro-seccion">
-                <label for="filtroCategoria">O filtrar por categoría:</label>
+                <label for="filtroCategoria">Filtrar por categoría</label>
                 <select name="categoria" id="filtroCategoria" onchange="filtrarPorCategoria()">
                     <option value="">-- Ver Todas --</option>
                     <?php
@@ -56,9 +61,12 @@
 
                         <div class="negocio-content">
                             <div class="negocio-header">
-                                <img src="<?php echo htmlspecialchars($negocio['Rutaicono']); ?>"
-                                    alt="Icono de <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>"
-                                    class="negocio-icono">
+                                <span class="negocio-icono-marco">
+                                    <img src="<?php echo htmlspecialchars($negocio['Rutaicono']); ?>"
+                                        alt="Icono de <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>"
+                                        class="negocio-icono">
+                                    <span class="negocio-icono-fallback" role="status" hidden>Imagen no disponible</span>
+                                </span>
 
                                 <h3 class="negocio-nombre">
                                     <?php echo htmlspecialchars($negocio['nombre_negocio']); ?>
@@ -103,7 +111,7 @@
             $totalPaginas = (int) $total_paginas;
             $parametrosPagina = array_intersect_key($_GET, array_flip(['categoria', 'busqueda']));
             $enlacePagina = static function ($pagina) use ($parametrosPagina) {
-                return '?' . htmlspecialchars(http_build_query(array_merge($parametrosPagina, ['pagina' => $pagina])), ENT_QUOTES, 'UTF-8');
+                return '?' . htmlspecialchars(http_build_query(array_merge($parametrosPagina, ['pagina' => $pagina])), ENT_QUOTES, 'UTF-8') . '#seccion-filtros';
             };
             if ($totalPaginas <= 5) {
                 $paginasVisibles = range(1, $totalPaginas);
@@ -157,7 +165,7 @@
                 </div>
             </nav>
         <?php endif; ?>
-    </div>
+    </main>
     
     <script src="../assets/js/negociosL.js"></script>
 </body>

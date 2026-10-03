@@ -27,6 +27,9 @@ try {
         $xpath = new DOMXPath($documento);
         $navegacion = $xpath->query('//nav[contains(@class, "paginacion")]')->item(0);
         if (!$navegacion) throw new RuntimeException('La paginación debe ser una navegación identificable.');
+        if ($xpath->query('//*[@id="seccion-filtros"]')->length !== 1) {
+            throw new RuntimeException('El inicio de los filtros debe ser un destino de navegación.');
+        }
         $actual = $xpath->query('.//*[@aria-current="page"]', $navegacion);
         if ($actual->length !== 1 || trim($actual->item(0)->textContent) !== (string) $pagina) {
             throw new RuntimeException('Debe identificar la página actual.');
@@ -34,6 +37,9 @@ try {
         $enlaces = $xpath->query('.//a', $navegacion);
         if ($enlaces->length > 8) throw new RuntimeException('Debe limitar los enlaces cuando hay muchas páginas.');
         foreach ($enlaces as $enlace) {
+            if (parse_url($enlace->getAttribute('href'), PHP_URL_FRAGMENT) !== 'seccion-filtros') {
+                throw new RuntimeException('Cambiar de página debe regresar al inicio de los filtros.');
+            }
             parse_str(parse_url($enlace->getAttribute('href'), PHP_URL_QUERY), $parametros);
             if (($parametros['categoria'] ?? '') !== '3' || ($parametros['busqueda'] ?? '') !== 'café & pan') {
                 throw new RuntimeException('Cambiar de página debe conservar los filtros.');

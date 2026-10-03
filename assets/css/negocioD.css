@@ -597,3 +597,342 @@ body {
     opacity: 1 !important;
     visibility: visible !important;
 }
+
+/* Perfil de negocio */
+.detalle-negocio-page {
+    background: #f7f5f8;
+    color: #302a35;
+}
+
+.detalle-negocio-page .container {
+    width: min(1200px, calc(100% - 48px));
+    max-width: none;
+    margin: 36px auto 72px;
+    padding: 0;
+}
+
+.detalle-negocio-page .detalle-card {
+    overflow: visible;
+    margin: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    animation: none;
+}
+
+.detalle-negocio-page .detalle-contenido {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 22px;
+    padding: clamp(24px, 4vw, 48px);
+    border: 1px solid #e8e2eb;
+    border-radius: 20px;
+    background: #fff;
+}
+
+.detalle-negocio-page .detalle-presentacion {
+    grid-column: 1 / -1;
+    max-width: 820px;
+}
+
+.detalle-negocio-page .categoria-tag {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0 14px;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: #f2edf6;
+    color: #4c0682;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.detalle-negocio-page .detalle-presentacion h1 {
+    margin: 0;
+    color: #30213c;
+    font-size: clamp(2.15rem, 4.8vw, 3.4rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
+    overflow-wrap: anywhere;
+    animation: detalle-title-enter 240ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.detalle-negocio-page .detalle-descripcion {
+    max-width: 68ch;
+    margin: 16px 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #625c68;
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.detalle-negocio-page .swiper.miCarrusel,
+.detalle-negocio-page .imagen-limpia {
+    grid-column: 1 / -1;
+    width: 100% !important;
+    max-width: none !important;
+    height: clamp(280px, 43vw, 520px) !important;
+    margin: 2px 0 4px !important;
+    overflow: hidden !important;
+    border-radius: 16px !important;
+    background: #f4f0f6 !important;
+    box-shadow: none !important;
+}
+
+.detalle-negocio-page .swiper-wrapper,
+.detalle-negocio-page .swiper-slide {
+    height: 100% !important;
+}
+
+.detalle-negocio-page .swiper-slide img {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    object-fit: cover !important;
+    box-shadow: none !important;
+}
+
+.detalle-negocio-page img[hidden] {
+    display: none !important;
+}
+
+.detalle-negocio-page .imagen-limpia img {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0 !important;
+    object-fit: contain !important;
+    box-shadow: none !important;
+}
+
+.detalle-negocio-page .imagen-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #625c68;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.detalle-negocio-page .imagen-fallback[hidden] {
+    display: none;
+}
+
+.detalle-negocio-page .swiper-slide,
+.detalle-negocio-page .imagen-limpia {
+    position: relative;
+}
+
+.detalle-negocio-page .info-seccion {
+    grid-column: span 4;
+    min-width: 0;
+    margin: 0;
+    padding: 22px;
+    border: 0;
+    border-radius: 14px;
+    background: #f7f4f8;
+    box-shadow: none;
+    transition: background-color 160ms ease;
+}
+
+.detalle-negocio-page .info-seccion:hover {
+    transform: none;
+    background: #f2edf5;
+    box-shadow: none;
+}
+
+.detalle-negocio-page .info-seccion h2 {
+    margin: 0 0 16px;
+    color: #39214a;
+    font-size: 1.15rem;
+    font-weight: 650;
+    line-height: 1.3;
+}
+
+.detalle-negocio-page .info-seccion.social-icons {
+    text-align: left;
+}
+
+.detalle-negocio-page .info-seccion.social-icons h2 {
+    text-align: left;
+}
+
+.detalle-negocio-page .icon-container {
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.detalle-negocio-page .icon-container a {
+    width: 44px;
+    height: 44px;
+    border: 1px solid #ded4e4;
+    background: #fff;
+    color: #4c0682;
+    transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+.detalle-negocio-page .icon-container a:hover {
+    transform: translateY(-1px);
+    border-color: #4c0682;
+    background: #4c0682;
+    color: #fff;
+    box-shadow: none;
+}
+
+.detalle-negocio-page .icon-container svg {
+    color: currentColor;
+}
+
+.detalle-negocio-page .lista-horarios {
+    margin: 0;
+}
+
+.detalle-negocio-page .lista-horarios li {
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom-color: #e5dfe8;
+    color: #514b57;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.detalle-negocio-page .lista-horarios strong {
+    min-width: 78px;
+    color: #39214a;
+}
+
+.detalle-negocio-page .info-seccion p {
+    margin: 0 0 12px;
+    color: #514b57;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.detalle-negocio-page .info-seccion p:last-child {
+    margin-bottom: 0;
+}
+
+.detalle-negocio-page .info-seccion strong {
+    color: #39214a;
+}
+
+.detalle-negocio-page .info-seccion a {
+    color: #4c0682;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+}
+
+.detalle-negocio-page .icon-container a {
+    text-decoration: none;
+}
+
+.detalle-negocio-page .info-seccion a:focus-visible,
+.detalle-negocio-page .icon-container a:focus-visible,
+.detalle-negocio-page .swiper-button-next:focus-visible,
+.detalle-negocio-page .swiper-button-prev:focus-visible {
+    outline: 3px solid #b083d0;
+    outline-offset: 3px;
+}
+
+.detalle-negocio-page .banner-distribuidor {
+    max-width: none;
+    margin: 24px 0 0;
+    border-radius: 14px;
+    box-shadow: none;
+}
+
+.detalle-negocio-page .banner-distribuidor img {
+    width: 100%;
+    height: clamp(88px, 10vw, 132px);
+    border-radius: inherit;
+    object-fit: cover;
+    box-shadow: none;
+}
+
+@media (max-width: 900px) {
+    .detalle-negocio-page .info-seccion {
+        grid-column: span 6;
+    }
+
+    .detalle-negocio-page .swiper.miCarrusel,
+    .detalle-negocio-page .imagen-limpia {
+        height: clamp(280px, 48vw, 420px) !important;
+    }
+}
+
+@media (max-width: 620px) {
+    .detalle-negocio-page .container {
+        width: calc(100% - 32px);
+        margin: 22px auto 48px;
+    }
+
+    .detalle-negocio-page .detalle-contenido {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+        padding: 22px 18px;
+        border-radius: 16px;
+    }
+
+    .detalle-negocio-page .detalle-presentacion,
+    .detalle-negocio-page .swiper.miCarrusel,
+    .detalle-negocio-page .imagen-limpia,
+    .detalle-negocio-page .info-seccion {
+        grid-column: 1;
+    }
+
+    .detalle-negocio-page .detalle-presentacion h1 {
+        font-size: clamp(2rem, 9vw, 2.65rem);
+    }
+
+    .detalle-negocio-page .swiper.miCarrusel,
+    .detalle-negocio-page .imagen-limpia {
+        height: 280px !important;
+        margin: 4px 0 !important;
+        border-radius: 12px !important;
+    }
+
+    .detalle-negocio-page .info-seccion {
+        padding: 19px;
+    }
+
+    .detalle-negocio-page .banner-distribuidor img {
+        height: 92px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .detalle-negocio-page .detalle-presentacion h1,
+    .detalle-negocio-page .info-seccion,
+    .detalle-negocio-page .icon-container a {
+        animation: none;
+        transition: none;
+    }
+}
+
+@keyframes detalle-title-enter {
+    from {
+        opacity: 0;
+        transform: translateY(0.25em);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+html {
+    overflow-x: hidden;
+}
